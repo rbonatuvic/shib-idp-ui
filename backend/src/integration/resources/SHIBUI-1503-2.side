@@ -50,6 +50,18 @@
       ],
       "value": ""
     }, {
+      "id": "6410b0e4-ac64-42da-abd5-5f39364589ff",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.nav-item > .d-flex",
+      "targets": [
+        ["css=.nav-item > .d-flex", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/div/div[4]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/dashboard/admin/actions')]", "xpath:href"],
+        ["xpath=//div[4]/a", "xpath:position"]
+      ],
+      "value": "30000"
+    }, {
       "id": "ba3c21fe-bd14-45c9-a77c-47db7f261e89",
       "comment": "",
       "command": "open",
@@ -277,13 +289,6 @@
         ["xpath=//form/div", "xpath:position"]
       ],
       "value": "Bad credentials"
-    }, {
-      "id": "5b421e75-d5db-44ff-ac57-2fd8f91c2478",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

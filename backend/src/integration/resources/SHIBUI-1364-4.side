@@ -1572,13 +1572,6 @@
         ["xpath=//div[3]/div/div/p", "xpath:position"]
       ],
       "value": "Entity Attributes Filter"
-    }, {
-      "id": "3f618724-2825-4ebe-97d5-038a67a23e9b",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

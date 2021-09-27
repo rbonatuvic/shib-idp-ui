@@ -50,6 +50,13 @@
       ],
       "value": ""
     }, {
+      "id": "b774855b-f353-43ac-9114-3e1595ee49f8",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "linkText=Admin",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "b257e9f6-cf71-4d3c-a198-2f64a0f9dfe7",
       "comment": "",
       "command": "open",
@@ -207,13 +214,6 @@
         ["xpath=//a[contains(.,'Metadata Sources')]", "xpath:innerText"]
       ],
       "value": "Metadata Sources"
-    }, {
-      "id": "5b9612bd-d0ea-439b-895f-3dc372023578",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

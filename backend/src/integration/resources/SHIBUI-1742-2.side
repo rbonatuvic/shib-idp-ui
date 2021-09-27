@@ -53,19 +53,19 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
-      "id": "53ffb74f-8635-453b-8b3e-22c0a11e0902",
+      "id": "eae646fb-6b90-42a0-92e0-bf44f1ee0a80",
       "comment": "",
-      "command": "pause",
-      "target": "5000",
+      "command": "waitForElementVisible",
+      "target": "xpath=//button[text()='Advanced']",
       "targets": [],
-      "value": ""
+      "value": "30000"
     }, {
       "id": "c820e378-569c-44ba-834a-c7d6203d3e12",
       "comment": "",
       "command": "click",
       "target": "xpath=//button[text()='Advanced']",
       "targets": [],
-      "value": "30000"
+      "value": ""
     }, {
       "id": "8f1af018-7f7f-441c-bb59-9591469cc0da",
       "comment": "",

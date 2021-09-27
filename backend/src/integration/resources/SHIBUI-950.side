@@ -50,6 +50,13 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "6e9a1bd7-c8b4-40a5-b9e0-7e516dd77375",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "6cfc4462-7d98-42ad-9503-1420238af405",
       "comment": "",
       "command": "open",
@@ -213,13 +220,6 @@
         ["xpath=//td[contains(.,'https://wiki.shibboleth.net/shibboleth')]", "xpath:innerText"]
       ],
       "value": "https://wiki.shibboleth.net/shibboleth"
-    }, {
-      "id": "c5bfb51f-fd8e-4518-880d-2735077baebb",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

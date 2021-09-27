@@ -50,6 +50,13 @@
       ],
       "value": ""
     }, {
+      "id": "af27eb53-8a60-4d31-a7af-7d56e310c528",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "4e6e0e31-5b73-4ff3-95fd-db29ee329512",
       "comment": "",
       "command": "open",
@@ -736,13 +743,6 @@
         ["xpath=//div[2]/div/div/input", "xpath:position"]
       ],
       "value": ".*"
-    }, {
-      "id": "f9d3ccc6-65d1-46dd-9d05-2d1bd74cc89e",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

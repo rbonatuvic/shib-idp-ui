@@ -50,6 +50,13 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "7ddaa6d6-98ac-49d2-bd83-e657077a60ef",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "692ca72a-41c0-4ef7-8ed2-a9d4bde7e05c",
       "comment": "",
       "command": "open",
@@ -1202,13 +1209,6 @@
         ["xpath=//div[2]/div[2]/div/div[5]/div/span[2]", "xpath:position"]
       ],
       "value": "PT10M"
-    }, {
-      "id": "a77b2cf6-c88d-458b-9421-2745634180a7",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

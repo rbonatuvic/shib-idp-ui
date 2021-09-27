@@ -50,6 +50,13 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "b44b94d5-0659-4682-94ac-19bccf497f79",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "8034dcdc-3fa2-4144-b707-c470db8c7c38",
       "comment": "",
       "command": "open",
@@ -1071,13 +1078,6 @@
         ["xpath=//tr[2]/td[6]", "xpath:position"],
         ["xpath=//td[contains(.,'Disabled')]", "xpath:innerText"]
       ],
-      "value": ""
-    }, {
-      "id": "57d0e204-6c28-4be5-9888-28f8d7738508",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
       "value": ""
     }]
   }],

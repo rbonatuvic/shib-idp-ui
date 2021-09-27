@@ -50,6 +50,13 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "56429611-d4c2-4486-bcc1-99c177764717",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "e3eeb3b6-c6de-466f-9609-9683bc71ac71",
       "comment": "",
       "command": "open",
@@ -407,13 +414,6 @@
         ["xpath=//td[contains(.,'FilesystemMetadataResolver')]", "xpath:innerText"]
       ],
       "value": "FilesystemMetadataResolver"
-    }, {
-      "id": "4ff97235-563b-4d71-80b7-a8b263aeb90b",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

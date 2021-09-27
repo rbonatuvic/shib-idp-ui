@@ -50,6 +50,13 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "b837b89b-db9e-4cda-adda-476c8a28f31c",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "51703e66-6615-4e51-97a3-2e791d3f8f8e",
       "comment": "",
       "command": "open",
@@ -1025,13 +1032,6 @@
       "target": "isDiff",
       "targets": [],
       "value": "true"
-    }, {
-      "id": "a0305827-1856-48c6-b02c-96c43da6241f",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

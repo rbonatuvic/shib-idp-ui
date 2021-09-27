@@ -50,6 +50,13 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "c0a35781-0dbd-4905-8c25-61d7d497f968",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "a81efadb-6076-4a3e-b7ab-0cc097fb0820",
       "comment": "",
       "command": "open",
@@ -1473,13 +1480,6 @@
         ["xpath=//span[3]", "xpath:position"]
       ],
       "value": "Test Metadata Provider"
-    }, {
-      "id": "03d7493c-75c4-4923-8330-686b12ff7a5b",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

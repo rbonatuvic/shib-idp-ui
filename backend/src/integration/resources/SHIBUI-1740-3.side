@@ -53,6 +53,13 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "81262307-71de-4a6a-9087-6d5aeb1efb6c",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "b64a0533-2175-4578-baeb-7ca4e97e0e23",
       "comment": "",
       "command": "open",

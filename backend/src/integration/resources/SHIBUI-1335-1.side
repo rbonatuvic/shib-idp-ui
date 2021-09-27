@@ -50,6 +50,13 @@
       ],
       "value": ""
     }, {
+      "id": "4d8cf40e-3ac8-4a58-8f9a-ae65778f68f0",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "8ce1cc76-3392-4b5f-8a9f-658f08f19ed1",
       "comment": "",
       "command": "open",
@@ -1787,13 +1794,6 @@
         ["xpath=//button[contains(.,'Entity Attributes Filter')]", "xpath:innerText"]
       ],
       "value": "Entity Attributes Filter"
-    }, {
-      "id": "13133548-1a88-4cc0-a861-7481794c65e0",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

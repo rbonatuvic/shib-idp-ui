@@ -50,6 +50,20 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "7de08941-38d0-4432-aa7c-e445bf52f29d",
+      "comment": "",
+      "command": "click",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [
+        ["id=metadata-nav-dropdown-toggle", "id"],
+        ["css=#metadata-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='metadata-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
       "id": "f3bb93b7-b6ff-41e3-9057-029250b3cc38",
       "comment": "",
       "command": "open",
@@ -2864,13 +2878,6 @@
         ["xpath=//section[2]/div/div[2]/div[2]/div/div/div/span[3]", "xpath:position"]
       ],
       "value": "Display Name"
-    }, {
-      "id": "dd9d3cb6-e895-4fcb-ae5e-c6da258a65a5",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

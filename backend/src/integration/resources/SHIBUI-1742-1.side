@@ -53,6 +53,13 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "706b5765-d246-458f-9a72-be2a5dc59fbb",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "linkText=Admin",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "9572c7f3-5365-4864-a335-a0ed4c87ec7f",
       "comment": "",
       "command": "open",
@@ -573,6 +580,13 @@
         ["xpath=//p[2]/input", "xpath:position"]
       ],
       "value": "${KEY_ENTER}"
+    }, {
+      "id": "4bdddea6-4e3d-4947-a1cc-b05a795d56c5",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "xpath=//table/tbody/tr/td[5]/span/div/input",
+      "targets": [],
+      "value": "3000"
     }, {
       "id": "79423a30-b82b-443f-b0ea-80370a6d397b",
       "comment": "",

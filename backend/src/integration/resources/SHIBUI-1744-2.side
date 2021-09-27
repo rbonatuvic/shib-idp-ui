@@ -52,6 +52,13 @@
       ],
       "value": ""
     }, {
+      "id": "e62af22d-1d27-45e1-85f5-0cb467e71df4",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=advanced-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "8096864b-f997-4d71-a579-d5170f27fdea",
       "comment": "",
       "command": "open",

@@ -694,13 +694,6 @@
         ["xpath=//div[3]/div/span[3]", "xpath:position"]
       ],
       "value": "12345"
-    }, {
-      "id": "5bf7126d-9dfb-4b97-8685-fd00778423eb",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

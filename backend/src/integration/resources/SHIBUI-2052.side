@@ -53,6 +53,13 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "7024f1d8-e9d9-4acf-bd23-5733950fc95a",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=user-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "f5e43d25-4f27-42a6-9a63-711e25e21ead",
       "comment": "",
       "command": "assertText",
@@ -150,6 +157,13 @@
         ["xpath=//p[2]/input", "xpath:position"]
       ],
       "value": "${KEY_ENTER}"
+    }, {
+      "id": "fb7ef6b5-0c19-45a5-ba11-8c4bd13126e2",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=user-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "1f83e7af-4ad2-43b1-ac8f-47d388ecc976",
       "comment": "",

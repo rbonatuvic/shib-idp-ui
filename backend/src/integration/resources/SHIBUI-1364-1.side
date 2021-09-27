@@ -2057,6 +2057,13 @@
       ],
       "value": ""
     }, {
+      "id": "8854eb15-681c-4d2b-a3e2-b324c745b2fa",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=div:nth-child(2) > div:nth-child(1) > .d-flex > .d-block:nth-child(2)",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "cfebf080-7825-4412-8a2d-924af79d4b26",
       "comment": "",
       "command": "assertText",
@@ -2375,13 +2382,6 @@
         ["xpath=//section[5]/div/div[2]/div[2]/div/div/span[3]", "xpath:position"]
       ],
       "value": "Entity Attributes Filter"
-    }, {
-      "id": "2c05cbfc-f828-426d-be90-eae484624ac0",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

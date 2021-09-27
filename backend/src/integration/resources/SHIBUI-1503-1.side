@@ -598,13 +598,6 @@
       "target": "xpath=//table/tbody/tr/td[5]/span/div/input",
       "targets": [],
       "value": "Enabled"
-    }, {
-      "id": "6b4905b8-2ae3-4682-ae52-0149c58eb7f4",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{
