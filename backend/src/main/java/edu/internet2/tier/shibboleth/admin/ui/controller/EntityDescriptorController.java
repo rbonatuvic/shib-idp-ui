@@ -2,15 +2,14 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService;
 import lombok.extern.slf4j.Slf4j;
-
 import org.opensaml.core.xml.io.MarshallingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -30,7 +29,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
-
 import java.net.URI;
 import java.util.ConcurrentModificationException;
 
@@ -66,7 +64,7 @@ public class EntityDescriptorController {
     @PostMapping("/EntityDescriptor")
     @Transactional
     public ResponseEntity<?> create(@RequestBody EntityDescriptorRepresentation edRepresentation)
-                    throws ForbiddenException, EntityIdExistsException, InvalidPatternMatchException {
+                    throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
         EntityDescriptorRepresentation persistedEd = entityDescriptorService.createNew(edRepresentation);            
         return ResponseEntity.created(getResourceUriFor(persistedEd.getId())).body(persistedEd);
     }

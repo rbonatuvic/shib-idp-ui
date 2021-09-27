@@ -1,0 +1,10 @@
+[
+    {
+        "resourceId": "abc",
+        "name": "Bundle 1",
+        "attributes": [
+            "abc123",
+            "xyz456"
+        ]
+    }
+]

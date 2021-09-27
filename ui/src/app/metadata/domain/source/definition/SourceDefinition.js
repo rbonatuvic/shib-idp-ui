@@ -12,6 +12,7 @@ export const SourceBase = {
     type: '@MetadataProvider',
     steps: [],
     schema: `${API_BASE_PATH}/ui/MetadataSources`,
+    //schema: `/assets/schema/source/metadata-source.json`,
 
     parser: (data) => removeNull(data, true),
 

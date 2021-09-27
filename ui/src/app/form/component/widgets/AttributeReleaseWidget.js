@@ -1,5 +1,6 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
+import intersection from 'lodash/intersection';
 import Translate from "../../../i18n/components/translate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -59,13 +60,60 @@ const AttributeReleaseWidget = ({
 
         onChange(update);
     }
+
+    const onCheckBundle = (option) => {
+        const all = (enumOptions).map(({ value }) => value);
+        let update = [
+            ...value
+        ];
+        (option.value).forEach(v => update = selectValue(v, update, all));
+
+        onChange(update);
+    }
+
+    const onUncheckBundle = (option) => {
+        const all = (enumOptions).map(({ value }) => value);
+        let update = [
+            ...value
+        ];
+        (option.value).forEach(v => update = deselectValue(v, update, all));
+
+        onChange(update);
+    }
+
     const onClearAll = () => {
         onChange([]);
     }
 
+    const attrs = React.useMemo(() => enumOptions.filter(e => !(typeof e.value === 'string' ? false : true)), [enumOptions]);
+    const bundles = React.useMemo(() => enumOptions.filter(e => (typeof e.value === 'string' ? false : true)), [enumOptions]);
+
+    const bundlelist = React.useMemo(() => bundles.map((b) => (
+        {
+            ...b,
+            selected: intersection(b.value, value).length === b.value.length
+        }
+    )), [bundles, value]);
+    
     return (
         <fieldset>
             <legend><Translate value={label || schema.title} /></legend>
+            {bundles && bundles.length > 0 &&
+            <ul class="list-group list-group-flush">
+                {(bundlelist).map((option) => (
+                <li class="list-group-item d-flex justify-content-between px-1">
+                    <strong><Translate value="label.bundle-disp" params={{name: option.label}}></Translate></strong>
+                    <Button variant={option.selected ? 'outline-primary' : 'primary'} size="sm"
+                        onClick={() => option.selected ? onUncheckBundle(option) : onCheckBundle(option) }
+                    >
+                        <span className="sr-only"><Translate value="action.select">Select</Translate></span>
+                        <FontAwesomeIcon icon={faCheck} className="" />
+                    </Button>
+                </li>
+                ))}
+            </ul>
+            }
+
             <table className="table table-striped table-sm">
                 <thead>
                     <tr className="table-secondary">
@@ -74,13 +122,13 @@ const AttributeReleaseWidget = ({
                     </tr>
                 </thead>
                 <tbody>
-                    {(enumOptions).map((option, index) => {
+                    {(attrs).map((option, index) => {
                         const checked = value.indexOf(option.value) !== -1;
                         const itemDisabled =
                             enumDisabled && (enumDisabled).indexOf(option.value) !== -1;
                         return (
                             <tr key={index}>
-                                <td><Translate value={`label.attribute-${option.label}`} /></td>
+                                <td className="align-middle"><Translate value={`label.attribute-${option.label}`}>{option.label}</Translate></td>
                                 <td className="">
                                     <fieldset className="d-flex justify-content-end">
                                         <div className="custom-control custom-checkbox">

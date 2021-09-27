@@ -5,10 +5,10 @@ import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException
+import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
@@ -93,7 +93,7 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
         controller.restTemplate = mockRestTemplate
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
-        
+
         Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
         User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
         user.setGroup(gb)
@@ -365,7 +365,7 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
             mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(postedJsonBody))
         }
         catch (Exception e) {
-            e instanceof EntityIdExistsException
+            e instanceof ObjectIdExistsException
         }
     }
 
@@ -589,7 +589,7 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
             mockMvc.perform(post("/api/EntityDescriptor").contentType(APPLICATION_XML).content(postedBody).param("spName", spName))
         }
         catch (Exception e) {
-            e instanceof EntityIdExistsException
+            e instanceof ObjectIdExistsException
         }
     }
 

@@ -3,10 +3,10 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -30,20 +30,20 @@ public interface EntityDescriptorService {
      * @param ed - JPA EntityDescriptor to base creation on
      * @return EntityDescriptorRepresentation of the created object
      * @throws ForbiddenException If user is unauthorized to perform this operation
-     * @throws EntityIdExistsException If any EntityDescriptor already exists with the same EntityId
+     * @throws ObjectIdExistsException If any EntityDescriptor already exists with the same EntityId
      */
     EntityDescriptorRepresentation createNew(EntityDescriptor ed)
-                    throws ForbiddenException, EntityIdExistsException, InvalidPatternMatchException;
+                    throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException;
 
     /**
      * @param edRepresentation Incoming representation to save
      * @return EntityDescriptorRepresentation
      * @throws ForbiddenException If user is unauthorized to perform this operation
-     * @throws EntityIdExistsException If the entity already exists
+     * @throws ObjectIdExistsException If the entity already exists
      */
     EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRepresentation)
-                    throws ForbiddenException, EntityIdExistsException, InvalidPatternMatchException;
-    
+                    throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException;
+
     /**
      * Map from opensaml implementation of entity descriptor model to front-end data representation of entity descriptor
      *
