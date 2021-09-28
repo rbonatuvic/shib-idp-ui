@@ -409,3 +409,6 @@ beacon/spring/out
 *bin
 /a.json
 /testbed/authentication/.idea/workspace.xml
+
+# macOS jenv
+.java-version
