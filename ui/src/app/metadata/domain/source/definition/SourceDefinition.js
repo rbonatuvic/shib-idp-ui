@@ -28,13 +28,11 @@ export const SourceBase = {
 
         return (formData, errors) => {
 
-            console.log(errors)
-
             if (entityIds.indexOf(formData.entityId) > -1) {
                 errors.entityId.addError('message.id-unique');
             }
 
-            if (pattern && !pattern.test(formData.entityId)) {
+            if (pattern && !pattern?.test(formData.entityId)) {
                 errors.entityId.addError(translator('message.group-pattern-fail', {regex: group?.validationRegex}));
             }
 
@@ -44,7 +42,7 @@ export const SourceBase = {
 
             if (Array.isArray(formData?.assertionConsumerServices)) {
                 formData.assertionConsumerServices.forEach((acs, idx) => {
-                    if (!isNil(acs?.locationUrl) && !pattern.test(acs.locationUrl)) {
+                    if (pattern && !isNil(acs?.locationUrl) && !pattern?.test(acs.locationUrl)) {
                         errors.assertionConsumerServices[idx].locationUrl.addError(translator('message.group-pattern-fail', { regex: group?.validationRegex }))
                     }
                 });
