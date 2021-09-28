@@ -13,8 +13,6 @@ import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMe
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Configuration } from '../hoc/Configuration';
 import { useMetadataEntity, useMetadataSources } from '../hooks/api';
-import { Prompt, useHistory } from 'react-router';
-import { removeNull } from '../../core/utility/remove_null';
 
 import Translate from '../../i18n/components/translate';
 import { checkChanges } from '../hooks/utility';
@@ -23,8 +21,7 @@ import { useUserGroup } from '../../core/user/UserContext';
 
 export function MetadataSourceWizard ({ onShowNav, onSave, block }) {
 
-    const { post, loading, response } = useMetadataEntity('source');
-    const history = useHistory();
+    const { loading } = useMetadataEntity('source');
     const group = useUserGroup();
 
     const { data } = useMetadataSources({

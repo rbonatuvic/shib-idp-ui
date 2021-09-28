@@ -8,7 +8,7 @@ export const FileBackedHttpMetadataProviderWizard = {
     ...BaseProviderDefinition,
     label: 'FileBackedHttpMetadataProvider',
     type: 'FileBackedHttpMetadataResolver',
-    schema: '${BASE_PATH}assets/schema/provider/filebacked-http.schema.json',
+    schema: `${BASE_PATH}assets/schema/provider/filebacked-http.schema.json`,
     validator: (data = [], current = { resourceId: null }, group, translator) => {
         const base = BaseProviderDefinition.validator(data, current, group);
 

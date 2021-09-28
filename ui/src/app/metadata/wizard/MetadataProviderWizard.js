@@ -11,7 +11,6 @@ import { useMetadataProviders } from '../hooks/api';
 
 import { removeNull } from '../../core/utility/remove_null';
 
-import { useNotificationDispatcher, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
 import { useUserGroup } from '../../core/user/UserContext';
 
 export function MetadataProviderWizard({onSave, loading, block}) {
@@ -43,10 +42,6 @@ export function MetadataProviderWizard({onSave, loading, block}) {
     const onEditFromSummary = (idx) => {
         wizardDispatch(setWizardIndexAction(idx));
     };
-
-    const onBlur = (form) => {
-        // console.log(form);
-    }
 
     const validator = useMetadataDefinitionValidator(data, null, group);
 
