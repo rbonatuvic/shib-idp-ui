@@ -26,9 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 public class DangerController {
     @Autowired
-    DevConfig devConfig;
-
-    @Autowired
     private AttributeBundleRepository attributeBundleRepository;
 
     @Autowired
