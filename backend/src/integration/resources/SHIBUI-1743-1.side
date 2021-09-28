@@ -53,6 +53,13 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "938e82d0-6e75-428a-9415-d2aa38003793",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "xpath=//button[contains(.,'Advanced')]",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "b2cef5a2-f0e1-4ca6-9ce5-e4a26314b4cd",
       "comment": "",
       "command": "open",
