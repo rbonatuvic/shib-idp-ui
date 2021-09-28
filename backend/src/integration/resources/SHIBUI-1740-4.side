@@ -498,6 +498,13 @@
       "targets": [],
       "value": "label=ROLE_USER"
     }, {
+      "id": "dd8ed48b-eb9d-4ee9-9188-2312f5ea964b",
+      "comment": "",
+      "command": "waitForElementNotVisible",
+      "target": "xpath=//div[@role=\"alert\"]",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "a001ad79-c8ef-4308-a0d7-73843385621d",
       "comment": "",
       "command": "click",
