@@ -408,3 +408,6 @@ beacon/spring/out
 *.project
 *bin
 /a.json
+
+# macOS jenv
+.java-version
