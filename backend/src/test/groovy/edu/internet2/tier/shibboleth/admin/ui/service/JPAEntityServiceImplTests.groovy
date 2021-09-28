@@ -1,10 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
@@ -13,41 +10,22 @@ import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-class JPAEntityServiceImplTests extends Specification {
+@ContextConfiguration(classes=[JPAESILocalConfig])
+class JPAEntityServiceImplTests extends AbstractBaseDataJpaTest {
+    @Autowired
+    EntityService service
 
     @Autowired
-    OpenSamlObjects openSamlObjects
+    TestObjectGenerator testObjectGenerator
 
-    @Autowired
-    AttributeUtility attributeUtility
-
-    @Autowired
-    CustomPropertiesConfiguration customPropertiesConfiguration
-
-    def randomGenerator
-    def testObjectGenerator
-
-    def service
-
-    def setup() {
-        service = new JPAEntityServiceImpl(openSamlObjects, attributeUtility, customPropertiesConfiguration)
-
-        randomGenerator = new RandomGenerator()
-        testObjectGenerator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
-    }
+    def randomGenerator = new RandomGenerator()
 
     def "getAttributeListFromEntityRepresentation builds an appropriate attribute list"() {
         given:
@@ -89,6 +67,14 @@ class JPAEntityServiceImplTests extends Specification {
             it.schemaTypeNamespaceURI == expectedSchemaTypeNamespaceURI
             it.schemaTypeElementLocalName == expectedSchemaTypeElementLocalName
             it.schemaTypeNamespacePrefix == expectedSchemaTypeNamespacePrefix
+        }
+    }
+
+    @TestConfiguration
+    private static class JPAESILocalConfig {
+        @Bean
+        TestObjectGenerator testObjectGenerator(AttributeUtility attributeUtility, CustomPropertiesConfiguration customPropertiesConfiguration) {
+            return new TestObjectGenerator(attributeUtility,customPropertiesConfiguration)
         }
     }
 }

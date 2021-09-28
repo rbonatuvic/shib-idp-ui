@@ -1,13 +1,15 @@
-package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
+package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidator.ValidationResult;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.IMetadataResolverValidator;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.IMetadataResolverValidator.ValidationResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A facade that aggregates {@link MetadataResolverValidator}s available to call just one of them supporting the type of a given resolver.
- * If no {@link MetadataResolverValidator}s are configured, considers provided MetadataResolver as valid.
+ * A facade that aggregates {@link IMetadataResolverValidator}s available to call just one of them supporting the type of a given resolver.
+ * If no {@link IMetadataResolverValidator}s are configured, considers provided MetadataResolver as valid.
  * <p>
  * Uses chain-of-responsibility design pattern
  *
@@ -15,9 +17,9 @@ import java.util.List;
  */
 public class MetadataResolverValidationService<T extends MetadataResolver> {
 
-    private List<MetadataResolverValidator<T>> validators;
+    List<IMetadataResolverValidator<T>> validators;
 
-    public MetadataResolverValidationService(List<MetadataResolverValidator<T>> validators) {
+    public MetadataResolverValidationService(List<IMetadataResolverValidator<T>> validators) {
         this.validators = validators != null ? validators : new ArrayList<>();
     }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { WizardNav } from './WizardNav';
 import { MetadataWizardForm } from './MetadataWizardForm';
 import { setWizardIndexAction, useCurrentIndex, useIsLastPage, useWizardDispatcher } from './Wizard';
-import { useMetadataDefinitionContext, useMetadataSchemaContext } from '../hoc/MetadataSchema';
+import { useMetadataDefinitionContext, useMetadataDefinitionValidator, useMetadataSchemaContext } from '../hoc/MetadataSchema';
 import { checkChanges, useMetadataSchema } from '../hooks/schema';
 import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMetadataFormData, useMetadataFormErrors } from '../hoc/MetadataFormContext';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
@@ -11,9 +11,12 @@ import { useMetadataProviders } from '../hooks/api';
 
 import { removeNull } from '../../core/utility/remove_null';
 
+import { useUserGroup } from '../../core/user/UserContext';
+
 export function MetadataProviderWizard({onSave, loading, block}) {
 
     const { data } = useMetadataProviders({cachePolicy: 'no-cache'}, []);
+    const group = useUserGroup();
 
     const definition = useMetadataDefinitionContext();
     const schema = useMetadataSchemaContext();
@@ -40,13 +43,13 @@ export function MetadataProviderWizard({onSave, loading, block}) {
         wizardDispatch(setWizardIndexAction(idx));
     };
 
-    const validator = definition.validator(data);
+    const validator = useMetadataDefinitionValidator(data, null, group);
 
     const save = () => onSave(removeNull(definition.parser(metadata), true))
 
     return (
         <>
-            
+
             <div className="row mb-4">
                 <div className="col-12">
                     <WizardNav onSave={save}

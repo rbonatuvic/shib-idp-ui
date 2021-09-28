@@ -1,326 +1,50 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable
-import edu.internet2.tier.shibboleth.admin.ui.security.model.*
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Profile
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
-import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.transaction.annotation.Transactional
-import spock.lang.Specification
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 
-import javax.persistence.EntityManager
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+class UserServiceTests extends AbstractBaseDataJpaTest {
+    Role userRole
 
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration, LocalConfig])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@DirtiesContext
-@ActiveProfiles(["test", "local"])
-@ComponentScan(basePackages="{ edu.internet2.tier.shibboleth.admin.ui.configuration }")
-class UserServiceTests extends Specification {
-    
-    @Autowired
-    EntityManager entityManager
-    
-    @Autowired
-    GroupServiceForTesting groupService
-
-    @Autowired
-    OwnershipRepository ownershipRepository
-    
-    @Autowired
-    RoleRepository roleRepository
-
-    @Autowired
-    ShibUIConfiguration shibUIConfiguration
-
-    @Autowired
-    UserRepository userRepository
-    
-    @Autowired
-    UserService userService
-
-    def users
-
-    @Transactional
     def setup() {
-        userRepository.findAll().forEach {
-            userService.delete(it.getUsername())
-        }
-        userRepository.flush()
-        
-        roleRepository.deleteAll()
-        roleRepository.flush()
-        groupService.clearAllForTesting() //leaves us just the admingroup
-
-        shibUIConfiguration.roles.each { it ->
-            def role = new Role(name: it)
-            roleRepository.saveAndFlush(role)
-        }
-
-        if (userRepository.count() == 0) {
-            users = [new User().with {
-                username = 'admin'
-                password = '{noop}adminpass'
-                firstName = 'Joe'
-                lastName = 'Doe'
-                emailAddress = 'joe@institution.edu'
-                roles.add(roleRepository.findByName('ROLE_ADMIN').get())
-                it
-            }, new User().with {
-                username = 'nonadmin'
-                password = '{noop}nonadminpass'
-                firstName = 'Peter'
-                lastName = 'Vandelay'
-                emailAddress = 'peter@institution.edu'
-                roles.add(roleRepository.findByName('ROLE_USER').get())
-                it
-            }, new User().with {
-                username = 'robot'
-                password = '{noop}nonepass'
-                firstName = 'Bad'
-                lastName = 'robot'
-                emailAddress = 'badboy@institution.edu'
-                roles.add(roleRepository.findByName('ROLE_ENABLE').get())
-                it
-            }, new User().with {
-                username = 'robot2'
-                password = '{noop}nonepass'
-                firstName = 'Bad2'
-                lastName = 'robot2'
-                emailAddress = 'badboy2@institution.edu'
-                roles.add(roleRepository.findByName('ROLE_ENABLE').get())
-                it
-            }]
-            users.each {
-                it = userService.save(it)
-            }
-        }
+        userRole = roleRepository.findByName("ROLE_USER").get()
     }
 
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
-    def "Validate isAuthorizedFor with admin user (always auth)"() {
-        when: "the object doesn't matter if user is admin"
-        def isAuth = userService.isAuthorizedFor(new Ownable(){
-            String getObjectId() { return null }
-            OwnableType getOwnableType() { return null }
-        });
-
-        then:
-        isAuth
+    protected createAdminUser() {
+        // don't create the admin user
     }
 
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
-    def "Admin can activate"() {
-        when: "the object doesn't matter if user is admin"
-        def canEnable = userService.currentUserCanEnable(new IActivatable() {
-            ActivatableType getActivatableType() { return ActivatableType.ENTITY_DESCRIPTOR }
-            void setEnabled(Boolean enabled) { }
-        });
-
-        then:
-        canEnable
-
-        when: "the object doesn't matter if user is admin"
-        canEnable = userService.currentUserCanEnable(new IActivatable() {
-            ActivatableType getActivatableType() { return ActivatableType.FILTER }
-            void setEnabled(Boolean enabled) { }
-        });
-
-        then:
-        canEnable
-
-        when: "the object doesn't matter if user is admin"
-        canEnable = userService.currentUserCanEnable(new IActivatable() {
-            ActivatableType getActivatableType() { return ActivatableType.METADATA_RESOLVER }
-            void setEnabled(Boolean enabled) { }
-        });
-
-        then:
-        canEnable
-    }
-
-    @WithMockUser(value = "nonadmin", roles = ["USER"])
-    def "nonadmin cannot activate without enable role"() {
-        when:
-        def canEnable = userService.currentUserCanEnable(new IActivatable() {
-            ActivatableType getActivatableType() { return ActivatableType.ENTITY_DESCRIPTOR }
-            void setEnabled(Boolean enabled) { }
-        });
-
-        then:
-        !canEnable
-
-        when:
-        canEnable = userService.currentUserCanEnable(new IActivatable() {
-            ActivatableType getActivatableType() { return ActivatableType.FILTER }
-            void setEnabled(Boolean enabled) { }
-        });
-
-        then:
-        !canEnable
-
-        when:
-        canEnable = userService.currentUserCanEnable(new IActivatable() {
-            ActivatableType getActivatableType() { return ActivatableType.METADATA_RESOLVER }
-            void setEnabled(Boolean enabled) { }
-        });
-
-        then:
-        !canEnable
-    }
-
-    @WithMockUser(value = "robot", roles = ["ENABLE"])
-    def "nonadmin can activate with enable role"() {
-        given:
-        def ed = new EntityDescriptor().with {
-            it.idOfOwner = 'robot'
-            it
-        }
-        when:
-        def canEnable = userService.currentUserCanEnable(ed);
-
-        then:
-        canEnable
-
-        when:
-        canEnable = userService.currentUserCanEnable(new IActivatable() {
-            ActivatableType getActivatableType() { return ActivatableType.FILTER }
-            void setEnabled(Boolean enabled) { }
-        });
-
-        then:
-        canEnable
-
-        when:
-        canEnable = userService.currentUserCanEnable(new IActivatable() {
-            ActivatableType getActivatableType() { return ActivatableType.METADATA_RESOLVER }
-            void setEnabled(Boolean enabled) { }
-        });
-
-        then:
-        canEnable
-    }
-
-    @WithMockUser(value = "robot2", roles = ["ENABLE"])
-    def "nonadmin cannot activate entity descriptor with enable role"() {
-        given:
-        def ed = new EntityDescriptor().with {
-            it.idOfOwner = 'robot'
-            it
-        }
-        when:
-        def canEnable = userService.currentUserCanEnable(ed);
-
-        then:
-        !canEnable
-
-        when:
-        canEnable = userService.currentUserCanEnable(new IActivatable() {
-            ActivatableType getActivatableType() { return ActivatableType.FILTER }
-            void setEnabled(Boolean enabled) { }
-        });
-
-        then:
-        canEnable
-
-        when:
-        canEnable = userService.currentUserCanEnable(new IActivatable() {
-            ActivatableType getActivatableType() { return ActivatableType.METADATA_RESOLVER }
-            void setEnabled(Boolean enabled) { }
-        });
-
-        then:
-        canEnable
-    }
-
-    @WithMockUser(value = "nonadmin", roles = ["USER"])
-    @Rollback
-    def "Validate isAuthorizedFor with non-admin user"() {
-        given:
-        ownershipRepository.saveAndFlush(new Ownership(new Owner() {
-            String getOwnerId() { return "nonadmin" }
-            OwnerType getOwnerType() { return OwnerType.GROUP }
-        }, new Ownable() {
-            String getObjectId() { return "foothing" }
-            OwnableType getOwnableType() { return OwnableType.ENTITY_DESCRIPTOR }
-        }))
-        when:
-        def isAuth = userService.isAuthorizedFor(new Ownable(){
-            String getObjectId() { return "foothing" }
-            OwnableType getOwnableType() { return OwnableType.ENTITY_DESCRIPTOR }
-        });
-
-        then:
-        isAuth
-    }
-
-    def "Double Check that shibUIConfiguration includes the enable role"() {
-        when:
-        def Optional<Role> role = roleRepository.findByName("ROLE_ENABLE")
-
-        then:
-        role.isPresent()
-    }
-
-    @Rollback
     def "When creating user, user is set to the correct group"() {
         given:
-        Group gb = new Group();
+        Group gb = new Group()
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")
         gb = groupService.createGroup(gb)
 
-        Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
-        def User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
+        User user = new User(username: "someUser", roles:[userRole], password: "foo")
         user.setGroup(gb)
 
         when:
-        def User result = userService.save(user)
+        User result = userService.save(user)
 
         then:
         result.groupId == "testingGroupBBB"
         result.username == "someUser"
-        result.userGroups.size() == 1
+        result.getUserGroups().size() == 1
 
         // Raw check that the DB is correct for ownership
-        def Set<Ownership> users = ownershipRepository.findUsersByOwner(gb)
+        Set<Ownership> users = ownershipRepository.findUsersByOwner(gb)
         users.size() == 1
-        users.getAt(0).ownedId == "someUser"
+        users[0].ownedId == "someUser"
 
         // Validate that loading the group has the correct list as well
-        Group g = groupService.find("testingGroupBBB");
+        Group g = groupService.find("testingGroupBBB")
         g.ownedItems.size() == 1
     }
 
-    @Rollback
     def "When updating user, user is set to the correct group"() {
         given:
         Group ga = new Group()
@@ -328,43 +52,41 @@ class UserServiceTests extends Specification {
         ga.setName("Group A")
         ga = groupService.createGroup(ga)
 
-        Group gb = new Group();
+        Group gb = new Group()
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")
         gb = groupService.createGroup(gb)
 
-        Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
-        def User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
+        User user = new User(username: "someUser", roles:[userRole], password: "foo")
         user.setGroup(gb)
-        def User userInB = userService.save(user)
+        User userInB = userService.save(user)
 
         when:
         userInB.setGroupId("testingGroup") // changing groups will happen by updating the user's groupid (from the ui)
-        def User result = userService.save(userInB)
+        User result = userService.save(userInB)
 
         then:
         result.groupId == "testingGroup"
         result.username == "someUser"
-        result.userGroups.size() == 1
+        result.getUserGroups().size() == 1
 
         // Raw check that the DB is correct for ownership
-        def Set<Ownership> users = ownershipRepository.findUsersByOwner(ga)
+        Set<Ownership> users = ownershipRepository.findUsersByOwner(ga)
         users.size() == 1
-        users.getAt(0).ownedId == "someUser"
+        users[0].ownedId == "someUser"
 
         // check db is correct for the previous group as well
-        def Set<Ownership> users2 = ownershipRepository.findUsersByOwner(gb)
+        Set<Ownership> users2 = ownershipRepository.findUsersByOwner(gb)
         users2.size() == 0
 
         // Validate that loading the group has the correct list as well
-        Group g = groupService.find("testingGroup");
+        Group g = groupService.find("testingGroup")
         g.ownedItems.size() == 1
 
-        Group g2 = groupService.find("testingGroupBBB");
+        Group g2 = groupService.find("testingGroupBBB")
         g2.ownedItems.size() == 0
     }
 
-    @Rollback
     def "logically try to match user controller test causing headaches"() {
         given:
         Group ga = new Group()
@@ -372,26 +94,24 @@ class UserServiceTests extends Specification {
         ga.setName("Group A")
         ga = groupService.createGroup(ga)
 
-        Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
-        def User user = new User(username: "someUser", firstName: "Fred", lastName: "Flintstone", roles:[userRole.get()], password: "foo")
+        User user = new User(username: "someUser", firstName: "Fred", lastName: "Flintstone", roles:[userRole], password: "foo")
         user.setGroup(ga)
         userService.save(user)
 
         when:
-        def User flintstoneUser = userRepository.findByUsername("someUser").get()
+        User flintstoneUser = userRepository.findByUsername("someUser").get()
         flintstoneUser.setFirstName("Wilma")
         flintstoneUser.setGroupId("testingGroup")
 
-        def User result = userService.save(flintstoneUser)
+        User result = userService.save(flintstoneUser)
 
         then:
         result.groupId == "testingGroup"
         result.username == "someUser"
-        result.userGroups.size() == 1
+        result.getUserGroups().size() == 1
         result.firstName == "Wilma"
     }
 
-    @Rollback
     def "When creating user, user with multiple groups is saved correctly"() {
         given:
         Group ga = new Group()
@@ -399,15 +119,14 @@ class UserServiceTests extends Specification {
         ga.setName("Group A")
         ga = groupService.createGroup(ga)
 
-        Group gb = new Group();
+        Group gb = new Group()
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")
         gb = groupService.createGroup(gb)
 
-        Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
         User user = new User().with( {
             it.username = "someUser"
-            it.roles = [userRole.get()]
+            it.roles = [userRole]
             it.password = "foo"
             it
         })
@@ -421,19 +140,19 @@ class UserServiceTests extends Specification {
         def result = userService.save(user)
 
         then:
-        result.userGroups.size() == 2
+        result.getUserGroups().size() == 2
 
         // Raw check that the DB is correct for ownership
-        def Set<Ownership> users = ownershipRepository.findUsersByOwner(ga)
+        Set<Ownership> users = ownershipRepository.findUsersByOwner(ga)
         users.size() == 1
-        users.getAt(0).ownedId == "someUser"
+        users[0].ownedId == "someUser"
 
-        def Set<Ownership> users2 = ownershipRepository.findUsersByOwner(gb)
+        Set<Ownership> users2 = ownershipRepository.findUsersByOwner(gb)
         users2.size() == 1
-        users2.getAt(0).ownedId == "someUser"
+        users2[0].ownedId == "someUser"
 
         when:
-        def userFromDb = userRepository.findById(result.id).get();
+        def userFromDb = userRepository.findById(result.id).get()
 
         then:
         userFromDb.getUserGroups().size() == 2
@@ -443,28 +162,5 @@ class UserServiceTests extends Specification {
 
         then:
         gbUpdated.ownedItems.size() == 1
-    }
-    
-    @TestConfiguration
-    @Profile("local")
-    static class LocalConfig {
-        @Bean
-        GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
-            GroupServiceForTesting result = new GroupServiceForTesting(new GroupServiceImpl().with {
-                it.groupRepository = repo
-                it.ownershipRepository = ownershipRepository
-                return it
-            })
-            result.ensureAdminGroupExists()
-            return result
-        }
-
-        @Bean
-        ObjectMapper objectMapper() {
-            JavaTimeModule module = new JavaTimeModule()
-            LocalDateTimeDeserializer localDateTimeDeserializer =  new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS"))
-            module.addDeserializer(LocalDateTime.class, localDateTimeDeserializer)
-            return Jackson2ObjectMapperBuilder.json().modules(module).featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).build()
-        }
     }
 }

@@ -1,5 +1,12 @@
 import { BaseProviderDefinition } from './BaseProviderDefinition';
 import schema from '../../../../../testing/dynamic-http.schema';
+
+jest.mock('../../../../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 const addErrorMockFn = jest.fn();
 
 const providers = [

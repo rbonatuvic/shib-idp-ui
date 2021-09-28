@@ -2,37 +2,21 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
-import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
-import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import spock.lang.Specification
 
-@SpringBootTest
-class PolymorphicResolversJacksonHandlingTests extends Specification {
+class PolymorphicResolversJacksonHandlingTests extends AbstractBaseDataJpaTest {
+    @Autowired
+    TestObjectGenerator testObjectGenerator
 
     ObjectMapper mapper
-
-    AttributeUtility attributeUtility
-
-    @Autowired
-    CustomPropertiesConfiguration customPropertiesConfiguration
-
-    TestObjectGenerator testObjectGenerator
 
     def setup() {
         mapper = new ObjectMapper()
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
-
-        attributeUtility = new AttributeUtility(new OpenSamlObjects().with {
-            it.init()
-            it
-        })
-        testObjectGenerator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
     }
 
     def "Correct polymorphic serialization of LocalDynamicMetadataResolver"() {
@@ -241,113 +225,12 @@ class PolymorphicResolversJacksonHandlingTests extends Specification {
 
     def "Correct polymorphic serialization of FileBackedHttpMetadataResolver"() {
         given:
-        MetadataResolver resolver = new FileBackedHttpMetadataResolver().with {
-            it.httpMetadataResolverAttributes = new HttpMetadataResolverAttributes()
-            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes()
-            it.metadataFilters = [testObjectGenerator.entityAttributesFilter(), testObjectGenerator.entityRoleWhitelistFilter()]
-            it
-        }
-        def givenResolverJson = """
-            {
-                "createdDate" : null,
-                "modifiedDate" : null,
-                "createdBy" : null,
-                "modifiedBy" : null,
-                "name" : null,
-                "resourceId" : "f3e615d5-960b-4fed-bff6-86fc4620be95",
-                "requireValidMetadata" : true,
-                "failFastInitialization" : true,
-                "sortKey" : null,
-                "criterionPredicateRegistryRef" : null,
-                "useDefaultPredicateRegistry" : true,
-                "satisfyAnyPredicates" : false,
-                "metadataFilters" : [ {
-                  "createdDate" : null,
-                  "modifiedDate" : null,
-                  "createdBy" : null,
-                  "modifiedBy" : null,
-                  "name" : "EntityAttributes",
-                  "resourceId" : "4149cc5f-137e-4045-9369-8fedafcdd8c8",
-                  "filterEnabled" : false,
-                  "version" : -1249726767,
-                  "entityAttributesFilterTarget" : {
-                    "createdDate" : null,
-                    "modifiedDate" : null,
-                    "createdBy" : null,
-                    "modifiedBy" : null,
-                    "entityAttributesFilterTargetType" : "CONDITION_SCRIPT",
-                    "value" : [ "6EksoLF7Q0" ],
-                    "audId" : null
-                  },
-                  "attributeRelease" : [ ],
-                  "relyingPartyOverrides" : {
-                    "signAssertion" : false,
-                    "dontSignResponse" : true,
-                    "turnOffEncryption" : false,
-                    "useSha" : false,
-                    "ignoreAuthenticationMethod" : false,
-                    "omitNotBefore" : false,
-                    "responderId" : "3267361e-7d8c-45d2-92ce-7642dc3bb432",
-                    "nameIdFormats" : [ "baHO7CzFHH" ],
-                    "authenticationMethods" : [ ]
-                  },
-                  "audId" : null,
-                  "@type" : "EntityAttributes"
-                }, {
-                  "createdDate" : null,
-                  "modifiedDate" : null,
-                  "createdBy" : null,
-                  "modifiedBy" : null,
-                  "name" : "EntityRoleWhiteList",
-                  "resourceId" : "75117ec7-c74a-45cb-b216-cbbc9118fe70",
-                  "filterEnabled" : false,
-                  "version" : 0,
-                  "removeRolelessEntityDescriptors" : true,
-                  "removeEmptyEntitiesDescriptors" : true,
-                  "retainedRoles" : [ "role1", "role2" ],
-                  "audId" : null,
-                  "@type" : "EntityRoleWhiteList"
-                } ],
-                "version" : 0,
-                "metadataURL" : null,
-                "backingFile" : null,
-                "initializeFromBackupFile" : true,
-                "backupFileInitNextRefreshDelay" : null,
-                "reloadableMetadataResolverAttributes" : {
-                  "parserPoolRef" : null,
-                  "taskTimerRef" : null,
-                  "minRefreshDelay" : null,
-                  "maxRefreshDelay" : null,
-                  "refreshDelayFactor" : null,
-                  "indexesRef" : null,
-                  "resolveViaPredicatesOnly" : null,
-                  "expirationWarningThreshold" : null
-                },
-                "httpMetadataResolverAttributes" : {
-                  "httpClientRef" : null,
-                  "connectionRequestTimeout" : null,
-                  "connectionTimeout" : null,
-                  "socketTimeout" : null,
-                  "disregardTLSCertificate" : false,
-                  "tlsTrustEngineRef" : null,
-                  "httpClientSecurityParametersRef" : null,
-                  "proxyHost" : null,
-                  "proxyPort" : null,
-                  "proxyUser" : null,
-                  "proxyPassword" : null,
-                  "httpCaching" : null,
-                  "httpCacheDirectory" : null,
-                  "httpMaxCacheEntries" : null,
-                  "httpMaxCacheEntrySize" : null
-                },
-                "audId" : null,
-                "@type" : "FileBackedHttpMetadataResolver"
-            }               
-        """
+        MetadataResolver resolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        def resolverJson = mapper.writeValueAsString(resolver)
 
         when:
         //println mapper.writeValueAsString(resolver)
-        def deSerializedResolver = mapper.readValue(givenResolverJson, MetadataResolver)
+        def deSerializedResolver = mapper.readValue(resolverJson, MetadataResolver)
         def json = mapper.writeValueAsString(deSerializedResolver)
         println(json)
         def roundTripResolver = mapper.readValue(json, MetadataResolver)

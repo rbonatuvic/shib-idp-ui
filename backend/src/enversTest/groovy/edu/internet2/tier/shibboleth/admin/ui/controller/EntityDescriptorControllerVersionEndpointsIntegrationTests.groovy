@@ -1,22 +1,11 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.Organization
-import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName
-import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName
-import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
-import org.springframework.http.MediaType
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
@@ -111,44 +100,9 @@ class EntityDescriptorControllerVersionEndpointsIntegrationTests extends Specifi
         edv2.body.serviceProviderName == 'SP2'
     }
 
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    def 'SHIBUI-1414'() {
-        given:
-        def ed = new EntityDescriptor(entityID: 'testme', serviceProviderName: 'testme').with {
-            entityDescriptorRepository.save(it)
-        }.with {
-            it.setOrganization(new Organization().with {
-                it.organizationNames = [new OrganizationName(value: 'testme', XMLLang: 'en')]
-                it.organizationDisplayNames = [new OrganizationDisplayName(value: 'testme', XMLLang: 'en')]
-                it.organizationURLs = [new OrganizationURL(value: 'http://testme.org', XMLLang: 'en')]
-                it
-            })
-            entityDescriptorRepository.save(it)
-        }
-        when:
-        def headers = new HttpHeaders().with {
-            it.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            it
-        }
-
-        def allVersions = getAllEntityDescriptorVersions(ed.resourceId, List)
-        String edv1 = getEntityDescriptorForVersion(ed.resourceId, allVersions.body[0].id, String).body
-        def tedv2 = getEntityDescriptorForVersion(ed.resourceId, allVersions.body[1].id, EntityDescriptorRepresentation).body
-
-        def aedv1 = new JsonSlurper().parseText(edv1).with {
-            it.put('version', tedv2.version)
-            it
-        }.with {
-            JsonOutput.toJson(it)
-        }
-
-        def request = new HttpEntity(aedv1, headers)
-        def response = this.restTemplate.exchange("/api/EntityDescriptor/${ed.resourceId}", HttpMethod.PUT, request, String)
-
-        then:
-        response.statusCodeValue != 400
-        noExceptionThrown()
-    }
+// Moved to its own test in the main testing package
+//    def 'SHIBUI-1414'() {
+//    }
 
     private getAllEntityDescriptorVersions(String resourceId, responseType) {
         this.restTemplate.getForEntity(resourceUriFor(ALL_VERSIONS_URI, resourceId), responseType)

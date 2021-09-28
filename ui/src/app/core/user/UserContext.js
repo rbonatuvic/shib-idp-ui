@@ -12,8 +12,7 @@ const path = '/admin/users/current';
 function UserProvider({ children }) {
 
     const { get, response, loading } = useFetch(`${API_BASE_PATH}`, {
-        cacheLife: 10000,
-        cachePolicy: 'cache-first'
+        cachePolicy: 'no-cache'
     });
 
     React.useEffect(() => { loadUser() }, []);
@@ -71,4 +70,26 @@ function useCanEnable() {
     return isAdmin || isEnabler;
 }
 
-export { UserContext, UserProvider, Consumer as UserConsumer, useCurrentUser, useIsAdmin, useIsAdminOrInGroup, useCanEnable, useCurrentUserLoading};
+function useUserGroup() {
+    const user = useCurrentUser();
+    return user?.userGroups[0];
+}
+
+function useUserGroupRegexValidator () {
+    const user = useCurrentUser();
+    return (user?.userGroups && user.userGroups.length > 0) ? user?.userGroups[0].validationRegex : null;
+}
+
+
+export {
+    UserContext,
+    UserProvider,
+    Consumer as UserConsumer,
+    useCurrentUser,
+    useIsAdmin,
+    useIsAdminOrInGroup,
+    useCanEnable,
+    useCurrentUserLoading,
+    useUserGroupRegexValidator,
+    useUserGroup
+};

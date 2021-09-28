@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.test.context.ActiveProfiles
@@ -32,7 +33,7 @@ import static org.springframework.http.HttpMethod.PUT
  * @author Dmitriy Kopylenko
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("no-auth")
+@ActiveProfiles(["no-auth", "mfci-test"])
 class MetadataFiltersControllerIntegrationTests extends Specification {
 
     @Autowired
@@ -249,7 +250,8 @@ class MetadataFiltersControllerIntegrationTests extends Specification {
     }
 
     @TestConfiguration
-    static class Config {
+    @Profile("mfci-test")
+    static class LocalConfig {
         @Bean
         MetadataResolver metadataResolver() {
             new OpenSamlChainingMetadataResolver().with {

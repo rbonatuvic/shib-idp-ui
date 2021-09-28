@@ -2,51 +2,47 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
 import edu.internet2.tier.shibboleth.admin.ui.exception.InitializationException
+import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.FilterService
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.transaction.annotation.Transactional
 import org.w3c.dom.Document
-import spock.lang.Specification
 import spock.lang.Unroll
 
 import static org.hamcrest.CoreMatchers.containsString
 import static org.springframework.http.MediaType.APPLICATION_JSON
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-/**
- * @author Bill Smith (wsmith@unicon.net)
- */
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-class MetadataFiltersControllerTests extends Specification {
+@ContextConfiguration(classes=[ MFCLocalConfig ])
+class MetadataFiltersControllerTests extends AbstractBaseDataJpaTest {
 
     @Autowired
     AttributeUtility attributeUtility
@@ -71,6 +67,7 @@ class MetadataFiltersControllerTests extends Specification {
 
     static BASE_URI = '/api/MetadataResolvers'
 
+    @Transactional
     def setup() {
         randomGenerator = new RandomGenerator()
         testObjectGenerator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
@@ -80,6 +77,8 @@ class MetadataFiltersControllerTests extends Specification {
         controller = new MetadataFiltersController (
                 repository: metadataResolverRepository,
                 filterRepository: metadataFilterRepository,
+                groupService: groupService,
+                userService: userService,
                 metadataResolverService: new MetadataResolverService() {
                     @Override
                     void reloadFilters(String metadataResolverName) {
@@ -90,15 +89,15 @@ class MetadataFiltersControllerTests extends Specification {
                     Document generateConfiguration() {
                         return null
                     }
-                    
+
                     @Override
-                    public MetadataResolver updateMetadataResolverEnabledStatus(MetadataResolver existingResolver) throws ForbiddenException, MetadataFileNotFoundException, InitializationException {
+                    MetadataResolver updateMetadataResolverEnabledStatus(MetadataResolver existingResolver) throws ForbiddenException, MetadataFileNotFoundException, InitializationException {
                         // This won't get called
                         return null
                     }
-                    
+
                     @Override
-                    public MetadataResolver findByResourceId(String resourceId) throws EntityNotFoundException {
+                    MetadataResolver findByResourceId(String resourceId) throws EntityNotFoundException {
                         // This won't get called
                         return null
                     }
@@ -110,10 +109,10 @@ class MetadataFiltersControllerTests extends Specification {
                     it
                 }
         )
-
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
     }
 
+    @WithMockAdmin
     def "FilterController.getAll gets all available types of filters"() {
         given:
         def metadataResolver = new MetadataResolver()
@@ -133,6 +132,7 @@ class MetadataFiltersControllerTests extends Specification {
                 .andExpect(content().json(mapper.writeValueAsString(expectedContent)))
     }
 
+    @WithMockAdmin
     def "FilterController.getOne gets the desired filter"() {
         given:
         def metadataResolver = new MetadataResolver()
@@ -155,6 +155,7 @@ class MetadataFiltersControllerTests extends Specification {
     }
 
     @Unroll
+    @WithMockAdmin
     def "FilterController.create creates the desired filter (filterType: #filterType)"(String filterType) {
         given:
         def randomFilter = testObjectGenerator.buildRandomFilterOfType(filterType)
@@ -177,10 +178,9 @@ class MetadataFiltersControllerTests extends Specification {
         def postedJsonBody = expectedJsonBody - ~/"id":.*?,/ // remove the "id:<foo>,"
 
         when:
-        def result = mockMvc.perform(
-                post("$BASE_URI/foo/Filters")
-                        .contentType(APPLICATION_JSON)
-                        .content(postedJsonBody))
+        def result = mockMvc.perform(post("$BASE_URI/foo/Filters")
+                                        .contentType(APPLICATION_JSON)
+                                        .content(postedJsonBody))
 
         then:
         println postedJsonBody
@@ -198,13 +198,14 @@ class MetadataFiltersControllerTests extends Specification {
     }
 
     @Unroll
+    @WithMockAdmin
     def "FilterController.update updates the target #filterType filter as desired"(String filterType) {
         given:
         def originalFilter = testObjectGenerator.buildRandomFilterOfType(filterType)
         def updatedFilter = testObjectGenerator.copyOf(originalFilter)
         updatedFilter.name = 'Updated Filter'
         updatedFilter.version = originalFilter.hashCode()
-        def postedJsonBody = mapper.writeValueAsString(updatedFilter)
+        def updatedFilterJson = mapper.writeValueAsString(updatedFilter)
 
         def originalMetadataResolver = new MetadataResolver()
         originalMetadataResolver.setResourceId('foo')
@@ -222,13 +223,11 @@ class MetadataFiltersControllerTests extends Specification {
         def filterUUID = updatedFilter.getResourceId()
 
         when:
-        def result = mockMvc.perform(
-                put("$BASE_URI/foo/Filters/$filterUUID")
-                        .contentType(APPLICATION_JSON)
-                        .content(postedJsonBody))
+        def result = mockMvc.perform(put("$BASE_URI/foo/Filters/$filterUUID")
+                            .contentType(APPLICATION_JSON).content(updatedFilterJson))
 
         then:
-        def expectedJson = new JsonSlurper().parseText(postedJsonBody)
+        def expectedJson = new JsonSlurper().parseText(updatedFilterJson)
         expectedJson << [version: updatedFilter.getVersion()]
         result.andExpect(status().isOk())
                 .andExpect(content().json(JsonOutput.toJson(expectedJson), true))
@@ -242,6 +241,7 @@ class MetadataFiltersControllerTests extends Specification {
         'nameIdFormat'        | _
     }
 
+    @WithMockAdmin
     def "FilterController.update filter 409's if the version numbers don't match"() {
         given:
         def randomFilter = testObjectGenerator.entityAttributesFilter()
@@ -266,5 +266,14 @@ class MetadataFiltersControllerTests extends Specification {
 
         then:
         result.andExpect(status().is(409))
+    }
+
+    @TestConfiguration
+    private static class MFCLocalConfig {
+        @Bean
+        JPAEntityServiceImpl jpaEntityService(OpenSamlObjects openSamlObjects, AttributeUtility attributeUtility,
+                                              CustomPropertiesConfiguration customPropertiesConfiguration) {
+            return new JPAEntityServiceImpl(openSamlObjects, attributeUtility, customPropertiesConfiguration)
+        }
     }
 }

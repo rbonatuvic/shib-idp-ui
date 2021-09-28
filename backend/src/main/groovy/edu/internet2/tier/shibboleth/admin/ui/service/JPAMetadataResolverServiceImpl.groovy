@@ -76,6 +76,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     @Autowired
     private UserService userService
 
+    // TODO: enhance
     void constructXmlNodeForEntityAttributeNamespaceProtection(def markupBuilderDelegate) {
         markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
             AttributeFilterScript() {
@@ -124,6 +125,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
+    // TODO: enhance
     void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
         if (!filter.retainedRoles?.isEmpty()) {
             markupBuilderDelegate.MetadataFilter(
@@ -137,7 +139,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             }
         }
     }
-
 
     void constructXmlNodeForFilter(NameIdFormatFilter filter, def markupBuilderDelegate) {
         def type = filter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
@@ -201,6 +202,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
+
     void constructXmlNodeForResolver(DynamicHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
         markupBuilderDelegate.MetadataProvider(id: resolver.xmlId,
                 'xsi:type': 'DynamicHTTPMetadataProvider',
@@ -236,7 +238,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 disregardTLSCertificate: resolver.httpMetadataResolverAttributes?.disregardTLSCertificate ?: null,
                 httpClientSecurityParametersRef: resolver.httpMetadataResolverAttributes?.httpClientSecurityParametersRef,
                 proxyHost: resolver.httpMetadataResolverAttributes?.proxyHost,
-                proxyPort: resolver.httpMetadataResolverAttributes?.proxyHost,
+                proxyPort: resolver.httpMetadataResolverAttributes?.proxyPort,
                 proxyUser: resolver.httpMetadataResolverAttributes?.proxyUser,
                 proxyPassword: resolver.httpMetadataResolverAttributes?.proxyPassword,
                 httpCaching: resolver.httpMetadataResolverAttributes?.httpCaching,
@@ -307,7 +309,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 disregardTLSCertificate: resolver.httpMetadataResolverAttributes?.disregardTLSCertificate ?: null,
                 httpClientSecurityParametersRef: resolver.httpMetadataResolverAttributes?.httpClientSecurityParametersRef,
                 proxyHost: resolver.httpMetadataResolverAttributes?.proxyHost,
-                proxyPort: resolver.httpMetadataResolverAttributes?.proxyHost,
+                proxyPort: resolver.httpMetadataResolverAttributes?.proxyPort,
                 proxyUser: resolver.httpMetadataResolverAttributes?.proxyUser,
                 proxyPassword: resolver.httpMetadataResolverAttributes?.proxyPassword,
                 httpCaching: resolver.httpMetadataResolverAttributes?.httpCaching,
@@ -403,7 +405,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                         'username': resolver.svnMetadataResource.username,
                         'password': resolver.svnMetadataResource.password,
                         'proxyHost': resolver.svnMetadataResource.proxyHost,
-                        'proxyPort': resolver.svnMetadataResource.proxyHost,
+                        'proxyPort': resolver.svnMetadataResource.proxyPort,
                         'proxyUserName': resolver.svnMetadataResource.proxyUserName,
                         'proxyPassword': resolver.svnMetadataResource.proxyPassword)
 
@@ -540,7 +542,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 if (metadataFilter instanceof NameIdFormatFilter) {
                     NameIdFormatFilter nameIdFormatFilter = NameIdFormatFilter.cast(metadataFilter)
                     NameIDFormatFilter openSamlTargetFilter = new OpenSamlNameIdFormatFilter()
-                    openSamlTargetFilter.removeExistingFormats = nameIdFormatFilter.removeExistingFormats
+                    openSamlTargetFilter.removeExistingFormats = nameIdFormatFilter.removeExistingFormats == null ? false : nameIdFormatFilter.removeExistingFormats
                     Map<Predicate<EntityDescriptor>, Collection<String>> predicateRules = [:]
                     def type = nameIdFormatFilter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
                     def values = nameIdFormatFilter.nameIdFormatFilterTarget.value
@@ -588,7 +590,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 throw new MetadataFileNotFoundException("message.file-doesnt-exist")
             }
             try {
-                OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+                OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation)
             }
             catch (Throwable e) {
                 throw new InitializationException(e);

@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.OwnershipConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable;
@@ -179,7 +180,8 @@ public class UserService {
                 try {
                     g = groupService.createGroup(g);
                 }
-                catch (GroupExistsConflictException e) {
+                catch (GroupExistsConflictException | InvalidGroupRegexException e) {
+                    // Invalid shouldn't happen for a group created this way.
                     g = groupService.find(user.getUsername());
                 }
             } else {
@@ -197,8 +199,8 @@ public class UserService {
                         ownershipRepository.saveAndFlush(new Ownership(newGroup, user));
                         g = groupService.createGroup(newGroup);
                     }
-                    catch (GroupExistsConflictException e) {
-                        // we just checked, this shouldn't happen
+                    catch (GroupExistsConflictException | InvalidGroupRegexException e) {
+                        // this shouldn't happen
                         g = ug;
                     }
                 }

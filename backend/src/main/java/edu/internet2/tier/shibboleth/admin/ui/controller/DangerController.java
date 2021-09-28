@@ -26,10 +26,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 public class DangerController {
     @Autowired
-    DevConfig devConfig;
+    private AttributeBundleRepository attributeBundleRepository;
 
     @Autowired
-    private AttributeBundleRepository attributeBundleRepository;
+    private DevConfig devConfig;
 
     @Autowired
     private EntityDescriptorService entityDescriptorService;
@@ -45,7 +45,7 @@ public class DangerController {
 
     @Autowired
     private GroupsRepository groupRepository;
-    
+
     @Autowired
     private MetadataResolverRepository metadataResolverRepository;
     
@@ -57,7 +57,7 @@ public class DangerController {
 
     @Autowired
     UserRepository userRepository;
-    
+
     @Transactional
     @GetMapping
     public ResponseEntity<?> wipeOut() {

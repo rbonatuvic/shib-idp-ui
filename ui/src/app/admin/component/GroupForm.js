@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faSave } from '@fortawesome/free-solid-svg-icons';
 import Translate from '../../i18n/components/translate';
 
-import { useGroupUiSchema } from '../hooks';
+import { useGroupUiSchema, useGroupUiValidator } from '../hooks';
 import { fields, widgets } from '../../form/component';
 import { templates } from '../../form/component';
 import { FormContext, setFormDataAction, setFormErrorAction } from '../../form/FormManager';
@@ -23,6 +23,7 @@ export function GroupForm ({group = {}, errors = [], loading = false, schema, on
     };
 
     const uiSchema = useGroupUiSchema();
+    const validator = useGroupUiValidator();
 
     return (<>
         <div className="container-fluid">
@@ -49,6 +50,7 @@ export function GroupForm ({group = {}, errors = [], loading = false, schema, on
                     <Form formData={group}
                         noHtml5Validate={true}
                         onChange={(form) => onChange(form)}
+                        validate={validator}
                         schema={schema}
                         uiSchema={uiSchema}
                         FieldTemplate={templates.FieldTemplate}

@@ -3,6 +3,12 @@ import { render, screen } from '@testing-library/react';
 
 import { ProviderList } from './ProviderList';
 
+jest.mock('../../../../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 jest.mock('../../../../i18n/hooks', () => ({
     useTranslation: (value) => value
 }));

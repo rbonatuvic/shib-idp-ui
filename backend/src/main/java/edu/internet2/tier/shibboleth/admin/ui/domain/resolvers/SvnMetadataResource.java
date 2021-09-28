@@ -16,19 +16,21 @@ import javax.persistence.Embeddable;
 @EqualsAndHashCode
 public class SvnMetadataResource {
 
-    private String repositoryURL;
+    private String password;
 
-    private String workingCopyDirectory;
+    private String proxyHost;
+
+    private String proxyPassword;
+
+    private String proxyPort;
+
+    private String proxyUserName;
+
+    private String repositoryURL;
 
     private String resourceFile;
 
     private String username;
 
-    private String password;
-
-    private String proxyHost;
-
-    private String proxyUserName;
-
-    private String proxyPassword;
+    private String workingCopyDirectory;
 }

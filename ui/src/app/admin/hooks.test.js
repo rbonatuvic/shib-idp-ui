@@ -1,4 +1,5 @@
 import {
+    useGroupUiValidator,
     useRoles,
     useRole,
 } from './hooks';
@@ -6,7 +7,21 @@ import {
 import useFetch from 'use-http';
 import API_BASE_PATH from '../App.constant';
 
+jest.mock('../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 jest.mock('use-http');
+
+it('should validate against a regex', () => {
+    const validator = useGroupUiValidator();
+    const addErrorSpy = jest.fn();
+    const fail = validator({ validationRegex: '))(()' }, { validationRegex: { addError: addErrorSpy } });
+    expect(addErrorSpy).toHaveBeenCalled();
+    expect(validator({validationRegex: '/*'})).toBeUndefined();
+});
 
 describe('api hooks', () => {
 

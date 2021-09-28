@@ -14,6 +14,7 @@ import { useTranslator } from '../../i18n/hooks';
 
 import { brand } from '../../app.brand';
 import { useCurrentUser, useCurrentUserLoading, useIsAdmin } from '../user/UserContext';
+import { BASE_PATH } from '../../App.constant';
 
 export function Header () {
 
@@ -98,7 +99,7 @@ export function Header () {
                             <Dropdown.Header>Groups</Dropdown.Header>
                             <Dropdown.ItemText id="advanced-nav-dropdown-groups">{groupId}</Dropdown.ItemText>
                             <div class="dropdown-divider"></div>
-                            <Dropdown.Item href="/logout" target="_self" className="text-primary" aria-label={translator('action.logout')}
+                            <Dropdown.Item href={`/${BASE_PATH}logout`} target="_self" className="text-primary" aria-label={translator('action.logout')}
                                 id="user-nav-dropdown-logout">
                                 <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" fixedWidth />
                                 <Translate value="action.logout">Logout</Translate>
