@@ -4,7 +4,6 @@ import net.unicon.shibui.pac4j.Pac4jConfigurationProperties.SimpleProfileMapping
 import org.pac4j.saml.profile.SAML2Profile;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,7 +41,7 @@ public class BetterSAML2Profile extends SAML2Profile {
     }
 
     public Set<String> getRoles() {
-        Set<String> result = new HashSet<>();
+        Set<String> result = super.getRoles();
         List<String> assertedRoles = (List<String>) getAttribute(profileMapping.getRoles());
         if (assertedRoles != null) {
             result.addAll(assertedRoles);
