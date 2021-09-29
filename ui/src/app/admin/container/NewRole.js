@@ -9,6 +9,7 @@ import { RoleForm } from '../component/RoleForm';
 
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useTranslator } from '../../i18n/hooks';
+import { BASE_PATH } from '../../App.constant';
 
 export function NewRole() {
     const history = useHistory();
@@ -59,7 +60,7 @@ export function NewRole() {
                     </div>
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
-                    <Schema path={`/assets/schema/roles/role.json`}>
+                    <Schema path={`/${BASE_PATH}assets/schema/roles/role.json`}>
                         {(schema) =>
                             <FormManager initial={{}}>
                                 {(data, errors) =>

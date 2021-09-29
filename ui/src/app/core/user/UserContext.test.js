@@ -2,6 +2,12 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { UserProvider, useIsAdmin } from './UserContext';
 
+jest.mock('../../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 const getFn = jest.fn();
 const okFn = jest.fn();
 

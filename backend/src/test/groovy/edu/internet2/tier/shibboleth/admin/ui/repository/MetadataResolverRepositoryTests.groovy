@@ -1,26 +1,15 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
+import org.springframework.test.annotation.Rollback
 
 import javax.persistence.EntityManager
 
@@ -29,12 +18,8 @@ import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttrib
 /**
  * Testing persistence of the MetadataResolver models
  */
-@DataJpaTest
-@ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-class MetadataResolverRepositoryTests extends Specification {
+@Rollback
+class MetadataResolverRepositoryTests extends AbstractBaseDataJpaTest {
     @Autowired
     MetadataResolverRepository metadataResolverRepository
 

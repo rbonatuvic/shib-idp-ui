@@ -29,6 +29,7 @@ import { SessionModal } from './core/user/SessionModal';
 import { Roles } from './admin/Roles';
 import Button from 'react-bootstrap/Button';
 import { Groups } from './admin/Groups';
+import { BASE_PATH } from './App.constant';
 
 
 function App() {
@@ -66,7 +67,7 @@ function App() {
                             <Contention>
                                 <UserConfirmation>
                                     {(message, confirm, confirmCallback, setConfirm, getConfirmation) =>
-                                        <Router getUserConfirmation={getConfirmation}>
+                                        <Router getUserConfirmation={getConfirmation} basename={BASE_PATH}>
                                             <ConfirmWindow message={message} confirm={confirm} confirmCallback={confirmCallback} setConfirm={setConfirm} />
                                             <QueryParamProvider ReactRouterRoute={Route}>
                                             <Header />

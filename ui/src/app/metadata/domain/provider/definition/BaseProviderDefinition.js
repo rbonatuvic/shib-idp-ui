@@ -4,8 +4,8 @@ import { MetadataFilterTypes } from '../../filter';
 
 export const BaseProviderDefinition = {
     schemaPreprocessor: metadataFilterProcessor,
-    validator: (data = [], current = { resourceId: null }) => {
-        const providers = data.filter(p => p.resourceId !== current.resourceId);
+    validator: (data = [], current = { resourceId: null }, group) => {
+        const providers = data.filter(p => p.resourceId !== current?.resourceId);
         const names = providers.map(s => s.name);
         const ids = providers.map(s => s.xmlId);
 

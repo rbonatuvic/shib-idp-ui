@@ -17,6 +17,11 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 255
+        },
+        "validationRegex": {
+            "title": "label.url-validation-regex",
+            "description": "tooltip.url-validation-regex",
+            "type": "string"
         }
     }
 }

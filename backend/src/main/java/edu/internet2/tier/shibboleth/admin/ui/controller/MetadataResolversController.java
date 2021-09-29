@@ -3,7 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidationService;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.MetadataResolverValidationService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
@@ -43,7 +43,7 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.util.List;
 
-import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidator.ValidationResult;
+import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.IMetadataResolverValidator.ValidationResult;
 
 @RestController
 @RequestMapping("/api")
@@ -151,7 +151,7 @@ public class MetadataResolversController {
         MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);
         doResolverInitialization(persistedResolver);
 
-        return ResponseEntity.ok(persistedResolver);
+        return ResponseEntity.ok(resolverRepository.findByResourceId(resourceId));
     }
 
     //Versioning endpoints

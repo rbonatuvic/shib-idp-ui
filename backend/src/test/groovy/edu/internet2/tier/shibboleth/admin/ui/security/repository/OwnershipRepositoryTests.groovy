@@ -1,36 +1,20 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.repository
 
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.transaction.annotation.Transactional
-
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable
 import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnableType
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Owner
 import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnerType
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
-import spock.lang.Specification
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Tests to validate the repo and model for groups
  * @author chasegawa
  */
-@DataJpaTest
-@ContextConfiguration(classes=[InternationalizationConfiguration])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-class OwnershipRepositoryTests extends Specification {
-    @Autowired
-    OwnershipRepository repo
-    
+class OwnershipRepositoryTests extends AbstractBaseDataJpaTest {
     @Transactional
     def setup() {
-        repo.deleteAll()
         def ownerships = [
             new Ownership().with {
                it.ownedId = "aaa"
@@ -76,21 +60,20 @@ class OwnershipRepositoryTests extends Specification {
           }
        ]
        ownerships.each {
-           repo.save(it)
+           ownershipRepository.save(it)
        }
     }
-    
-    @Rollback
+
     def "test clearUsersGroups"() {
         when: "remove entries where the user is the owned object of a group"
-        repo.clearUsersGroups("aaa")
-        def result = repo.findAllGroupsForUser("aaa")
+        ownershipRepository.clearUsersGroups("aaa")
+        def result = ownershipRepository.findAllGroupsForUser("aaa")
         
         then:
         result.size() == 0
         
         when: "find objects owned by user aaa has not changed"
-        result = repo.findOwnedByUser("aaa")
+        result = ownershipRepository.findOwnedByUser("aaa")
         
         then:
         result.size() == 1
@@ -102,28 +85,26 @@ class OwnershipRepositoryTests extends Specification {
         }
         
         when: "remove entries where the user is the owned object of groups"
-        repo.clearUsersGroups("ccc")
-        result = repo.findAllGroupsForUser("ccc")
+        ownershipRepository.clearUsersGroups("ccc")
+        result = ownershipRepository.findAllGroupsForUser("ccc")
         
         then:
         result.size() == 0
     }
 
-    @Rollback
     def "test deleteEntriesForOwnedObject"() {
         when: "remove entries where the user is the owned object of a group"
-        repo.deleteEntriesForOwnedObject(new Ownable() {
+        ownershipRepository.deleteEntriesForOwnedObject(new Ownable() {
                 String getObjectId() { return "aaa"  }
-    
                 OwnableType getOwnableType() { OwnableType.USER }
             })
-        def result = repo.findAllGroupsForUser("aaa")
+        def result = ownershipRepository.findAllGroupsForUser("aaa")
         
         then:
         result.size() == 0
         
         when: "find objects owned by user aaa has not changed"
-        result = repo.findOwnedByUser("aaa")
+        result = ownershipRepository.findOwnedByUser("aaa")
         
         then:
         result.size() == 1
@@ -135,12 +116,11 @@ class OwnershipRepositoryTests extends Specification {
         }
         
         when: "remove entries where the user is the owned object of groups"
-        repo.deleteEntriesForOwnedObject(new Ownable() {
+        ownershipRepository.deleteEntriesForOwnedObject(new Ownable() {
                 String getObjectId() { return "ccc"  }
-    
                 OwnableType getOwnableType() { OwnableType.USER }
             })
-        result = repo.findAllGroupsForUser("ccc")
+        result = ownershipRepository.findAllGroupsForUser("ccc")
         
         then:
         result.size() == 0
@@ -152,9 +132,8 @@ class OwnershipRepositoryTests extends Specification {
         userIds.add("aaa")
         userIds.add("bbb")
         userIds.add("ccc")
-        def result = repo.findUsersByOwner(new Owner() {
+        def result = ownershipRepository.findUsersByOwner(new Owner() {
             String getOwnerId() { return "g1" }
-            
             OwnerType getOwnerType() { OwnerType.GROUP }
         })
         
@@ -166,9 +145,8 @@ class OwnershipRepositoryTests extends Specification {
         }
         
         when:
-        result = repo.findUsersByOwner(new Owner() {
+        result = ownershipRepository.findUsersByOwner(new Owner() {
             String getOwnerId() { return "aaa" }
-            
             OwnerType getOwnerType() { return OwnerType.USER }
         })
         
@@ -178,7 +156,7 @@ class OwnershipRepositoryTests extends Specification {
     
     def "test findOwnedByUser"() {
         when: "find objects owned by user"
-        def result = repo.findOwnedByUser("aaa")
+        def result = ownershipRepository.findOwnedByUser("aaa")
         
         then:
         result.size() == 1
@@ -195,7 +173,7 @@ class OwnershipRepositoryTests extends Specification {
         ArrayList<String> groupIds = new ArrayList<>()
         groupIds.add("g1")
         groupIds.add("g2")
-        def result = repo.findOwnableObjectOwners(new Ownable() {
+        def result = ownershipRepository.findOwnableObjectOwners(new Ownable() {
             String getObjectId() { return "ccc" }
             OwnableType getOwnableType() { return OwnableType.USER }
         })
@@ -211,7 +189,7 @@ class OwnershipRepositoryTests extends Specification {
     
     def "test findAllGroupsForUser"() {
         when: "find all groups for user aaa"
-        def result = repo.findAllGroupsForUser("aaa")
+        def result = ownershipRepository.findAllGroupsForUser("aaa")
         
         then:
         result.size() == 1
@@ -224,7 +202,7 @@ class OwnershipRepositoryTests extends Specification {
         ArrayList<String> groupIds = new ArrayList<>()
         groupIds.add("g1")
         groupIds.add("g2")
-        result = repo.findAllGroupsForUser("ccc")
+        result = ownershipRepository.findAllGroupsForUser("ccc")
         
         then:
         result.size() == 2
@@ -241,9 +219,8 @@ class OwnershipRepositoryTests extends Specification {
         userIds.add("aaa")
         userIds.add("bbb")
         userIds.add("ccc")
-        def result = repo.findAllByOwner(new Owner() {
+        def result = ownershipRepository.findAllByOwner(new Owner() {
             String getOwnerId() { return "g1" }
-            
             OwnerType getOwnerType() { return OwnerType.GROUP }
         })
         
@@ -255,9 +232,8 @@ class OwnershipRepositoryTests extends Specification {
         }
         
         when: "Find all items owned by user aaa"
-        result = repo.findAllByOwner(new Owner() {
+        result = ownershipRepository.findAllByOwner(new Owner() {
             String getOwnerId() { return "aaa" }
-            
             OwnerType getOwnerType() { return OwnerType.USER }
         })
         
