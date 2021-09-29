@@ -59,8 +59,8 @@ public class WebSecurityConfig {
 
     @Bean
     @Profile("!no-auth")
-    public AdminUserService adminUserService(UserRepository userRepository) {
-        return new AdminUserService(userRepository);
+    public AdminUserService adminUserService(UserService userService) {
+        return new AdminUserService(userService);
     }
 
     private HttpFirewall allowUrlEncodedSlashHttpFirewall() {
@@ -128,7 +128,7 @@ public class WebSecurityConfig {
                             .password(defaultPassword)
                             .roles("ADMIN");
                 }
-                auth.userDetailsService(adminUserService(userRepository)).passwordEncoder(passwordEncoder);
+                auth.userDetailsService(adminUserService(userService)).passwordEncoder(passwordEncoder);
             }
 
             @Override
