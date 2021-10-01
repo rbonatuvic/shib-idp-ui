@@ -1,5 +1,11 @@
 import { CustomAttributeDefinition } from "./CustomAttributeDefinition";
 
+jest.mock('../../../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 
 describe('formatter', () => {
     it('should format the object passed for the json-schema-form', () => {

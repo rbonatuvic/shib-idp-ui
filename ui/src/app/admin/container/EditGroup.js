@@ -11,6 +11,7 @@ import { GroupForm } from '../component/GroupForm';
 import { GroupProvider } from '../hoc/GroupProvider';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useTranslator } from '../../i18n/hooks';
+import { BASE_PATH } from '../../App.constant';
 
 export function EditGroup() {
 
@@ -67,7 +68,7 @@ export function EditGroup() {
                 <div className="section-body p-4 border border-top-0 border-info">
                     <GroupProvider id={id}>
                         {(group) =>
-                            <Schema path={`/assets/schema/groups/group.json`}>
+                            <Schema path={`/${BASE_PATH}assets/schema/groups/group.json`}>
                                 {(schema) => 
                                 <>{group && 
                                     <FormManager initial={group}>

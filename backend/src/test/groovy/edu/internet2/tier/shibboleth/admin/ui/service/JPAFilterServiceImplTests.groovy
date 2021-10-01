@@ -1,45 +1,30 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
-import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-class JPAFilterServiceImplTests extends Specification {
+@ContextConfiguration(classes = [ JPAFSIConfig ])
+class JPAFilterServiceImplTests extends AbstractBaseDataJpaTest {
 
-    RandomGenerator randomGenerator
+    @Autowired
+    JPAFilterServiceImpl filterService
+
+    @Autowired
     TestObjectGenerator testObjectGenerator
 
-    @Autowired
-    JPAFilterServiceImpl service
-
-    @Autowired
-    AttributeUtility attributeUtility
-
-    @Autowired
-    CustomPropertiesConfiguration customPropertiesConfiguration
+    RandomGenerator randomGenerator
 
     def setup() {
         randomGenerator = new RandomGenerator()
-        testObjectGenerator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
     }
 
     def "createFilterFromRepresentation properly creates a filter from a representation"() {
@@ -47,7 +32,7 @@ class JPAFilterServiceImplTests extends Specification {
         def representation = testObjectGenerator.buildFilterRepresentation()
 
         when:
-        def result = service.createFilterFromRepresentation(representation)
+        def result = filterService.createFilterFromRepresentation(representation)
 
         then:
         result.name == representation.filterName
@@ -71,7 +56,7 @@ class JPAFilterServiceImplTests extends Specification {
         def filter = testObjectGenerator.buildFilter { testObjectGenerator.entityAttributesFilter() }
 
         when:
-        def result = service.createRepresentationFromFilter(filter)
+        def result = filterService.createRepresentationFromFilter(filter)
 
         then:
         result.id == filter.resourceId
@@ -86,5 +71,13 @@ class JPAFilterServiceImplTests extends Specification {
 
         result.filterTarget.type == filter.entityAttributesFilterTarget.entityAttributesFilterTargetType.toString()
         result.filterTarget.value == filter.entityAttributesFilterTarget.value
+    }
+
+    @TestConfiguration
+    private static class JPAFSIConfig {
+        @Bean
+        JPAFilterTargetServiceImpl jpaFilterTargetService() {
+            return new JPAFilterTargetServiceImpl()
+        }
     }
 }

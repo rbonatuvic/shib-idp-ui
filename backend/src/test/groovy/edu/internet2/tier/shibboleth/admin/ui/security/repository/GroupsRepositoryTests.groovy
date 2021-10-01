@@ -1,43 +1,24 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.repository
 
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Profile
-import org.springframework.dao.DataIntegrityViolationException
-
-import javax.persistence.EntityManager
-import javax.transaction.Transactional
-
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.context.annotation.Bean
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
-
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
-import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener
-import spock.lang.Specification
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.test.annotation.Rollback
+import org.springframework.transaction.annotation.Transactional
+
+import javax.persistence.EntityManager
 
 /**
  * Tests to validate the repo and model for groups
  * @author chasegawa
  */
-@DataJpaTest
-@ContextConfiguration(classes=[InternationalizationConfiguration, LocalConfig])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@ActiveProfiles(["test","local"])
-class GroupsRepositoryTests extends Specification {
+@Rollback
+class GroupsRepositoryTests extends AbstractBaseDataJpaTest {
     @Autowired
     GroupsRepository groupsRepo
-    
-    @Autowired
-    OwnershipRepository ownershipRepository
-    
+
     @Transactional
     def setup() {
         groupsRepo.deleteAll()
@@ -90,7 +71,7 @@ class GroupsRepositoryTests extends Specification {
            ownershipRepository.save(it)
        }
     }
-    
+
     def "group ownership tests"() {
         when: "Simple create test"
         def group = new Group().with {
@@ -99,18 +80,20 @@ class GroupsRepositoryTests extends Specification {
             it.resourceId = "g1"
             it
         }
-        Group savedGroup = groupsRepo.saveAndFlush(group)
-        Collection all = ownershipRepository.findAllByOwner(savedGroup)
+        groupsRepo.saveAndFlush(group)
+        entityManager.clear()
+        Group groupFromDb = groupsRepo.findByResourceId("g1")
+        groupFromDb.getOwnedItems()
+        Collection groupOwnedItems = ownershipRepository.findAllByOwner(groupFromDb)
         
         then:
-        all.size() == 3
-        savedGroup.ownedItems.size() == 3
-        all.each {
-            savedGroup.ownedItems.contains(it)
+        groupOwnedItems.size() == 3
+        groupFromDb.getOwnedItems().size() == 3
+        groupOwnedItems.each {
+            groupFromDb.ownedItems.contains(it)
         }
     }
     
-    @Rollback
     def "simple create test"() {
         given:
         def group = new Group().with {
@@ -134,12 +117,12 @@ class GroupsRepositoryTests extends Specification {
         // save check
         def gList = groupsRepo.findAll()
         gList.size() == 1
-        def groupFromDb = gList.get(0).asType(Group)
-        groupFromDb.equals(group)
+        def groupFromDb = gList.get(0) as Group
+        groupFromDb == group
       
         // fetch checks
         groupsRepo.findByResourceId("not an id") == null
-        groupsRepo.findByResourceId(groupFromDb.resourceId).equals(group)       
+        groupsRepo.findByResourceId(groupFromDb.resourceId) == group
     }
 
     def "expected error"() {
@@ -154,7 +137,7 @@ class GroupsRepositoryTests extends Specification {
         def gList = groupsRepo.findAll()
 
         then:
-        gList.size() == 0
+        gList.isEmpty()
         
         // save check
         when:
@@ -163,9 +146,10 @@ class GroupsRepositoryTests extends Specification {
         then:
         // Missing non-nullable field (name) should thrown error
         thrown(DataIntegrityViolationException)
+        entityManager.clear()
+        groupsRepo.findAll().isEmpty()
     }
     
-    @Rollback
     def "basic CRUD operations validated"() {
         given:
         def group = new Group().with {
@@ -189,8 +173,8 @@ class GroupsRepositoryTests extends Specification {
         // save check
         def gList = groupsRepo.findAll()
         gList.size() == 1
-        def groupFromDb = gList.get(0).asType(Group)
-        groupFromDb.equals(group)
+        def groupFromDb = gList.get(0) as Group
+        groupFromDb == group
              
         // update check
         groupFromDb.with {
@@ -204,32 +188,21 @@ class GroupsRepositoryTests extends Specification {
         then:
         def gList2 = groupsRepo.findAll()
         gList2.size() == 1
-        def groupFromDb2 = gList2.get(0).asType(Group)
+        def groupFromDb2 = gList2.get(0) as Group
         groupFromDb2.equals(group) == false
-        groupFromDb2.equals(groupFromDb)
+        groupFromDb2 == groupFromDb
         
         // delete tests
         when:
         groupsRepo.delete(groupFromDb2)
        
         then:
-        groupsRepo.findAll().size() == 0
+        groupsRepo.findAll().isEmpty()
         
         when:
         def nothingThere = groupsRepo.findByResourceId(null)
         
         then:
         nothingThere == null
-    }
-    
-    @TestConfiguration
-    @Profile("local")
-    static class LocalConfig {
-        @Bean
-        GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository repo) {
-            GroupUpdatedEntityListener result = new GroupUpdatedEntityListener()
-            result.init(repo)
-            return result            
-        }
     }
 }

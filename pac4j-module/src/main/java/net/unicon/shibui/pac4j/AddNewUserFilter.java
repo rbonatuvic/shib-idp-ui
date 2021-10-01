@@ -1,6 +1,7 @@
 package net.unicon.shibui.pac4j;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
@@ -149,7 +150,7 @@ public class AddNewUserFilter implements Filter {
                 try {
                     groupService.createGroup(g);
                 }
-                catch (GroupExistsConflictException shouldntHappen) {
+                catch (GroupExistsConflictException | InvalidGroupRegexException shouldntHappen) {
                 }
             }
             result.add(g);

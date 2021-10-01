@@ -1,18 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlFileBackedHTTPMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
@@ -20,44 +15,26 @@ import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Profile
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
-
-import java.nio.file.Files
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, MyConfig, PlaceholderResolverComponentsConfiguration, edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ActiveProfiles(value="local")
-class EntityDescriptorTest extends Specification {
-
-    RandomGenerator randomGenerator
-    TestObjectGenerator generator
+@ContextConfiguration(classes = [ EDLocalConfig, PlaceholderResolverComponentsConfiguration ])
+class EntityDescriptorTest extends AbstractBaseDataJpaTest {
+    @Autowired
+    IndexWriterService indexWriterService
 
     @Autowired
     MetadataResolver metadataResolver
 
     @Autowired
-    IndexWriterService indexWriterService
+    OpenSamlObjects openSamlObjects
 
-    def openSamlObjects = new OpenSamlObjects().with {
-        init()
-        it
-    }
+    RandomGenerator randomGenerator
+    TestObjectGenerator generator
 
     def setup() {
         generator = new TestObjectGenerator()
@@ -90,8 +67,7 @@ class EntityDescriptorTest extends Specification {
     }
 
     @TestConfiguration
-    @Profile("local")
-    static class MyConfig {
+    private static class EDLocalConfig {
         @Bean
         MetadataResolver metadataResolver() {
             ChainingMetadataResolver metadataResolver = new OpenSamlChainingMetadataResolver()
@@ -99,15 +75,6 @@ class EntityDescriptorTest extends Specification {
             metadataResolver.resolvers = new ArrayList<>()
             metadataResolver.initialize()
             return metadataResolver
-        }
-        
-        @Bean
-        GroupServiceImpl groupService(GroupsRepository repo, OwnershipRepository ownershipRepository) {
-            new GroupServiceImpl().with {
-                it.groupRepository = repo
-                it.ownershipRepository = ownershipRepository
-                return it
-            }
         }
     }
 }

@@ -1,76 +1,36 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.en.EnglishAnalyzer
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Profile
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
-
-import java.util.stream.Stream
 
 import javax.persistence.EntityManager
+import java.util.stream.Stream
 
-/**
- * A highly unnecessary test so that I can check to make sure that persistence is correct for the model
- */
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, InternationalizationConfiguration, LocalConfig])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-@ActiveProfiles(value = "local")
-class EntityDescriptorRepositoryTest extends Specification {
+@ContextConfiguration(classes = [EDRLocalConfig])
+class EntityDescriptorRepositoryTest extends AbstractBaseDataJpaTest {
     @Autowired
     EntityDescriptorRepository entityDescriptorRepository
 
     @Autowired
-    private CustomEntityAttributeDefinitionRepository repository
-    
+    EntityDescriptorService entityDescriptorService
+
     @Autowired
     EntityManager entityManager
 
     @Autowired
-    RoleRepository roleRepository
-
-    @Autowired
-    UserRepository userRepository
-    
-    @Autowired
-    GroupsRepository groupRepository
-
-    OpenSamlObjects openSamlObjects = new OpenSamlObjects().with {
-        it.init()
-        it
-    }
-
-    @Autowired
-    EntityDescriptorService service
+    OpenSamlObjects openSamlObjects
 
     def "SHIBUI-553.2"() {
         when:
@@ -102,7 +62,7 @@ class EntityDescriptorRepositoryTest extends Specification {
         then:
         noExceptionThrown()
     }
-    
+
     def "SHIBUI-1849 - extend data model for ownership"() {
         given:
         def group = new Group().with {
@@ -110,39 +70,38 @@ class EntityDescriptorRepositoryTest extends Specification {
             it.description = "some description"
             it
         }
-        groupRepository.saveAndFlush(group)
+        group = groupService.createGroup(group)
 
-        def gList = groupRepository.findAll()
+        def gList = groupService.findAll()
         def groupFromDb = gList.get(0).asType(Group)
-        
+
         def ed = openSamlObjects.unmarshalFromXml(this.class.getResource('/metadata/SHIBUI-553.2.xml').bytes) as EntityDescriptor
         ed.with {
             it.idOfOwner = groupFromDb.resourceId
         }
         entityDescriptorRepository.saveAndFlush(ed)
-        
+
         when:
         def edStreamFromDb = entityDescriptorRepository.findAllStreamByIdOfOwner(null)
-        
+
         then:
-        ((Stream)edStreamFromDb).count() == 0
-        
+        ((Stream) edStreamFromDb).count() == 0
+
         when:
         def edStreamFromDb2 = entityDescriptorRepository.findAllStreamByIdOfOwner("random value")
-        
+
         then:
-        ((Stream)edStreamFromDb2).count() == 0
-        
+        ((Stream) edStreamFromDb2).count() == 0
+
         when:
         def edStreamFromDb3 = entityDescriptorRepository.findAllStreamByIdOfOwner(groupFromDb.resourceId)
-        
+
         then:
-        ((Stream)edStreamFromDb3).count() == 1
+        ((Stream) edStreamFromDb3).count() == 1
     }
 
     @TestConfiguration
-    @Profile("local")
-    static class LocalConfig {
+    private static class EDRLocalConfig {
         @Bean
         MetadataResolver metadataResolver() {
             new OpenSamlChainingMetadataResolver().with {
@@ -156,22 +115,13 @@ class EntityDescriptorRepositoryTest extends Specification {
         Analyzer analyzer() {
             return new EnglishAnalyzer()
         }
-        
+
         @Bean
-        GroupServiceImpl groupService(GroupsRepository repo, OwnershipRepository ownershipRepository) {
-            new GroupServiceImpl().with {
-                it.groupRepository = repo
-                it.ownershipRepository = ownershipRepository
-                return it
-            }
-        }
-        
-        @Bean
-        CustomEntityAttributesDefinitionServiceImpl customEntityAttributesDefinitionServiceImpl() {
+        CustomEntityAttributesDefinitionServiceImpl customEntityAttributesDefinitionServiceImpl(EntityManager entityManager, CustomEntityAttributeDefinitionRepository customEntityAttributeDefinitionRepository) {
             new CustomEntityAttributesDefinitionServiceImpl().with {
-               it.entityManager = entityManager
-               it.repository = repository
-               return it
+                it.entityManager = entityManager
+                it.repository = customEntityAttributeDefinitionRepository
+                return it
             }
         }
     }

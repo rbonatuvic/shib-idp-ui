@@ -1,9 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
@@ -11,7 +9,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.RegexScheme
@@ -20,12 +17,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
-import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
-import edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers
 import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
 import net.shibboleth.ext.spring.resource.ResourceHelper
@@ -36,67 +28,49 @@ import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Profile
 import org.springframework.core.io.ClassPathResource
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import spock.lang.Ignore
-import spock.lang.Specification
 import spock.lang.Unroll
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, PlaceholderResolverComponentsConfiguration, edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration , LocalConfig])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@ActiveProfiles(value = "local")
-class JPAMetadataResolverServiceImplTests extends Specification {
-    @Autowired
-    MetadataResolverRepository metadataResolverRepository
-
-    @Autowired
-    MetadataResolverService metadataResolverService
-
-    @Autowired
-    MetadataResolver metadataResolver
+@ContextConfiguration(classes=[ JPAMRSIConfig, PlaceholderResolverComponentsConfiguration ])
+class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
 
     @Autowired
     EntityService entityService
 
     @Autowired
-    OpenSamlObjects openSamlObjects
+    MetadataResolver metadataResolver
 
     @Autowired
-    AttributeUtility attributeUtility
+    MetadataResolverRepository metadataResolverRepository
 
     @Autowired
     MetadataResolverConverterService mdrConverterService
 
     @Autowired
+    MetadataResolverService metadataResolverService
+
+    @Autowired
+    OpenSamlObjects openSamlObjects
+
+    @Autowired
     ShibUIConfiguration shibUIConfiguration
 
+    @Autowired
     TestObjectGenerator testObjectGenerator
 
-    DOMBuilder domBuilder
-
-    StringWriter writer
-
+    DOMBuilder domBuilder = DOMBuilder.newInstance()
+    StringWriter writer = new StringWriter()
     MarkupBuilder markupBuilder
 
     def setup() {
-        testObjectGenerator = new TestObjectGenerator(attributeUtility)
-        domBuilder = DOMBuilder.newInstance()
-        writer = new StringWriter()
         markupBuilder = new MarkupBuilder(writer)
         markupBuilder.omitNullAttributes = true
         markupBuilder.omitEmptyAttributes = true
@@ -392,7 +366,6 @@ class JPAMetadataResolverServiceImplTests extends Specification {
     }
 
     @Unroll
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     def 'test namespace protection [#namespaces]'() {
         setup:
         shibUIConfiguration.protectedAttributeNamespaces = namespaces
@@ -416,7 +389,6 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         ['http://shibboleth.net/ns/profiles', 'http://scaldingspoon.com/iam'] | '/conf/984-2.xml'
     }
 
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     def 'test namespace protection in nonURL resolver with resolver setting enabled=true'() {
         setup:
         shibUIConfiguration.protectedAttributeNamespaces = ['http://shibboleth.net/ns/profiles']
@@ -434,7 +406,6 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         generatedXmlIsTheSameAsExpectedXml('/conf/1059-enabled.xml', metadataResolverService.generateConfiguration())
     }
     
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     def 'test namespace protection in nonURL resolver with resolver setting enabled not set'() {
         setup:
         shibUIConfiguration.protectedAttributeNamespaces = ['http://shibboleth.net/ns/profiles']
@@ -484,15 +455,10 @@ class JPAMetadataResolverServiceImplTests extends Specification {
     }
 
     @TestConfiguration
-    @Profile("local")
-    static class LocalConfig {
-        @Autowired
-        OpenSamlObjects openSamlObjects
-
+    private static class JPAMRSIConfig {
         @Bean
-        MetadataResolver metadataResolver(TokenPlaceholderResolvers tokenPlaceholderResolvers) {
-            def resource = ResourceHelper.of(new ClassPathResource("/metadata/aggregate.xml"))
-            def aggregate = new ResourceBackedMetadataResolver(resource){
+        MetadataResolver metadataResolver(OpenSamlObjects openSamlObjects) {
+            def aggregate = new ResourceBackedMetadataResolver(ResourceHelper.of(new ClassPathResource("/metadata/aggregate.xml"))){
                 @Override
                 DateTime getLastRefresh() {
                     return null
@@ -509,19 +475,17 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
             return new OpenSamlChainingMetadataResolver().with {
                 it.id = 'chain'
-                //it.resolvers = [aggregate]
-//                it.resolvers = []
                 it.initialize()
                 it
             }
         }
 
         @Bean
-        GroupServiceImpl groupService(GroupsRepository repo, OwnershipRepository ownershipRepository) {
-            new GroupServiceImpl().with {
-                it.groupRepository = repo
-                it.ownershipRepository = ownershipRepository
-                return it
+        MetadataResolverConverterServiceImpl metadataResolverConverterServiceImpl(IndexWriterService indexWriterService, OpenSamlObjects openSamlObjects) {
+            return new MetadataResolverConverterServiceImpl().with {
+                it.indexWriterService = indexWriterService
+                it.openSamlObjects = openSamlObjects
+                it
             }
         }
     }
