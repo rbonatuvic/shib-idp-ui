@@ -87,6 +87,7 @@ class SeleniumSIDETest extends Specification {
         def runner = new Runner()
         runner.varsMap.put('xmlUpload', Paths.get(this.class.getResource('/TestUpload.xml').toURI()).toString())
         runner.varsMap.put('SHIBUI950', Paths.get(this.class.getResource('/SHIBUI-950.xml').toURI()).toString())
+        runner.varsMap.put('driver', config.driver)
         main.setupRunner(runner, config, [] as String[])
 
         expect:
@@ -137,6 +138,7 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1744: Verify attribute bundle CRUD operations'              | '/SHIBUI-1744-1.side'
         'SHIBUI-1744: Verify attribute bundles in metadata sources'         | '/SHIBUI-1744-2.side'
         'SHIBUI-1744: Verify attribute bundles in entity attribute filters' | '/SHIBUI-1744-3.side'
+        'SHIBUI-2116: Verify entity attribute bundle highlights'            | '/SHIBUI-2116.side' // Note that this script WILL NOT PASS in the Selenium IDE due to ${driver} not being set (it is provided by this groovy script).
         'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side' // Something about this test breaks all the other ones after it
     }
 }

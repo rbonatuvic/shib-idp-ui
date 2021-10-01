@@ -5,6 +5,7 @@ import Translate from "../../../i18n/components/translate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Button from 'react-bootstrap/Button';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 const selectValue = (value, selected, all) => {
     const at = all.indexOf(value);
@@ -94,24 +95,37 @@ const AttributeReleaseWidget = ({
             selected: intersection(b.value, value).length === b.value.length
         }
     )), [bundles, value]);
+
+    const [bundle, setBundle] = React.useState();
+
+    React.useEffect(() => console.log(bundle), [bundle]);
+
+    const onMouseOver = (opt) => setBundle(opt);
+    const onMouseOut = () => setBundle(null);
     
     return (
         <fieldset>
             <legend><Translate value={label || schema.title} /></legend>
             {bundles && bundles.length > 0 &&
-            <ul class="list-group list-group-flush">
-                {(bundlelist).map((option) => (
-                <li class="list-group-item d-flex justify-content-between px-1">
-                    <strong><Translate value="label.bundle-disp" params={{name: option.label}}></Translate></strong>
-                    <Button variant={option.selected ? 'outline-primary' : 'primary'} size="sm"
+            <ListGroup variant="flush" className="mb-1">
+                {(bundlelist).map((option, i) => (
+                    <ListGroup.Item key={i}
+                        action
                         onClick={() => option.selected ? onUncheckBundle(option) : onCheckBundle(option) }
-                    >
-                        <span className="sr-only"><Translate value="action.select">Select</Translate></span>
-                        <FontAwesomeIcon icon={faCheck} className="" />
-                    </Button>
-                </li>
+                        onMouseOver={() => onMouseOver(option.value)}
+                        onMouseOut={() => onMouseOut()}
+                        aria-describedby={`bundle-descr-${i}`}
+                        className={`list-group-item d-flex justify-content-between align-items-center px-3 bundle-item rounded`}
+                        >
+                        <strong><Translate value="label.bundle-disp" params={{name: option.label}}></Translate></strong>
+                        <p id={`bundle-descr-${i}`} className="sr-only">Bundled attributes: {option.value.join(', ')}</p>
+                        <span className={`${option.selected ? 'badge-primary' : 'badge-light'} badge border p-2`}>
+                            <Translate value="action.select-bundle">Select Bundle</Translate>
+                            <FontAwesomeIcon icon={faCheck} className="ml-1" />
+                        </span>
+                    </ListGroup.Item>
                 ))}
-            </ul>
+            </ListGroup>
             }
 
             <table className="table table-striped table-sm">
@@ -127,16 +141,16 @@ const AttributeReleaseWidget = ({
                         const itemDisabled =
                             enumDisabled && (enumDisabled).indexOf(option.value) !== -1;
                         return (
-                            <tr key={index}>
+                            <tr key={index} className={`${bundle?.indexOf(option.value) > -1 ? 'text-light bg-info' : ''}`}>
                                 <td className="align-middle"><Translate value={`label.attribute-${option.label}`}>{option.label}</Translate></td>
                                 <td className="">
                                     <fieldset className="d-flex justify-content-end">
-                                        <div className="custom-control custom-checkbox">
+                                        <div className="custom-control custom-checkbox bordered-custom-checkbox">
                                             <Form.Check
                                                 custom
                                                 required={required}
                                                 checked={checked}
-                                                className="bg-transparent border-0"
+                                                className="bg-transparent"
                                                 type={"checkbox"}
                                                 id={`${id}_${index}`}
                                                 autoFocus={autofocus && index === 0}
