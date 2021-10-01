@@ -5,8 +5,8 @@ import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupReg
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IRolesService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +18,7 @@ import org.pac4j.core.profile.CommonProfile;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.servlet.Filter;
@@ -28,7 +29,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -44,13 +44,13 @@ public class AddNewUserFilter implements Filter {
     private IGroupService groupService;
     private Matcher matcher;
     private Pac4jConfigurationProperties pac4jConfigurationProperties;
-    private RoleRepository roleRepository;
+    private IRolesService rolesService;
     private Pac4jConfigurationProperties.SimpleProfileMapping simpleProfileMapping;
     private UserService userService;
 
-    public AddNewUserFilter(Pac4jConfigurationProperties pac4jConfigurationProperties, UserService userService, RoleRepository roleRepository, Matcher matcher, IGroupService groupService, Optional<EmailService> emailService) {
+    public AddNewUserFilter(Pac4jConfigurationProperties pac4jConfigurationProperties, UserService userService, IRolesService rolesService, Matcher matcher, IGroupService groupService, Optional<EmailService> emailService) {
         this.userService = userService;
-        this.roleRepository = roleRepository;
+        this.rolesService = rolesService;
         this.emailService = emailService;
         this.pac4jConfigurationProperties = pac4jConfigurationProperties;
         this.matcher = matcher;
@@ -60,16 +60,10 @@ public class AddNewUserFilter implements Filter {
 
     @Transactional
     User buildAndPersistNewUserFromProfile(CommonProfile profile) {
-        Optional<Role> noRole = roleRepository.findByName(ROLE_NONE);
-        Role newUserRole;
-        if (noRole.isEmpty()) {
-            newUserRole = new Role(ROLE_NONE);
-            roleRepository.save(newUserRole);
-        }
-        newUserRole = noRole.get();
+        Set<Role> userRoles = rolesService.getAndCreateAllRoles(profile.getRoles());
 
         User user = new User();
-        user.getRoles().add(newUserRole);
+        user.setRoles(userRoles);
         user.setUsername(profile.getUsername());
         user.setPassword(BCrypt.hashpw(RandomStringUtils.randomAlphanumeric(20), BCrypt.gensalt()));
         user.setFirstName(profile.getFirstName());
@@ -78,6 +72,7 @@ public class AddNewUserFilter implements Filter {
 
         // get profile attribute for groups
         Object obj = profile.getAttribute(simpleProfileMapping.getGroups());
+        log.debug("User's incoming group from mapping: [{}]", obj);
         if (obj != null) {
             final ArrayList<String> groupNames = new ArrayList<>();
             if (obj instanceof String) {
@@ -91,11 +86,15 @@ public class AddNewUserFilter implements Filter {
             }
         }
 
-        User persistedUser = userService.save(user);
+        // Don't save the user if the role required flag is on and the user has the default none role
+        if (pac4jConfigurationProperties.isRequireAssertedRoleForNewUsers() && user.getRole().equals(ROLE_NONE)) {
+            return user;
+        }
+        user = userService.save(user);
         if (log.isDebugEnabled()) {
             log.debug("Persisted new user:\n" + user);
         }
-        return persistedUser;
+        return user;
     }
 
     @Override

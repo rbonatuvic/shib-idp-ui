@@ -454,14 +454,14 @@
       "id": "e8a2f501-0efa-43a3-bbf2-b86e5ec8f6d1",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=fieldset > ul > li > strong",
+      "target": "css=fieldset > div > button > strong",
       "targets": [],
       "value": "30000"
     }, {
       "id": "cc36c580-3d53-483a-a813-2a6c8fb95792",
       "comment": "",
       "command": "assertText",
-      "target": "css=fieldset > ul > li > strong",
+      "target": "css=fieldset > div > button > strong",
       "targets": [
         ["css=strong", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[8]/div/div/div/fieldset/ul/li/strong", "xpath:idRelative"],
@@ -473,7 +473,7 @@
       "id": "caabc3c1-7ac7-4251-9885-fe2e3b7c4c10",
       "comment": "",
       "command": "click",
-      "target": "css=fieldset > ul > li > button",
+      "target": "css=fieldset > div > button",
       "targets": [
         ["css=.fa-check:nth-child(2) > path", "css:finder"]
       ],
@@ -624,10 +624,17 @@
       ],
       "value": ""
     }, {
+      "id": "e54aff89-0f95-452f-92c0-42ca78188fc0",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=#filters > ul > li > div > button",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "d6a2d477-4b89-4cf5-a4a8-0f35afcdd5f8",
       "comment": "",
       "command": "click",
-      "target": "css=.mx-4",
+      "target": "css=#filters > ul > li > div > button",
       "targets": [
         ["css=.mx-4", "css:finder"],
         ["xpath=(//button[@type='button'])[13]", "xpath:attributes"],

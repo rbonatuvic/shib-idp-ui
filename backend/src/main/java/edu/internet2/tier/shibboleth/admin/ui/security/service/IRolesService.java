@@ -1,6 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleDeleteException;
@@ -11,12 +13,17 @@ public interface IRolesService {
 
     Role createRole(Role role) throws RoleExistsConflictException;
 
-    Role updateRole(Role role) throws EntityNotFoundException;
-
     List<Role> findAll();
+
+    Optional<Role> findByName(String roleNone);
 
     Role findByResourceId(String resourceId) throws EntityNotFoundException;
 
+    Set<Role> getAndCreateAllRoles(Set<String> roles);
+
     void deleteDefinition(String resourceId) throws EntityNotFoundException, RoleDeleteException;
 
+    Role updateRole(Role role) throws EntityNotFoundException;
+
+    void save(Role newUserRole);
 }

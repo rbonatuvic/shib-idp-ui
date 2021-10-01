@@ -66,8 +66,8 @@ class AdminUserServiceTests extends AbstractBaseDataJpaTest {
     @TestConfiguration
     private static class AUSLocalConfig {
         @Bean
-        AdminUserService adminUserService(UserRepository userRepository) {
-            return new AdminUserService(userRepository)
+        AdminUserService adminUserService(UserService userService) {
+            return new AdminUserService(userService)
         }
 
         // Rather than having a specific dev context needed, we just stand up the needed bean.
