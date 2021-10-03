@@ -1,11 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.DevConfig;
-import edu.internet2.tier.shibboleth.admin.ui.repository.AttributeBundleRepository;
-import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
-import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
-import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
-import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
+import edu.internet2.tier.shibboleth.admin.ui.repository.*;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
@@ -25,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Profile("very-dangerous")
 @Slf4j
 public class DangerController {
+    @Autowired
+    private CustomEntityAttributeDefinitionRepository attributeRepository;
+
     @Autowired
     private AttributeBundleRepository attributeBundleRepository;
 
@@ -76,6 +75,7 @@ public class DangerController {
         this.filterRepository.deleteAll();
         this.metadataResolversPositionOrderContainerRepository.deleteAll();
         this.attributeBundleRepository.deleteAll();
+        this.attributeRepository.deleteAll();
 
         clearUsersAndGroups();
 
