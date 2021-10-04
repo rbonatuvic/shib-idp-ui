@@ -30,10 +30,9 @@ class JsonSchemaBuilderService {
             resultNames.add(bundle.getName())
         })
 
-        for (Map<String,String> attribute : customPropertiesConfiguration.getAttributes()) {
-            result.add(attribute.get("name"))
-            resultNames.add(attribute.get("displayName"))
-        }
+        result.addAll(customPropertiesConfiguration.getAttributes().collect {
+            it['name']
+        })
 
         json['enum'] = result
         json['enumNames'] = resultNames
