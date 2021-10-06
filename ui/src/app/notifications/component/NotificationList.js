@@ -9,7 +9,7 @@ export function NotificationList () {
     const onRemove = (id) => dispatch(removeNotificationAction(id));
 
     return (
-        <ul className="notification-list list-unstyled position-fixed p-4 w-25">
+        <ul className="notification-list list-unstyled position-fixed m-4 w-25">
             {state.notifications.map((n) => (
                 <li key={n.id}>
                     <NotificationItem id={n.id} type={n.type} body={n.body} timeout={n.timeout} onRemove={onRemove} />

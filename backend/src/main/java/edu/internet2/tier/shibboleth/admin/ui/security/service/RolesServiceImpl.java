@@ -1,7 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 @Service
 public class RolesServiceImpl implements IRolesService {
     @Autowired
-    private RoleRepository roleRepository;
+    RoleRepository roleRepository;
     
     @Override
     public Role createRole(Role role) throws RoleExistsConflictException {
@@ -43,6 +45,11 @@ public class RolesServiceImpl implements IRolesService {
     }
 
     @Override
+    public Optional<Role> findByName(String roleName) {
+        return roleRepository.findByName(roleName);
+    }
+
+    @Override
     public Role findByResourceId(String resourceId) throws EntityNotFoundException {
         Optional<Role> found = roleRepository.findByResourceId(resourceId);
         if (found.isEmpty()) {
@@ -52,11 +59,40 @@ public class RolesServiceImpl implements IRolesService {
     }
 
     @Override
+    public Set<Role> getAndCreateAllRoles(Set<String> roleNames) {
+        HashSet<Role> result = new HashSet<>();
+        if (roleNames == null || roleNames.isEmpty()) {
+            Role r = getRoleNone();
+            result.add(r);
+            return result;
+        }
+        roleNames.forEach(roleName -> {
+            Optional<Role> role = roleRepository.findByName(roleName);
+            result.add(role.orElseGet(() -> roleRepository.save(new Role(roleName))));
+        });
+        return result;
+    }
+
+    private Role getRoleNone() {
+        Optional<Role> noRole = roleRepository.findByName("ROLE_NONE");
+        if (noRole.isEmpty()) {
+            Role newUserRole = new Role("ROLE_NONE");
+            return roleRepository.save(newUserRole);
+        }
+        return noRole.get();
+    }
+
+    @Override
     public Role updateRole(Role role) throws EntityNotFoundException {
         Optional<Role> found = roleRepository.findByName(role.getName());
         if (found.isEmpty()) {
             throw new EntityNotFoundException(String.format("Unable to find role with name: [%s]", role.getName()));
         }
         return roleRepository.save(role);
+    }
+
+    @Override
+    public void save(Role newUserRole) {
+        roleRepository.save(newUserRole);
     }
 }

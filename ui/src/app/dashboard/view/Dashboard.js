@@ -11,10 +11,12 @@ import { SourcesTab } from './SourcesTab';
 import { ProvidersTab } from './ProvidersTab';
 import { AdminTab } from './AdminTab';
 import { ActionsTab } from './ActionsTab';
-import { useIsAdmin } from '../../core/user/UserContext';
+import { useCurrentUserLoading, useIsAdmin } from '../../core/user/UserContext';
 import useFetch from 'use-http';
 import API_BASE_PATH from '../../App.constant';
 import { useNonAdminSources } from '../../metadata/hooks/api';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 export function Dashboard () {
 
@@ -22,6 +24,8 @@ export function Dashboard () {
     const location = useLocation();
 
     const isAdmin = useIsAdmin();
+
+    const loading = useCurrentUserLoading();
 
     const [actions, setActions] = React.useState(0);
     const [users, setUsers] = React.useState([]);
@@ -59,8 +63,12 @@ export function Dashboard () {
 
     return (
         <div className="container-fluid p-3" role="navigation">
-            
-            <Nav variant="tabs">
+            {loading ?
+            <div className="d-flex justify-content-center text-primary mt-5">
+                <FontAwesomeIcon icon={faSpinner} spin={true} pulse={true} size="3x" />
+            </div>
+            :
+            <><Nav variant="tabs">
                 <Nav.Item>
                     <NavLink className="nav-link" to={`${path}/metadata/manager/resolvers`}>
                         <Translate value="label.metadata-sources">Metadata Sources</Translate>
@@ -97,7 +105,8 @@ export function Dashboard () {
                 <Route path={`${path}/admin/actions`}>
                     <ActionsTab sources={sources} users={users} reloadSources={loadSources} reloadUsers={loadUsers} />
                 </Route>
-            </Switch>
+            </Switch></>
+            }
         </div>
     );
 }

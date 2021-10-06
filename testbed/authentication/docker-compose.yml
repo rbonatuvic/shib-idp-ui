@@ -20,6 +20,7 @@ services:
       - "8080:8080"
       - "443:443"
       - "8443:8443"
+#      - "8000:8000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ../reverse-proxy/:/configuration/
@@ -69,6 +70,9 @@ services:
     volumes:
       - ./shibui:/conf
       - ./shibui/application.yml:/application.yml
+    ports:
+      - "8000:8000"
+    entrypoint: ["/usr/bin/java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000", "-jar", "app.war"]
 networks:
   reverse-proxy:
   idp:

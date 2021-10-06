@@ -2,7 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.security.springsecurity;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,12 +22,12 @@ import static java.util.stream.Collectors.toSet;
 @RequiredArgsConstructor
 public class AdminUserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository
+        User user = userService
                 .findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User [%s] is not found", username)));
 
@@ -44,4 +44,3 @@ public class AdminUserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }
-

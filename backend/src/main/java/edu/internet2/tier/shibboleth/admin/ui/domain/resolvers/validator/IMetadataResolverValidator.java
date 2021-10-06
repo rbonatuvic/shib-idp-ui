@@ -1,4 +1,6 @@
-package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
+package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator;
+
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
  *
  * @author Dmitriy Kopylenko
  */
-public interface MetadataResolverValidator<T extends MetadataResolver> {
+public interface IMetadataResolverValidator<T extends MetadataResolver> {
 
     boolean supports(MetadataResolver resolver);
 

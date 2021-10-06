@@ -100,6 +100,6 @@ public class JsonSchemaComponentsConfiguration {
 
     @Bean
     public JsonSchemaBuilderService jsonSchemaBuilderService(UserService userService) {
-        return new JsonSchemaBuilderService(userService);
+        return new JsonSchemaBuilderService();
     }
 }

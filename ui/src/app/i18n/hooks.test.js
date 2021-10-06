@@ -1,6 +1,11 @@
 import React from 'react';
 
 import { translate, getMessage, useTranslation, useTranslator } from './hooks';
+jest.mock('../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
 
 const msgs = { foo: 'bar { baz }' };
 

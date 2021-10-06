@@ -71,7 +71,6 @@ public class User extends AbstractAuditable implements Owner, Ownable {
     private Set<Role> roles = new HashSet<>();
 
     @EqualsAndHashCode.Exclude
-    @JsonIgnore
     @Transient
     private Set<Group> userGroups = new HashSet<>();
     
@@ -82,12 +81,14 @@ public class User extends AbstractAuditable implements Owner, Ownable {
      * @return the initial implementation, while supporting a user having multiple groups in the db side, acts as if the
      * user can only belong to a single group
      */
-    @JsonIgnore
     public Group getGroup() {
         return getUserGroups().isEmpty() ? null : (Group) userGroups.toArray()[0];
     }
         
     public String getGroupId() {
+        if (getRole().equals("ROLE_ADMIN")) {
+            groupId = Group.ADMIN_GROUP.getResourceId();
+        }
         if (groupId == null) {
             groupId = getUserGroups().isEmpty() ? null : getGroup().getResourceId();
         }
@@ -113,12 +114,15 @@ public class User extends AbstractAuditable implements Owner, Ownable {
     public OwnerType getOwnerType() {
         return OwnerType.USER;
     }
-    
+
+    /**
+     * @return the FIRST role found for the user or an exception if the user has no roles
+     */
     public String getRole() {
         if (StringUtils.isBlank(this.role)) {
             Set<Role> roles = this.getRoles();
-            if (roles.size() != 1) {
-                throw new RuntimeException(String.format("User with username [%s] has no role or does not have exactly one role!", this.getUsername()));
+            if (roles.isEmpty()) {
+                throw new RuntimeException(String.format("User with username [%s] has no roles", this.getUsername()));
             }
             this.role = roles.iterator().next().getName();
         }
@@ -131,7 +135,8 @@ public class User extends AbstractAuditable implements Owner, Ownable {
         }
         return userGroups;
     }
-    
+
+    @JsonIgnore
     public void setGroup(Group g) {
         groupId = g.getResourceId();
         userGroups.clear();
