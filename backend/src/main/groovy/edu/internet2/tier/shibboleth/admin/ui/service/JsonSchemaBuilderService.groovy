@@ -68,7 +68,7 @@ class JsonSchemaBuilderService {
             def items = [type     : 'string',
                          minLength: 1, // TODO: should this be configurable?
                          maxLength: 255] //TODO: or this?
-            items.examples = it['examples']
+            items.enum = it['examples']
             items['default'] = it['defaultValue']
             
 
