@@ -74,7 +74,6 @@ class JsonSchemaBuilderService {
                 definition['uniqueItems'] = false
                 items.enum = it['examples']
             }
-
             items['default'] = it['defaultValue']
 
             definition['items'] = items
