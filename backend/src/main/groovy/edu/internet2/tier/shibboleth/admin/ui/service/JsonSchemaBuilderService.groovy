@@ -64,11 +64,7 @@ class JsonSchemaBuilderService {
             def definition = [title      : it['displayName'],
                               description: it['helpText'],
                               type       : 'array']
-            if (it['displayType'] == 'set' || it['displayType'] == 'selection_list') {
-                definition['uniqueItems'] = true
-            } else if (it['displayType'] == 'list') {
-                definition['uniqueItems'] = false
-            }
+            definition['uniqueItems'] = false
             def items = [type     : 'string',
                          minLength: 1, // TODO: should this be configurable?
                          maxLength: 255] //TODO: or this?
