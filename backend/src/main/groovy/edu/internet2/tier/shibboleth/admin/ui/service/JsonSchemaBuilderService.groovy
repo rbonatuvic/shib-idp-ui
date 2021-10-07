@@ -67,10 +67,10 @@ class JsonSchemaBuilderService {
             def items = [type     : 'string',
                          minLength: 1, // TODO: should this be configurable?
                          maxLength: 255] //TODO: or this?
-            if (it['displayType'] == 'set' || it['displayType'] == 'selection_list') {
+            if (it['displayType'] == 'set' || it['displayType'] == 'list') {
                 definition['uniqueItems'] = true
                 items.examples = it['examples']
-            } else if (it['displayType'] == 'list') {
+            } else if (it['displayType'] == 'selection_list') {
                 definition['uniqueItems'] = false
                 items.enum = it['examples']
             }
