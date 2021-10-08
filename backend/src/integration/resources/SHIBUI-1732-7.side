@@ -618,7 +618,7 @@
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[2]/div[4]/div/div/input", "xpath:idRelative"],
         ["xpath=//div[4]/div/div/input", "xpath:position"]
       ],
-      "value": "${idp.home}/foo"
+      "value": "%{idp.home}/foo"
     }, {
       "id": "4818c54c-8d45-442b-9262-01310ba1272f",
       "comment": "",
