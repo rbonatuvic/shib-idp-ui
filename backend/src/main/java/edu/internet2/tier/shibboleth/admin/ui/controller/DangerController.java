@@ -6,8 +6,8 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeDe
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
