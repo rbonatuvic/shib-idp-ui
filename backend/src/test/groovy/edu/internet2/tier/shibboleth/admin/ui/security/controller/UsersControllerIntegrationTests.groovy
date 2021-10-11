@@ -317,7 +317,7 @@ class UsersControllerIntegrationTests extends AbstractBaseDataJpaTest {
         @Bean
         ObjectMapper objectMapper() {
             JavaTimeModule module = new JavaTimeModule()
-            LocalDateTimeDeserializer localDateTimeDeserializer =  new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS"))
+            LocalDateTimeDeserializer localDateTimeDeserializer =  new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS"))
             module.addDeserializer(LocalDateTime.class, localDateTimeDeserializer)
 
             return Jackson2ObjectMapperBuilder.json().modules(module).featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).build()
