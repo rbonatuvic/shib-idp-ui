@@ -1,9 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.controller.support.RestControllersSupport
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
@@ -11,20 +8,13 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.util.NestedServletException
-
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -34,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@ContextConfiguration(classes=[UCILocalConfig])
 @Rollback
 class UsersControllerIntegrationTests extends AbstractBaseDataJpaTest {
     @Autowired
@@ -310,17 +299,5 @@ class UsersControllerIntegrationTests extends AbstractBaseDataJpaTest {
 
         then:
         result.andExpect(status().isNotFound())
-    }
-
-    @TestConfiguration
-    private static class UCILocalConfig {
-        @Bean
-        ObjectMapper objectMapper() {
-            JavaTimeModule module = new JavaTimeModule()
-            LocalDateTimeDeserializer localDateTimeDeserializer =  new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS"))
-            module.addDeserializer(LocalDateTime.class, localDateTimeDeserializer)
-
-            return Jackson2ObjectMapperBuilder.json().modules(module).featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).build()
-        }
     }
 }
