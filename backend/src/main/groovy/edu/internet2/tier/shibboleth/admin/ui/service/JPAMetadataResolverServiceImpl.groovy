@@ -246,6 +246,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 httpMaxCacheEntries: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntries,
                 httpMaxCacheEntrySize: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntrySize) {
 
+            childNodes()
             switch (MetadataRequestURLConstructionScheme.SchemeType.get(resolver.metadataRequestURLConstructionScheme.type)) {
                 case MetadataRequestURLConstructionScheme.SchemeType.METADATA_QUERY_PROTOCOL:
                     MetadataQueryProtocolScheme scheme = (MetadataQueryProtocolScheme) resolver.metadataRequestURLConstructionScheme
@@ -276,7 +277,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 default:
                     break
             }
-            childNodes()
         }
     }
 

@@ -64,17 +64,17 @@ class JsonSchemaBuilderService {
             def definition = [title      : it['displayName'],
                               description: it['helpText'],
                               type       : 'array']
-            if (it['displayType'] == 'set' || it['displayType'] == 'selection_list') {
-                definition['uniqueItems'] = true
-            } else if (it['displayType'] == 'list') {
-                definition['uniqueItems'] = false
-            }
             def items = [type     : 'string',
                          minLength: 1, // TODO: should this be configurable?
                          maxLength: 255] //TODO: or this?
-            items.examples = it['examples']
+            if (it['displayType'] == 'set' || it['displayType'] == 'list') {
+                definition['uniqueItems'] = true
+                items.examples = it['examples']
+            } else if (it['displayType'] == 'selection_list') {
+                definition['uniqueItems'] = false
+                items.enum = it['examples']
+            }
             items['default'] = it['defaultValue']
-            
 
             definition['items'] = items
             json[(String) it['name']] = definition
