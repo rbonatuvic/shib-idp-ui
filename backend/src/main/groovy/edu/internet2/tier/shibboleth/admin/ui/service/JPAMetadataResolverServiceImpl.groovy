@@ -437,7 +437,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             xml.omitEmptyAttributes = true
             xml.omitNullAttributes = true
 
-            xml.MetadataProvider(id: 'ShibbolethMetadata',
+            xml.MetadataProvider(id: 'ShibbolethIdPUIGeneratedMetadata',
                     xmlns: 'urn:mace:shibboleth:2.0:metadata',
                     'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
                     'xsi:type': 'ChainingMetadataProvider',

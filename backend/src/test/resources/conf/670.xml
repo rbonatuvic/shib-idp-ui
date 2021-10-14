@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This file is an EXAMPLE metadata configuration file. -->
-<MetadataProvider id="ShibbolethMetadata" xsi:type="ChainingMetadataProvider"
+<MetadataProvider id="ShibbolethIdPUIGeneratedMetadata" xsi:type="ChainingMetadataProvider"
                   xmlns="urn:mace:shibboleth:2.0:metadata"
                   xmlns:resource="urn:mace:shibboleth:2.0:resource"
                   xmlns:security="urn:mace:shibboleth:2.0:security"
