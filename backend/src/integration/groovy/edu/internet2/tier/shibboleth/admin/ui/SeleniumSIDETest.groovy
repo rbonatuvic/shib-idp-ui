@@ -139,6 +139,13 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1744: Verify attribute bundles in metadata sources'         | '/SHIBUI-1744-2.side'
         'SHIBUI-1744: Verify attribute bundles in entity attribute filters' | '/SHIBUI-1744-3.side'
         'SHIBUI-2116: Verify entity attribute bundle highlights'            | '/SHIBUI-2116.side' // Note that this script WILL NOT PASS in the Selenium IDE due to ${driver} not being set (it is provided by this groovy script).
+        'SHIBUI-1732: Create, use, and delete CEA String'                   | '/SHIBUI-1732-1.side'
+        'SHIBUI-1732: Create, use, and delete CEA Boolean'                  | '/SHIBUI-1732-2.side'
+        'SHIBUI-1732: Create, use, and delete CEA List'                     | '/SHIBUI-1732-3.side'
+        'SHIBUI-1732: Create, use, and delete CEA Long'                     | '/SHIBUI-1732-4.side'
+        'SHIBUI-1732: Create, use, and delete CEA Double'                   | '/SHIBUI-1732-5.side'
+        'SHIBUI-1732: Create, use, and delete CEA Duration'                 | '/SHIBUI-1732-6.side'
+        'SHIBUI-1732: Create, use, and delete CEA Spring Bean'              | '/SHIBUI-1732-7.side'
         'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side' // Something about this test breaks all the other ones after it
     }
 }
