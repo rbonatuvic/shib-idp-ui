@@ -247,9 +247,21 @@ public class EntityDescriptorConversionUtils {
             SecurityInfoRepresentation securityInfoRepresentation = representation.getSecurityInfo();
             if (securityInfoRepresentation.isAuthenticationRequestsSigned()) {
                 getSPSSODescriptorFromEntityDescriptor(ed).setAuthnRequestsSigned(true);
+            } else {
+                // If false, only set if the spssodescriptor already exists and is true
+                SPSSODescriptor descriptor = ed.getSPSSODescriptor("");
+                if (descriptor != null && descriptor.isAuthnRequestsSigned()) {
+                    descriptor.setAuthnRequestsSigned((Boolean)null);
+                }
             }
             if (securityInfoRepresentation.isWantAssertionsSigned()) {
                 getSPSSODescriptorFromEntityDescriptor(ed).setWantAssertionsSigned(true);
+            } else {
+                // If false, only set if the spssodescriptor already exists and is true
+                SPSSODescriptor descriptor = ed.getSPSSODescriptor("");
+                if (descriptor != null && descriptor.getWantAssertionsSigned()) {
+                    descriptor.setWantAssertionsSigned((Boolean)null);
+                }
             }
             // TODO: review if we need more than a naive implementation
             ed.getOptionalSPSSODescriptor().ifPresent( i -> i.getKeyDescriptors().clear());
