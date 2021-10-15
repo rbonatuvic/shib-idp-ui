@@ -32,6 +32,7 @@ import groovy.util.logging.Slf4j
 import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
 import net.shibboleth.utilities.java.support.scripting.EvaluableScript
+import org.apache.commons.collections.CollectionUtils
 import org.opensaml.saml.common.profile.logic.EntityIdPredicate
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter
@@ -229,7 +230,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
                 maxConnectionsTotal: resolver.maxConnectionsTotal,
                 maxConnectionsPerRoute: resolver.maxConnectionsPerRoute,
-                supportedContentTypes: resolver.supportedContentTypes?.value, //not sure this is right. maybe take off the ?.value
+                supportedContentTypes: CollectionUtils.isEmpty(resolver.supportedContentTypes ) ? null : resolver.supportedContentTypes,
 
                 httpClientRef: resolver.httpMetadataResolverAttributes?.httpClientRef,
                 connectionRequestTimeout: resolver.httpMetadataResolverAttributes?.connectionRequestTimeout,
@@ -436,7 +437,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             xml.omitEmptyAttributes = true
             xml.omitNullAttributes = true
 
-            xml.MetadataProvider(id: 'ShibbolethMetadata',
+            xml.MetadataProvider(id: 'ShibbolethIdPUIGeneratedMetadata',
                     xmlns: 'urn:mace:shibboleth:2.0:metadata',
                     'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
                     'xsi:type': 'ChainingMetadataProvider',
