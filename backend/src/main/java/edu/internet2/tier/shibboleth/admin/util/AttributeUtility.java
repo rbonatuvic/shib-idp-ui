@@ -77,9 +77,9 @@ public class AttributeUtility {
         edu.internet2.tier.shibboleth.admin.ui.domain.Attribute attribute = ((edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBuilder) openSamlObjects.getBuilderFactory()
                 .getBuilder(edu.internet2.tier.shibboleth.admin.ui.domain.Attribute.DEFAULT_ELEMENT_NAME)).buildObject();
         attribute.setName(name);
+        attribute.setNameFormat(URI); // SHIBUI-2173
         if (friendlyName != null) {
             attribute.setFriendlyName(friendlyName);
-            attribute.setNameFormat(URI);
         }
         return attribute;
     }
