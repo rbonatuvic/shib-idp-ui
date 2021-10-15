@@ -141,8 +141,8 @@
         <InputDataConnector ref="myLDAP" attributeNames="eduPersonPrimaryAffiliation"/>
     </AttributeDefinition>
 
-    <AttributeDefinition xsi:type="Prescoped" id="eduPersonPrincipalName">
-        <InputDataConnector ref="myLDAP" attributeNames="eduPersonPrincipalName"/>
+    <AttributeDefinition xsi:type="Scoped" id="eduPersonPrincipalName" scope="%{idp.scope}">
+        <InputDataConnector ref="myLDAP" attributeNames="uid"/>
     </AttributeDefinition>
 
     <AttributeDefinition xsi:type="Prescoped" id="eduPersonPrincipalNamePrior">

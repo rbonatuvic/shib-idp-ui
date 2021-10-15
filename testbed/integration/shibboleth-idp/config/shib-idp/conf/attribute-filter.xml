@@ -18,30 +18,68 @@
     Example rule relying on a locally applied tag in metadata to trigger attribute
     release of some specific attributes. Add additional attributes as desired.
     -->
-<!--
 	<AttributeFilterPolicy id="Per-Attribute-singleValued">
 	    <PolicyRequirementRule xsi:type="ANY" />
-	 
 	    <AttributeRule attributeID="eduPersonPrincipalName">
 	        <PermitValueRule xsi:type="EntityAttributeExactMatch"
 	            attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
 	            attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
 	            attributeValue="eduPersonPrincipalName" />
 	    </AttributeRule>
-	 
-	    <AttributeRule attributeID="mail">
-	        <PermitValueRule xsi:type="EntityAttributeExactMatch"
-	            attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
-	            attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
-	            attributeValue="mail" />
-	    </AttributeRule>
+
+        <AttributeRule attributeID="mail">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                             attributeValue="mail" />
+        </AttributeRule>
+
+        <AttributeRule attributeID="surname">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                             attributeValue="surname" />
+        </AttributeRule>
+
+        <AttributeRule attributeID="givenName">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                             attributeValue="givenName" />
+        </AttributeRule>
+
+        <AttributeRule attributeID="eduPersonPrimaryAffiliation">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                             attributeValue="eduPersonPrimaryAffiliation" />
+        </AttributeRule>
+
+        <AttributeRule attributeID="eduPersonAssurance">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                             attributeValue="eduPersonAssurance" />
+        </AttributeRule>
+
+        <AttributeRule attributeID="eduPersonUniqueId">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                             attributeValue="eduPersonUniqueId" />
+        </AttributeRule>
+
+        <AttributeRule attributeID="employeeNumber">
+            <PermitValueRule xsi:type="EntityAttributeExactMatch"
+                             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                             attributeValue="employeeNumber" />
+        </AttributeRule>
 	</AttributeFilterPolicy>
--->
 
     <!--
     Same as above but more efficient form for an attribute with multiple values.
     -->
-<!--
     <AttributeFilterPolicy id="Per-Attribute-Affiliation">
         <PolicyRequirementRule xsi:type="EntityAttributeExactMatch"
             attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
@@ -50,111 +88,23 @@
      
         <AttributeRule attributeID="eduPersonScopedAffiliation" permitAny="true" />
     </AttributeFilterPolicy>
--->
 
-    <!--
-    Example rule for honoring Subject ID requirement tag in metadata.
-    The example supplies pairwise-id if subject-id isn't explicitly required.
-    -->
-<!--
-    <AttributeFilterPolicy id="subject-identifiers">
-        <PolicyRequirementRule xsi:type="ANY" />
-
-        <AttributeRule attributeID="samlPairwiseID">
-            <PermitValueRule xsi:type="OR">
-                <Rule xsi:type="EntityAttributeExactMatch"
-                    attributeName="urn:oasis:names:tc:SAML:profiles:subject-id:req"
-                    attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
-                    attributeValue="pairwise-id" />
-                <Rule xsi:type="EntityAttributeExactMatch"
-                    attributeName="urn:oasis:names:tc:SAML:profiles:subject-id:req"
-                    attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
-                    attributeValue="any" />
-            </PermitValueRule>
-        </AttributeRule>
-
-        <AttributeRule attributeID="samlSubjectID">
-            <PermitValueRule xsi:type="EntityAttributeExactMatch"
-                attributeName="urn:oasis:names:tc:SAML:profiles:subject-id:req"
-                attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
-                attributeValue="subject-id" />
-        </AttributeRule>
-    </AttributeFilterPolicy>
--->
-
-    <!-- Release an additional attribute to an SP. -->
-<!--
-    <AttributeFilterPolicy id="example1">
-        <PolicyRequirementRule xsi:type="Requester" value="https://sp.example.org" />
-
-        <AttributeRule attributeID="uid" permitAny="true" />
-    </AttributeFilterPolicy>
--->
-
-    <!-- Release eduPersonScopedAffiliation to two specific SPs. -->
-<!--
-    <AttributeFilterPolicy id="example2">
-        <PolicyRequirementRule xsi:type="OR">
-            <Rule xsi:type="Requester" value="https://sp.example.org" />
-            <Rule xsi:type="Requester" value="https://another.example.org/shibboleth" />
-        </PolicyRequirementRule>
-        <AttributeRule attributeID="eduPersonScopedAffiliation" permitAny="true" />
-    </AttributeFilterPolicy>
--->
     <AttributeFilterPolicy>
-        <PolicyRequirementRule xsi:type="Requester" value="https://unicon.net/test/shibui"/>
-        <AttributeRule attributeID="uid">
-            <PermitValueRule xsi:type="ANY" />
-        </AttributeRule>
-    </AttributeFilterPolicy>
-
-    <!-- release some attributes to everyone. this is the R&S bundle -->
-    <AttributeFilterPolicy id="releaseRandSAttributeBundle">
-        <PolicyRequirementRule xsi:type="ANY" />
-        <AttributeRule attributeID="eduPersonPrincipalName">
-            <PermitValueRule xsi:type="ANY" />
-        </AttributeRule>
-        <AttributeRule attributeID="eduPersonScopedAffiliation">
-            <PermitValueRule xsi:type="ANY" />
-        </AttributeRule>
-        <AttributeRule attributeID="givenName">
-            <PermitValueRule xsi:type="ANY" />
-        </AttributeRule>
-        <AttributeRule attributeID="surname">
-            <PermitValueRule xsi:type="ANY" />
-        </AttributeRule>
-        <AttributeRule attributeID="displayName">
-            <PermitValueRule xsi:type="ANY" />
-        </AttributeRule>
-        <AttributeRule attributeID="mail">
-            <PermitValueRule xsi:type="ANY" />
-        </AttributeRule>
-    </AttributeFilterPolicy>
-
-    <!-- Attribute release for all InCommon SPs -->
-    <AttributeFilterPolicy id="releaseToInCommon">
         <PolicyRequirementRule xsi:type="EntityAttributeExactMatch"
-                        attributeName="http://macedir.org/entity-category"
-                        attributeValue="http://id.incommon.org/category/registered-by-incommon"/>
-        <AttributeRule attributeID="eduPersonPrincipalName">
-            <PermitValueRule xsi:type="ANY" />
-        </AttributeRule>
-        <AttributeRule attributeID="eduPersonScopedAffiliation">
-            <PermitValueRule xsi:type="ANY" />
-        </AttributeRule>
-        <AttributeRule attributeID="givenName">
-            <PermitValueRule xsi:type="ANY" />
-        </AttributeRule>
-        <AttributeRule attributeID="surname">
-            <PermitValueRule xsi:type="ANY" />
-        </AttributeRule>
-        <AttributeRule attributeID="displayName">
-            <PermitValueRule xsi:type="ANY" />
-        </AttributeRule>
-        <AttributeRule attributeID="mail">
-            <PermitValueRule xsi:type="ANY" />
-        </AttributeRule>
+                               attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                               attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                               attributeValue="eduPersonAffiliation" />
+
+        <AttributeRule attributeID="eduPersonAffiliation" permitAny="true" />
     </AttributeFilterPolicy>
 
+    <AttributeFilterPolicy>
+        <PolicyRequirementRule xsi:type="EntityAttributeExactMatch"
+                               attributeName="http://shibboleth.net/ns/attributes/releaseAllValues"
+                               attributeNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                               attributeValue="eduPersonEntitlement" />
+
+        <AttributeRule attributeID="eduPersonEntitlement" permitAny="true" />
+    </AttributeFilterPolicy>
 
 </AttributeFilterPolicyGroup>
