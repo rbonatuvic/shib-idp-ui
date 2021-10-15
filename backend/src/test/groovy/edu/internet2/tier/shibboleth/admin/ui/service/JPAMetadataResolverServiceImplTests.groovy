@@ -94,7 +94,7 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         <saml:AttributeValue>givenName</saml:AttributeValue>
         <saml:AttributeValue>employeeNumber</saml:AttributeValue>
       </saml:Attribute>
-      <saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues">
+      <saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
         <saml2:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">testme</saml2:AttributeValue>
       </saml2:Attribute>
     </mdattr:EntityAttributes>
