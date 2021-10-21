@@ -1,29 +1,17 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository
 
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
+import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 
 import javax.persistence.EntityManager
-
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.context.ContextConfiguration
-
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition
-import spock.lang.Specification
 
 /**
  * Tests to validate the repo and model for custom entity attributes
  * @author chasegawa
  */
-@DataJpaTest
-@ContextConfiguration(classes=[InternationalizationConfiguration])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
-
+class CustomEntityAttributeDefinitionRepositoryTests extends AbstractBaseDataJpaTest {
     @Autowired
     CustomEntityAttributeDefinitionRepository repo
     
@@ -87,7 +75,7 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         
         then:
         // Missing non-nullable field should thrown error
-        final def exception = thrown(DataIntegrityViolationException)
+        thrown(DataIntegrityViolationException)
     }
         
     def "basic CRUD operations validated"() {
@@ -118,7 +106,7 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         def cas = repo.findAll()
         cas.size() == 1
         def caFromDb1 = cas.get(0).asType(CustomEntityAttributeDefinition)
-        caFromDb1.equals(ca)
+        caFromDb1 == ca
       
         // fetch checks
         repo.findByName("not a name") == null
@@ -128,7 +116,7 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         caFromDb1.with {
             it.helpText = "some new text that wasn't there before"
         }
-        caFromDb1.equals(ca) == false
+        caFromDb1 != ca
         
         when:
         repo.save(caFromDb1)
@@ -139,8 +127,8 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         def cas2 = repo.findAll()
         cas2.size() == 1
         def caFromDb2 = cas2.get(0).asType(CustomEntityAttributeDefinition)
-        caFromDb2.equals(ca) == false
-        caFromDb2.equals(caFromDb1)
+        caFromDb2 != ca
+        caFromDb2 == caFromDb1
         
         // delete tests
         when:
@@ -173,7 +161,7 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         def cas = repo.findAll()
         cas.size() == 1
         def ca3FromDb = cas.get(0).asType(CustomEntityAttributeDefinition)
-        ca3FromDb.equals(ca3)
+        ca3FromDb == ca3
         
         // now update the attribute list items
         ca3FromDb.with { 
@@ -192,7 +180,7 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
             it.resourceId = ca3FromDb.resourceId
             it
         }
-        caFromDb4.equals(ca4)
+        caFromDb4 == ca4
         
         // now remove items
         ca3FromDb.with {

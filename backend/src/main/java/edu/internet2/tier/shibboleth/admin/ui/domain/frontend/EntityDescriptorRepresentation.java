@@ -10,12 +10,14 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class EntityDescriptorRepresentation implements Serializable {
     private static final long serialVersionUID = 7753435553892353966L;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS");
 
     private List<AssertionConsumerServiceRepresentation> assertionConsumerServices;
 
@@ -98,7 +100,7 @@ public class EntityDescriptorRepresentation implements Serializable {
     }
 
     public String getCreatedDate() {
-        return createdDate != null ? createdDate.toString() : null;
+        return createdDate != null ? formatter.format(createdDate) : null;
     }
 
     public String getEntityId() {
@@ -125,7 +127,7 @@ public class EntityDescriptorRepresentation implements Serializable {
     }
 
     public String getModifiedDate() {
-        return modifiedDate != null ? modifiedDate.toString() : null;
+        return modifiedDate != null ? formatter.format(modifiedDate) : null;
     }
 
     @JsonIgnore
@@ -133,7 +135,6 @@ public class EntityDescriptorRepresentation implements Serializable {
         // we shouldn't have an ED without either modified or created date, so this is mostly for testing where data can be odd
         return modifiedDate != null ? modifiedDate : createdDate != null ? createdDate : LocalDateTime.now();
     }
-
 
     public OrganizationRepresentation getOrganization() {
         return organization;

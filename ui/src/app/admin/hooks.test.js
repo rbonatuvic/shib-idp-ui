@@ -1,4 +1,5 @@
 import {
+    useGroupUiValidator,
     useRoles,
     useRole,
 } from './hooks';
@@ -13,6 +14,14 @@ jest.mock('../App.constant', () => ({
 }));
 
 jest.mock('use-http');
+
+it('should validate against a regex', () => {
+    const validator = useGroupUiValidator();
+    const addErrorSpy = jest.fn();
+    const fail = validator({ validationRegex: '))(()' }, { validationRegex: { addError: addErrorSpy } });
+    expect(addErrorSpy).toHaveBeenCalled();
+    expect(validator({validationRegex: '/*'})).toBeUndefined();
+});
 
 describe('api hooks', () => {
 

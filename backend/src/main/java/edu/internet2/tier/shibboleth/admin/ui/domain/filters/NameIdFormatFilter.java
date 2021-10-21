@@ -1,19 +1,18 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
-
-import org.hibernate.envers.Audited;
-
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.List;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
@@ -21,7 +20,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Audited
-public class NameIdFormatFilter extends MetadataFilter {
+public class NameIdFormatFilter extends MetadataFilter implements ITargetable {
 
     public NameIdFormatFilter() {
         type = "NameIDFormat";
@@ -36,6 +35,12 @@ public class NameIdFormatFilter extends MetadataFilter {
     @OneToOne(cascade = CascadeType.ALL)
     private NameIdFormatFilterTarget nameIdFormatFilterTarget;
 
+    @Override
+    @JsonIgnore
+    public IFilterTarget getTarget() {
+        return nameIdFormatFilterTarget;
+    }
+
     private NameIdFormatFilter updateConcreteFilterTypeData(NameIdFormatFilter filterToBeUpdated) {
         filterToBeUpdated.setRemoveExistingFormats(getRemoveExistingFormats());
         filterToBeUpdated.setFormats(getFormats());
@@ -47,5 +52,4 @@ public class NameIdFormatFilter extends MetadataFilter {
     public MetadataFilter updateConcreteFilterTypeData(MetadataFilter filterToBeUpdated) {
         return updateConcreteFilterTypeData((NameIdFormatFilter) filterToBeUpdated);
     }
-    
 }

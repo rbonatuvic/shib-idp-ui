@@ -1,32 +1,68 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.*;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
+import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributes;
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
+import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
+import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor;
+import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSInteger;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.*;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Owner;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnerType;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupACSs;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupContacts;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupLogout;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupOrganization;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupRelyingPartyOverrides;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupSPSSODescriptor;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupSecurity;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupUIInfo;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
+import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.*;
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
 
 @Slf4j
 @Service
 public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Autowired
     private EntityDescriptorRepository entityDescriptorRepository;
+
+    @Autowired
+    IGroupService groupService;
 
     @Autowired
     private OpenSamlObjects openSamlObjects;
@@ -66,28 +102,34 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public EntityDescriptorRepresentation createNew(EntityDescriptor ed) throws ForbiddenException, EntityIdExistsException {
+    public EntityDescriptorRepresentation createNew(EntityDescriptor ed)
+                    throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
         return createNew(createRepresentationFromDescriptor(ed));
     }
 
     @Override
-    public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep) throws ForbiddenException, EntityIdExistsException {
+    public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep)
+                    throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
         if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
         }
 
         if (entityDescriptorRepository.findByEntityID(edRep.getEntityId()) != null) {
-            throw new EntityIdExistsException(edRep.getEntityId());
+            throw new ObjectIdExistsException(edRep.getEntityId());
         }
+
+        // "Create new" will use the current user's group as the owner
+        String ownerId = userService.getCurrentUserGroup().getOwnerId();
+        edRep.setIdOfOwner(ownerId);
+        validateEntityIdAndACSUrls(edRep);
 
         EntityDescriptor ed = (EntityDescriptor) createDescriptorFromRepresentation(edRep);
         ed.setIdOfOwner(userService.getCurrentUserGroup().getOwnerId());
-        ed = entityDescriptorRepository.save(ed);
 
         ownershipRepository.deleteEntriesForOwnedObject(ed);
         ownershipRepository.save(new Ownership(userService.getCurrentUserGroup(), ed));
 
-        return createRepresentationFromDescriptor(ed);
+        return createRepresentationFromDescriptor(entityDescriptorRepository.save(ed));
     }
 
     @Override
@@ -337,6 +379,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
     @Override
     public List<String> getAttributeReleaseListFromAttributeList(List<Attribute> attributeList) {
+        if (attributeList == null) {
+            return new ArrayList<>();
+        }
+        attributeList.removeIf(Objects::isNull);
         return ModelRepresentationConversions.getAttributeReleaseListFromAttributeList(attributeList);
     }
 
@@ -358,13 +404,17 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRep) throws ForbiddenException, EntityNotFoundException {
+    public EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRep)
+                    throws ForbiddenException, EntityNotFoundException, InvalidPatternMatchException {
         EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(edRep.getId());
         if (existingEd == null) {
             throw new EntityNotFoundException(String.format("The entity descriptor with entity id [%s] was not found for update.", edRep.getId()));
         }
         if (edRep.isServiceEnabled() && !userService.currentUserCanEnable(existingEd)) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
+        }
+        if (StringUtils.isEmpty(edRep.getIdOfOwner())) {
+            edRep.setIdOfOwner(StringUtils.isNotEmpty(existingEd.getIdOfOwner()) ? existingEd.getIdOfOwner() :  userService.getCurrentUserGroup().getOwnerId());
         }
         if (!userService.isAuthorizedFor(existingEd)) {
             throw new ForbiddenException();
@@ -373,6 +423,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (edRep.getVersion() != existingEd.hashCode()) {
             throw new ConcurrentModificationException(String.format("A concurrent modification has occured on entity descriptor with entity id [%s]. Please refresh and try again", edRep.getId()));
         }
+
+        validateEntityIdAndACSUrls(edRep);
         updateDescriptorFromRepresentation(existingEd, edRep);
         existingEd = entityDescriptorRepository.save(existingEd);
         ownershipRepository.deleteEntriesForOwnedObject(existingEd);
@@ -404,5 +456,22 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         ed.setServiceEnabled(status);
         ed = entityDescriptorRepository.save(ed);
         return createRepresentationFromDescriptor(ed);
+    }
+
+    private void validateEntityIdAndACSUrls(EntityDescriptorRepresentation edRep) throws InvalidPatternMatchException {
+        // Check the entity id first
+        if (!groupService.doesStringMatchGroupPattern(edRep.getIdOfOwner(), edRep.getEntityId())) {
+            throw new InvalidPatternMatchException("EntityId is not a pattern match to the group");
+        }
+
+        // Check the ACS locations
+        if (edRep.getAssertionConsumerServices() != null && edRep.getAssertionConsumerServices().size() > 0) {
+            for (AssertionConsumerServiceRepresentation acs : edRep.getAssertionConsumerServices()) {
+                if (!groupService.doesStringMatchGroupPattern(edRep.getIdOfOwner(), acs.getLocationUrl())) {
+                    throw new InvalidPatternMatchException(
+                                    "ACS location [ " + acs.getLocationUrl() + " ] is not a pattern match to the group");
+                }
+            }
+        }
     }
 }

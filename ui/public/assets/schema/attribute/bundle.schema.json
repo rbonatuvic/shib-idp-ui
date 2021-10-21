@@ -1,0 +1,38 @@
+{
+    "type": "object",
+    "required": [
+        "name"
+    ],
+    "properties": {
+        "name": {
+            "type": "string",
+            "title": "label.bundle-name",
+            "description": "tooltip.bundle-name",
+            "minLength": 1,
+            "maxLength": 255
+        },
+        "attributes": {
+            "type": "array",
+            "title": "label.attributes",
+            "description": "Attribute table - select the attributes you want to bundle (default unchecked)",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "eduPersonPrincipalName",
+                    "uid",
+                    "mail",
+                    "surname",
+                    "givenName",
+                    "eduPersonAffiliation",
+                    "eduPersonScopedAffiliation",
+                    "eduPersonPrimaryAffiliation",
+                    "eduPersonEntitlement",
+                    "eduPersonAssurance",
+                    "eduPersonUniqueId",
+                    "employeeNumber"
+                ]
+            },
+            "uniqueItems": true
+        }
+    }
+}

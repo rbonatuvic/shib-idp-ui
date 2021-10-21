@@ -45,8 +45,13 @@ const FilterTargetField = ({
     onChange,
     errorSchema,
     formData,
+    formContext,
     ...props
 }) => {
+
+    const { group } = formContext;
+    const regex = new RegExp(group?.validationRegex || '/*');
+
     const typeFieldName = `${name}Type`;
 
     const type = schema.properties[typeFieldName];
@@ -59,6 +64,8 @@ const FilterTargetField = ({
     const [selectedTarget, setSelectedTarget] = React.useState([...(formData.value && !isNil(formData.value) && !isNil(formData.value[0]) ? formData.value : [])]);
 
     const [term, setSearchTerm] = React.useState('');
+    const [match, setMatch] = React.useState(true);
+    const [touched, setTouched] = React.useState(false);
     const [ids, setSearchIds] = React.useState([]);
 
     const { get, response } = useFetch(`${API_BASE_PATH}/EntityIds/search`, {
@@ -113,6 +120,7 @@ const FilterTargetField = ({
 
     const onEntityIdsChange = (value) => {
         setSearchTerm(value);
+        setMatch(regex ? regex.test(value) : true);
     };
 
     const selectType = (option) => {
@@ -172,19 +180,28 @@ const FilterTargetField = ({
                                             onInputChange={onEntityIdsChange}
                                             selected={ [term] }
                                             onChange={ () => {} }
+                                            onBlur={() => setTouched(true)}
                                             onSearch={ (query) => setSearchTerm(query) }
-                                            renderMenuItemChildren={(option, { options, text }, index) => {
-                                                return <span className={options.indexOf(text) === index ? 'font-weight-bold' : ''}>{option}</span>;
-                                            }}>
+                                            renderMenuItemChildren={(option, { options, text }, index) =>
+                                                <span className={options.indexOf(text) === index ? 'font-weight-bold' : ''}>{option}</span>
+                                            }>
                                             {({ isMenuShown, toggleMenu }) => (
                                                 <ToggleButton isOpen={isMenuShown} onClick={e => toggleMenu()} disabled={disabled || readonly} />
                                             )}
                                         </AsyncTypeahead>
-                                        <small>
-                                            <Translate value="message.entity-id-min-unique">
-                                            You must add at least one entity id target and they must each be unique.
-                                            </Translate>
-                                        </small>
+                                        {(!touched || match) ?
+                                            <small>
+                                                <Translate value="message.entity-id-min-unique">
+                                                You must add at least one entity id target and they must each be unique.
+                                                </Translate>
+                                            </small>
+                                            :
+                                            <small className="text-danger">
+                                                <Translate value="message.group-pattern-fail" params={{regex: group?.validationRegex}}>
+                                                    Invalid URL
+                                                </Translate>
+                                            </small>
+                                        }
                                     </>
                                 }
                                 { targetType === 'CONDITION_SCRIPT' &&
@@ -233,7 +250,7 @@ const FilterTargetField = ({
                                 <div className="ml-2">
                                     <Button variant="success"
                                         type="button"
-                                        disabled={!term}
+                                        disabled={!term || !match}
                                         onClick={() => onSelectValue(term)}>
                                         <Translate value="action.add-entity-id">Add Entity ID</Translate>&nbsp;&nbsp;
                                         <FontAwesomeIcon icon={faPlus} />

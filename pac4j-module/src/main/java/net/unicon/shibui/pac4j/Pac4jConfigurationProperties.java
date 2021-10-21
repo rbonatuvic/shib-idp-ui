@@ -24,6 +24,7 @@ public class Pac4jConfigurationProperties {
     private String keystorePath = "/tmp/samlKeystore.jks";
     private int maximumAuthenticationLifetime = 3600;
     private String privateKeyPassword = "changeit";
+    private boolean requireAssertedRoleForNewUsers = false;
     private SimpleProfileMapping simpleProfileMapping;
     private String serviceProviderEntityId = "https://unicon.net/shibui";
     private String serviceProviderMetadataPath = "/tmp/sp-metadata.xml";
@@ -37,6 +38,7 @@ public class Pac4jConfigurationProperties {
         private String email;
         private String firstName;
         private String groups;
+        private String roles;
         private String lastName;
         private String username;
     }

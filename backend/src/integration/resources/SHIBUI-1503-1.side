@@ -38,13 +38,14 @@
       "id": "5a5d0684-7d38-4fde-8038-733fd8ffa232",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "id=dropdown-basic",
+      "target": "id=metadata-nav-dropdown-toggle",
       "targets": [
-        ["id=dropdown-basic", "id"],
-        ["xpath=//button[@id='dropdown-basic']", "xpath:attributes"],
-        ["xpath=//div[@id='basic-nav-dropdown']/button", "xpath:idRelative"],
-        ["xpath=//div/button", "xpath:position"],
-        ["xpath=//button[contains(.,'Advanced')]", "xpath:innerText"]
+        ["id=metadata-nav-dropdown-toggle", "id"],
+        ["css=#metadata-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='metadata-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
       ],
       "value": "30000"
     }, {
@@ -69,17 +70,33 @@
       "targets": [],
       "value": ""
     }, {
+      "id": "d0ef9e1d-b756-4618-bb54-2d1212b95f81",
+      "comment": "",
+      "command": "click",
+      "target": "id=user-nav-dropdown-toggle",
+      "targets": [
+        ["id=user-nav-dropdown-toggle", "id"],
+        ["css=#user-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='user-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Logged in as admin')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
       "id": "01957ac4-2039-4331-80d3-c8ce382321b0",
       "comment": "",
       "command": "click",
-      "target": "linkText=Logout",
+      "target": "id=user-nav-dropdown-logout",
       "targets": [
+        ["id=user-nav-dropdown-logout", "id"],
         ["linkText=Logout", "linkText"],
-        ["css=.nav-link:nth-child(4)", "css:finder"],
+        ["css=#user-nav-dropdown-logout", "css:finder"],
         ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
-        ["xpath=//div[@id='basic-navbar-nav']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[@id='user-nav-dropdown-logout']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/div/a", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
-        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//div[4]/div/a", "xpath:position"],
         ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
       ],
       "value": ""
@@ -123,13 +140,13 @@
       "id": "db912e0e-b9c9-4693-92cf-a43a9756d253",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "id=dropdown-basic",
+      "target": "id=metadata-nav-dropdown-toggle",
       "targets": [
-        ["id=dropdown-basic", "id"],
-        ["css=#dropdown-basic", "css:finder"],
-        ["xpath=//button[@id='dropdown-basic']", "xpath:attributes"],
-        ["xpath=//div[@id='basic-nav-dropdown']/button", "xpath:idRelative"],
-        ["xpath=//div/button", "xpath:position"],
+        ["id=metadata-nav-dropdown-toggle", "id"],
+        ["css=#metadata-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='metadata-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
       ],
       "value": "30000"
@@ -137,26 +154,30 @@
       "id": "fcb0a214-ead2-407e-b2b2-ddac954e1348",
       "comment": "",
       "command": "click",
-      "target": "id=dropdown-basic",
+      "target": "id=metadata-nav-dropdown-toggle",
       "targets": [
-        ["css=#addNewDropdown > translate-i18n", "css:finder"],
-        ["xpath=//button[@id='addNewDropdown']/translate-i18n", "xpath:idRelative"],
-        ["xpath=//translate-i18n", "xpath:position"],
-        ["xpath=//translate-i18n[contains(.,'Add New')]", "xpath:innerText"]
+        ["id=metadata-nav-dropdown-toggle", "id"],
+        ["css=#metadata-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='metadata-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
       "id": "837ce33c-8787-4b31-9f8c-d250e5fae525",
       "comment": "",
       "command": "click",
-      "target": "linkText=Add a new metadata source",
+      "target": "id=metadata-nav-dropdown-source",
       "targets": [
+        ["id=metadata-nav-dropdown-source", "id"],
         ["linkText=Add a new metadata source", "linkText"],
-        ["css=.text-primary", "css:finder"],
+        ["css=#metadata-nav-dropdown-source", "css:finder"],
         ["xpath=//a[contains(text(),'Add a new metadata source')]", "xpath:link"],
-        ["xpath=//div[@id='basic-nav-dropdown']/div/a", "xpath:idRelative"],
+        ["xpath=//a[@id='metadata-nav-dropdown-source']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/div/a", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/metadata/source/new')]", "xpath:href"],
-        ["xpath=//div/a", "xpath:position"],
+        ["xpath=//div[2]/div/a", "xpath:position"],
         ["xpath=//a[contains(.,'Add a new metadata source')]", "xpath:innerText"]
       ],
       "value": ""
@@ -360,17 +381,33 @@
       "targets": [],
       "value": ""
     }, {
+      "id": "36d1a730-3d4f-4be4-a9b0-0ea6bc59114f",
+      "comment": "",
+      "command": "click",
+      "target": "id=user-nav-dropdown-toggle",
+      "targets": [
+        ["id=user-nav-dropdown-toggle", "id"],
+        ["css=#user-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='user-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Logged in as nonadmin')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
       "id": "e9a8182c-47d9-444c-8386-f84e1a7da38a",
       "comment": "",
       "command": "click",
-      "target": "linkText=Logout",
+      "target": "id=user-nav-dropdown-logout",
       "targets": [
+        ["id=user-nav-dropdown-logout", "id"],
         ["linkText=Logout", "linkText"],
-        ["css=.nav-link:nth-child(3)", "css:finder"],
+        ["css=#user-nav-dropdown-logout", "css:finder"],
         ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
-        ["xpath=//div[@id='basic-navbar-nav']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[@id='user-nav-dropdown-logout']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/div/a", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
-        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//div[3]/div/a", "xpath:position"],
         ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
       ],
       "value": ""
@@ -441,7 +478,7 @@
         ["xpath=//li[4]/a/span", "xpath:position"],
         ["xpath=//span[contains(.,'2')]", "xpath:innerText"]
       ],
-      "value": "2"
+      "value": "3"
     }, {
       "id": "9be511e0-ed11-4707-8490-6fa248e4138e",
       "comment": "",
@@ -532,7 +569,7 @@
         ["xpath=//li[4]/a/span", "xpath:position"],
         ["xpath=//span[contains(.,'1')]", "xpath:innerText"]
       ],
-      "value": "1"
+      "value": "2"
     }, {
       "id": "3f92b1a1-9675-4da3-90d5-475a89a22913",
       "comment": "",
@@ -561,13 +598,6 @@
       "target": "xpath=//table/tbody/tr/td[5]/span/div/input",
       "targets": [],
       "value": "Enabled"
-    }, {
-      "id": "6b4905b8-2ae3-4682-ae52-0149c58eb7f4",
-      "comment": "",
-      "command": "close",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }],
   "suites": [{

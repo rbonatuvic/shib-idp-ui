@@ -1,5 +1,5 @@
 import React from 'react';
-import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowCircleRight, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { useForm } from 'react-hook-form';
@@ -14,7 +14,7 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
 
     const translator = useTranslator();
 
-    const { data = [] } = useMetadataProviders({cachePolicy: 'no-cache'}, []);
+    const { data = [], loading } = useMetadataProviders({cachePolicy: 'no-cache'}, []);
 
     const [showSelector, setShowSelector] = React.useState(true);
 
@@ -94,13 +94,15 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
                                         {errors?.name?.required && <Translate value={`message.service-resolver-name-required`} />}
                                     </Form.Text>
                                 </Form.Group>
-
                                 <Form.Group>
                                     <Form.Label>
-                                        <span><Translate value={'label.metadata-provider-type'} /></span>
+                                        <span>
+                                            <Translate value={'label.metadata-provider-type'} />
+                                            {loading && <FontAwesomeIcon icon={faSpinner} size="lg" spin={true} pulse={true} className="ml-2" /> }
+                                        </span>
                                         <InfoIcon value="tooltip.metadata-provider-type" />
                                     </Form.Label>
-                                    <Form.Control custom as="select" defaultValue={''} placeholder={translator(`label.select-metadata-type`)} {...register('type', {required: true})}>
+                                    <Form.Control disabled={loading} custom as="select" defaultValue={''} placeholder={translator(`label.select-metadata-type`)} {...register('type', {required: true})}>
                                         <option disabled value="">{translator(`label.select-metadata-type`)}</option>
                                         {types.map(t => <option key={t} value={t}>{t}</option>)}
                                     </Form.Control>

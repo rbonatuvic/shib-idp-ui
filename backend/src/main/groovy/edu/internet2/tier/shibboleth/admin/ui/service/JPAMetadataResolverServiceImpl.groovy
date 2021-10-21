@@ -3,9 +3,22 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import com.google.common.base.Predicate
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.opensaml.OpenSamlNameIdFormatFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataRequestURLConstructionScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.RegexScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.Refilterable
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
@@ -19,6 +32,7 @@ import groovy.util.logging.Slf4j
 import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
 import net.shibboleth.utilities.java.support.scripting.EvaluableScript
+import org.apache.commons.collections.CollectionUtils
 import org.opensaml.saml.common.profile.logic.EntityIdPredicate
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter
@@ -32,7 +46,9 @@ import org.w3c.dom.Document
 
 import javax.annotation.Nonnull
 
-import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.*
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.CONDITION_SCRIPT
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.ENTITY
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.REGEX
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.CLASSPATH
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.SVN
 
@@ -61,6 +77,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     @Autowired
     private UserService userService
 
+    // TODO: enhance
     void constructXmlNodeForEntityAttributeNamespaceProtection(def markupBuilderDelegate) {
         markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
             AttributeFilterScript() {
@@ -109,6 +126,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
+    // TODO: enhance
     void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
         if (!filter.retainedRoles?.isEmpty()) {
             markupBuilderDelegate.MetadataFilter(
@@ -122,7 +140,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             }
         }
     }
-
 
     void constructXmlNodeForFilter(NameIdFormatFilter filter, def markupBuilderDelegate) {
         def type = filter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
@@ -186,6 +203,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
+
     void constructXmlNodeForResolver(DynamicHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
         markupBuilderDelegate.MetadataProvider(id: resolver.xmlId,
                 'xsi:type': 'DynamicHTTPMetadataProvider',
@@ -212,7 +230,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
                 maxConnectionsTotal: resolver.maxConnectionsTotal,
                 maxConnectionsPerRoute: resolver.maxConnectionsPerRoute,
-                supportedContentTypes: resolver.supportedContentTypes?.value, //not sure this is right. maybe take off the ?.value
+                supportedContentTypes: CollectionUtils.isEmpty(resolver.supportedContentTypes ) ? null : resolver.supportedContentTypes,
 
                 httpClientRef: resolver.httpMetadataResolverAttributes?.httpClientRef,
                 connectionRequestTimeout: resolver.httpMetadataResolverAttributes?.connectionRequestTimeout,
@@ -221,7 +239,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 disregardTLSCertificate: resolver.httpMetadataResolverAttributes?.disregardTLSCertificate ?: null,
                 httpClientSecurityParametersRef: resolver.httpMetadataResolverAttributes?.httpClientSecurityParametersRef,
                 proxyHost: resolver.httpMetadataResolverAttributes?.proxyHost,
-                proxyPort: resolver.httpMetadataResolverAttributes?.proxyHost,
+                proxyPort: resolver.httpMetadataResolverAttributes?.proxyPort,
                 proxyUser: resolver.httpMetadataResolverAttributes?.proxyUser,
                 proxyPassword: resolver.httpMetadataResolverAttributes?.proxyPassword,
                 httpCaching: resolver.httpMetadataResolverAttributes?.httpCaching,
@@ -229,6 +247,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 httpMaxCacheEntries: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntries,
                 httpMaxCacheEntrySize: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntrySize) {
 
+            childNodes()
             switch (MetadataRequestURLConstructionScheme.SchemeType.get(resolver.metadataRequestURLConstructionScheme.type)) {
                 case MetadataRequestURLConstructionScheme.SchemeType.METADATA_QUERY_PROTOCOL:
                     MetadataQueryProtocolScheme scheme = (MetadataQueryProtocolScheme) resolver.metadataRequestURLConstructionScheme
@@ -259,7 +278,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 default:
                     break
             }
-            childNodes()
         }
     }
 
@@ -292,7 +310,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 disregardTLSCertificate: resolver.httpMetadataResolverAttributes?.disregardTLSCertificate ?: null,
                 httpClientSecurityParametersRef: resolver.httpMetadataResolverAttributes?.httpClientSecurityParametersRef,
                 proxyHost: resolver.httpMetadataResolverAttributes?.proxyHost,
-                proxyPort: resolver.httpMetadataResolverAttributes?.proxyHost,
+                proxyPort: resolver.httpMetadataResolverAttributes?.proxyPort,
                 proxyUser: resolver.httpMetadataResolverAttributes?.proxyUser,
                 proxyPassword: resolver.httpMetadataResolverAttributes?.proxyPassword,
                 httpCaching: resolver.httpMetadataResolverAttributes?.httpCaching,
@@ -388,7 +406,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                         'username': resolver.svnMetadataResource.username,
                         'password': resolver.svnMetadataResource.password,
                         'proxyHost': resolver.svnMetadataResource.proxyHost,
-                        'proxyPort': resolver.svnMetadataResource.proxyHost,
+                        'proxyPort': resolver.svnMetadataResource.proxyPort,
                         'proxyUserName': resolver.svnMetadataResource.proxyUserName,
                         'proxyPassword': resolver.svnMetadataResource.proxyPassword)
 
@@ -419,7 +437,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             xml.omitEmptyAttributes = true
             xml.omitNullAttributes = true
 
-            xml.MetadataProvider(id: 'ShibbolethMetadata',
+            xml.MetadataProvider(id: 'ShibbolethIdPUIGeneratedMetadata',
                     xmlns: 'urn:mace:shibboleth:2.0:metadata',
                     'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
                     'xsi:type': 'ChainingMetadataProvider',
@@ -525,7 +543,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 if (metadataFilter instanceof NameIdFormatFilter) {
                     NameIdFormatFilter nameIdFormatFilter = NameIdFormatFilter.cast(metadataFilter)
                     NameIDFormatFilter openSamlTargetFilter = new OpenSamlNameIdFormatFilter()
-                    openSamlTargetFilter.removeExistingFormats = nameIdFormatFilter.removeExistingFormats
+                    openSamlTargetFilter.removeExistingFormats = nameIdFormatFilter.removeExistingFormats == null ? false : nameIdFormatFilter.removeExistingFormats
                     Map<Predicate<EntityDescriptor>, Collection<String>> predicateRules = [:]
                     def type = nameIdFormatFilter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
                     def values = nameIdFormatFilter.nameIdFormatFilterTarget.value
@@ -573,7 +591,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 throw new MetadataFileNotFoundException("message.file-doesnt-exist")
             }
             try {
-                OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+                OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation)
             }
             catch (Throwable e) {
                 throw new InitializationException(e);

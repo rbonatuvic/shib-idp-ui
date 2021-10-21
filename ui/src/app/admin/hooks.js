@@ -1,4 +1,6 @@
 import useFetch from 'use-http';
+import isNil from 'lodash/isNil';
+import {isValidRegex} from '../core/utility/is_valid_regex';
 import API_BASE_PATH from '../App.constant';
 
 export function useGroups (opts = { cachePolicy: 'no-cache' }) {
@@ -27,6 +29,18 @@ export function useGroupUiSchema () {
             'ui:widget': 'textarea'
         }
     };
+}
+
+export function useGroupUiValidator() {
+    return (formData, errors) => {
+        if (!isNil(formData?.validationRegex)) {
+            const isValid = isValidRegex(formData.validationRegex);
+            if (!isValid) {
+                errors.validationRegex.addError('message.invalid-regex-pattern');
+            }
+        }
+        return errors;
+    }
 }
 
 export function useRoleUiSchema() {

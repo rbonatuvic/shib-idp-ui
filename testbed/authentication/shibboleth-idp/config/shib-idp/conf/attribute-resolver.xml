@@ -124,6 +124,10 @@
         <InputDataConnector ref="myLDAP" attributeNames="preferredLanguage"/>
     </AttributeDefinition>
 
+    <AttributeDefinition xsi:type="Simple" id="businessCategory">
+        <InputDataConnector ref="myLDAP" attributeNames="businessCategory"/>
+    </AttributeDefinition>
+
     <!-- Schema: eduPerson attributes -->
     <AttributeDefinition xsi:type="Simple" id="eduPersonAffiliation">
         <InputDataConnector ref="myLDAP" attributeNames="eduPersonAffiliation" />

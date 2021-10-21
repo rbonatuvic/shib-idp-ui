@@ -6,6 +6,8 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepos
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IRolesService
+import edu.internet2.tier.shibboleth.admin.ui.security.service.RolesServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import org.pac4j.core.matching.PathMatcher
 import org.pac4j.saml.profile.SAML2Profile
@@ -47,6 +49,9 @@ class AddNewUserFilterTests extends Specification {
     RoleRepository roleRepository
 
     @Autowired
+    RolesServiceImpl roleService
+
+    @Autowired
     Pac4jConfigurationProperties pac4jConfigurationProperties
 
     @Autowired
@@ -71,7 +76,7 @@ class AddNewUserFilterTests extends Specification {
         securityContext.getAuthentication() >> authentication
         authentication.getPrincipal() >> saml2Profile
 
-        addNewUserFilter = new AddNewUserFilter(pac4jConfigurationProperties, userService, roleRepository, new PathMatcher(), groupService, Optional.empty())
+        addNewUserFilter = new AddNewUserFilter(pac4jConfigurationProperties, userService, roleService , new PathMatcher(), groupService, Optional.empty())
         profileMapping = pac4jConfigurationProperties.simpleProfileMapping
 
         userRepository.findAll().forEach {

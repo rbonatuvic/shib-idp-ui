@@ -9,6 +9,7 @@ import { useUiSchema } from '../hooks/schema';
 import Alert from 'react-bootstrap/Alert';
 
 import { transformErrors } from '../domain/transform';
+import { useUserGroup } from '../../core/user/UserContext';
 
 function ErrorListTemplate () {
     return (<></>);
@@ -28,6 +29,12 @@ export function MetadataEditorForm({ metadata, definition, schema, current, onCh
 
     const onFormChange = (form) => {
         onChange(definition.bindings ? { ...form, formData: definition.bindings(data, form.formData) }: form);
+    };
+
+    const group = useUserGroup();
+
+    const context = {
+        group
     };
 
     return (
@@ -63,7 +70,8 @@ export function MetadataEditorForm({ metadata, definition, schema, current, onCh
                     liveValidate={true}
                     transformErrors={transformErrors}
                     ErrorList={ErrorListTemplate}
-                    validate={validator}>
+                    validate={validator}
+                    formContext={context}>
                     <></>
                 </Form>
                 
