@@ -16,3 +16,10 @@
         vertical-align: middle;
     }
 }
+
+.bundle-item {
+    cursor: pointer;
+    &:hover, &.selected {
+        background: rgba($brand-info, 0.15);
+    }
+}

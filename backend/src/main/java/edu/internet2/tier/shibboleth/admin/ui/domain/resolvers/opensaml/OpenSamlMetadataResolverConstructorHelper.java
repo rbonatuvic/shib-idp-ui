@@ -21,47 +21,49 @@ public class OpenSamlMetadataResolverConstructorHelper {
                                                                                            ParserPool parserPool) {
         AbstractDynamicMetadataResolver dynamicMetadataResolver = (AbstractDynamicMetadataResolver) metadataResolver;
 
-        if (attributes.getBackgroundInitializationFromCacheDelay() != null) {
-            dynamicMetadataResolver
-                    .setBackgroundInitializationFromCacheDelay(toMillis(placeholderResolverService()
-                            .resolveValueFromPossibleTokenPlaceholder(attributes.getBackgroundInitializationFromCacheDelay())));
-        }
+        if (attributes != null) {
+            if (attributes.getBackgroundInitializationFromCacheDelay() != null) {
+                dynamicMetadataResolver
+                        .setBackgroundInitializationFromCacheDelay(toMillis(placeholderResolverService()
+                                .resolveValueFromPossibleTokenPlaceholder(attributes.getBackgroundInitializationFromCacheDelay())));
+            }
 
-        if (attributes.getCleanupTaskInterval() != null) {
-            dynamicMetadataResolver.setCleanupTaskInterval(toMillis(placeholderResolverService()
-                    .resolveValueFromPossibleTokenPlaceholder(attributes.getCleanupTaskInterval())));
-        }
+            if (attributes.getCleanupTaskInterval() != null) {
+                dynamicMetadataResolver.setCleanupTaskInterval(toMillis(placeholderResolverService()
+                        .resolveValueFromPossibleTokenPlaceholder(attributes.getCleanupTaskInterval())));
+            }
 
-        if (attributes.getInitializeFromPersistentCacheInBackground()) {
-            dynamicMetadataResolver.setInitializeFromPersistentCacheInBackground(attributes.getInitializeFromPersistentCacheInBackground());
-        }
+            if (attributes.getInitializeFromPersistentCacheInBackground()) {
+                dynamicMetadataResolver.setInitializeFromPersistentCacheInBackground(attributes.getInitializeFromPersistentCacheInBackground());
+            }
 
-        if (attributes.getMaxCacheDuration() != null) {
-            dynamicMetadataResolver.setMaxCacheDuration(toMillis(placeholderResolverService()
-                    .resolveValueFromPossibleTokenPlaceholder(attributes.getMaxCacheDuration())));
-        }
+            if (attributes.getMaxCacheDuration() != null) {
+                dynamicMetadataResolver.setMaxCacheDuration(toMillis(placeholderResolverService()
+                        .resolveValueFromPossibleTokenPlaceholder(attributes.getMaxCacheDuration())));
+            }
 
-        if (attributes.getMaxIdleEntityData() != null) {
-            dynamicMetadataResolver.setMaxIdleEntityData(toMillis(placeholderResolverService()
-                    .resolveValueFromPossibleTokenPlaceholder(attributes.getMaxIdleEntityData())));
-        }
+            if (attributes.getMaxIdleEntityData() != null) {
+                dynamicMetadataResolver.setMaxIdleEntityData(toMillis(placeholderResolverService()
+                        .resolveValueFromPossibleTokenPlaceholder(attributes.getMaxIdleEntityData())));
+            }
 
-        if (attributes.getMinCacheDuration() != null) {
-            dynamicMetadataResolver.setMinCacheDuration(toMillis(placeholderResolverService()
-                    .resolveValueFromPossibleTokenPlaceholder(attributes.getMinCacheDuration())));
-        }
+            if (attributes.getMinCacheDuration() != null) {
+                dynamicMetadataResolver.setMinCacheDuration(toMillis(placeholderResolverService()
+                        .resolveValueFromPossibleTokenPlaceholder(attributes.getMinCacheDuration())));
+            }
 
-        if (attributes.getBackgroundInitializationFromCacheDelay() != null) {
-            dynamicMetadataResolver.setBackgroundInitializationFromCacheDelay(toMillis(placeholderResolverService()
-                    .resolveValueFromPossibleTokenPlaceholder(attributes.getBackgroundInitializationFromCacheDelay())));
-        }
+            if (attributes.getBackgroundInitializationFromCacheDelay() != null) {
+                dynamicMetadataResolver.setBackgroundInitializationFromCacheDelay(toMillis(placeholderResolverService()
+                        .resolveValueFromPossibleTokenPlaceholder(attributes.getBackgroundInitializationFromCacheDelay())));
+            }
 
-        if (attributes.getRefreshDelayFactor() != null) {
-            dynamicMetadataResolver.setRefreshDelayFactor(attributes.getRefreshDelayFactor());
-        }
+            if (attributes.getRefreshDelayFactor() != null) {
+                dynamicMetadataResolver.setRefreshDelayFactor(attributes.getRefreshDelayFactor());
+            }
 
-        if (attributes.getRemoveIdleEntityData() != null) {
-            dynamicMetadataResolver.setRemoveIdleEntityData(attributes.getRemoveIdleEntityData());
+            if (attributes.getRemoveIdleEntityData() != null) {
+                dynamicMetadataResolver.setRemoveIdleEntityData(attributes.getRemoveIdleEntityData());
+            }
         }
 
         //TODO: This takes a XMLObjectLoadSaveManager. Do we have what we need to create one?

@@ -1,19 +1,16 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidationService
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidator
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolverValidator
-
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.IMetadataResolverValidator
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.MetadataResolverValidationService
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.ResourceBackedIMetadataResolverValidator
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-
 @Configuration
 class TestMetadataResolverValidationConfiguration {
-
     @Bean
-    ResourceBackedMetadataResolverValidator resourceBackedMetadataResolverValidator() {
-        new ResourceBackedMetadataResolverValidator()
+    ResourceBackedIMetadataResolverValidator resourceBackedMetadataResolverValidator() {
+        new ResourceBackedIMetadataResolverValidator()
     }
 
     @Bean
@@ -22,7 +19,7 @@ class TestMetadataResolverValidationConfiguration {
     }
 
     @Bean
-    MetadataResolverValidationService metadataResolverValidationServiceOneValidator(List<MetadataResolverValidator> metadataResolverValidators) {
+    MetadataResolverValidationService metadataResolverValidationService(List<IMetadataResolverValidator> metadataResolverValidators) {
         new MetadataResolverValidationService(metadataResolverValidators)
     }
 

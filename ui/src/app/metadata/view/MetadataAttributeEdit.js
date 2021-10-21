@@ -86,13 +86,13 @@ export function MetadataAttributeEdit() {
                                             type="button"
                                             onClick={() => save(filter)}
                                             disabled={errors.length > 0 || loading}
-                                            aria-label="Save changes to the metadata source. You will return to the dashboard">
+                                            aria-label="Save changes to the custom attribute. You will return to the attribute list">
                                             <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading} />&nbsp;
                                         <Translate value="action.save">Save</Translate>
                                         </Button>
                                         <Button variant="secondary"
                                             type="button"
-                                            onClick={() => cancel()} aria-label="Cancel changes, go back to dashboard">
+                                            onClick={() => cancel()} aria-label="Cancel changes, go back to attribute list">
                                             <Translate value="action.cancel">Cancel</Translate>
                                         </Button>
                                     </React.Fragment>

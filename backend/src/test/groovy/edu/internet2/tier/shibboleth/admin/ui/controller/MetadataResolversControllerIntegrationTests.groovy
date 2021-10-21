@@ -3,86 +3,106 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.EntitiesVersioningConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConverterConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverValidationConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.StringTrimModule
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.MetadataResolverValidationService
+import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository
+import edu.internet2.tier.shibboleth.admin.ui.service.DefaultMetadataResolversPositionOrderContainerService
+import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryService
+import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAMetadataResolverServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverConverterService
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverVersionService
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
-import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Profile
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.ActiveProfiles
-import spock.lang.Specification
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.MvcResult
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Unroll
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.*
-import static org.springframework.http.HttpMethod.PUT
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
+import static org.springframework.http.MediaType.APPLICATION_JSON
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-/**
- * @author Dmitriy Kopylenko
- */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("no-auth")
-class MetadataResolversControllerIntegrationTests extends Specification {
-
-    @Autowired
-    private TestRestTemplate restTemplate
-
-    @Autowired
-    MetadataResolverRepository metadataResolverRepository
-
+@ContextConfiguration(classes=[MetadataResolverValidationConfiguration, MetadataResolverConverterConfiguration,
+                               MetadataResolverConfiguration, EntitiesVersioningConfiguration,
+                               edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration,
+                               PlaceholderResolverComponentsConfiguration, MRCILocalConfig])
+class MetadataResolversControllerIntegrationTests extends AbstractBaseDataJpaTest {
     @Autowired
     AttributeUtility attributeUtility
 
     @Autowired
+    MetadataResolversController controller
+
+    @Autowired
     CustomPropertiesConfiguration customPropertiesConfiguration
 
+    @Autowired
     ObjectMapper mapper
+
+    @Autowired
+    MetadataResolverRepository metadataResolverRepository
+
     TestObjectGenerator generator
+    MockMvc mockMvc
 
-    JsonSlurper jsonSlurper = new JsonSlurper()
+    static String BASE_URI = '/api/MetadataResolvers'
 
-    static BASE_URI = '/api/MetadataResolvers'
-
+    @Transactional
     def setup() {
         generator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
-        mapper = new ObjectMapper()
-        mapper.enable(SerializationFeature.INDENT_OUTPUT)
-        mapper.setSerializationInclusion(NON_NULL)
-        mapper.registerModule(new JavaTimeModule())
-        mapper.registerModule(new StringTrimModule())
         metadataResolverRepository.deleteAll()
+
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).setMessageConverters(new MappingJackson2HttpMessageConverter(mapper)).build()
     }
 
     def cleanup() {
         metadataResolverRepository.deleteAll()
     }
 
+    @WithMockAdmin
     def "GET empty -> /api/MetadataResolvers"() {
         when: 'No resolvers are available in data store'
-        def result = this.restTemplate.getForEntity(BASE_URI, String)
-        def returnedResolvers = jsonSlurper.parseText(result.body)
+        def result = mockMvc.perform(get(BASE_URI))
 
         then:
-        result.statusCodeValue == 200
-        returnedResolvers.size() == 0
+        result.andExpect(status().isOk()).andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("\$").isEmpty())
     }
 
+    @WithMockAdmin
     def "GET one available MetadataResolver -> /api/MetadataResolvers"() {
         given: 'One resolver is available in data store'
         def resolver = new DynamicHttpMetadataResolver().with {
@@ -92,17 +112,16 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         metadataResolverRepository.save(resolver)
 
         when: 'GET request is made'
-        def result = this.restTemplate.getForEntity(BASE_URI, String)
-        def returnedResolvers = jsonSlurper.parseText(result.body)
+        def result = mockMvc.perform(get(BASE_URI))
 
         then:
-        result.statusCodeValue == 200
-        returnedResolvers.size() == 1
-        returnedResolvers[0]['@type'] == 'DynamicHttpMetadataResolver'
-        returnedResolvers[0].name == 'Test DynamicHttpMetadataResolver'
+        result.andExpect(status().isOk()).andExpect(content().contentType(APPLICATION_JSON))
+              .andExpect(jsonPath("\$.[0].name").value("Test DynamicHttpMetadataResolver"))
+              .andExpect(jsonPath("\$.[0].['@type']").value("DynamicHttpMetadataResolver"))
 
     }
 
+    @WithMockAdmin
     def "GET multiple available MetadataResolvers -> /api/MetadataResolvers"() {
         given: 'Two resolvers are available in data store'
         def resolvers = [
@@ -120,19 +139,17 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         }
 
         when: 'GET request is made'
-        def result = this.restTemplate.getForEntity(BASE_URI, String)
-        def returnedResolvers = jsonSlurper.parseText(result.body)
+        def result = mockMvc.perform(get(BASE_URI))
 
         then:
-        result.statusCodeValue == 200
-        returnedResolvers.size() == 2
-        returnedResolvers[0]['@type'] == 'DynamicHttpMetadataResolver'
-        returnedResolvers[0].name == 'Test DynamicHttpMetadataResolver'
-        returnedResolvers[1]['@type'] == 'FileBackedHttpMetadataResolver'
-        returnedResolvers[1].name == 'Test FileBackedHttpMetadataResolver'
-
+        result.andExpect(status().isOk()).andExpect(content().contentType(APPLICATION_JSON))
+              .andExpect(jsonPath("\$.[0].name").value("Test DynamicHttpMetadataResolver"))
+              .andExpect(jsonPath("\$.[0].['@type']").value("DynamicHttpMetadataResolver"))
+              .andExpect(jsonPath("\$.[1].name").value("Test FileBackedHttpMetadataResolver"))
+              .andExpect(jsonPath("\$.[1].['@type']").value("FileBackedHttpMetadataResolver"))
     }
 
+    @WithMockAdmin
     def "GET concrete MetadataResolver -> /api/MetadataResolvers/{resourceId}"() {
         given: 'One resolver is available in data store'
         def resolver = new DynamicHttpMetadataResolver().with {
@@ -143,25 +160,25 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         metadataResolverRepository.save(resolver)
 
         when: 'GET request is made with resource Id matching the existing resolver'
-        def result = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId", String)
-        def returnedResolver = jsonSlurper.parseText(result.body)
+        def result = mockMvc.perform(get("$BASE_URI/$resolverResourceId"))
 
         then:
-        result.statusCodeValue == 200
-        returnedResolver['@type'] == 'DynamicHttpMetadataResolver'
-        returnedResolver.name == 'Test DynamicHttpMetadataResolver'
+        result.andExpect(status().isOk()).andExpect(content().contentType(APPLICATION_JSON))
+              .andExpect(jsonPath("\$.name").value("Test DynamicHttpMetadataResolver"))
+              .andExpect(jsonPath("\$.['@type']").value("DynamicHttpMetadataResolver"))
 
     }
 
+    @WithMockAdmin
     def "GET non-existent MetadataResolver -> /api/MetadataResolvers/{resourceId}"() {
         when: 'GET request is made with resource Id not matching any resolvers'
-        def result = this.restTemplate.getForEntity("$BASE_URI/bogus-resource-id", String)
+        def result = mockMvc.perform(get("$BASE_URI/bogus-resource-id"))
 
         then:
-        result.statusCodeValue == 404
+        result.andExpect(status().isNotFound())
     }
 
-    @DirtiesContext
+    @WithMockAdmin
     def "SHIBUI-839 - POST resolver with spaces in the provider name results in trimmed name"() {
         given:
         def resolver = generator.buildRandomMetadataResolverOfType('DynamicHttp')
@@ -169,29 +186,29 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         def expectedName = 'This name has spaces'
 
         when:
-        def result = this.restTemplate.postForEntity(BASE_URI, createRequestHttpEntityFor { mapper.writeValueAsString(resolver) }, String)
+        def result = mockMvc.perform(post(BASE_URI).contentType(APPLICATION_JSON).content(mapper.writeValueAsString(resolver)))
 
         then:
-        def metadataResolverMap = new JsonSlurper().parseText(result.body)
-        metadataResolverMap.name == expectedName
+        result.andExpect(status().isCreated()).andExpect(content().contentType(APPLICATION_JSON))
+              .andExpect(jsonPath("\$.name").value(expectedName))
     }
 
+    @WithMockAdmin
     @Unroll
-    @DirtiesContext
     def "POST new concrete MetadataResolver of type #resolverType -> /api/MetadataResolvers"(String resolverType) {
         given: 'New MetadataResolver JSON representation'
         def resolver = generator.buildRandomMetadataResolverOfType(resolverType)
         String sourceDirectory
-        if (resolverType.equals('LocalDynamic')) {
+        if (resolverType == 'LocalDynamic') {
             sourceDirectory = ((LocalDynamicMetadataResolver) resolver).sourceDirectory
         }
 
-        when: 'POST request is made with new DynamicHttpMetadataResolver JSON representation'
-        def result = this.restTemplate.postForEntity(BASE_URI, createRequestHttpEntityFor { mapper.writeValueAsString(resolver) }, String)
+        when: 'POST request is made with new Resolver JSON representation'
+        def result = mockMvc.perform(post(BASE_URI).contentType(APPLICATION_JSON).content(mapper.writeValueAsString(resolver)))
 
         then:
-        result.statusCodeValue == 201
-        result.headers.Location[0].contains(BASE_URI)
+        result.andExpect(status().isCreated()).andExpect(content().contentType(APPLICATION_JSON))
+              .andExpect(jsonPath("\$.['@type']").value(resolver.getType()))
 
         cleanup:
         if (sourceDirectory != null) {
@@ -210,7 +227,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
             'Filesystem'     | _
     }
 
-    @DirtiesContext
+    @WithMockAdmin
     def "SHIBUI-1992 - error creating FileBackedHTTPMetadata"() {
         def resolver = new FileBackedHttpMetadataResolver().with {
             it.name = 'FBHMR'
@@ -223,42 +240,36 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         }
 
         when:
-        def result = this.restTemplate.postForEntity(BASE_URI, createRequestHttpEntityFor { mapper.writeValueAsString(resolver) }, String)
+        def result = mockMvc.perform(post(BASE_URI).contentType(APPLICATION_JSON).content(mapper.writeValueAsString(resolver)))
 
         then:
-        result.statusCodeValue == 201
+        result.andExpect(status().isCreated())
     }
 
+    @WithMockAdmin
     @Unroll
     def "PUT concrete MetadataResolver of type #resolverType with updated changes -> /api/MetadataResolvers/{resourceId}"(String resolverType) {
         given: 'One resolver is available in data store'
         def resolver = generator.buildRandomMetadataResolverOfType(resolverType)
         String sourceDirectory
-        if (resolverType.equals('Localdynamic')) {
+        if (resolverType == 'Localdynamic') {
             sourceDirectory = ((LocalDynamicMetadataResolver) resolver).sourceDirectory
         }
         def resolverResourceId = resolver.resourceId
         metadataResolverRepository.save(resolver)
 
         when: 'GET request is made with resource Id matching the existing resolver'
-        def result = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId", String)
+        def result = mockMvc.perform(get("$BASE_URI/$resolverResourceId")).andReturn()
 
         and: 'Resolver data is updated and sent back to the server'
-        def metadataResolverMap = new JsonSlurper().parseText(result.body)
-        metadataResolverMap.name = 'Updated DynamicHttpMetadataResolver'
-        def updatedResult = this.restTemplate.exchange(
-                "$BASE_URI/${metadataResolverMap.resourceId}",
-                PUT,
-                createRequestHttpEntityFor { JsonOutput.toJson(metadataResolverMap) },
-                String)
-        then:
-        updatedResult.statusCodeValue == 200
+        def metadataResolverMap = new JsonSlurper().parseText(result.getResponse().getContentAsString())
 
-        and:
-        def updatedResolverMap = new JsonSlurper().parseText(updatedResult.body)
+        metadataResolverMap.name = 'Updated Resolver Name'
+        def updatedResult = mockMvc.perform(put("$BASE_URI/${metadataResolverMap.resourceId}").contentType(APPLICATION_JSON).content(mapper.writeValueAsString(metadataResolverMap)))
 
         then:
-        updatedResolverMap.name == 'Updated DynamicHttpMetadataResolver'
+        updatedResult.andExpect(status().isOk()).andExpect(content().contentType(APPLICATION_JSON))
+                     .andExpect(jsonPath("\$.name").value('Updated Resolver Name'))
 
         cleanup:
         if (sourceDirectory != null) {
@@ -277,6 +288,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
             'Filesystem'     | _
     }
 
+    @WithMockAdmin
     def "PUT concrete MetadataResolver with version conflict -> /api/MetadataResolvers/{resourceId}"() {
         given: 'One resolver is available in data store'
         def resolver = new DynamicHttpMetadataResolver().with {
@@ -293,44 +305,45 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         def persistedResolver = metadataResolverRepository.save(resolver)
 
         when: 'GET request is made with resource Id matching the existing resolver'
-        def result = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId", String)
+        MvcResult result = mockMvc.perform(get("$BASE_URI/$resolverResourceId")).andReturn()
 
         and: 'Resolver data is updated and sent back to the server, but then original resolver is changed in data store'
         persistedResolver.name = 'Some other name'
         metadataResolverRepository.save(persistedResolver)
-        def metadataResolverMap = new JsonSlurper().parseText(result.body)
+
+        def metadataResolverMap = mapper.readValue(result.getResponse().getContentAsString(), DynamicHttpMetadataResolver.class)
         metadataResolverMap.name = 'Updated DynamicHttpMetadataResolver'
-        def updatedResult = this.restTemplate.exchange(
-                "$BASE_URI/${metadataResolverMap.resourceId}",
-                PUT,
-                createRequestHttpEntityFor { JsonOutput.toJson(metadataResolverMap) },
-                String)
+        def updatedResult = mockMvc.perform(put("$BASE_URI/${metadataResolverMap.resourceId}").contentType(APPLICATION_JSON).content(mapper.writeValueAsString(metadataResolverMap)))
 
         then:
-        updatedResult.statusCodeValue == 409
+        updatedResult.andExpect(status().isConflict())
     }
 
+    @WithMockAdmin
     def "POST new MetadataResolver with one EntityAttributesFilters attached -> /api/MetadataResolvers"() {
         given: 'New MetadataResolver with attached entity attributes filter JSON representation'
         def resolver = generator.buildRandomMetadataResolverOfType('FileBacked')
         resolver.metadataFilters << generator.entityAttributesFilter()
 
         when: 'POST request is made with new FileBackedMetadataResolver with EntityAttributesFilter JSON representation'
-        def result = this.restTemplate.postForEntity(BASE_URI, createRequestHttpEntityFor { mapper.writeValueAsString(resolver) }, String)
+        def result = mockMvc.perform(post(BASE_URI).contentType(APPLICATION_JSON).content(mapper.writeValueAsString(resolver)))
 
         then:
-        result.statusCodeValue == 201
-        result.headers.Location[0].contains(BASE_URI)
+        def location = result.andExpect(status().isCreated()).andReturn().getResponse().getHeaderValue("Location")
+
+        location.contains(BASE_URI)
 
         when: 'Query REST API for newly created resolver'
-        def createdResolverResult = this.restTemplate.getForEntity(result.headers.Location[0], String)
-        def createdResolver = mapper.readValue(createdResolverResult.body, edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver)
+        def createdResolverResult = mockMvc.perform(get(location)).andReturn().getResponse().getContentAsString()
+        def createdResolver = mapper.readValue(createdResolverResult, edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver)
 
         then:
         createdResolver.metadataFilters.size() == 1
         createdResolver.metadataFilters[0] instanceof EntityAttributesFilter
     }
 
+    @WithMockAdmin
+    @Transactional
     def "PUT MetadataResolver with one EntityAttributesFilters attached and check version -> /api/MetadataResolvers"() {
         given: 'MetadataResolver with attached entity attributes is available in data store'
         def resolver = generator.buildRandomMetadataResolverOfType('FileBacked')
@@ -339,34 +352,50 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         metadataResolverRepository.save(resolver)
 
         when: 'GET request is made with resource Id matching the existing resolver'
-        def result = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId", String)
-        def existingMetadataResolverMap = new JsonSlurper().parseText(result.body)
-        def existingMetadataVersion = existingMetadataResolverMap.version
+        def result = mockMvc.perform(get("$BASE_URI/$resolverResourceId")).andReturn().getResponse().getContentAsString()
+        def existingMetadataResolverMap = new JsonSlurper().parseText(result)
 
         and: 'PUT call is made with'
         existingMetadataResolverMap.name = 'Updated'
-        def updatedResultFromPUT = this.restTemplate.exchange(
-                "$BASE_URI/${existingMetadataResolverMap.resourceId}",
-                PUT,
-                createRequestHttpEntityFor { JsonOutput.toJson(existingMetadataResolverMap) },
-                String)
-        def updatedResultFromGET = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId", String)
-        def updatedVersionReturnedFromPUT = new JsonSlurper().parseText(updatedResultFromPUT.body).version
-        def updatedVersionReturnedFromGET = new JsonSlurper().parseText(updatedResultFromGET.body).version
+        def updatedResultFromPUT = mockMvc.perform(put("$BASE_URI/${existingMetadataResolverMap.resourceId}")
+                                                  .contentType(APPLICATION_JSON).content(mapper.writeValueAsString(existingMetadataResolverMap)))
+                                                  .andReturn().getResponse().getContentAsString()
+        def updatedResultFromGET = mockMvc.perform(get("$BASE_URI/$existingMetadataResolverMap.resourceId")).andReturn().getResponse().getContentAsString()
 
         then:
-        updatedVersionReturnedFromPUT == updatedVersionReturnedFromGET
-    }
-
-    private HttpEntity<String> createRequestHttpEntityFor(Closure jsonBodySupplier) {
-        new HttpEntity<String>(jsonBodySupplier(), ['Content-Type': 'application/json'] as HttpHeaders)
+        updatedResultFromPUT == updatedResultFromGET
     }
 
     @TestConfiguration
-    static class LocalConfig {
+    private static class MRCILocalConfig {
         @Bean
-        MetadataResolver metadataResolver() {
-            new OpenSamlChainingMetadataResolver()
+        DirectoryService directoryService() {
+            return new DirectoryServiceImpl()
+        }
+
+        @Bean
+        MetadataResolversController metadataResolversController(MetadataResolverRepository metadataResolverRepository, MetadataResolverValidationService metadataResolverValidationService,
+                                                                MetadataResolverService metadataResolverService, MetadataResolversPositionOrderContainerService positionOrderContainerService,
+                                                                IndexWriterService indexWriterService, MetadataResolver chainingMetadataResolver,
+                                                                MetadataResolverConverterService metadataResolverConverterService, MetadataResolverVersionService versionService) {
+            MetadataResolversController mrc = new MetadataResolversController().with {
+                it.resolverRepository = metadataResolverRepository
+                it.metadataResolverValidationService = metadataResolverValidationService
+                it.metadataResolverService = metadataResolverService
+                it.positionOrderContainerService = positionOrderContainerService
+                it.indexWriterService = indexWriterService
+                it.chainingMetadataResolver = chainingMetadataResolver
+                it.metadataResolverConverterService = metadataResolverConverterService
+                it.versionService = versionService
+                it
+            }
+            return mrc
+        }
+
+        @Bean
+        MetadataResolversPositionOrderContainerService metadataResolversPositionOrderContainerService(MetadataResolversPositionOrderContainerRepository positionOrderContainerRepository,
+                                                                                                      MetadataResolverRepository resolverRepository) {
+            return new DefaultMetadataResolversPositionOrderContainerService(positionOrderContainerRepository, resolverRepository)
         }
     }
 }

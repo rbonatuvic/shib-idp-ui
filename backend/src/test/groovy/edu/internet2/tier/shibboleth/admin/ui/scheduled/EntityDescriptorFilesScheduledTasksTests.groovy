@@ -1,42 +1,29 @@
 package edu.internet2.tier.shibboleth.admin.ui.scheduled
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.service.FileCheckingFileWritingService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.context.ContextConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
-import spock.lang.Specification
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-class EntityDescriptorFilesScheduledTasksTests extends Specification {
+class EntityDescriptorFilesScheduledTasksTests extends AbstractBaseDataJpaTest {
 
     @Autowired
     OpenSamlObjects openSamlObjects
 
     @Autowired
-    IGroupService groupService
-    
+    JPAEntityDescriptorServiceImpl service
+
     def tempPath = "/tmp/shibui"
 
     def directory
@@ -46,10 +33,7 @@ class EntityDescriptorFilesScheduledTasksTests extends Specification {
     def entityDescriptorFilesScheduledTasks
 
     def randomGenerator
-    
-    
-    def service
-    
+
     def setup() {
         randomGenerator = new RandomGenerator()
         tempPath = tempPath + randomGenerator.randomRangeInt(10000, 20000)
@@ -57,9 +41,10 @@ class EntityDescriptorFilesScheduledTasksTests extends Specification {
         entityDescriptorFilesScheduledTasks = new EntityDescriptorFilesScheduledTasks(tempPath, entityDescriptorRepository, openSamlObjects, new FileCheckingFileWritingService())
         directory = new File(tempPath)
         directory.mkdir()
-        
-        service = new JPAEntityDescriptorServiceImpl()
-        service.openSamlObjects = openSamlObjects
+    }
+
+    def cleanup() {
+        directory.deleteDir()
     }
 
     def "generateEntityDescriptorFiles properly generates a file from an Entity Descriptor"() {
@@ -130,9 +115,5 @@ class EntityDescriptorFilesScheduledTasksTests extends Specification {
         then:
         def files = new File(tempPath, file)
         files.size() == 0
-    }
-
-    def cleanup() {
-        directory.deleteDir()
     }
 }

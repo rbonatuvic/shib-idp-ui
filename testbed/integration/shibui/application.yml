@@ -1,0 +1,20 @@
+server:
+  forward-headers-strategy: NATIVE
+spring:
+  profiles:
+    include:
+  datasource:
+    platform: postgres
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://database:5432/shibui
+    username: shibui
+    password: shibui
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+shibui:
+  default-password: "{noop}letmein7"
+  metadata-dir: /var/shibboleth/dynamic_metadata
+  metadataProviders:
+    target: file:/var/shibboleth/dynamic_config/metadata-providers.xml

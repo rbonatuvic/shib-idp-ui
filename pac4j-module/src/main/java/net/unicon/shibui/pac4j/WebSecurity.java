@@ -1,13 +1,12 @@
 package net.unicon.shibui.pac4j;
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.auto.EmailConfiguration;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IRolesService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
 import static net.unicon.shibui.pac4j.Pac4jConfiguration.PAC4J_CLIENT_NAME;
 import org.pac4j.core.config.Config;
-
 import org.pac4j.core.matching.Matcher;
 import org.pac4j.springframework.security.web.CallbackFilter;
 import org.pac4j.springframework.security.web.SecurityFilter;
@@ -34,9 +33,9 @@ import java.util.Optional;
 public class WebSecurity {   
     @Bean("webSecurityConfig")
     public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserService userService,
-                    RoleRepository roleRepository, Optional<EmailService> emailService,
+                    IRolesService rolesService, Optional<EmailService> emailService,
                     Pac4jConfigurationProperties pac4jConfigurationProperties, IGroupService groupService) {
-        return new Pac4jWebSecurityConfigurerAdapter(config, userService, roleRepository, emailService, groupService,
+        return new Pac4jWebSecurityConfigurerAdapter(config, userService, rolesService, emailService, groupService,
                         pac4jConfigurationProperties);
     }
 
@@ -46,14 +45,14 @@ public class WebSecurity {
         private Optional<EmailService> emailService;
         private IGroupService groupService;
         private Pac4jConfigurationProperties pac4jConfigurationProperties;
-        private RoleRepository roleRepository;
+        private IRolesService rolesService;
         private UserService userService;
 
-        public Pac4jWebSecurityConfigurerAdapter(final Config config, UserService userService, RoleRepository roleRepository,
+        public Pac4jWebSecurityConfigurerAdapter(final Config config, UserService userService, IRolesService rolesService,
                         Optional<EmailService> emailService, IGroupService groupService, Pac4jConfigurationProperties pac4jConfigurationProperties) {
             this.config = config;
             this.userService = userService;
-            this.roleRepository = roleRepository;
+            this.rolesService = rolesService;
             this.emailService = emailService;
             this.groupService = groupService;
             this.pac4jConfigurationProperties = pac4jConfigurationProperties;
@@ -69,7 +68,7 @@ public class WebSecurity {
             http.antMatcher("/**").addFilterBefore(getFilter(config, pac4jConfigurationProperties.getTypeOfAuth()), BasicAuthenticationFilter.class);
             http.antMatcher("/**").addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
             // add the new user filter
-            http.addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userService, roleRepository, getPathMatcher("exclude-paths-matcher"), groupService, emailService), SecurityFilter.class);
+            http.addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userService, rolesService, getPathMatcher("exclude-paths-matcher"), groupService, emailService), SecurityFilter.class);
 
             http.authorizeRequests().anyRequest().fullyAuthenticated();
 

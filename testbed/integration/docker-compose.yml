@@ -1,0 +1,103 @@
+version: "3.8"
+
+services:
+  reverse-proxy:
+    image: library/traefik:v2.5.2
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web-secure.address=:443"
+      - "--providers.file.directory=/configuration/"
+      - "--providers.file.watch=true"
+      # - "--log.level=DEBUG"
+    networks:
+      reverse-proxy:
+        aliases:
+          - idp.unicon.local
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+      - "8443:8443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ../reverse-proxy/:/configuration/
+      - ../reverse-proxy/certs/:/certs/
+  directory:
+    build: ../directory
+    networks:
+      - idp
+    volumes:
+      - directory_data:/var/lib/ldap
+      - directory_config:/etc/ldap/slapd.d
+      - ../directory/certs:/container/service/slapd/assets/certs
+    environment:
+      LDAP_BASE_DN: "dc=unicon,dc=local"
+      LDAP_DOMAIN: "unicon.local"
+      HOSTNAME: "directory"
+      LDAP_TLS_VERIFY_CLIENT: "try"
+  idp:
+    build: ./shibboleth-idp
+    labels:
+      - "traefik.http.routers.idp.rule=Host(`idp.unicon.local`)"
+      - "traefik.http.services.idp.loadbalancer.server.port=8080"
+      - "traefik.http.routers.idp.tls=true"
+      - "traefik.docker.network=integration_reverse-proxy"
+      - "traefik.enable=true"
+    depends_on:
+      - directory
+      - reverse-proxy
+    networks:
+      - reverse-proxy
+      - idp
+    volumes:
+      - ../directory/certs/ca.crt:/opt/shibboleth-idp/credentials/ldap-server.crt
+      - dynamic_metadata:/opt/shibboleth-idp/metadata/dynamic
+      - dynamic_config:/opt/shibboleth-idp/conf/dynamic
+    healthcheck:
+      disable: true
+  shib-idp-ui:
+    image: unicon/shibui:latest
+    labels:
+      - "traefik.http.routers.shibui.rule=Host(`shibui.unicon.local`)"
+      - "traefik.http.services.shibui.loadbalancer.server.port=8080"
+      - "traefik.http.routers.shibui.tls=true"
+      - "traefik.docker.network=integration_reverse-proxy"
+      - "traefik.enable=true"
+    networks:
+      - reverse-proxy
+      - backend
+    volumes:
+      - ./shibui:/conf
+      - ./shibui/application.yml:/application.yml
+      - dynamic_metadata:/var/shibboleth/dynamic_metadata
+      - dynamic_config:/var/shibboleth/dynamic_config
+      - ./shibboleth-idp/credentials/shib-idp/inc-md-cert-mdq.pem:/opt/shibboleth-idp/credentials/inc-md-cert-mdq.pem
+    environment:
+      - "IDP_HOME=/opt/shibboleth-idp"
+  database:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_PASSWORD: shibui
+      POSTGRES_USER: shibui
+      POSTGRES_DB: shibui
+    networks:
+      - backend
+    volumes:
+      - database_data:/var/lib/postgresql/data
+networks:
+  reverse-proxy:
+  idp:
+  backend:
+volumes:
+  directory_data:
+    driver: local
+  directory_config:
+    driver: local
+  dynamic_metadata:
+    driver: local
+  dynamic_config:
+    driver: local
+  database_data:
+    driver: local

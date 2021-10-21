@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType;
+import static edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType.METADATA_RESOLVER;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
@@ -29,8 +30,6 @@ import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -108,6 +107,10 @@ public class MetadataResolver extends AbstractAuditable implements IActivatable 
     @JsonIgnore
     public ActivatableType getActivatableType() {
         return METADATA_RESOLVER;
+    }
+
+    public Boolean getDoInitialization() {
+        return doInitialization == null ? false : doInitialization;
     }
 
     @JsonGetter("version")

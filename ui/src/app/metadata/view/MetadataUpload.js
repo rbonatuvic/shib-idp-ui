@@ -51,8 +51,14 @@ export function MetadataUpload() {
             setSaving(false);
             history.push('/dashboard');
         } else {
-            const message = await response.json();
-            dispatch(createNotificationAction(`${message.errorCode}: Unable to create file ... ${message.errorMessage}`, 'danger', 5000));
+            let msg;
+            if (f) {
+                const message = await response.json();
+                msg = `${message.errorCode}: Unable to create file ... ${message.errorMessage}`
+            } else {
+                msg = await response.text();
+            }
+            dispatch(createNotificationAction(msg, 'danger', 5000));
             setSaving(false);
         }
     }

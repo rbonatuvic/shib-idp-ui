@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
+import edu.internet2.tier.shibboleth.admin.ui.security.service.RolesServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService
 import org.pac4j.core.matching.PathMatcher
@@ -28,57 +29,41 @@ import javax.servlet.http.HttpServletResponse
 @EnableConfigurationProperties([Pac4jConfigurationProperties])
 class AddNewUserFilterMockTests extends Specification {
 
-    UserService userService = Mock()
-    RoleRepository roleRepository = Mock()
-    EmailService emailService = Mock()
-    IGroupService groupService = Mock()
-
-    HttpServletRequest request = Mock()
-    HttpServletResponse response = Mock()
-    FilterChain chain = Mock()
-
-    SecurityContext securityContext = Mock()
-    Authentication authentication = Mock()
-    SAML2Profile saml2Profile = Mock()
+    @Subject
+    AddNewUserFilter addNewUserFilter
 
     @Autowired
     Pac4jConfigurationProperties pac4jConfigurationProperties
 
-    Pac4jConfigurationProperties.SimpleProfileMapping profileMapping
+    Authentication authentication = Mock()
+    FilterChain chain = Mock()
+    EmailService emailService = Mock()
+    IGroupService groupService = Mock()
+    HttpServletRequest request = Mock()
+    HttpServletResponse response = Mock()
+    RoleRepository roleRepository = Mock()
+    SAML2Profile saml2Profile = Mock()
+    SecurityContext securityContext = Mock()
+    UserService userService = Mock()
 
-    @Subject
-    AddNewUserFilter addNewUserFilter
+    Pac4jConfigurationProperties.SimpleProfileMapping profileMapping
 
     def setup() {
         SecurityContextHolder.setContext(securityContext)
         securityContext.getAuthentication() >> authentication
         authentication.getPrincipal() >> saml2Profile
 
-        addNewUserFilter = new AddNewUserFilter(pac4jConfigurationProperties, userService, roleRepository, new PathMatcher(), groupService, Optional.of(emailService))
+        RolesServiceImpl roleService = new RolesServiceImpl().with {
+            it.roleRepository = roleRepository
+            it
+        }
+
+        addNewUserFilter = new AddNewUserFilter(pac4jConfigurationProperties, userService, roleService, new PathMatcher(), groupService, Optional.of(emailService))
         profileMapping = pac4jConfigurationProperties.simpleProfileMapping
     }
 
-    def "new users are redirected"() {
-        given:
-        ['Username': 'newUser',
-         'FirstName': 'New',
-         'LastName': 'User',
-         'Email': 'newuser@institution.edu'].each { key, value ->
-            saml2Profile.getAttribute(profileMapping."get${key}"()) >> [value]
-        }
-        saml2Profile.getUsername() >> "newUser"
-        userService.findByUsername('newUser') >> Optional.empty()
-        roleRepository.findByName('ROLE_NONE') >> Optional.of(new Role('ROLE_NONE'))
-
-        when:
-        addNewUserFilter.doFilter(request, response, chain)
-
-        then:
-        0 * roleRepository.save(_)
-        1 * userService.save(_ as User) >> { User user -> user }
-        1 * emailService.sendNewUserMail('newUser')
-        1 * response.sendRedirect("/unsecured/error.html")
-    }
+    // Checked in AddNewUserFilterTests
+    //    def "new users are redirected"()
 
     def "existing users are not redirected"() {
         given:

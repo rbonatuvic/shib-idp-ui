@@ -8,17 +8,21 @@ import Col from 'react-bootstrap/Col';
 import { WizardNav } from './WizardNav';
 import { MetadataWizardForm } from './MetadataWizardForm';
 import { setWizardIndexAction, useCurrentIndex, useIsFirstPage, useIsLastPage, useWizardDispatcher } from './Wizard';
-import { useMetadataDefinitionContext, useMetadataSchemaContext } from '../hoc/MetadataSchema';
+import { useMetadataDefinitionContext, useMetadataSchemaContext, useMetadataDefinitionValidator } from '../hoc/MetadataSchema';
 import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMetadataFormData, useMetadataFormErrors } from '../hoc/MetadataFormContext';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Configuration } from '../hoc/Configuration';
-import { useMetadataSources } from '../hooks/api';
+import { useMetadataEntity, useMetadataSources } from '../hooks/api';
 
 import Translate from '../../i18n/components/translate';
 import { checkChanges } from '../hooks/utility';
+import { useUserGroup } from '../../core/user/UserContext';
 
 
-export function MetadataSourceWizard ({ onShowNav, onSave, block, loading }) {
+export function MetadataSourceWizard ({ onShowNav, onSave, block }) {
+
+    const { loading } = useMetadataEntity('source');
+    const group = useUserGroup();
 
     const { data } = useMetadataSources({
         cachePolicy: 'no-cache'
@@ -54,7 +58,7 @@ export function MetadataSourceWizard ({ onShowNav, onSave, block, loading }) {
 
     const save = () => onSave(definition.parser(metadata));
 
-    const validator = definition.validator(data);
+    const validator = useMetadataDefinitionValidator(data, null, group);
     const warnings = definition.warnings && definition.warnings(metadata);
 
     return (

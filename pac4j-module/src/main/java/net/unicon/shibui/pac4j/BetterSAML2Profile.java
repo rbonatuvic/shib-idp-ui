@@ -5,6 +5,7 @@ import org.pac4j.saml.profile.SAML2Profile;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class BetterSAML2Profile extends SAML2Profile {
     private SimpleProfileMapping profileMapping;
@@ -37,6 +38,15 @@ public class BetterSAML2Profile extends SAML2Profile {
 
     public List<String> getGroups() {
         return (List<String>) getAttribute(profileMapping.getGroups());
+    }
+
+    public Set<String> getRoles() {
+        Set<String> result = super.getRoles();
+        List<String> assertedRoles = (List<String>) getAttribute(profileMapping.getRoles());
+        if (assertedRoles != null) {
+            result.addAll(assertedRoles);
+        }
+        return result;
     }
 
     @Override

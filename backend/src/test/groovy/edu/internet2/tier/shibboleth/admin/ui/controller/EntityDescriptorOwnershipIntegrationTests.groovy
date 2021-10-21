@@ -3,10 +3,12 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
@@ -23,6 +25,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -51,46 +54,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Test to recreate an issue discovered while trying to validate fixes for other bugs - SHIBUI-2033
  */
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration, LocalConfig])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@ActiveProfiles(["edoi-test"])
 @Stepwise
-class EntityDescriptorOwnershipIntegrationTests extends Specification {
+class EntityDescriptorOwnershipIntegrationTests extends AbstractBaseDataJpaTest {
     @Autowired
     EntityDescriptorRepository entityDescriptorRepository
 
     @Autowired
-    EntityManager entityManager
-    
-    @Autowired
     EntityService entityService
-    
+
     @Autowired
-    GroupServiceForTesting groupService
-    
-    @Autowired
-    OwnershipRepository ownershipRepository
-    
-    @Autowired
-    RoleRepository roleRepository
+    OpenSamlObjects openSamlObjects
 
     @Autowired
     JPAEntityDescriptorServiceImpl service
-        
-    @Autowired
-    UserRepository userRepository
-    
-    @Autowired
-    UserService userService
 
     def mockRestTemplate = Mock(RestTemplate)
-
-    def openSamlObjects = new OpenSamlObjects().with {
-        init()
-        it
-    }
 
     Group cuGroup = new Group().with {
         it.name = "College Users"
@@ -105,8 +83,6 @@ class EntityDescriptorOwnershipIntegrationTests extends Specification {
 
     @Transactional
     def setup() {
-        groupService.clearAllForTesting()
-
         EntityDescriptorVersionService versionService = Mock()
         controller = new EntityDescriptorController(versionService)
         controller.openSamlObjects = openSamlObjects
@@ -115,26 +91,6 @@ class EntityDescriptorOwnershipIntegrationTests extends Specification {
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
 
-        if (roleRepository.count() == 0) {
-            def roles = [new Role().with {
-                name = 'ROLE_ADMIN'
-                it
-            }, new Role().with {
-                name = 'ROLE_USER'
-                it
-            }, new Role().with {
-                name = 'ROLE_ENABLE'
-                it
-            }]
-            roles.each {
-                roleRepository.save(it)
-            }
-        }
-        
-        Optional<Role> adminRole = roleRepository.findByName("ROLE_ADMIN")
-        User adminUser = new User(username: "admin", roles: [adminRole.get()], password: "foo")
-        userService.save(adminUser)
-        
         Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
         User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
         userService.save(user)
@@ -143,7 +99,7 @@ class EntityDescriptorOwnershipIntegrationTests extends Specification {
         EntityDescriptorConversionUtils.setEntityService(entityService)
     }
 
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def "The test scenario"() {
         when:"step 1 - create new group"
         cuGroup = groupService.createGroup(cuGroup)
@@ -185,32 +141,13 @@ class EntityDescriptorOwnershipIntegrationTests extends Specification {
         ownershipRepository.findAllByOwner(Group.ADMIN_GROUP).size() == 2 // admin user + entity descriptor
 
         when: "step 4 - change ownership of the ED"
-        String contentAsString = result.andReturn().getResponse().getContentAsString()
-        def mapper = new ObjectMapper()
-        mapper.enable(SerializationFeature.INDENT_OUTPUT)
-        mapper.registerModule(new JavaTimeModule())
-        EntityDescriptorRepresentation edRep = mapper.readValue(contentAsString, EntityDescriptorRepresentation.class)
+        EntityDescriptor ed = entityDescriptorRepository.findByEntityID(expectedEntityId)
+        EntityDescriptorRepresentation edRep = service.createRepresentationFromDescriptor(ed)
         edRep.setIdOfOwner(cuGroup.getOwnerId())
         service.update(edRep)
 
         then:
         ownershipRepository.findAllByOwner(cuGroup).size() == 2 // someUser + entity descriptor
         ownershipRepository.findAllByOwner(Group.ADMIN_GROUP).size() == 1 // admin user
-    }
-
-    @org.springframework.boot.test.context.TestConfiguration
-    @Profile(value = "edoi-test")
-    static class LocalConfig {
-        @Bean
-        @Primary
-        GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
-            GroupServiceForTesting result = new GroupServiceForTesting(new GroupServiceImpl().with {
-                it.groupRepository = repo
-                it.ownershipRepository = ownershipRepository
-                return it
-            })
-            result.ensureAdminGroupExists()
-            return result
-        }
     }
 }

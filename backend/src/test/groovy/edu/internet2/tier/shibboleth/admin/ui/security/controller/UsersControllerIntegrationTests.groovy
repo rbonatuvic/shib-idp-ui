@@ -1,86 +1,39 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
+import com.fasterxml.jackson.databind.ObjectMapper
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
+import edu.internet2.tier.shibboleth.admin.ui.controller.support.RestControllersSupport
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
+import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Profile
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.http.MediaType
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
-import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.util.NestedServletException
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.controller.support.RestControllersSupport
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
-import edu.internet2.tier.shibboleth.admin.ui.security.model.User
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
-import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
-import groovy.json.JsonOutput
-import spock.lang.Specification
-
-import static org.springframework.http.MediaType.*
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, TestConfiguration, InternationalizationConfiguration, SearchConfiguration, LocalConfig])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@DirtiesContext
-@ActiveProfiles(["no-auth", "local"])
-@ComponentScan(basePackages="{ edu.internet2.tier.shibboleth.admin.ui.configuration }")
-class UsersControllerIntegrationTests extends Specification {
+@Rollback
+class UsersControllerIntegrationTests extends AbstractBaseDataJpaTest {
     @Autowired
-    GroupsRepository groupsRepository
+    ObjectMapper mapper
     
-    @Autowired
-    GroupServiceForTesting groupService
-    
-    @Autowired
-    def ObjectMapper mapper
-    
-    @Autowired
-    OwnershipRepository ownershipRepository
-    
-    @Autowired
-    RoleRepository roleRepository
-    
-    @Autowired
-    UserRepository userRepository
-    
-    @Autowired
-    UserService userService
-    
-    def MockMvc mockMvc
+    MockMvc mockMvc
     def users
     
     static RESOURCE_URI = '/api/admin/users'
+    static VALIDATION_REGEX = "/^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$/"
     
     def setup() {
         def controller = new UsersController(userRepository, userService)
@@ -95,48 +48,30 @@ class UsersControllerIntegrationTests extends Specification {
         }
         userRepository.flush()
         
-        roleRepository.deleteAll()
-        roleRepository.flush()
-        groupService.clearAllForTesting() //leaves us just the admingroup
-                
         def groups = [
             new Group().with {
                 it.name = "A1"
                 it.description = "AAA Group"
                 it.resourceId = "AAA"
+                it.validationRegex = VALIDATION_REGEX
                 it
             },
             new Group().with {
                 it.name = "B1"
                 it.description = "BBB Group"
                 it.resourceId = "BBB"
+                it.validationRegex = VALIDATION_REGEX
                 it
             }]
         groups.each {
             try {
-                groupsRepository.save(it)
+                groupRepository.save(it)
             } catch (Throwable e) {
-                // Must already exist (from a unit test)
+                // ???
             }
         }
-        groupsRepository.flush()
+        groupRepository.flush()
         
-        if (roleRepository.count() == 0) {
-            def roles = [new Role().with {
-                name = 'ROLE_ADMIN'
-                it
-            }, new Role().with {
-                name = 'ROLE_USER'
-                it
-            }, new Role().with {
-                name = 'ROLE_NONE'
-                it
-            }]
-            roles.each {
-                roleRepository.save(it)
-            }
-        }
-        roleRepository.flush()
         if (userRepository.count() == 0) {
             users = [new User().with {
                 username = 'admin'
@@ -172,12 +107,12 @@ class UsersControllerIntegrationTests extends Specification {
                 it
             }]
             users.each {
-                it = userService.save(it)
+                userService.save(it)
             }
         }
     }
     
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'GET ALL users (when there are existing users)'() {
         // given: users created in setup
 
@@ -190,21 +125,25 @@ class UsersControllerIntegrationTests extends Specification {
               .andExpect(jsonPath("\$.[0].emailAddress").value("joe@institution.edu"))
               .andExpect(jsonPath("\$.[0].role").value("ROLE_ADMIN"))
               .andExpect(jsonPath("\$.[0].groupId").value("admingroup"))
+              .andExpect(jsonPath("\$.[0].userGroups.[0].validationRegex").isEmpty())
               .andExpect(jsonPath("\$.[1].username").value("nonadmin"))
               .andExpect(jsonPath("\$.[1].emailAddress").value("peter@institution.edu"))
               .andExpect(jsonPath("\$.[1].role").value("ROLE_USER"))
-              .andExpect(jsonPath("\$.[1].groupId").value("nonadmin"))              
+              .andExpect(jsonPath("\$.[1].groupId").value("nonadmin"))
+              .andExpect(jsonPath("\$.[1].userGroups.[0].validationRegex").value(null))
               .andExpect(jsonPath("\$.[2].username").value("none"))
               .andExpect(jsonPath("\$.[2].emailAddress").value("badboy@institution.edu"))
               .andExpect(jsonPath("\$.[2].role").value("ROLE_NONE"))
-              .andExpect(jsonPath("\$.[2].groupId").value("none"))                       
+              .andExpect(jsonPath("\$.[2].groupId").value("none"))
+              .andExpect(jsonPath("\$.[2].userGroups.[0].validationRegex").value(null))
               .andExpect(jsonPath("\$.[3].username").value("anonymousUser"))
               .andExpect(jsonPath("\$.[3].emailAddress").value("anon@institution.edu"))
               .andExpect(jsonPath("\$.[3].role").value("ROLE_ADMIN"))
               .andExpect(jsonPath("\$.[3].groupId").value("admingroup"))
+              .andExpect(jsonPath("\$.[3].userGroups.[0].validationRegex").isEmpty())
     }
 
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'GET ONE existing user'() {
         when: 'GET request is made for one existing user'
         def result = mockMvc.perform(get("$RESOURCE_URI/admin"))
@@ -216,9 +155,10 @@ class UsersControllerIntegrationTests extends Specification {
                 .andExpect(jsonPath("\$.emailAddress").value("joe@institution.edu"))
                 .andExpect(jsonPath("\$.role").value("ROLE_ADMIN"))
                 .andExpect(jsonPath("\$.groupId").value("admingroup"))
+                .andExpect(jsonPath("\$.userGroups.[0].validationRegex").isEmpty())
     }
 
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'GET ONE NON-existing user'() {
         when: 'GET request is made for one NON-existing user'
         def result = mockMvc.perform(get("$RESOURCE_URI/bogus"))
@@ -227,8 +167,7 @@ class UsersControllerIntegrationTests extends Specification {
         result.andExpect(status().isNotFound())
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'DELETE ONE existing user'() {
         when: 'GET request is made for one existing user'
         def result = mockMvc.perform(get("$RESOURCE_URI/nonadmin"))
@@ -244,16 +183,15 @@ class UsersControllerIntegrationTests extends Specification {
 
         // 'GET request is made for the deleted user'
         try {
-            result = mockMvc.perform(get("$RESOURCE_URI/nonadmin"))
+            mockMvc.perform(get("$RESOURCE_URI/nonadmin"))
             false
         }
-        catch (org.springframework.web.util.NestedServletException expectedResult) {
-            expectedResult.getCause() instanceof org.springframework.web.client.HttpClientErrorException
+        catch (NestedServletException expectedResult) {
+            expectedResult.getCause() instanceof HttpClientErrorException
         }
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'POST new user persists properly'() {
         given:
         def newUser = [firstName: 'Foo',
@@ -273,8 +211,7 @@ class UsersControllerIntegrationTests extends Specification {
         result.andExpect(status().isOk())
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'POST new duplicate username returns 409'() {
         given:
         def newUser = [firstName: 'Foo',
@@ -298,14 +235,13 @@ class UsersControllerIntegrationTests extends Specification {
         result.andExpect(status().isConflict())
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'PATCH updates user properly'() {
         given:
-        def String userString = mockMvc.perform(get("$RESOURCE_URI/none")).andReturn().getResponse().getContentAsString()
-        def User user = mapper.readValue(userString, User.class);
+        String userString = mockMvc.perform(get("$RESOURCE_URI/none")).andReturn().getResponse().getContentAsString()
+        User user = mapper.readValue(userString, User.class)
         user.setFirstName("somethingnew")
-        
+
         when:
         def result = mockMvc.perform(patch("$RESOURCE_URI/$user.username")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -314,37 +250,39 @@ class UsersControllerIntegrationTests extends Specification {
 
         then:
         result.andExpect(status().isOk())
-        
+
         when:
         user.setGroupId("AAA")
         def resultNewGroup = mockMvc.perform(patch("$RESOURCE_URI/$user.username").contentType(MediaType.APPLICATION_JSON)
                                     .content(mapper.writeValueAsString(user)).accept(MediaType.APPLICATION_JSON))
-        
+
         then:
         resultNewGroup.andExpect(status().isOk())
                       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                       .andExpect(jsonPath("\$.groupId").value("AAA"))
-                      
-        def groups = ownershipRepository.findAllGroupsForUser(user.username) 
+                      .andExpect(jsonPath("\$.userGroups.[0].validationRegex").value(VALIDATION_REGEX))
+
+        def groups = ownershipRepository.findAllGroupsForUser(user.username)
         groups.size() == 1
-        
+
         when: 'Updating user role to admin puts the user in the admin group'
         user.setRole("ROLE_ADMIN")
         user.setGroupId("AAA") // Dont care that this is different, ROLE_ADMIN should take precedence
         def resultUserNewRole = mockMvc.perform(patch("$RESOURCE_URI/$user.username").contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(user)).accept(MediaType.APPLICATION_JSON))
-        
+
         then:
         resultUserNewRole.andExpect(status().isOk())
-                      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                      .andExpect(jsonPath("\$.groupId").value("admingroup"))
-                      
+                         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                         .andExpect(jsonPath("\$.groupId").value("admingroup"))
+                         .andExpect(jsonPath("\$.userGroups.[0].validationRegex").isEmpty())
+
         def groupsCheck = ownershipRepository.findAllGroupsForUser(user.username)
         groupsCheck.size() == 1
-         
+
     }
 
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'PATCH detects unknown username'() {
         given:
         def newUser = [firstName: 'Foo',
@@ -361,29 +299,5 @@ class UsersControllerIntegrationTests extends Specification {
 
         then:
         result.andExpect(status().isNotFound())
-    }
-    
-    @org.springframework.boot.test.context.TestConfiguration
-    @Profile(value = "local")
-    static class LocalConfig {
-        @Bean
-        GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
-            GroupServiceForTesting result = new GroupServiceForTesting(new GroupServiceImpl().with {
-                it.groupRepository = repo
-                it.ownershipRepository = ownershipRepository
-                return it
-            })
-            result.ensureAdminGroupExists()
-            return result
-        }
-        
-        @Bean
-        ObjectMapper objectMapper() {
-            JavaTimeModule module = new JavaTimeModule()
-            LocalDateTimeDeserializer localDateTimeDeserializer =  new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS"))
-            module.addDeserializer(LocalDateTime.class, localDateTimeDeserializer)
-            
-            return Jackson2ObjectMapperBuilder.json().modules(module).featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).build()
-        }
     }
 }
