@@ -31,7 +31,7 @@ export function Header () {
                 <img src={brand.logo.small} width="30" height="30" className="d-inline-block align-top" alt={brand.logo.alt} />
                 <span className="d-lg-inline d-none"><Translate value={brand.logo.link.label}></Translate></span>
             </Navbar.Brand>
-            <Navbar.Text><Translate value={brand.header.title}></Translate></Navbar.Text>
+            <Navbar.Text as="h1"><Translate value={brand.header.title}></Translate></Navbar.Text>
             {loading ?
             <div className="d-flex justify-content-end flex-fill">
                 <FontAwesomeIcon icon={faSpinner} spin={true} pulse={true} size="lg" />
