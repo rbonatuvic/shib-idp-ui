@@ -47,13 +47,10 @@
                                     ]
                                 },
                                 "match": {
+                                    "$id": "match",
                                     "title": "label.match",
                                     "description": "tooltip.match",
-                                    "type": "string",
-                                    "widget": {
-                                        "id": "string",
-                                        "required": true
-                                    }
+                                    "type": "string"
                                 }
                             },
                             "required": [
