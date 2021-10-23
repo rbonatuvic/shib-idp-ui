@@ -129,6 +129,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
     // TODO: enhance
     void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
+        if (!filter.isFilterEnabled()) { return }
         if (!filter.retainedRoles?.isEmpty()) {
             markupBuilderDelegate.MetadataFilter(
                     'xsi:type': 'EntityRoleWhiteList',
@@ -143,6 +144,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(NameIdFormatFilter filter, def markupBuilderDelegate) {
+        if (!filter.isFilterEnabled()) { return }
         def type = filter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
         markupBuilderDelegate.MetadataFilter(
                 'xsi:type': 'NameIDFormat',
@@ -181,6 +183,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(RequiredValidUntilFilter filter, def markupBuilderDelegate) {
+        if (!filter.isFilterEnabled()) { return }
         if (filter.xmlShouldBeGenerated()) {
             markupBuilderDelegate.MetadataFilter(
                     'xsi:type': 'RequiredValidUntil',
@@ -190,6 +193,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(SignatureValidationFilter filter, def markupBuilderDelegate) {
+        if (!filter.isFilterEnabled()) { return }
         if (filter.xmlShouldBeGenerated()) {
             markupBuilderDelegate.MetadataFilter(id: filter.name,
                     'xsi:type': 'SignatureValidation',

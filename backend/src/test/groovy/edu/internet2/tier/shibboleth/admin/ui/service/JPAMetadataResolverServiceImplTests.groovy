@@ -191,6 +191,7 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
     def 'test generating RequiredValidUntilFilter xml snippet'() {
         given:
         def filter = new RequiredValidUntilFilter().with {
+            it.enabled = true
             it.maxValidityInterval = 'P14D'
             it
         }
