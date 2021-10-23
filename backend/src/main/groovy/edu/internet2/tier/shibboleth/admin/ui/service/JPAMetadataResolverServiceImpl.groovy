@@ -89,6 +89,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(EntityAttributesFilter filter, def markupBuilderDelegate) {
+        if (!filter.isFilterEnabled()) { return }
         markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
             // TODO: enhance. currently this does weird things with namespaces
             filter.attributes.each { attribute ->
@@ -459,8 +460,10 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                                     }
                                 }
                                 mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
-                                    doNamespaceProtectionFilter()
-                                    constructXmlNodeForFilter(filter, delegate)
+                                    if (filter.isFilterEnabled()) {
+                                        doNamespaceProtectionFilter()
+                                        constructXmlNodeForFilter(filter, delegate)
+                                    }
                                 }
                                 doNamespaceProtectionFilter()
                             }

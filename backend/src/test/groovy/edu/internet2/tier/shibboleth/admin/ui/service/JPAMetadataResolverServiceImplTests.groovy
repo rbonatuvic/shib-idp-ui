@@ -149,6 +149,20 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         generatedXmlIsTheSameAsExpectedXml('/conf/661.xml', domBuilder.parseText(writer.toString()))
     }
 
+    def 'test generating xml when filter is disabled'() {
+        given:
+        def filter = testObjectGenerator.entityAttributesFilterWithConditionScript()
+        filter.setEnabled(Boolean.FALSE)
+
+        when:
+        genXmlSnippet(markupBuilder) {
+            JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it)
+        }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/661.3.xml', domBuilder.parseText(writer.toString()))
+    }
+
     def 'test generating EntityAttributesFilter xml snippet with regex'() {
         given:
         def filter = testObjectGenerator.entityAttributesFilterWithRegex()
