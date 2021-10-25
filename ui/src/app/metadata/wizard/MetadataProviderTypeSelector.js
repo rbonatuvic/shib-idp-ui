@@ -44,6 +44,8 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
 
     const providerNames = data.map(p => p.name);
 
+    console.log(errors);
+
     return (
         <>{showSelector ?
             <>
@@ -90,8 +92,8 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
                                             unique: v => !(providerNames.indexOf(v) > -1)
                                         }})} />
                                     <Form.Text className={errors.name ? 'text-danger' : 'text-muted'}>
-                                        {errors?.name?.unique && <Translate value={`message.must-be-unique`} />}
-                                        {errors?.name?.required && <Translate value={`message.service-resolver-name-required`} />}
+                                        {errors?.name?.type === 'unique' && <Translate value={`message.must-be-unique`} />}
+                                        {errors?.name?.type === 'required' && <Translate value={`message.service-resolver-name-required`} />}
                                     </Form.Text>
                                 </Form.Group>
                                 <Form.Group>
