@@ -7,12 +7,10 @@ import { Wizard } from '../wizard/Wizard';
 import { useMetadataEntity } from '../hooks/api';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { Prompt, useHistory } from 'react-router';
-import { useTranslator } from '../../i18n/hooks';
 
 export function MetadataWizard ({type, data, onCallback}) {
 
     const history = useHistory();
-    const translator = useTranslator();
 
     const { post, loading, response } = useMetadataEntity(type === 'source' ? 'source' : 'provider');
 
@@ -21,21 +19,15 @@ export function MetadataWizard ({type, data, onCallback}) {
     const [blocking, setBlocking] = React.useState(false);
 
     async function save(metadata) {
+        console.log(metadata);
         await post('', metadata);
         if (response.ok) {
             setBlocking(false);
             history.push(`/dashboard/metadata/manager/${type === 'source' ? 'resolvers' : 'providers'}`);
         } else {
-            let msg;
-            if (response.status) {
-                const { errorCode, errorMessage, cause } = response.data;
-                msg = `${errorCode}: ${errorMessage} ${cause ? `-${cause}` : ''}`;
-            } else {
-                msg = translator('message.session-timeout');
-            }
-            
+            const { errorCode, errorMessage, cause } = response.data;
             notificationDispatch(createNotificationAction(
-                msg,
+                `${errorCode}: ${errorMessage} ${cause ? `-${cause}` : ''}`,
                 NotificationTypes.ERROR
             ));
         }
