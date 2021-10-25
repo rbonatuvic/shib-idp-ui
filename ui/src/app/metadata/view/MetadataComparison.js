@@ -31,12 +31,12 @@ export function MetadataComparison () {
     const [limited, setLimited] = React.useState(false);
 
     const toggleLimited = useTranslation('action.view-only-changes');
-
+    console.log(type)
     return (
         <>
         <h2 className="mb-4">
             Compare&nbsp;
-            <Translate value={type === 'resolver' ? 'label.source' : 'label.provider'}>Source</Translate>
+            <Translate value={type === 'source' ? 'label.source' : 'label.provider'}>Source</Translate>
             &nbsp;Configuration
         </h2>
         {versions &&
