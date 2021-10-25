@@ -80,6 +80,9 @@ export const BaseProviderDefinition = {
     uiSchema: {
         name: {
             'ui:help': 'message.must-be-unique'
+        },
+        enabled: {
+            'ui:widget': 'hidden'
         }
     },
     steps: [

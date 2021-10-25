@@ -38,7 +38,10 @@ export const BaseFilterDefinition = {
         '@type': {
             'ui:widget': 'hidden'
         },
-        'resourceId': {
+        resourceId: {
+            'ui:widget': 'hidden'
+        },
+        filterEnabled: {
             'ui:widget': 'hidden'
         }
     }

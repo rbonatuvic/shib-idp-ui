@@ -12,7 +12,7 @@ export const SourceBase = {
     type: '@MetadataProvider',
     steps: [],
     schema: `${API_BASE_PATH}/ui/MetadataSources`,
-    //schema: `/assets/schema/source/metadata-source.json`,
+    // schema: `/assets/schema/source/metadata-source.json`,
 
     parser: (data) => removeNull(data, true),
 
@@ -157,6 +157,9 @@ export const SourceBase = {
                     ],
                 }
             ]
+        },
+        serviceEnabled: {
+            'ui:widget': 'hidden'
         },
         contacts: {
             "ui:options": {
@@ -307,7 +310,8 @@ export const SourceEditor = {
                 'serviceProviderName',
                 'entityId',
                 'organization',
-                'contacts'
+                'contacts',
+                'serviceEnabled'
             ]
         },
         {
