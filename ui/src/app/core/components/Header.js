@@ -13,7 +13,7 @@ import Translate from '../../i18n/components/translate';
 import { useTranslator } from '../../i18n/hooks';
 
 import { brand } from '../../app.brand';
-import { useCurrentUser, useCurrentUserLoading, useIsAdmin } from '../user/UserContext';
+import { useCurrentUser, useCurrentUserLoading, useIsAdmin, useUserGroupNames } from '../user/UserContext';
 import { BASE_PATH } from '../../App.constant';
 
 export function Header () {
@@ -22,7 +22,8 @@ export function Header () {
 
     const isAdmin = useIsAdmin();
 
-    const { username, groupId } = useCurrentUser();
+    const { username } = useCurrentUser();
+    const name = useUserGroupNames();
     const loading = useCurrentUserLoading();
 
     return (
@@ -97,7 +98,7 @@ export function Header () {
                         </Dropdown.Toggle>
                         <Dropdown.Menu alignRight={true}>
                             <Dropdown.Header>Groups</Dropdown.Header>
-                            <Dropdown.ItemText id="advanced-nav-dropdown-groups">{groupId}</Dropdown.ItemText>
+                            <Dropdown.ItemText id="advanced-nav-dropdown-groups">{name}</Dropdown.ItemText>
                             <div class="dropdown-divider"></div>
                             <Dropdown.Item href={`/${BASE_PATH}logout`} target="_self" className="text-primary" aria-label={translator('action.logout')}
                                 id="user-nav-dropdown-logout">
