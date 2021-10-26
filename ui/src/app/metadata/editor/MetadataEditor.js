@@ -21,7 +21,7 @@ import { checkChanges } from '../hooks/utility';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useUserGroup } from '../../core/user/UserContext';
 
-export function MetadataEditor ({ current }) {
+export function MetadataEditor ({ restore, current }) {
 
     const translator = useTranslator();
     const group = useUserGroup();
@@ -83,7 +83,7 @@ export function MetadataEditor ({ current }) {
 
     const warnings = definition.warnings && definition.warnings(metadata);
 
-    const canFilter = FilterableProviders.indexOf(definition.type) > -1;
+    const canFilter = restore ? false : FilterableProviders.indexOf(definition.type) > -1;
 
     return (
         <div className="container-fluid p-3">
