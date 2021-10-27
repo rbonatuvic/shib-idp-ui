@@ -64,4 +64,7 @@ public abstract class MetadataRequestURLConstructionScheme extends AbstractAudit
     String type;
 
     String content;
+
+    @Transient
+    String match;
 }
