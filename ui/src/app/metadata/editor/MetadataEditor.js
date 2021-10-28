@@ -71,10 +71,9 @@ export function MetadataEditor ({ restore, current }) {
         const resetBlock = blocking;
         setBlocking(false);
         setTimeout(() => {
-            history.push(path);
+            history.push(restore ? `../${path}/edit` : path);
             setBlocking(resetBlock);
         });
-        // setBlocking(resetBlock);
     };
 
     const [blocking, setBlocking] = React.useState(false);
