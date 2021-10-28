@@ -12,16 +12,15 @@ import { useMetadataDefinitionContext, useMetadataSchemaContext, useMetadataDefi
 import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMetadataFormData, useMetadataFormErrors } from '../hoc/MetadataFormContext';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Configuration } from '../hoc/Configuration';
-import { useMetadataEntity, useMetadataSources } from '../hooks/api';
+import { useMetadataSources } from '../hooks/api';
 
 import Translate from '../../i18n/components/translate';
 import { checkChanges } from '../hooks/utility';
 import { useUserGroup } from '../../core/user/UserContext';
 
 
-export function MetadataSourceWizard ({ onShowNav, onSave, block }) {
+export function MetadataSourceWizard ({ onShowNav, onSave, block, loading }) {
 
-    const { loading } = useMetadataEntity('source');
     const group = useUserGroup();
 
     const { data } = useMetadataSources({
@@ -60,6 +59,8 @@ export function MetadataSourceWizard ({ onShowNav, onSave, block }) {
 
     const validator = useMetadataDefinitionValidator(data, null, group);
     const warnings = definition.warnings && definition.warnings(metadata);
+
+    React.useEffect(() => console.log(loading), [loading]);
 
     return (
         <>
