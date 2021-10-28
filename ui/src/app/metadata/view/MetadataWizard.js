@@ -19,7 +19,6 @@ export function MetadataWizard ({type, data, onCallback}) {
     const [blocking, setBlocking] = React.useState(false);
 
     async function save(metadata) {
-        console.log(metadata);
         await post('', metadata);
         if (response.ok) {
             setBlocking(false);
