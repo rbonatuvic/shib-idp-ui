@@ -35,7 +35,11 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                 <th className=""><Translate value="label.creation-date">Created Date</Translate></th>
                                 <th className="text-center"><Translate value="label.enabled">Enabled</Translate></th>
                                 {isAdmin && onChangeGroup && <th className=""><Translate value="label.group">Group</Translate></th> }
-                                {onDelete && isAdmin && <th className="w-auto"></th>}
+                                {onDelete && isAdmin &&
+                                <th className="w-auto">
+                                    <span className="sr-only"><Translate value="action.actions">Actions</Translate></span>
+                                </th>
+                                }
                             </tr>
                         </thead>
                         <tbody>

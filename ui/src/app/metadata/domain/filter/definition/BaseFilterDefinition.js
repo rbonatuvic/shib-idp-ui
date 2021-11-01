@@ -11,7 +11,7 @@ export const BaseFilterDefinition = {
 
         return (formData, errors) => {
             if (names.indexOf(formData.name) > -1) {
-                errors.name.addError('message.name-unique');
+                errors.name.addError('message.name-must-be-unique');
             }
 
             if (formData.hasOwnProperty(targetProp)) {
@@ -38,7 +38,10 @@ export const BaseFilterDefinition = {
         '@type': {
             'ui:widget': 'hidden'
         },
-        'resourceId': {
+        resourceId: {
+            'ui:widget': 'hidden'
+        },
+        filterEnabled: {
             'ui:widget': 'hidden'
         }
     }

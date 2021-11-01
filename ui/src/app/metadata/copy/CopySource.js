@@ -64,6 +64,10 @@ export function CopySource({ copy, onNext }) {
 
     const sourceIds = data.map(p => p.entityId);
 
+    React.useEffect(() => {
+        console.log(errors, isValid);
+    }, [errors]);
+
     return (
         <>
             <div className="row">
@@ -99,33 +103,31 @@ export function CopySource({ copy, onNext }) {
                 <div className="col col-xs-12 col-xl-6">
                     <form onSubmit={handleSubmit(onNext)}>
                         <fieldset className="bg-light border rounded p-4">
-                            <div className={`form-group ${errors?.target ? 'is-invalid' : ''}`}>
-                                <label htmlFor="target">
+                            <Form.Group className={`${errors.target ? 'is-invalid text-danger' : ''}`}>
+                                <Form.Label htmlFor="target">
                                     <Translate value="label.select-entity-id-to-copy">Select the Entity ID to copy</Translate>
                                     <FontAwesomeIcon icon={faAsterisk} className="text-danger" />
-                                </label>
-                                <EntityTypeahead name="target" control={control} />
-                                {errors?.target?.type === 'required' &&
-                                <small id="target-help"
-                                    className={`form-text text-danger ${'sr-only'}`}>
+                                </Form.Label>
+                                <EntityTypeahead id="target" name="target" control={control} />
+                                <Form.Text id="target-help"
+                                        className={`text-danger ${errors?.target?.type === 'required' ? '' : 'sr-only'}`}>
                                     <Translate value="message.target-required">Entity ID to copy is Required</Translate>
-                                </small>
-                                }
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="serviceProviderName">
+                                </Form.Text>
+                            </Form.Group>
+                            <Form.Group className={`${errors.serviceProviderName ? 'text-danger is-invalid' : ''}`}>
+                                <Form.Label htmlFor="serviceProviderName">
                                     <Translate value="label.metadata-source-name-dashboard-display-only">Metadata Source Name (Dashboard Display Only)</Translate>
                                     <FontAwesomeIcon icon={faAsterisk} className="text-danger" />
-                                </label>
-                                <input id="serviceProviderName" type="text" className="form-control"
+                                </Form.Label>
+                                <Form.Control id="serviceProviderName" type="text" className="form-control"
                                     {...register('serviceProviderName', {required: true})}
                                     aria-describedby="serviceProviderName-help" />
-                                {errors?.serviceProviderName?.type === 'required' && <small className="form-text text-danger"
+                                <Form.Text className={`form-text text-danger ${errors?.serviceProviderName?.type === 'required' ? '' : 'sr-only'}`}
                                     id="serviceProviderName-help">
                                     <Translate value="message.service-resolver-name-required">Service Resolver Name is required</Translate>
-                                </small>}
-                            </div>
-                            <Form.Group className={`form-group ${errors.entityId ? 'text-danger' : ''}`}>
+                                </Form.Text>
+                            </Form.Group>
+                            <Form.Group className={`${errors.entityId ? 'is-invalid text-danger' : ''}`}>
                                 <Form.Label htmlFor="entityId">
                                     <Translate value="label.service-resolver-entity-id">New Entity ID</Translate>
                                     <FontAwesomeIcon icon={faAsterisk} className="text-danger" />
@@ -138,9 +140,13 @@ export function CopySource({ copy, onNext }) {
                                             unique: v => !(sourceIds.indexOf(v) > -1)
                                         }
                                     })} />
-                                <Form.Text className={errors.entityId ? 'text-danger' : 'text-muted'}>
-                                    {errors?.entityId?.type === 'unique' && <Translate value={`message.must-be-unique`} />}
-                                    {errors?.entityId?.type === 'required' && <Translate value={`message.entity-id-required`} />}
+                                <Form.Text className={errors?.entityId ? 'text-danger' : 'sr-only'} id="entityId-help">
+                                    {errors?.entityId?.type === 'required' &&
+                                        <Translate value="message.entity-id-required">Entity ID is required</Translate>
+                                    }
+                                    {errors?.entityId?.type === 'unique' &&
+                                        <Translate value="message.entity-id-must-be-unique">Entity ID must be unique</Translate>
+                                    }
                                 </Form.Text>
                             </Form.Group>
                         </fieldset>
@@ -157,14 +163,15 @@ export function CopySource({ copy, onNext }) {
                         <tbody>
                             {sections.map((item, i) =>
                                 <tr key={i}>
-                                    <td><label className="mb-0" htmlFor={`property-checkbox-${i}`}><Translate value={`label.${kebabCase(item.i18nKey)}`} /></label></td>
+                                    <td><span className="mb-0" id={`property-checkbox-${i}`}><Translate value={`label.${kebabCase(item.i18nKey)}`} /></span></td>
                                     <td>
                                         <Form.Check
                                             custom
                                             type={'checkbox'}
-                                            id={`property-checkbox-${i}`}
+                                            id={`property-checkbox-${i}-check`}
                                             onChange={({ target: { checked } }) => onSelect(item, checked)}
                                             checked={selected.indexOf(item.property) > -1}
+                                            aria-labelledby={`property-checkbox-${i}`}
                                         />
                                     </td>
                                 </tr>

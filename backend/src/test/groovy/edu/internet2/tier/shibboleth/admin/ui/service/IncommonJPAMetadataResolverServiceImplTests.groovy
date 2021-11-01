@@ -38,7 +38,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTes
     def 'simple test generation of metadata-providers.xml'() {
         when:
         def mr = metadataResolverRepository.findAll().iterator().next()
-        mr.metadataFilters << new SignatureValidationFilter(requireSignedRoot: true, certificateFile: '%{idp.home}/credentials/inc-md-cert.pem')
+        mr.metadataFilters << new SignatureValidationFilter(enabled: true, requireSignedRoot: true, certificateFile: '%{idp.home}/credentials/inc-md-cert.pem')
         mr.metadataFilters << requiredValidUntilFilterForXmlGenerationTests()
         mr.metadataFilters << entityRoleWhiteListFilterForXmlGenerationTests()
         metadataResolverRepository.save(mr)
@@ -52,9 +52,10 @@ class IncommonJPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTes
         when:
         //TODO: this might break later
         def mr = metadataResolverRepository.findAll().iterator().next()
-        mr.metadataFilters << new SignatureValidationFilter(requireSignedRoot: true, certificateFile: '%{idp.home}/credentials/inc-md-cert.pem')
+        mr.metadataFilters << new SignatureValidationFilter(enabled: true, requireSignedRoot: true, certificateFile: '%{idp.home}/credentials/inc-md-cert.pem')
         mr.metadataFilters << requiredValidUntilFilterForXmlGenerationTests()
         mr.metadataFilters.add(new EntityAttributesFilter().with {
+            it.enabled = true
             it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
                 it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
                 it.value = ['https://sp1.example.org']
@@ -81,6 +82,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTes
     EntityRoleWhiteListFilter entityRoleWhiteListFilterForXmlGenerationTests() {
         new EntityRoleWhiteListFilter().with {
             it.retainedRoles = ['md:SPSSODescriptor']
+            it.enabled = true
             it
         }
     }
@@ -88,6 +90,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTes
     RequiredValidUntilFilter requiredValidUntilFilterForXmlGenerationTests() {
         new RequiredValidUntilFilter().with {
             it.maxValidityInterval = 'P14D'
+            it.enabled = true
             it
         }
     }

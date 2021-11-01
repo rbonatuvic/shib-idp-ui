@@ -18,5 +18,5 @@ export function useMetadataConfiguration(models, schema, definition, limited = f
         return {};
     }
 
-    return getLimitedConfigurationsFn(getConfigurationSections(models, definition, schema), limited);
+    return getLimitedConfigurationsFn(getConfigurationSections(models, definition, definition.overrideSchema ? definition.overrideSchema(schema, models) : schema), limited);
 }
