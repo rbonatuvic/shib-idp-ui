@@ -199,7 +199,8 @@ export const DynamicHttpMetadataProviderEditor = {
                 'xmlId',
                 'metadataRequestURLConstructionScheme',
                 'requireValidMetadata',
-                'failFastInitialization'
+                'failFastInitialization',
+                'enabled'
             ]
         },
         {

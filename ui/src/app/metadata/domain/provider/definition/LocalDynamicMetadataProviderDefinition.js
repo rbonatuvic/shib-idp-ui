@@ -119,6 +119,7 @@ export const LocalDynamicMetadataProviderEditor = {
                 '@type',
                 'xmlId',
                 'sourceDirectory',
+                'enabled'
             ],
             override: {
                 '@type': {
