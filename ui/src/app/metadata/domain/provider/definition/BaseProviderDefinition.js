@@ -77,6 +77,7 @@ export const BaseProviderDefinition = {
             }
         };
     },
+    overrideSchema: (schema) => schema,
     uiSchema: {
         name: {
             'ui:help': 'message.must-be-unique'

@@ -1,14 +1,57 @@
 import { BaseProviderDefinition, HttpMetadataResolverAttributesSchema, MetadataFilterPluginsSchema } from './BaseProviderDefinition';
 import API_BASE_PATH from '../../../../App.constant';
 import defaultsDeep from 'lodash/defaultsDeep';
+import isNil from 'lodash/isNil';
 import { DurationOptions } from '../../data';
 import { isValidRegex } from '../../../../core/utility/is_valid_regex';
+
+function findById(o, id) {
+    //Early return
+    if (o.$id === id) {
+        return o;
+    }
+    var result, p;
+    for (p in o) {
+        if (o.hasOwnProperty(p) && typeof o[p] === 'object') {
+            result = findById(o[p], id);
+            if (result) {
+                return result;
+            }
+        }
+    }
+    return result;
+}
+
 
 export const DynamicHttpMetadataProviderWizard = {
     ...BaseProviderDefinition,
     label: 'DynamicHttpMetadataProvider',
     type: 'DynamicHttpMetadataResolver',
     schema: `${API_BASE_PATH}/ui/MetadataResolver/DynamicHttpMetadataResolver`,
+    overrideSchema: (schema, models) => {
+
+        const includeMatch = models.some(m => !isNil(m?.metadataRequestURLConstructionScheme?.match));
+
+        console.log(models)
+
+        if (includeMatch) {
+            return ({
+                ...schema,
+                properties: {
+                    ...schema.properties,
+                    metadataRequestURLConstructionScheme: {
+                        ...schema.properties.metadataRequestURLConstructionScheme,
+                        properties: {
+                            ...schema.properties.metadataRequestURLConstructionScheme.properties,
+                            match: findById(schema.properties.metadataRequestURLConstructionScheme.dependencies, 'match')
+                        }
+                    }
+                }
+            });
+        }
+
+        return schema;
+    },
     validator: (data = [], current = { resourceId: null }, group, translator) => {
         const base = BaseProviderDefinition.validator(data, current, group);
 
