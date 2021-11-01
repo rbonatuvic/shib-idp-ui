@@ -6,7 +6,7 @@ import SourceList from '../../metadata/domain/source/component/SourceList';
 import { useMetadataEntities, useMetadataEntity } from '../../metadata/hooks/api';
 import { Search } from '../component/Search';
 
-import { NotificationContext, createNotificationAction } from '../../notifications/hoc/Notifications';
+import { NotificationContext, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
 
 const searchProps = ['serviceProviderName', 'entityId', 'createdBy'];
 
@@ -42,6 +42,12 @@ export function SourcesTab () {
         if (updater.response.ok) {
             dispatch(createNotificationAction(`Updated group successfully.`));
             loadSources();
+        } else {
+            const { errorCode, errorMessage, cause } = updater?.response?.data;
+            dispatch(createNotificationAction(
+                `${errorCode}: ${errorMessage} ${cause ? `-${cause}` : ''}`,
+                NotificationTypes.ERROR
+            ));
         }
     }
 
