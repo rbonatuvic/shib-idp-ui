@@ -3,7 +3,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import { useController } from 'react-hook-form';
 import { useMetadataSources } from '../hooks/api';
 
-export function EntityTypeahead ({control, name}) {
+export function EntityTypeahead ({id, control, name}) {
     const { data = [] } = useMetadataSources({}, []);
     const entities = React.useMemo(() => data.map(d => d.entityId), [data]);
 
@@ -12,7 +12,9 @@ export function EntityTypeahead ({control, name}) {
     } = useController({
         name,
         control,
-        rules: { required: true },
+        rules: {
+            required: true
+        },
         defaultValue: "",
     });
 
@@ -22,7 +24,8 @@ export function EntityTypeahead ({control, name}) {
             onChange={(selected) => onChange(selected ? data.find(e => e.entityId === selected[0]) : '')}
             defaultInputValue={value ? value.entityId : ''}
             options={entities}
-            id="copySourceTypeahead"
+            required={true}
+            id={id}
         />
     )
 }
