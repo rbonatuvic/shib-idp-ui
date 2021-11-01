@@ -17,6 +17,7 @@ import { useTranslation } from '../../i18n/hooks';
 import { MetadataFilterVersionList } from '../domain/filter/component/MetadataFilterVersionList';
 import { MetadataFilterVersionContext } from '../domain/filter/component/MetadataFilterVersionContext';
 import { useMetadataSchema } from '../hooks/schema';
+import { FilterableProviders } from '../domain/provider';
 
 export function MetadataComparison () {
 
@@ -31,6 +32,8 @@ export function MetadataComparison () {
     const [limited, setLimited] = React.useState(false);
 
     const toggleLimited = useTranslation('action.view-only-changes');
+
+    const canFilter = FilterableProviders.indexOf(definition.type) > -1;
 
     return (
         <>
@@ -61,7 +64,7 @@ export function MetadataComparison () {
                                 </div>
                                 <MetadataConfiguration configuration={config} />
 
-                                {type === 'provider' && v &&
+                                {type === 'provider' && canFilter && v &&
                                 <React.Fragment>
                                     <div className="numbered-header d-flex justify-content-start bg-light align-items-center py-1">
                                         <h2 className="title h4 m-0 flex-grow-1">
