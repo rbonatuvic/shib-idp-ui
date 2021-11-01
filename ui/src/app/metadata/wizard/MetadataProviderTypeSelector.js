@@ -84,7 +84,7 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
                                 <Form.Group className={errors.name ? 'text-danger' : ''}>
                                     <Form.Label>
                                         <span><Translate value={'label.metadata-provider-name-dashboard-display-only'} /></span>
-                                        <InfoIcon value="tooltip.metadata-provider-name-dashboard-display-only" />
+                                        <InfoIcon value="tooltip.metadata-provider-name" />
                                     </Form.Label>
                                     <Form.Control
                                         isInvalid={errors.name}
