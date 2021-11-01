@@ -86,7 +86,7 @@ const SelectWidget = ({
 
     return (
         <Form.Group>
-            <Form.Label className={`${touched && rawErrors?.length > 0 ? "text-danger" : ""}`}>
+            <Form.Label className={`${touched && rawErrors?.length > 0 ? "text-danger" : ""}`} htmlFor={id}>
                 <span>
                     <Translate value={label || schema.title} />
                     {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="ml-2 text-danger" size="sm" /> : null}

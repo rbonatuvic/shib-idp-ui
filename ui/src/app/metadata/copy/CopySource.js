@@ -59,6 +59,10 @@ export function CopySource({ copy, onNext }) {
         setValue('properties', selected);
     }, [selected, setValue]);
 
+    React.useEffect(() => {
+        console.log(errors, formState);
+    }, [errors, formState]);
+
     return (
         <>
             <div className="row">
@@ -100,12 +104,10 @@ export function CopySource({ copy, onNext }) {
                                     <FontAwesomeIcon icon={faAsterisk} className="text-danger" />
                                 </label>
                                 <EntityTypeahead name="target" control={control} />
-                                {errors?.target?.type === 'required' &&
                                 <small id="target-help"
-                                    className={`form-text text-danger ${'sr-only'}`}>
+                                        className={`form-text text-danger ${errors?.target?.type === 'required' ? '' : 'sr-only'}`}>
                                     <Translate value="message.target-required">Entity ID to copy is Required</Translate>
                                 </small>
-                                }
                             </div>
                             <div className="form-group">
                                 <label htmlFor="serviceProviderName">
@@ -115,10 +117,10 @@ export function CopySource({ copy, onNext }) {
                                 <input id="serviceProviderName" type="text" className="form-control"
                                     {...register('serviceProviderName', {required: true})}
                                     aria-describedby="serviceProviderName-help" />
-                                {errors?.serviceProviderName?.type === 'required' && <small className="form-text text-danger"
+                                <small className={`form-text text-danger ${errors?.serviceProviderName?.type === 'required' ? '' : 'sr-only'}`}
                                     id="serviceProviderName-help">
                                     <Translate value="message.service-resolver-name-required">Service Resolver Name is required</Translate>
-                                </small>}
+                                </small>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="entityId">
@@ -130,17 +132,15 @@ export function CopySource({ copy, onNext }) {
                                     placeholder=""
                                     aria-describedby="entityId-help" 
                                     {...register('entityId', { required: true })} />
-                                {errors?.entityId &&
-                                    <small className="form-text text-danger"
-                                        id="entityId-help">
-                                        {errors.entityId.type === 'required' &&
-                                            <Translate value="message.entity-id-required">Entity ID is required</Translate>
-                                        }
-                                        {errors.entityId.type === 'unique' &&
-                                            <Translate value="message.entity-id-must-be-unique">Entity ID must be unique</Translate>
-                                        }
-                                    </small>
-                                }
+                                <small className={`form-text text-danger ${errors?.entityId ? '' : 'sr-only'}`}
+                                    id="entityId-help">
+                                    {errors?.entityId?.type === 'required' &&
+                                        <Translate value="message.entity-id-required">Entity ID is required</Translate>
+                                    }
+                                    {errors?.entityId?.type === 'unique' &&
+                                        <Translate value="message.entity-id-must-be-unique">Entity ID must be unique</Translate>
+                                    }
+                                </small>
                             </div>
                         </fieldset>
                     </form>
@@ -156,14 +156,15 @@ export function CopySource({ copy, onNext }) {
                         <tbody>
                             {sections.map((item, i) =>
                                 <tr key={i}>
-                                    <td><label className="mb-0" htmlFor={`property-checkbox-${i}`}><Translate value={`label.${kebabCase(item.i18nKey)}`} /></label></td>
+                                    <td><span className="mb-0" id={`property-checkbox-${i}`}><Translate value={`label.${kebabCase(item.i18nKey)}`} /></span></td>
                                     <td>
                                         <Check
                                             custom
                                             type={'checkbox'}
-                                            id={`property-checkbox-${i}`}
+                                            id={`property-checkbox-${i}-check`}
                                             onChange={({ target: { checked } }) => onSelect(item, checked)}
                                             checked={selected.indexOf(item.property) > -1}
+                                            aria-labelledby={`property-checkbox-${i}`}
                                         />
                                     </td>
                                 </tr>

@@ -193,6 +193,7 @@ class TestObjectGenerator {
             it.dynamicTrustedNamesStrategyRef = generator.randomString(10)
             it.trustEngineRef = generator.randomString(10)
             it.publicKey = generator.randomString(50)
+            it.enabled = true;
             it
         }
     }
@@ -202,6 +203,7 @@ class TestObjectGenerator {
             it.name = 'EntityRoleWhiteList'
             it.retainedRoles = ['role1', 'role2']
             it.removeRolelessEntityDescriptors = true
+            it.enabled = true;
             it
         }
     }
@@ -212,6 +214,7 @@ class TestObjectGenerator {
             it.setEntityAttributesFilterTarget(buildEntityAttributesFilterTarget())
             it.setAttributes(buildAttributesList())
             it.intoTransientRepresentation()
+            it.enabled = true;
             it
         }
     }
@@ -221,6 +224,7 @@ class TestObjectGenerator {
             it.name = 'EntityAttributes'
             it.setEntityAttributesFilterTarget(buildEntityAttributesFilterTargetWithConditionScript())
             it.intoTransientRepresentation()
+            it.enabled = true;
             it
         }
     }
@@ -230,6 +234,7 @@ class TestObjectGenerator {
             it.name = 'EntityAttributes'
             it.setEntityAttributesFilterTarget(buildEntityAttributesFilterTargetWithRegex())
             it.intoTransientRepresentation()
+            it.enabled = true;
             it
         }
     }
@@ -237,6 +242,7 @@ class TestObjectGenerator {
     RequiredValidUntilFilter requiredValidUntilFilter() {
         return new RequiredValidUntilFilter().with {
             it.maxValidityInterval = 'P14D'
+            it.enabled = true;
             it
         }
     }
@@ -246,6 +252,7 @@ class TestObjectGenerator {
             it.name = "NameIDFormat"
             it.formats = ['urn:oasis:names:tc:SAML:2.0:nameid-format:persistent']
             it.setNameIdFormatFilterTarget(new NameIdFormatFilterTarget(nameIdFormatFilterTargetType: ENTITY, singleValue: 'https://sp1.example.org'))
+            it.enabled = true;
             it
         }
     }
@@ -255,6 +262,7 @@ class TestObjectGenerator {
             it.name = requiredValidUntilFilter.name
             it.resourceId = requiredValidUntilFilter.resourceId
             it.maxValidityInterval = requiredValidUntilFilter.maxValidityInterval
+            it.enabled = true;
             it
         }
     }
@@ -270,6 +278,7 @@ class TestObjectGenerator {
             it.requireSignedRoot = signatureValidationFilter.requireSignedRoot
             it.certificateFile = signatureValidationFilter.certificateFile
             it.defaultCriteriaRef = signatureValidationFilter.defaultCriteriaRef
+            it.enabled = true;
             it
         }
     }

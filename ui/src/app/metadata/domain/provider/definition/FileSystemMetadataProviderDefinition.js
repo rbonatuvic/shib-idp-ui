@@ -107,7 +107,8 @@ export const FileSystemMetadataProviderEditor = {
                 'xmlId',
                 '@type',
                 'metadataFile',
-                'doInitialization'
+                'doInitialization',
+                'enabled'
             ],
             override: {
                 '@type': {

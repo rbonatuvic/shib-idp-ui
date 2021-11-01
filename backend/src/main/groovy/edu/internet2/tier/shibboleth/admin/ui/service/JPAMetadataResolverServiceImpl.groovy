@@ -89,6 +89,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(EntityAttributesFilter filter, def markupBuilderDelegate) {
+        if (!filter.isFilterEnabled()) { return }
         markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
             // TODO: enhance. currently this does weird things with namespaces
             filter.attributes.each { attribute ->
@@ -128,6 +129,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
     // TODO: enhance
     void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
+        if (!filter.isFilterEnabled()) { return }
         if (!filter.retainedRoles?.isEmpty()) {
             markupBuilderDelegate.MetadataFilter(
                     'xsi:type': 'EntityRoleWhiteList',
@@ -142,6 +144,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(NameIdFormatFilter filter, def markupBuilderDelegate) {
+        if (!filter.isFilterEnabled()) { return }
         def type = filter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
         markupBuilderDelegate.MetadataFilter(
                 'xsi:type': 'NameIDFormat',
@@ -180,6 +183,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(RequiredValidUntilFilter filter, def markupBuilderDelegate) {
+        if (!filter.isFilterEnabled()) { return }
         if (filter.xmlShouldBeGenerated()) {
             markupBuilderDelegate.MetadataFilter(
                     'xsi:type': 'RequiredValidUntil',
@@ -189,6 +193,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(SignatureValidationFilter filter, def markupBuilderDelegate) {
+        if (!filter.isFilterEnabled()) { return }
         if (filter.xmlShouldBeGenerated()) {
             markupBuilderDelegate.MetadataFilter(id: filter.name,
                     'xsi:type': 'SignatureValidation',
@@ -459,8 +464,10 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                                     }
                                 }
                                 mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
-                                    doNamespaceProtectionFilter()
-                                    constructXmlNodeForFilter(filter, delegate)
+                                    if (filter.isFilterEnabled()) {
+                                        doNamespaceProtectionFilter()
+                                        constructXmlNodeForFilter(filter, delegate)
+                                    }
                                 }
                                 doNamespaceProtectionFilter()
                             }

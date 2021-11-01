@@ -42,7 +42,8 @@ export const NameIDFilterEditor = {
                 'name',
                 '@type',
                 'resourceId',
-                'nameIdFormatFilterTarget'
+                'nameIdFormatFilterTarget',
+                'filterEnabled'
             ]
         },
         {
