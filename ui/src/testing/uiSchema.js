@@ -65,6 +65,9 @@ const schema = {
         ],
         "ui:widget": "hidden"
     },
+    "serviceEnabled": {
+         "ui:widget": "hidden"
+    },
     "contacts": {
         "ui:options": {
             "orderable": false

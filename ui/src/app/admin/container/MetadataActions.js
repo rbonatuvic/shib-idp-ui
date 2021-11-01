@@ -2,7 +2,7 @@ import React from 'react';
 import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
 import { useMetadataActivator, useMetadataEntity } from '../../metadata/hooks/api';
 
-import { NotificationContext, createNotificationAction } from '../../notifications/hoc/Notifications';
+import { NotificationContext, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
 
 export function MetadataActions ({type, children}) {
 
@@ -21,6 +21,12 @@ export function MetadataActions ({type, children}) {
                 `Metadata ${type} has been ${enabled ? 'enabled' : 'disabled'}.`
             ));
             cb();
+        } else {
+            const { errorCode, errorMessage, cause } = activator?.response?.data;
+            dispatch(createNotificationAction(
+                `${errorCode}: ${errorMessage} ${cause ? `-${cause}` : ''}`,
+                NotificationTypes.ERROR
+            ));
         }
     }
 
@@ -31,6 +37,12 @@ export function MetadataActions ({type, children}) {
                 `Metadata ${type} has been deleted.`
             ));
             cb();
+        } else {
+            const { errorCode, errorMessage, cause } = activator?.response?.data;
+            dispatch(createNotificationAction(
+                `${errorCode}: ${errorMessage} ${cause ? `-${cause}` : ''}`,
+                NotificationTypes.ERROR
+            ));
         }
     }
 

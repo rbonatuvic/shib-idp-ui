@@ -150,6 +150,37 @@ class MetadataResolverControllerVersionEndpointsIntegrationTests extends Specifi
         mrv2.body.name == 'resolverUPDATED'
     }
 
+    def "SHIBUI-2182"() {
+        given:
+        def mr = new DynamicHttpMetadataResolver().with {
+            it.name = 'resolver2'
+            it.metadataRequestURLConstructionScheme = new RegexScheme().with {
+                it.match = 'This is the match field'
+                it.content = 'some content'
+                it
+            }
+            it
+        }
+        mr = repository.save(mr)
+        //Will create a second version for UPDATE revision
+        mr.name = 'resolverUPDATED'
+        mr.metadataRequestURLConstructionScheme.match = 'This is the match field too'
+        repository.save(mr)
+
+        when:
+        def allVersions = getAllMetadataResolverVersions(mr.resourceId, List)
+        def mrv1 = getMetadataResolverForVersion(mr.resourceId, allVersions.body[0].id, MetadataResolver)
+        def mrv2 = getMetadataResolverForVersion(mr.resourceId, allVersions.body[1].id, MetadataResolver)
+
+        then:
+        mrv1.statusCodeValue == 200
+        mrv1.body.name == 'resolver2'
+        mrv1.body.metadataRequestURLConstructionScheme.match == 'This is the match field'
+        mrv2.statusCodeValue == 200
+        mrv2.body.name == 'resolverUPDATED'
+        mrv2.body.metadataRequestURLConstructionScheme.match == 'This is the match field too'
+    }
+
     def "SHIBUI-1386"() {
         given:
         MetadataResolver mr = new FileBackedHttpMetadataResolver(name: 'testme')

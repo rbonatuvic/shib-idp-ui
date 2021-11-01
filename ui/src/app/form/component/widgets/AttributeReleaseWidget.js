@@ -98,8 +98,6 @@ const AttributeReleaseWidget = ({
 
     const [bundle, setBundle] = React.useState();
 
-    React.useEffect(() => console.log(bundle), [bundle]);
-
     const onMouseOver = (opt) => setBundle(opt);
     const onMouseOut = () => setBundle(null);
     

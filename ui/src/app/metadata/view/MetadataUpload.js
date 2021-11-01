@@ -142,7 +142,7 @@ export function MetadataUpload() {
                             &mdash;
                         </div>
                         <div className="form-group">
-                            <label><Translate value="label.service-resolver-metadata-url" for="url">Service Resolver Metadata URL</Translate></label>
+                            <label htmlFor="url"><Translate value="label.service-resolver-metadata-url">Service Resolver Metadata URL</Translate></label>
                             <input id="url" disabled={ watchFile && watchFile.length > 0 } type="text" className="form-control"{...register('url')} />
                         </div>
                         <div className="alert alert-danger" role="alert">

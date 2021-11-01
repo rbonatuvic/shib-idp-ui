@@ -17,6 +17,7 @@ export function InfoIcon ({ value, placement='left', ...props }) {
         )}
         aria-label={translate('tooltip.instruction')}>
             <Button variant="text">
+                <span className="sr-only">Description</span>
                 <FontAwesomeIcon className="text-primary" icon={faInfoCircle} size="lg" {...props} />
             </Button>
         </OverlayTrigger>

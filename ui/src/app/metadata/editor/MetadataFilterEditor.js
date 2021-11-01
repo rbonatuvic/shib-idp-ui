@@ -60,7 +60,7 @@ export function MetadataFilterEditor({children, onNavigate, block}) {
                             <p className="m-0"><FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" /> <Translate value="message.editor-invalid" /></p>
                         </Alert>
                     }
-                    {errors.length === 0 && warnings && warnings.hasOwnProperty(section) &&
+                    {warnings && warnings.hasOwnProperty(section) &&
                         <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
                             {warnings[section].map((w, widx) =>
                                 <p className="m-0" key={widx}>

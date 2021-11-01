@@ -72,7 +72,17 @@ function useCanEnable() {
 
 function useUserGroup() {
     const user = useCurrentUser();
-    return user?.userGroups[0];
+    return (user?.userGroups && user.userGroups.length > 0) ? user.userGroups[0] : null;
+}
+
+function useUserGroups() {
+    const user = useCurrentUser();
+    return (user?.userGroups && Array.isArray(user.userGroups)) ? user.userGroups : [];
+}
+
+function useUserGroupNames() {
+    const groups = useUserGroups();
+    return groups.map(g => g.name).join(', ');
 }
 
 function useUserGroupRegexValidator () {
@@ -91,5 +101,6 @@ export {
     useCanEnable,
     useCurrentUserLoading,
     useUserGroupRegexValidator,
-    useUserGroup
+    useUserGroup,
+    useUserGroupNames
 };

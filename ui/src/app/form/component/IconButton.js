@@ -11,11 +11,12 @@ const mappings = {
     "arrow-down": <FontAwesomeIcon icon={faArrowDown} />,
 };
 
-const IconButton = (props) => {
+const IconButton = ({children, ...props}) => {
     const { icon, ...otherProps } = props;
     return (
         <Button {...otherProps} variant={props.variant || 'light'}>
             {mappings[icon]}
+            <span className="sr-only">{children}</span>
         </Button>
     );
 };
