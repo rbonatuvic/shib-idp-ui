@@ -49,7 +49,7 @@ export function Metadata () {
                                 </MetadataDetail>
                             } />
                             <Route path={`${path}/edit/:section`} render={() =>
-                                <MetadataEdit />
+                                <MetadataEdit reload={reload} />
                             } />
                             <Route path={`${path}/restore/:versionId/:section`} exact render={() =>
                                 <MetadataConfirmRestore />
