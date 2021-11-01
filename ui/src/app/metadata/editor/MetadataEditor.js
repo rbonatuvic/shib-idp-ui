@@ -21,7 +21,7 @@ import { checkChanges } from '../hooks/utility';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useUserGroup } from '../../core/user/UserContext';
 
-export function MetadataEditor ({ current, reload }) {
+export function MetadataEditor ({ restore, current, reload }) {
 
     const translator = useTranslator();
     const group = useUserGroup();
@@ -70,7 +70,7 @@ export function MetadataEditor ({ current, reload }) {
         const resetBlock = blocking;
         setBlocking(false);
         setTimeout(() => {
-            history.push(path);
+            history.push(restore ? `../${path}/edit` : path);
             setBlocking(resetBlock);
         });
     };
@@ -81,7 +81,7 @@ export function MetadataEditor ({ current, reload }) {
 
     const warnings = definition.warnings && definition.warnings(metadata);
 
-    const canFilter = FilterableProviders.indexOf(definition.type) > -1;
+    const canFilter = restore ? false : FilterableProviders.indexOf(definition.type) > -1;
 
     React.useEffect(() => {
         dispatch(setFormDataAction(current));
