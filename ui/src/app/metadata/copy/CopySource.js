@@ -64,10 +64,6 @@ export function CopySource({ copy, onNext }) {
 
     const sourceIds = data.map(p => p.entityId);
 
-    React.useEffect(() => {
-        console.log(errors, isValid);
-    }, [errors]);
-
     return (
         <>
             <div className="row">
