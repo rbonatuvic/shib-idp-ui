@@ -86,7 +86,7 @@ const ObjectArrayItem = ({type, ...props}) => {
                                             props.disabled || props.readonly || !props.hasMoveUp
                                         }
                                         onClick={props.onReorderClick(props.index, props.index - 1)}
-                                    />
+                                    ><span className="sr-only">Move Up</span></IconButton>
                                 </div>
                             )}
 
@@ -100,7 +100,7 @@ const ObjectArrayItem = ({type, ...props}) => {
                                             props.disabled || props.readonly || !props.hasMoveDown
                                         }
                                         onClick={props.onReorderClick(props.index, props.index + 1)}
-                                    />
+                                    ><span className="sr-only">Move Down</span></IconButton>
                                 </div>
                             )}
 
@@ -114,7 +114,7 @@ const ObjectArrayItem = ({type, ...props}) => {
                                         style={btnStyle}
                                         disabled={props.disabled || props.readonly}
                                         onClick={props.onDropIndexClick(props.index)}
-                                    />
+                                    ><span className="sr-only">Delete</span></IconButton>
                                 </div>
                             )}
                         </div>
@@ -156,7 +156,7 @@ const DefaultArrayItem = (props) => {
                                         props.disabled || props.readonly || !props.hasMoveUp
                                     }
                                     onClick={props.onReorderClick(props.index, props.index - 1)}
-                                />
+                                ><span className="sr-only">Move Up</span></IconButton>
                             </div>
                         )}
 
@@ -170,7 +170,7 @@ const DefaultArrayItem = (props) => {
                                         props.disabled || props.readonly || !props.hasMoveDown
                                     }
                                     onClick={props.onReorderClick(props.index, props.index + 1)}
-                                />
+                                ><span className="sr-only">Move Down</span></IconButton>
                             </div>
                         )}
 
@@ -184,7 +184,7 @@ const DefaultArrayItem = (props) => {
                                     style={btnStyle}
                                     disabled={props.disabled || props.readonly}
                                     onClick={props.onDropIndexClick(props.index)}
-                                />
+                                ><span className="sr-only">Delete</span></IconButton>
                             </div>
                         )}
                     </div>
@@ -210,7 +210,7 @@ const DefaultFixedArrayFieldTemplate = (props) => {
                         className="array-item-add"
                         onClick={props.onAddClick}
                         disabled={props.disabled || props.readonly}
-                    />
+                    ><span className="sr-only">Add</span></AddButton>
                 )}
             </div>
             
@@ -254,7 +254,7 @@ const DefaultNormalArrayFieldTemplate = (props) => {
                             className="array-item-add mx-2"
                             onClick={props.onAddClick}
                             disabled={props.disabled || props.readonly}
-                        />
+                        ><span className="sr-only">Add</span></AddButton>
                     )}
                     {(props.uiSchema["ui:description"] || props.schema.description) && (
                         <ArrayFieldDescription
