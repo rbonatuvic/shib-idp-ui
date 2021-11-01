@@ -39,7 +39,7 @@ export function MetadataComparison () {
         <>
         <h2 className="mb-4">
             Compare&nbsp;
-            <Translate value={type === 'resolver' ? 'label.source' : 'label.provider'}>Source</Translate>
+            <Translate value={type === 'source' ? 'label.source' : 'label.provider'}>Source</Translate>
             &nbsp;Configuration
         </h2>
         {versions &&
