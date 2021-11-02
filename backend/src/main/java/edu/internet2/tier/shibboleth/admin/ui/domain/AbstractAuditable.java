@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
@@ -130,6 +131,7 @@ public abstract class AbstractAuditable implements Auditable {
                 .atZone(ZoneId.systemDefault())
                 .toInstant()
                 .atOffset(ZoneOffset.UTC)
-                .toZonedDateTime();
+                .toZonedDateTime()
+                .truncatedTo(ChronoUnit.MILLIS);
     }
 }
