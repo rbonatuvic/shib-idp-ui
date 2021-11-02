@@ -100,7 +100,7 @@
         ["xpath=//div/span", "xpath:position"],
         ["xpath=//span[contains(.,'admingroup')]", "xpath:innerText"]
       ],
-      "value": "admingroup"
+      "value": "ADMIN-GROUP"
     }, {
       "id": "3ea1eebd-bb9d-4171-ac81-4ef47e2d9315",
       "comment": "",

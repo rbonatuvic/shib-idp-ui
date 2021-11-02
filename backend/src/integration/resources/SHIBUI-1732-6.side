@@ -659,13 +659,13 @@
       "id": "0134f9c2-3bd4-4343-980e-27086ff70e86",
       "comment": "",
       "command": "click",
-      "target": "id=option-selector-root_backupFileInitNextRefreshDelay-item-2",
+      "target": "id=option-selector-items-root_backupFileInitNextRefreshDelay-item-2",
       "targets": [
-        ["id=option-selector-root_backupFileInitNextRefreshDelay-item-2", "id"],
+        ["id=option-selector-items-root_backupFileInitNextRefreshDelay-item-2", "id"],
         ["linkText=PT1M", "linkText"],
-        ["css=#option-selector-root_backupFileInitNextRefreshDelay-item-2", "css:finder"],
-        ["xpath=//a[@id='option-selector-root_backupFileInitNextRefreshDelay-item-2']", "xpath:attributes"],
-        ["xpath=//div[@id='option-selector-root_backupFileInitNextRefreshDelay']/a[3]", "xpath:idRelative"],
+        ["css=#option-selector-items-root_backupFileInitNextRefreshDelay-item-2", "css:finder"],
+        ["xpath=//a[@id='option-selector-items-root_backupFileInitNextRefreshDelay-item-2']", "xpath:attributes"],
+        ["xpath=//div[@id='option-selector-items-root_backupFileInitNextRefreshDelay']/a[3]", "xpath:idRelative"],
         ["xpath=(//a[contains(@href, '#')])[3]", "xpath:href"],
         ["xpath=//div[2]/a[3]", "xpath:position"],
         ["xpath=//a[contains(.,'PT1M')]", "xpath:innerText"]
