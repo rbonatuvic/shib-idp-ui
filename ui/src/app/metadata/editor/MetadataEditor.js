@@ -51,8 +51,15 @@ export function MetadataEditor ({ restore, current, reload }) {
             .then(() => {
                 gotoDetail({ refresh: true });
             })
-            .catch((err, notification) => {
-                notificationDispatch(notification || createNotificationAction(`${err.errorCode} - ${translator(err.errorMessage)}`, NotificationTypes.ERROR));
+            .catch((err) => {
+                notificationDispatch(
+                    createNotificationAction(`${err.errorCode > 1 ? `${err.errorCode} - ` : ''} ${translator(err.errorMessage)}`, err.errorCode === 1 ? NotificationTypes.INFO : NotificationTypes.ERROR)
+                );
+                if (err.errorCode === 1) {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 500);
+                }
             });
     };
 
@@ -82,10 +89,6 @@ export function MetadataEditor ({ restore, current, reload }) {
     const warnings = definition.warnings && definition.warnings(metadata);
 
     const canFilter = restore ? false : FilterableProviders.indexOf(definition.type) > -1;
-
-    React.useEffect(() => {
-        dispatch(setFormDataAction(current));
-    }, [current, dispatch])
 
     return (
         <div className="container-fluid p-3">

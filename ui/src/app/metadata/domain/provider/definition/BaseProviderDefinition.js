@@ -30,7 +30,6 @@ export const BaseProviderDefinition = {
             ...changes,
             metadataFilters: [
                 ...changes.metadataFilters.filter((filter, filterName) => {
-
                     if (filter['@type'] === 'RequiredValidUntil') {
                         if (!filter.maxValidityInterval || filter.maxValidityInterval === "") {
                             return false;
