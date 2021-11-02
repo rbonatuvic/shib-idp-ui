@@ -915,13 +915,13 @@
       "id": "74de5b81-69b2-446b-b4a7-0561676886be",
       "comment": "",
       "command": "click",
-      "target": "id=option-selector-root_backupFileInitNextRefreshDelay-item-1",
+      "target": "id=option-selector-items-root_backupFileInitNextRefreshDelay-item-1",
       "targets": [
-        ["id=option-selector-root_backupFileInitNextRefreshDelay-item-1", "id"],
+        ["id=option-selector-items-root_backupFileInitNextRefreshDelay-item-1", "id"],
         ["linkText=PT30S", "linkText"],
-        ["css=#option-selector-root_backupFileInitNextRefreshDelay-item-1", "css:finder"],
-        ["xpath=//a[@id='option-selector-root_backupFileInitNextRefreshDelay-item-1']", "xpath:attributes"],
-        ["xpath=//div[@id='option-selector-root_backupFileInitNextRefreshDelay']/a[2]", "xpath:idRelative"],
+        ["css=#option-selector-items-root_backupFileInitNextRefreshDelay-item-1", "css:finder"],
+        ["xpath=//a[@id='option-selector-items-root_backupFileInitNextRefreshDelay-item-1']", "xpath:attributes"],
+        ["xpath=//div[@id='option-selector-items-root_backupFileInitNextRefreshDelay']/a[2]", "xpath:idRelative"],
         ["xpath=(//a[contains(@href, '#')])[2]", "xpath:href"],
         ["xpath=//div[2]/a[2]", "xpath:position"],
         ["xpath=//a[contains(.,'PT30S')]", "xpath:innerText"]
