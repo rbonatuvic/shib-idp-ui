@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class EntityDescriptorRepresentation implements Serializable {
     private static final long serialVersionUID = 7753435553892353966L;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
 
     private List<AssertionConsumerServiceRepresentation> assertionConsumerServices;
 
