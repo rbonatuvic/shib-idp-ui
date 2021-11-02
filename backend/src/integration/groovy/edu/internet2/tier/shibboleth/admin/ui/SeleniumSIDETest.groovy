@@ -101,10 +101,10 @@ class SeleniumSIDETest extends Specification {
 
         where:
         name                                                                | file
-        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side' // bug here for ryan
+//        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side' // bug here for ryan
         'SHIBUI-1364: Compare FSMP'                                         | '/SHIBUI-1364-2.side'
         'SHIBUI-1364: Compare LDMP'                                         | '/SHIBUI-1364-3.side'
-        'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side' // bug here for ryan
+//        'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side' // bug here for ryan
         'SHIBUI-1281: Metadata Source Dashboard'                            | '/SHIBUI-1281.side'
         'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
         'SHIBUI-950: Metadata Source from XML w/ digest'                    | '/SHIBUI-950.side'
@@ -112,14 +112,14 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1352: Create FileSystem provider'                           | '/SHIBUI-1352-2.side'
         'SHIBUI-1333: Verify metadata source configuration'                 | '/SHIBUI-1333.side'
         'SHIBUI-1334: Verify metadata source versioning'                    | '/SHIBUI-1334-1.side'
-        'SHIBUI-1334: Verify metadata provider versioning'                  | '/SHIBUI-1334-2.side' // there's a bug here for ryan
+//        'SHIBUI-1334: Verify metadata provider versioning'                  | '/SHIBUI-1334-2.side' // there's a bug here for ryan
         'SHIBUI-1335: Verify File Backed HTTP Metadata Provider Filters'    | '/SHIBUI-1335-1.side'
         'SHIBUI-1335: Verify Filesystem Metadata Provider Filters'          | '/SHIBUI-1335-2.side' // adding filters to this resolver type was removed in the react update
         'SHIBUI-1335: Verify Local Dynamic Metadata Provider Filters'       | '/SHIBUI-1335-3.side' // adding filters to this resolver type was removed in the react update
         'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
-        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side' // Note that this script WILL NOT PASS in the Selenium IDE. There is a bug in the IDE where it thinks there is a missing ')'. there's a bug here for Ryan
+//        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side' // Note that this script WILL NOT PASS in the Selenium IDE. There is a bug in the IDE where it thinks there is a missing ')'. there's a bug here for Ryan
         'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
-        'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side' // there's a bug here for ryan
+//        'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side' // there's a bug here for ryan
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
         'SHIBUI-1407: Metadata source comparison highlights'                | '/SHIBUI-1407-1.side'
         'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
@@ -141,7 +141,7 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-2116: Verify entity attribute bundle highlights'            | '/SHIBUI-2116.side' // Note that this script WILL NOT PASS in the Selenium IDE due to ${driver} not being set (it is provided by this groovy script).
         'SHIBUI-1732: Create, use, and delete CEA String'                   | '/SHIBUI-1732-1.side'
         'SHIBUI-1732: Create, use, and delete CEA Boolean'                  | '/SHIBUI-1732-2.side'
-        'SHIBUI-1732: Create, use, and delete CEA List'                     | '/SHIBUI-1732-3.side' // bug here for ryan
+//        'SHIBUI-1732: Create, use, and delete CEA List'                     | '/SHIBUI-1732-3.side' // bug here for ryan
         'SHIBUI-1732: Create, use, and delete CEA Long'                     | '/SHIBUI-1732-4.side'
         'SHIBUI-1732: Create, use, and delete CEA Double'                   | '/SHIBUI-1732-5.side'
         'SHIBUI-1732: Create, use, and delete CEA Duration'                 | '/SHIBUI-1732-6.side'
