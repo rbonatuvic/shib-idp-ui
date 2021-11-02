@@ -2034,11 +2034,11 @@
       "id": "63e1b12d-a50a-4877-9588-21209a08b364",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(7) .d-block:nth-child(2)",
+      "target": "css=div:nth-child(8) > .bg-diff > .d-block:nth-child(2)",
       "targets": [
-        ["css=div:nth-child(7) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[7]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[7]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(8) > .bg-diff > .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[8]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[8]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'PT1M')]", "xpath:innerText"]
       ],
       "value": "PT1M"
