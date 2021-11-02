@@ -1,6 +1,7 @@
 import useFetch from 'use-http';
 
 import API_BASE_PATH from '../../App.constant';
+import { createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
 import { useContentionDispatcher, openContentionModalAction } from '../contention/ContentionContext';
 
 import {MetadataFilterTypes} from '../domain/filter';
@@ -113,7 +114,7 @@ export function useMetadataUpdater (path, current, cancel) {
                     resolve(await update(p, resolution));
                 }, (err) => {
                     cancel && cancel();
-                    reject(err);
+                    reject(err, createNotificationAction(`Updated data with latest changes`, NotificationTypes.INFO));
                 }));
             });
         }

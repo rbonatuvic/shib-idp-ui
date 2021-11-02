@@ -51,8 +51,8 @@ export function MetadataEditor ({ restore, current, reload }) {
             .then(() => {
                 gotoDetail({ refresh: true });
             })
-            .catch((err) => {
-                notificationDispatch(createNotificationAction(`Updated data with latest changes`, NotificationTypes.INFO))
+            .catch((err, notification) => {
+                notificationDispatch(notification || createNotificationAction(`${err.errorCode} - ${translator(err.errorMessage)}`, NotificationTypes.ERROR));
             });
     };
 
