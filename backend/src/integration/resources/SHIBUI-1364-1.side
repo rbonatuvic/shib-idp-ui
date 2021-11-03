@@ -2034,7 +2034,7 @@
       "id": "63e1b12d-a50a-4877-9588-21209a08b364",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(8) > .bg-diff > .d-block:nth-child(2)",
+      "target": "css=section > div > div > section:nth-child(2) > div > div.p-2 > div:nth-child(2) > div:nth-child(8) > div > span:nth-child(2)",
       "targets": [
         ["css=div:nth-child(8) > .bg-diff > .d-block:nth-child(2)", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[8]/div/span[2]", "xpath:idRelative"],
@@ -2078,7 +2078,7 @@
       "id": "75f45cb6-9c38-44e7-82dc-a473fa7fab62",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(2) > .d-flex > .d-block:nth-child(2)",
+      "target": "css=section > div > div > section:nth-child(2) > div > div.p-2 > div:nth-child(2) > div:nth-child(2) > div > span:nth-child(2)",
       "targets": [
         ["css=div:nth-child(2) > .d-flex > .d-block:nth-child(2)", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[2]/div/span[2]", "xpath:idRelative"],
