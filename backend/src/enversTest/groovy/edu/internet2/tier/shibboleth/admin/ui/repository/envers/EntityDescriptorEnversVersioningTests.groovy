@@ -647,9 +647,6 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         attrs2.attributes[0].attributeValues[0].xsStringvalue == 'attr1'
         attrs2.attributes[0].attributeValues[1].xsStringvalue == 'attr2'
 
-        //TODO: this is here to test something. should be removed
-        entityDescriptorHistory[0][0].extensions.equals(entityDescriptorHistory[1][0].extensions)
-
         getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the initial revision is intact
