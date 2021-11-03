@@ -835,6 +835,13 @@
       ],
       "value": "Test"
     }, {
+      "id": "f21989e9-8b54-4e55-a6f7-c699939f0992",
+      "comment": "",
+      "command": "select",
+      "target": "name=type",
+      "targets": [],
+      "value": "label=FileBackedHttpMetadataResolver"
+    }, {
       "id": "3c298664-b8c4-40de-986e-a955c760ba3e",
       "comment": "",
       "command": "select",
