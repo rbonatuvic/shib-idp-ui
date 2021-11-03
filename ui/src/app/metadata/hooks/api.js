@@ -113,7 +113,7 @@ export function useMetadataUpdater (path, current, cancel) {
                     resolve(await update(p, resolution));
                 }, (err) => {
                     cancel && cancel();
-                    reject(err);
+                    reject({ errorCode: 1, errorMessage: 'Updated data with latest changes - Reloading' });
                 }));
             });
         }
