@@ -686,19 +686,25 @@
       ],
       "value": ""
     }, {
-      "id": "e443eba7-3a7a-4706-b0a5-b40d114bbf07",
-      "comment": "",
-      "command": "click",
-      "target": "id=root_relyingPartyOverrides_CustomList_0",
-      "targets": [],
-      "value": ""
-    }, {
-      "id": "3c4af580-bcd1-454b-a278-0d5d3086a896",
+      "id": "5491ac17-6d58-4fe3-861a-06bc89470aa5",
       "comment": "",
       "command": "pause",
       "target": "1000",
       "targets": [],
       "value": ""
+    }, {
+      "id": "65be7a0b-462f-43be-9e2f-c7dc71f15467",
+      "comment": "",
+      "command": "select",
+      "target": "id=root_relyingPartyOverrides_CustomList_0",
+      "targets": [
+        ["id=root_relyingPartyOverrides_CustomList_0", "id"],
+        ["css=#root_relyingPartyOverrides_CustomList_0", "css:finder"],
+        ["xpath=//select[@id='root_relyingPartyOverrides_CustomList_0']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div[2]/div/form/div/div/div/div/div[8]/div/div/div/div[6]/div/div/div/div/div/div[2]/div/div/div/div/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": "label=foo"
     }, {
       "id": "e4abb650-c762-4060-bc81-428b4758f08e",
       "comment": "",
@@ -711,7 +717,7 @@
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div[2]/div/form/div/div/div/div/div[8]/div/div/div/div[6]/div/div/div/div/div/div[2]/div/div/div/div/div/div/select", "xpath:idRelative"],
         ["xpath=//select", "xpath:position"]
       ],
-      "value": "foo"
+      "value": "label=foo"
     }, {
       "id": "992e127d-5ac1-4796-b54f-f212683624ac",
       "comment": "",
@@ -828,6 +834,13 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "Test"
+    }, {
+      "id": "f21989e9-8b54-4e55-a6f7-c699939f0992",
+      "comment": "",
+      "command": "select",
+      "target": "name=type",
+      "targets": [],
+      "value": "label=FileBackedHttpMetadataResolver"
     }, {
       "id": "3c298664-b8c4-40de-986e-a955c760ba3e",
       "comment": "",

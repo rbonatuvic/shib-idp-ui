@@ -585,6 +585,13 @@
       ],
       "value": ""
     }, {
+      "id": "bb1d9d3f-631a-40eb-8f51-bd502a90c2b2",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "name=type",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "c6e4f105-81ce-4132-b82b-d28d11f27746",
       "comment": "",
       "command": "type",
@@ -597,6 +604,13 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "Test"
+    }, {
+      "id": "7a088a82-2f0c-4466-9304-60c7c504913c",
+      "comment": "",
+      "command": "select",
+      "target": "name=type",
+      "targets": [],
+      "value": "label=FileBackedHttpMetadataResolver"
     }, {
       "id": "2c98e69c-d595-48a7-ac67-eca5d9f3a784",
       "comment": "",

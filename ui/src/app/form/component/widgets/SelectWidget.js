@@ -127,7 +127,7 @@ const SelectWidget = ({
                     <option value="">{translator(placeholder)}</option>
                 )}
                 {(enumOptions).map(({ value, label }, i) =>
-                <option key={i} id={label} value={value} disabled={Array.isArray(enumDisabled) && (enumDisabled).indexOf(value) !== -1}>
+                    <option key={i} id={`${label}-${id}`} value={value} disabled={Array.isArray(enumDisabled) && (enumDisabled).indexOf(value) !== -1}>
                     {translator(label)}
                 </option>
                 )}
