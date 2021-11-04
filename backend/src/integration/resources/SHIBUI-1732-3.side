@@ -686,12 +686,32 @@
       ],
       "value": ""
     }, {
+      "id": "e443eba7-3a7a-4706-b0a5-b40d114bbf07",
+      "comment": "",
+      "command": "click",
+      "target": "id=root_relyingPartyOverrides_CustomList_0",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3c4af580-bcd1-454b-a278-0d5d3086a896",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "e4abb650-c762-4060-bc81-428b4758f08e",
       "comment": "",
       "command": "select",
       "target": "id=root_relyingPartyOverrides_CustomList_0",
-      "targets": [],
-      "value": "label=foo"
+      "targets": [
+        ["id=root_relyingPartyOverrides_CustomList_0", "id"],
+        ["css=#root_relyingPartyOverrides_CustomList_0", "css:finder"],
+        ["xpath=//select[@id='root_relyingPartyOverrides_CustomList_0']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div[2]/div/form/div/div/div/div/div[8]/div/div/div/div[6]/div/div/div/div/div/div[2]/div/div/div/div/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": "foo"
     }, {
       "id": "992e127d-5ac1-4796-b54f-f212683624ac",
       "comment": "",
@@ -889,13 +909,13 @@
       "id": "74de5b81-69b2-446b-b4a7-0561676886be",
       "comment": "",
       "command": "click",
-      "target": "id=option-selector-root_backupFileInitNextRefreshDelay-item-1",
+      "target": "id=option-selector-items-root_backupFileInitNextRefreshDelay-item-1",
       "targets": [
-        ["id=option-selector-root_backupFileInitNextRefreshDelay-item-1", "id"],
+        ["id=option-selector-items-root_backupFileInitNextRefreshDelay-item-1", "id"],
         ["linkText=PT30S", "linkText"],
-        ["css=#option-selector-root_backupFileInitNextRefreshDelay-item-1", "css:finder"],
-        ["xpath=//a[@id='option-selector-root_backupFileInitNextRefreshDelay-item-1']", "xpath:attributes"],
-        ["xpath=//div[@id='option-selector-root_backupFileInitNextRefreshDelay']/a[2]", "xpath:idRelative"],
+        ["css=#option-selector-items-root_backupFileInitNextRefreshDelay-item-1", "css:finder"],
+        ["xpath=//a[@id='option-selector-items-root_backupFileInitNextRefreshDelay-item-1']", "xpath:attributes"],
+        ["xpath=//div[@id='option-selector-items-root_backupFileInitNextRefreshDelay']/a[2]", "xpath:idRelative"],
         ["xpath=(//a[contains(@href, '#')])[2]", "xpath:href"],
         ["xpath=//div[2]/a[2]", "xpath:position"],
         ["xpath=//a[contains(.,'PT30S')]", "xpath:innerText"]
