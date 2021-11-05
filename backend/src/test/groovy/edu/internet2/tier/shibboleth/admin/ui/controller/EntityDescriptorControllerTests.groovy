@@ -596,11 +596,13 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
     @WithMockAdmin
     def "PUT /EntityDescriptor updates entity descriptors properly as admin"() {
         given:
-        def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false, idOfOwner: Group.ADMIN_GROUP.getOwnerId())
+        def entityDescriptorToSave = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false, idOfOwner: Group.ADMIN_GROUP.getOwnerId())
 
-        entityDescriptorTwo = entityDescriptorRepository.save(entityDescriptorTwo)
+        entityDescriptorRepository.save(entityDescriptorToSave)
         entityManager.flush()
         entityManager.clear()
+
+        def entityDescriptorTwo = entityDescriptorRepository.findByResourceId('uuid-2')
 
         def updatedEntityDescriptorRepresentation = jpaEntityDescriptorService.createRepresentationFromDescriptor(entityDescriptorTwo)
         updatedEntityDescriptorRepresentation.setServiceProviderName("newName")
