@@ -21,14 +21,14 @@ import { checkChanges } from '../hooks/utility';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useUserGroup } from '../../core/user/UserContext';
 
-export function MetadataEditor ({ current }) {
+export function MetadataEditor ({ restore, current, reload }) {
 
     const translator = useTranslator();
     const group = useUserGroup();
 
     const { type, id, section } = useParams();
 
-    const { update, loading } = useMetadataUpdater(`${ API_BASE_PATH }${getMetadataPath(type)}`, current);
+    const { update, loading } = useMetadataUpdater(`${ API_BASE_PATH }${getMetadataPath(type)}`, current, reload);
 
     const notificationDispatch = useNotificationDispatcher();
 
@@ -51,9 +51,15 @@ export function MetadataEditor ({ current }) {
             .then(() => {
                 gotoDetail({ refresh: true });
             })
-            .catch(err => {
-                // window.location.reload();
-                notificationDispatch(createNotificationAction(`${err.errorCode} - ${translator(err.errorMessage)}`, NotificationTypes.ERROR))
+            .catch((err) => {
+                notificationDispatch(
+                    createNotificationAction(`${err.errorCode > 1 ? `${err.errorCode} - ` : ''} ${translator(err.errorMessage)}`, err.errorCode === 1 ? NotificationTypes.INFO : NotificationTypes.ERROR)
+                );
+                if (err.errorCode === 1) {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 500);
+                }
             });
     };
 
@@ -71,10 +77,9 @@ export function MetadataEditor ({ current }) {
         const resetBlock = blocking;
         setBlocking(false);
         setTimeout(() => {
-            history.push(path);
+            history.push(restore ? `../${path}/edit` : path);
             setBlocking(resetBlock);
         });
-        // setBlocking(resetBlock);
     };
 
     const [blocking, setBlocking] = React.useState(false);
@@ -83,7 +88,7 @@ export function MetadataEditor ({ current }) {
 
     const warnings = definition.warnings && definition.warnings(metadata);
 
-    const canFilter = FilterableProviders.indexOf(definition.type) > -1;
+    const canFilter = restore ? false : FilterableProviders.indexOf(definition.type) > -1;
 
     return (
         <div className="container-fluid p-3">

@@ -1,6 +1,10 @@
 @import '../variables';
 @import '~bootstrap/scss/_mixins';
 
+.btn {
+    -webkit-appearance: none;
+}
+
 .btn.btn-text {
     display: inline;
     padding: 0px;

@@ -36,13 +36,16 @@ class EntityDescriptorRepositoryTest extends AbstractBaseDataJpaTest {
         when:
         def input = openSamlObjects.unmarshalFromXml(this.class.getResource('/metadata/SHIBUI-553.2.xml').bytes) as EntityDescriptor
         entityDescriptorRepository.save(input)
-
-        def item1 = entityDescriptorRepository.findByResourceId(input.resourceId)
+        entityManager.flush()
         entityManager.clear()
-        def item2 = entityDescriptorRepository.findByResourceId(input.resourceId)
+
+        def hashCode1 = entityDescriptorRepository.findByResourceId(input.resourceId).hashCode()
+
+        entityManager.clear()
+        def hashCode2 = entityDescriptorRepository.findByResourceId(input.resourceId).hashCode()
 
         then:
-        item1.hashCode() == item2.hashCode()
+        hashCode1 == hashCode2
     }
 
     def "SHIBUI-950"() {

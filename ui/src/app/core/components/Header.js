@@ -13,7 +13,7 @@ import Translate from '../../i18n/components/translate';
 import { useTranslator } from '../../i18n/hooks';
 
 import { brand } from '../../app.brand';
-import { useCurrentUser, useCurrentUserLoading, useIsAdmin } from '../user/UserContext';
+import { useCurrentUser, useCurrentUserLoading, useIsAdmin, useUserGroupNames } from '../user/UserContext';
 import { BASE_PATH } from '../../App.constant';
 
 export function Header () {
@@ -22,16 +22,17 @@ export function Header () {
 
     const isAdmin = useIsAdmin();
 
-    const { username, groupId } = useCurrentUser();
+    const { username } = useCurrentUser();
+    const name = useUserGroupNames();
     const loading = useCurrentUserLoading();
 
     return (
-        <Navbar expand="md" fixed="top" bg="">
+        <Navbar expand="md" fixed="top" bg="" aria-label="Main navigation">
             <Navbar.Brand href={brand.logo.link.url} title={brand.logo.link.description}>
                 <img src={brand.logo.small} width="30" height="30" className="d-inline-block align-top" alt={brand.logo.alt} />
                 <span className="d-lg-inline d-none"><Translate value={brand.logo.link.label}></Translate></span>
             </Navbar.Brand>
-            <Navbar.Text><Translate value={brand.header.title}></Translate></Navbar.Text>
+            <Navbar.Text as="h1"><Translate value={brand.header.title}></Translate></Navbar.Text>
             {loading ?
             <div className="d-flex justify-content-end flex-fill">
                 <FontAwesomeIcon icon={faSpinner} spin={true} pulse={true} size="lg" />
@@ -97,7 +98,7 @@ export function Header () {
                         </Dropdown.Toggle>
                         <Dropdown.Menu alignRight={true}>
                             <Dropdown.Header>Groups</Dropdown.Header>
-                            <Dropdown.ItemText id="advanced-nav-dropdown-groups">{groupId}</Dropdown.ItemText>
+                            <Dropdown.ItemText id="advanced-nav-dropdown-groups">{name}</Dropdown.ItemText>
                             <div class="dropdown-divider"></div>
                             <Dropdown.Item href={`/${BASE_PATH}logout`} target="_self" className="text-primary" aria-label={translator('action.logout')}
                                 id="user-nav-dropdown-logout">

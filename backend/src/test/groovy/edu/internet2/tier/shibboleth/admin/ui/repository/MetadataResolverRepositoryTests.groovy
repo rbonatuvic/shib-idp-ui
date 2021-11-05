@@ -42,13 +42,15 @@ class MetadataResolverRepositoryTests extends AbstractBaseDataJpaTest {
         when:
         def mdr = create { new MetadataResolver() }
         metadataResolverRepository.save(mdr)
-
-        def item1 = metadataResolverRepository.findByName('testme')
+        entityManager.flush()
         entityManager.clear()
-        def item2 = metadataResolverRepository.findByName('testme')
+
+        def hashCode1 = metadataResolverRepository.findByName('testme').hashCode()
+        entityManager.clear()
+        def hashCode2 = metadataResolverRepository.findByName('testme').hashCode()
 
         then:
-        item1.hashCode() == item2.hashCode()
+        hashCode1 == hashCode2
     }
 
     def "persisting and performing transformation into transient representation for EntityAttributesFilter correctly"() {

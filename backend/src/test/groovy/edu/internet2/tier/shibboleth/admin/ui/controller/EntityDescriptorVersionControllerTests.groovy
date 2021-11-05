@@ -115,6 +115,7 @@ class EntityDescriptorVersionControllerTests extends AbstractBaseDataJpaTest {
         })
         entityDescriptorRepository.saveAndFlush(ed)
         testEntityManager.getEntityManager().getTransaction().commit() // get envers to write version
+        testEntityManager.getEntityManager().clear()
     }
 
     /**

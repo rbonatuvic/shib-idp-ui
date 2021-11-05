@@ -17,11 +17,13 @@ jest.mock('../../i18n/hooks', () => ({
 const mockIsAdmin = jest.fn();
 const mockCurrentUser = jest.fn();
 const mockCurrentUserLoading = jest.fn();
+const mockUseUserGroupNames = jest.fn();
 
 jest.mock('../user/UserContext', () => ({
     useIsAdmin: () => mockIsAdmin(),
     useCurrentUser: () => mockCurrentUser(),
-    useCurrentUserLoading: () => mockCurrentUserLoading()
+    useCurrentUserLoading: () => mockCurrentUserLoading(),
+    useUserGroupNames: () => mockUseUserGroupNames()
 }));
 
 describe('header for admins', () => {
@@ -29,6 +31,7 @@ describe('header for admins', () => {
         mockIsAdmin.mockReturnValue(true);
         mockCurrentUser.mockReturnValue({ username: 'foo', groupId: 'bar' });
         mockCurrentUserLoading.mockReturnValue(false);
+        mockUseUserGroupNames.mockReturnValue('Foo');
     });
 
     it('should display logo and navigation', () => {

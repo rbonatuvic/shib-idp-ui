@@ -97,7 +97,7 @@ export function useMetadataFilterTypes () {
     return MetadataFilterTypes;
 }
 
-export function useMetadataUpdater (path, current) {
+export function useMetadataUpdater (path, current, cancel) {
     const { request, put, get, error, response, ...props } = useFetch(path, {
         cachePolicy: 'no-cache'
     });
@@ -111,8 +111,9 @@ export function useMetadataUpdater (path, current) {
             return new Promise((resolve, reject) => {
                 dispatch(openContentionModalAction(current, latest, body, async (resolution) => {
                     resolve(await update(p, resolution));
-                }, () => {
-                    reject();
+                }, (err) => {
+                    cancel && cancel();
+                    reject({ errorCode: 1, errorMessage: 'Updated data with latest changes - Reloading' });
                 }));
             });
         }

@@ -11,13 +11,14 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class EntityDescriptorRepresentation implements Serializable {
     private static final long serialVersionUID = 7753435553892353966L;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
 
     private List<AssertionConsumerServiceRepresentation> assertionConsumerServices;
 
@@ -133,7 +134,7 @@ public class EntityDescriptorRepresentation implements Serializable {
     @JsonIgnore
     public LocalDateTime getModifiedDateAsDate() {
         // we shouldn't have an ED without either modified or created date, so this is mostly for testing where data can be odd
-        return modifiedDate != null ? modifiedDate : createdDate != null ? createdDate : LocalDateTime.now();
+        return modifiedDate != null ? modifiedDate : createdDate != null ? createdDate : LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
     }
 
     public OrganizationRepresentation getOrganization() {

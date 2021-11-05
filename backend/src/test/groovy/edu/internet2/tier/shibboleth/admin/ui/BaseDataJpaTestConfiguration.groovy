@@ -74,7 +74,7 @@ class BaseDataJpaTestConfiguration {
     @Bean
     ObjectMapper objectMapper() {
         JavaTimeModule module = new JavaTimeModule()
-        LocalDateTimeDeserializer localDateTimeDeserializer =  new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS"))
+        LocalDateTimeDeserializer localDateTimeDeserializer =  new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS"))
         module.addDeserializer(LocalDateTime.class, localDateTimeDeserializer)
         ObjectMapper mapper = Jackson2ObjectMapperBuilder.json().modules(module).featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).build()
         mapper.enable(SerializationFeature.INDENT_OUTPUT)

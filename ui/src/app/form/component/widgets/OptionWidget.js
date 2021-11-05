@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAsterisk, faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { useTranslator } from "../../../i18n/hooks";
 
-const ToggleButton = ({ isOpen, onClick, disabled }) => (
+const ToggleButton = ({ isOpen, onClick, disabled, children }) => (
     <Button
         type="button"
         variant="outline-secondary"
@@ -23,6 +23,7 @@ const ToggleButton = ({ isOpen, onClick, disabled }) => (
             // Prevent input from losing focus.
             e.preventDefault();
         }}>
+            {children}
         <FontAwesomeIcon icon={isOpen ? faCaretUp : faCaretDown} />
     </Button>
 );
@@ -91,15 +92,16 @@ const OptionWidget = ({
 
     return (
         <Form.Group className="mb-0">
-            <Form.Label className={`${(touched && rawErrors?.length > 0) ? "text-danger" : ""}`}>
+            <Form.Label className={`${(touched && rawErrors?.length > 0) ? "text-danger" : ""}`} htmlFor={`option-selector-${id}`}>
                 <span>
                     <Translate value={label || schema.title} />
-                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="text-danger ml-2" size="sm" /> : null}
+                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="text-danger ml-2" size="sm" /> : <span className="sr-only">Item {id + 1}</span>}
                 </span>
                 {schema.description && <InfoIcon value={schema.description} />}
             </Form.Label>
             <Typeahead
-                id={`option-selector-${id}`}
+                id={`option-selector-items-${id}`}
+                inputProps={{ id: `option-selector-${id}` }}
                 ref={typeahead}
                 defaultInputValue={ inputValue }
                 onChange={ _onChange }
@@ -120,7 +122,9 @@ const OptionWidget = ({
                 newSelectionPrefix={''}
                 >
                 {({ isMenuShown, toggleMenu }) => (
-                    <ToggleButton isOpen={isMenuShown} onClick={e => toggleMenu()} disabled={disabled || readonly} />
+                    <ToggleButton isOpen={isMenuShown} onClick={e => toggleMenu()} disabled={disabled || readonly}>
+                        <span className="sr-only">Options</span>
+                    </ToggleButton>
                 )}
             </Typeahead>
             {rawErrors?.length > 0 && touched && (

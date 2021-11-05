@@ -579,6 +579,13 @@
       ],
       "value": "Test"
     }, {
+      "id": "12eebf6a-616b-4bb3-af32-aad829ba1133",
+      "comment": "",
+      "command": "select",
+      "target": "name=type",
+      "targets": [],
+      "value": "label=FileBackedHttpMetadataResolver"
+    }, {
       "id": "577b9b53-a904-419f-b0d8-4e899aaee297",
       "comment": "",
       "command": "select",
@@ -659,13 +666,13 @@
       "id": "ab704c2c-fbe5-47df-9308-bfaf6fbd1eb8",
       "comment": "",
       "command": "click",
-      "target": "id=option-selector-root_backupFileInitNextRefreshDelay-item-1",
+      "target": "id=option-selector-items-root_backupFileInitNextRefreshDelay-item-1",
       "targets": [
-        ["id=option-selector-root_backupFileInitNextRefreshDelay-item-1", "id"],
+        ["id=option-selector-items-root_backupFileInitNextRefreshDelay-item-1", "id"],
         ["linkText=PT30S", "linkText"],
-        ["css=#option-selector-root_backupFileInitNextRefreshDelay-item-1", "css:finder"],
-        ["xpath=//a[@id='option-selector-root_backupFileInitNextRefreshDelay-item-1']", "xpath:attributes"],
-        ["xpath=//div[@id='option-selector-root_backupFileInitNextRefreshDelay']/a[2]", "xpath:idRelative"],
+        ["css=#option-selector-items-root_backupFileInitNextRefreshDelay-item-1", "css:finder"],
+        ["xpath=//a[@id='option-selector-items-root_backupFileInitNextRefreshDelay-item-1']", "xpath:attributes"],
+        ["xpath=//div[@id='option-selector-items-root_backupFileInitNextRefreshDelay']/a[2]", "xpath:idRelative"],
         ["xpath=(//a[contains(@href, '#')])[2]", "xpath:href"],
         ["xpath=//div[2]/a[2]", "xpath:position"],
         ["xpath=//a[contains(.,'PT30S')]", "xpath:innerText"]

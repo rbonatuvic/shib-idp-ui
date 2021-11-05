@@ -97,13 +97,13 @@ class SeleniumSIDETest extends Specification {
         assert result.level.exitCode == 0
 
         cleanup:
-        runner.getWrappedDriver().quit()
+        runner?.getWrappedDriver()?.quit()
 
         where:
         name                                                                | file
         'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
-        'SHIBUI-1364: Compare FSMP with filters'                            | '/SHIBUI-1364-2.side'
-        'SHIBUI-1364: Compare LDMP with filters'                            | '/SHIBUI-1364-3.side'
+        'SHIBUI-1364: Compare FSMP'                                         | '/SHIBUI-1364-2.side'
+        'SHIBUI-1364: Compare LDMP'                                         | '/SHIBUI-1364-3.side'
         'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
         'SHIBUI-1281: Metadata Source Dashboard'                            | '/SHIBUI-1281.side'
         'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
@@ -114,10 +114,10 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1334: Verify metadata source versioning'                    | '/SHIBUI-1334-1.side'
         'SHIBUI-1334: Verify metadata provider versioning'                  | '/SHIBUI-1334-2.side'
         'SHIBUI-1335: Verify File Backed HTTP Metadata Provider Filters'    | '/SHIBUI-1335-1.side'
-        'SHIBUI-1335: Verify Filesystem Metadata Provider Filters'          | '/SHIBUI-1335-2.side' // adding filters to this resolver type was removed in the react update
-        'SHIBUI-1335: Verify Local Dynamic Metadata Provider Filters'       | '/SHIBUI-1335-3.side' // adding filters to this resolver type was removed in the react update
+        'SHIBUI-1335: Verify Filesystem Metadata Provider'                  | '/SHIBUI-1335-2.side'
+        'SHIBUI-1335: Verify Local Dynamic Metadata Provider'               | '/SHIBUI-1335-3.side'
         'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
-        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side' // Note that this script WILL NOT PASS in the Selenium IDE. There is a bug in the IDE where it thinks there is a missing ')'.
+        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side'
         'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
         'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'

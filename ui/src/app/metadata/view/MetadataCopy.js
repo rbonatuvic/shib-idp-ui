@@ -5,11 +5,14 @@ import { CopySource } from '../copy/CopySource';
 import { SaveCopy } from '../copy/SaveCopy';
 import { useMetadataEntity } from '../hooks/api';
 import { useHistory } from 'react-router';
+import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 
 export function MetadataCopy ({ onShowNav }) {
 
     const { post, response, loading } = useMetadataEntity('source');
     const history = useHistory();
+
+    const dispatch = useNotificationDispatcher();
 
     const [copy, setCopy] = React.useState({
         target: null,
@@ -34,6 +37,12 @@ export function MetadataCopy ({ onShowNav }) {
         await post('', data);
         if (response.ok) {
             history.push('/');
+        } else {
+            const { errorCode, errorMessage, cause } = response.data;
+            dispatch(createNotificationAction(
+                `${errorCode}: ${errorMessage} ${cause ? `-${cause}` : ''}`,
+                NotificationTypes.ERROR
+            ));
         }
     }
 

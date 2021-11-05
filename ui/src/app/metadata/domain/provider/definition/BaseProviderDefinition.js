@@ -30,7 +30,6 @@ export const BaseProviderDefinition = {
             ...changes,
             metadataFilters: [
                 ...changes.metadataFilters.filter((filter, filterName) => {
-
                     if (filter['@type'] === 'RequiredValidUntil') {
                         if (!filter.maxValidityInterval || filter.maxValidityInterval === "") {
                             return false;
@@ -77,9 +76,13 @@ export const BaseProviderDefinition = {
             }
         };
     },
+    overrideSchema: (schema) => schema,
     uiSchema: {
         name: {
             'ui:help': 'message.must-be-unique'
+        },
+        enabled: {
+            'ui:widget': 'hidden'
         }
     },
     steps: [

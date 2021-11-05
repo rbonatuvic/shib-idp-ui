@@ -28,7 +28,7 @@
     "properties": {
         "name": {
             "title": "label.metadata-provider-name-dashboard-display-only",
-            "description": "tooltip.metadata-provider-name-dashboard-display-only",
+            "description": "tooltip.metadata-provider-name",
             "type": "string",
             "widget": {
                 "id": "string",

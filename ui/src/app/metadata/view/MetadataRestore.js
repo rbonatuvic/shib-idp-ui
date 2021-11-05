@@ -16,7 +16,7 @@ export function MetadataRestore() {
                     ...metadata,
                     version: latest.version
                 }}>
-                    <MetadataEditor current={{
+                    <MetadataEditor restore={true} current={{
                         ...metadata,
                         version: latest.version
                     }} />

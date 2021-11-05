@@ -54,6 +54,4 @@ export function useMetadataDefinitionValidator(data, current, group) {
     return definition.validator(data, current, group, translator);
 }
 
-//getConfigurationSections
-
 export default MetadataSchema;

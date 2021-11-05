@@ -198,7 +198,8 @@ export const FileBackedHttpMetadataProviderEditor = {
                 'requireValidMetadata',
                 'failFastInitialization',
                 'useDefaultPredicateRegistry',
-                'satisfyAnyPredicates'
+                'satisfyAnyPredicates',
+                'enabled'
             ]
         },
         {
