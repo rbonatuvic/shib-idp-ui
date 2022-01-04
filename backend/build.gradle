@@ -15,12 +15,11 @@ sourceCompatibility = 11
 targetCompatibility = 11
 
 repositories {
-    jcenter()
+    mavenCentral()
     maven {
         url 'https://build.shibboleth.net/nexus/content/groups/public'
         artifactUrls = ['https://build.shibboleth.net/nexus/content/repositories/thirdparty-snapshots']
     }
-    mavenLocal()
 }
 
 configurations.all {
@@ -139,8 +138,8 @@ dependencies {
         compile "org.springframework.boot:spring-boot-${it}"
     }
     // To override older version with security issue - https://www.lunasec.io/docs/blog/log4j-zero-day/
-    implementation 'org.apache.logging.log4j:log4j-to-slf4j:2.15.0'
-    implementation 'org.apache.logging.log4j:log4j-api:2.15.0'
+    implementation "org.apache.logging.log4j:log4j-to-slf4j:${project.'log4j.version'}"
+    implementation "org.apache.logging.log4j:log4j-api:${project.'log4j.version'}"
 
     // TODO: figure out what this should really be
     runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
@@ -157,7 +156,7 @@ dependencies {
     compile group: 'org.jadira.usertype', name: 'usertype.core', version: '6.0.1.GA'
 
     //For easy data mocking capabilities
-    compile 'net.andreinc.mockneat:mockneat:0.1.4'
+    compile 'net.andreinc:mockneat:0.4.7'
 
     compile 'org.codehaus.groovy:groovy-all:3.0.7'
 
