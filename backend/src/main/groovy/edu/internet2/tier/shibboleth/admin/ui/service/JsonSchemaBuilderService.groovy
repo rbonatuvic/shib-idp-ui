@@ -34,7 +34,7 @@ class JsonSchemaBuilderService {
             it['name']
         })
         resultNames.addAll(customPropertiesConfiguration.getAttributes().collect {
-            it['name']
+            it['displayName']
         })
 
         json['enum'] = result
