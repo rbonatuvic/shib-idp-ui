@@ -33,6 +33,9 @@ class JsonSchemaBuilderService {
         result.addAll(customPropertiesConfiguration.getAttributes().collect {
             it['name']
         })
+        resultNames.addAll(customPropertiesConfiguration.getAttributes().collect {
+            it['name']
+        })
 
         json['enum'] = result
         json['enumNames'] = resultNames
