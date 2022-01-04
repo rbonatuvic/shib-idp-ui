@@ -130,9 +130,9 @@ export const assignValueToProperties = (models, properties, definition, schema) 
 
         const items = prop.type === 'array' && prop.items?.enum ? ({
             ...prop.items,
-            enum: prop.items.enum.map(item => ({
+            enum: prop.items.enum.map((item, index) => ({
                 key: item,
-                label: `label.attribute-${item}`,
+                label: `${prop?.items?.enumNames[index] || item}`,
                 differences: models
                     .map((model) => {
                         const value = model[prop.id];
