@@ -170,6 +170,7 @@ dependencies {
     runtimeOnly "org.postgresql:postgresql:42.2.20"
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.2.0'
     runtimeOnly 'mysql:mysql-connector-java:5.1.48'
+    runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc:9.4.1.jre11'
 
     //Swagger
     compile 'io.springfox:springfox-swagger2:2.9.2'
