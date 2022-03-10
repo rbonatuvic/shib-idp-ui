@@ -42,13 +42,13 @@ public abstract class AbstractAuditable implements Auditable {
 
     @CreationTimestamp
     @CreatedDate
-    @Column(nullable = false, updatable = false, columnDefinition = "DATETIME(6)")
+    @Column(nullable = false, updatable = false, columnDefinition = "DATETIME")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
     private LocalDateTime createdDate;
 
     @UpdateTimestamp
     @LastModifiedDate
-    @Column(nullable = false, columnDefinition = "DATETIME(6)")
+    @Column(nullable = false, columnDefinition = "DATETIME")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
     private LocalDateTime modifiedDate;
 

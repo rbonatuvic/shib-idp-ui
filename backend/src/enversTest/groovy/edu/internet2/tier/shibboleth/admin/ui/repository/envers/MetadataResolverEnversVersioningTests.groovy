@@ -14,7 +14,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetad
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
-import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -269,7 +268,7 @@ class MetadataResolverEnversVersioningTests extends Specification {
         when:
         ResourceBackedMetadataResolver resolver = new ResourceBackedMetadataResolver(name: 'rbmr').with {
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes(taskTimerRef: 'taskTimerRef')
-            it.classpathMetadataResource = new ClasspathMetadataResource(file: 'metadata.xml')
+            it.classpathMetadataResource = new ClasspathMetadataResource(setFileResource: 'metadata.xml')
             it
         }
 
@@ -291,7 +290,7 @@ class MetadataResolverEnversVersioningTests extends Specification {
         when:
         resolver.name = 'rbmrUPDATED'
         resolver.reloadableMetadataResolverAttributes.taskTimerRef = 'taskTimerRefUPDATED'
-        resolver.classpathMetadataResource.file = 'metadataUPDATED.xml'
+        resolver.classpathMetadataResource.fileResource = 'metadataUPDATED.xml'
 
         resolverHistory = updateAndGetRevisionHistoryOfMetadataResolver(resolver,
                 metadataResolverRepository,
