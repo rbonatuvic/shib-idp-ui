@@ -25,7 +25,9 @@ export function Roles() {
                 <Route path={`${path}/:id/edit`} render={() =>
                     <EditRole />
                 } />
-                <Redirect exact path={`${path}`} to={`${path}/list`} />
+                <Route path={`${path}`} exact render={() => 
+                    <Redirect to={`${path}/list`} />
+                } />
             </Switch>
         </>
     );

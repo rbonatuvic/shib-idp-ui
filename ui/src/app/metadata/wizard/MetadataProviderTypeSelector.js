@@ -100,7 +100,7 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
                                     <Form.Label>
                                         <span>
                                             <Translate value={'label.metadata-provider-type'} />
-                                            {loading && <FontAwesomeIcon icon={faSpinner} size="lg" spin={true} pulse={true} className="ml-2" /> }
+                                            {loading && <FontAwesomeIcon icon={faSpinner} size="lg" spin={true} pulse={true} className="ms-2" /> }
                                         </span>
                                         <InfoIcon value="tooltip.metadata-provider-type" />
                                     </Form.Label>

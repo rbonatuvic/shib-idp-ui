@@ -120,7 +120,7 @@ const StringListWithDefaultField = ({
                                 />
                             )}
                         </div>
-                        <div className="mr-3">
+                        <div className="me-3">
                             Default
                         </div>
                     </div>

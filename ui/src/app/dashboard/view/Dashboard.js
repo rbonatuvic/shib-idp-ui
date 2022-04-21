@@ -5,7 +5,7 @@ import { Switch, Route, Redirect, useRouteMatch, useLocation } from 'react-route
 import { NavLink } from 'react-router-dom';
 
 import Translate from '../../i18n/components/translate';
-import { AdminRoute } from '../../core/components/AdminRoute';
+import { ProtectRoute } from '../../core/components/ProtectRoute';
 
 import { SourcesTab } from './SourcesTab';
 import { ProvidersTab } from './ProvidersTab';
@@ -89,7 +89,7 @@ export function Dashboard () {
                     <Nav.Item>
                         <NavLink className="nav-link d-flex align-items-center" to={`${path}/admin/actions`}>
                             <Translate value="label.action-required">Action Required</Translate>
-                            <span className="badge badge-pill badge-danger ml-1">{actions}</span>
+                            <span className="badge badge-pill badge-danger ms-1">{actions}</span>
                         </NavLink>
                     </Nav.Item>
                 </>
@@ -100,11 +100,17 @@ export function Dashboard () {
                     <Redirect to={`${path}/metadata/manager/resolvers`} />
                 </Route>
                 <Route path={`${path}/metadata/manager/resolvers`} component={SourcesTab} />
-                <AdminRoute path={`${path}/metadata/manager/providers`} component={ProvidersTab} />
-                <AdminRoute path={`${path}/admin/management`} component={AdminTab} />
-                <Route path={`${path}/admin/actions`}>
-                    <ActionsTab sources={sources} users={users} reloadSources={loadSources} reloadUsers={loadUsers} />
-                </Route>
+                <Route path={`${path}/metadata/manager/providers`} component={ProvidersTab} />
+                <Route path={`${path}/admin/management`} render={() =>
+                    <ProtectRoute redirectTo="/dashboard">
+                        <AdminTab />
+                    </ProtectRoute>
+                } />
+                <Route path={`${path}/admin/actions`} render={() =>
+                    <ProtectRoute redirectTo="/dashboard">
+                        <ActionsTab sources={sources} users={users} reloadSources={loadSources} reloadUsers={loadUsers} />
+                    </ProtectRoute>
+                } />
             </Switch></>
             }
         </div>

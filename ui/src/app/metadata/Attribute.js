@@ -36,7 +36,9 @@ export function Attribute() {
             <Route exact path={`${path}/bundles/:id/edit`} render={() =>
                 <MetadataAttributeBundleEdit />
             } />
-            <Redirect exact path={`${path}`} to={`${path}/list`} />
+            <Route exact path={`${path}`} render={() =>
+                <Redirect to={`${path}/list`} />
+            } />
         </Switch>
     );
 }

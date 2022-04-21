@@ -35,7 +35,7 @@ export function Footer () {
                 </div>
                 <div className="col-md-6 logo">
                     <div className="d-flex align-items-end justify-content-end p-2">
-                        <span className="flex-item mr-2"><Translate value="brand.in-partnership-with">In partnership with</Translate></span>&nbsp;
+                        <span className="flex-item me-2"><Translate value="brand.in-partnership-with">In partnership with</Translate></span>&nbsp;
                         <a href="https://www.unicon.net" target="_blank" title="Unicon" className="flex-item" rel="noreferrer">
                             <img src="assets/logo_unicon.png" className="img-fluid float-right" alt="Unicon Logo" />
                         </a>

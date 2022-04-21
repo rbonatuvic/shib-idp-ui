@@ -30,7 +30,9 @@ export function Filter() {
                     <EditFilter />
                 </MetadataFilterSelector>
             } />
-            <Redirect exact path={`${path}/new`} to={`${path}/new/common`} />
+            <Route exact path={`${path}/new`} render={() =>
+                <Redirect to={`${path}/new/common`} />
+            } />
         </Switch>
     );
 }

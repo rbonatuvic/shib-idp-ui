@@ -21,22 +21,22 @@ export function AccessRequest({ users, roles, onDeleteUser, onChangeUserRole }) 
                 <div className="row align-items-center">
                     <div className="col-10">
                         <div className="row">
-                            <div className="col text-right font-weight-bold">
+                            <div className="col text-end font-weight-bold">
                                 <Translate value="label.user-id">UserId</Translate>
                             </div>
                             <div className="col">{ user.username }</div>
-                            <div className="col text-right font-weight-bold">
+                            <div className="col text-end font-weight-bold">
                                 <Translate value="label.email">Email</Translate>
                             </div>
                             <div className="col">{ user.emailAddress }</div>
                         </div>
                         <div className="w-100 my-1"></div>
                         <div className="row">
-                            <div className="col text-right font-weight-bold" >
+                            <div className="col text-end font-weight-bold" >
                                 <Translate value="label.name">Name</Translate>
                             </div>
                             <div className="col">{ user.firstName } { user.lastName }</div>
-                            <label htmlFor={`role-${i}`} className="d-block col text-right font-weight-bold" >
+                            <label htmlFor={`role-${i}`} className="d-block col text-end font-weight-bold" >
                                 <Translate value="label.role">Role</Translate>
                             </label>
                             <div className="col">
@@ -49,7 +49,7 @@ export function AccessRequest({ users, roles, onDeleteUser, onChangeUserRole }) 
                             </div>
                         </div>
                     </div>
-                    <div className="col-2 text-right">
+                    <div className="col-2 text-end">
                         <Button variant="danger" size="sm" onClick={() => onDeleteUser(user.username)}>
                             <i className="fa fa-trash fa-lg"></i>
                             &nbsp;

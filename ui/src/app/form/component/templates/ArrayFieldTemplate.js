@@ -121,7 +121,7 @@ const ObjectArrayItem = ({type, ...props}) => {
                     )}
                 </div>
                 <Accordion.Collapse eventKey="0">
-                    <div className="mr-2 flex-grow-1">{props.children}</div>
+                    <div className="me-2 flex-grow-1">{props.children}</div>
                 </Accordion.Collapse>
             </div>
             </Accordion>
@@ -142,7 +142,7 @@ const DefaultArrayItem = (props) => {
     return (
         <div key={props.key} className={`mt-2 `}>
             <div className="mb-2  d-flex align-items-start">
-                <div className={`mr-2 flex-grow-1 ${uiSchemaOptions.classNames}`}>{props.children}</div>
+                <div className={`me-2 flex-grow-1 ${uiSchemaOptions.classNames}`}>{props.children}</div>
                 {props.hasToolbar && (
                     <div className="d-flex flex-row align-items-start">
                         {(props.hasMoveUp || props.hasMoveDown) && (

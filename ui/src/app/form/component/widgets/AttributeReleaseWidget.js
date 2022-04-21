@@ -119,7 +119,7 @@ const AttributeReleaseWidget = ({
                         <p id={`bundle-descr-${i}`} className="sr-only">Bundled attributes: {option.value.join(', ')}</p>
                         <span className={`${option.selected ? 'badge-primary' : 'badge-light'} badge border p-2`}>
                             <Translate value="action.select-bundle">Select Bundle</Translate>
-                            <FontAwesomeIcon icon={faCheck} className="ml-1" />
+                            <FontAwesomeIcon icon={faCheck} className="ms-1" />
                         </span>
                     </ListGroup.Item>
                 ))}
@@ -130,7 +130,7 @@ const AttributeReleaseWidget = ({
                 <thead>
                     <tr className="table-secondary">
                         <th><Translate value="label.attribute-name">Attribute Name</Translate></th>
-                        <th className="text-right pr-2"><Translate value="label.yes">Yes</Translate></th>
+                        <th className="text-end pe-2"><Translate value="label.yes">Yes</Translate></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -165,7 +165,7 @@ const AttributeReleaseWidget = ({
                     })}
                     <tr>
                         <td><Translate value="label.check-all-attributes">Check All Attributes</Translate></td>
-                        <td className="text-right">
+                        <td className="text-end">
                             <Button type="button" variant="text" size="sm" className="text-success px-2" onClick={() => onCheckAll()} id="attributeRelease.checkAll">
                                 <FontAwesomeIcon icon={faCheck} size="lg" />
                                 <span className="sr-only"><Translate value="label.check-all-attributes">Check All Attributes</Translate></span>
@@ -174,7 +174,7 @@ const AttributeReleaseWidget = ({
                     </tr>
                     <tr>
                         <td><Translate value="label.clear-all-attributes">Clear All Attributes</Translate></td>
-                        <td className="text-right">
+                        <td className="text-end">
                             <Button type="button" variant="text" size="sm" className="text-danger px-2" onClick={() => onClearAll()} id="attributeRelease.clearAll">
                                 <FontAwesomeIcon icon={faTimes} size="lg" />
                                 <span className="sr-only"><Translate value="label.clear-all-attributes">Clear All Attributes</Translate></span>

@@ -40,7 +40,7 @@ const RadioWidget = ({
                     <Translate value={label || schema.title} />
                     {(label || schema.title) && required ? <span className="text-danger">*</span> : null}
                 </span>
-                {schema.description && <InfoIcon value={schema.description} className="ml-2" />}
+                {schema.description && <InfoIcon value={schema.description} className="ms-2" />}
             </Form.Label>
             {(enumOptions).map((option, i) => {
                 const itemDisabled =

@@ -25,7 +25,9 @@ export function Groups() {
                 <Route path={`${path}/:id/edit`} render={() =>
                     <EditGroup />
                 } />
-                <Redirect exact path={`${path}`} to={`${path}/list`} />
+                <Route path={`${path}`} exact render={
+                    <Redirect to={`${path}/list`} />
+                } />
             </Switch>
         </>
     );

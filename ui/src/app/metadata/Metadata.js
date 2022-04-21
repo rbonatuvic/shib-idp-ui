@@ -57,7 +57,9 @@ export function Metadata () {
                             <Route path={`${path}/restore/:versionId/:section/edit`} render={() =>
                                 <MetadataRestore />
                             } />
-                            <Redirect exact path={`${path}`} to={`${path}/configuration/options`} />
+                            <Route exact path={`${path}`} render={() =>
+                                <Redirect to={`${path}/configuration/options`} />
+                            } />
                         </Switch>
                     </MetadataSchema>
                 </MetadataXmlLoader>

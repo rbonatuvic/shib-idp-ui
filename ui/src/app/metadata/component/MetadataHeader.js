@@ -58,7 +58,7 @@ export function MetadataHeader ({ showGroup, model, current = true, enabled = tr
                         <GroupsProvider>
                             {(groups, removeGroup, loadingGroups) =>
                                 <div className="form-inline">
-                                    <label className="mr-2" htmlFor={`group-${model.serviceProviderName}`}><Translate value="action.source-group">Group</Translate>: </label>
+                                    <label className="me-2" htmlFor={`group-${model.serviceProviderName}`}><Translate value="action.source-group">Group</Translate>: </label>
                                     <select
                                         id={`group-${model.id}`}
                                         name={`group-${model.id}`}

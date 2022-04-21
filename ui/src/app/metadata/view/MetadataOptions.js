@@ -72,7 +72,7 @@ export function MetadataOptions ({reload}) {
                         {enable && canEnable &&
                         <Button variant={enabled ? 'outline-secondary' : 'outline-secondary' } size="sm" className=""
                                 onClick={() => enable(metadata, !enabled, reload)}>
-                                     <span className=" mr-1">
+                                     <span className=" me-1">
                                          <Translate value={enabled ? 'label.disable' : 'label.enable'} />
                                      </span>
                             <FontAwesomeIcon size="lg" icon={enabled ? faToggleOn : faToggleOff} />
@@ -85,7 +85,7 @@ export function MetadataOptions ({reload}) {
                             disabled={enabled}
                             onClick={() => remove(metadata.id, redirectOnDelete)}>
                             <Translate value="action.delete" />
-                            <FontAwesomeIcon icon={faTrash} className="ml-2" />
+                            <FontAwesomeIcon icon={faTrash} className="ms-2" />
                         </Button>
                         }
                     </div>
@@ -109,7 +109,7 @@ export function MetadataOptions ({reload}) {
                 {type === 'provider' && canFilter &&
                     <div id="filters">
                         <div className="numbered-header d-flex justify-content-start bg-light align-items-center">
-                            <h2 className="title h4 m-0 ml-2 flex-grow-1">
+                            <h2 className="title h4 m-0 ms-2 flex-grow-1">
                                 <span className="text"><Translate value="label.filters">Filters</Translate></span>
                             </h2>
                             <div className="actions px-2">

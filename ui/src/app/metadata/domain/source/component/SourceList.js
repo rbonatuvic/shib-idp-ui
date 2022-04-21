@@ -96,11 +96,11 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                                 </td>
                                             }
                                             {onDelete && isAdmin &&
-                                                <td className="text-right align-middle">
+                                                <td className="text-end align-middle">
                                                     <OverlayTrigger trigger={source.serviceEnabled ? ['hover', 'focus'] : []} placement="left"
                                                         overlay={
                                                             <Popover id={`delete-source-btn-${idx}`}>
-                                                                <Popover.Content>A metadata source must be disabled before it can be deleted.</Popover.Content>
+                                                                <Popover.Body>A metadata source must be disabled before it can be deleted.</Popover.Body>
                                                             </Popover>
                                                         }>
                                                         <span className="d-inline-block">

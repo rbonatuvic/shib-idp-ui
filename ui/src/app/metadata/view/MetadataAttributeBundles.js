@@ -50,7 +50,7 @@ export function MetadataAttributeBundles() {
                                                         <tr key={i}>
                                                             <td>{ bundle.name }</td>
                                                             <td><TruncateText text={ bundle?.attributes?.join(', ') } /></td>
-                                                            <td className="text-right">
+                                                            <td className="text-end">
                                                                 <Link to={`../attributes/bundles/${bundle.resourceId}/edit`} className="btn btn-link text-primary">
                                                                     <FontAwesomeIcon icon={faEdit} size="lg" />
                                                                     <span className="sr-only">

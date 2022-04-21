@@ -48,9 +48,9 @@ const UpDownWidget = ({
             <Form.Label>
                 <span>
                     <Translate value={label || schema.title} />
-                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="ml-2 text-danger" size="sm" /> : null}
+                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="ms-2 text-danger" size="sm" /> : null}
                 </span>
-                {schema.description && <InfoIcon value={schema.description} className="ml-2" />}
+                {schema.description && <InfoIcon value={schema.description} className="ms-2" />}
             </Form.Label>
             <Form.Control
                 id={id}

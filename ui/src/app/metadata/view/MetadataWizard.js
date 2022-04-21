@@ -6,7 +6,7 @@ import { MetadataProviderWizard } from '../wizard/MetadataProviderWizard';
 import { Wizard } from '../wizard/Wizard';
 import { useMetadataEntity } from '../hooks/api';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
-import { Prompt, useHistory } from 'react-router';
+import { Prompt, useHistory } from 'react-router-dom';
 import { useTranslator } from '../../i18n/hooks';
 
 export function MetadataWizard ({type, data, onCallback}) {
