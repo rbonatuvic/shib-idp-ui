@@ -8,6 +8,7 @@ import { useMetadataEntity } from '../hooks/api';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useTranslator } from '../../i18n/hooks';
 import { useMetadataLoader } from '../hoc/MetadataSelector';
+import Form from 'react-bootstrap/Form';
 
 export function MetadataHeader ({ showGroup, model, current = true, enabled = true, children, ...props }) {
 
@@ -57,9 +58,11 @@ export function MetadataHeader ({ showGroup, model, current = true, enabled = tr
                         {isAdmin && showGroup &&
                         <GroupsProvider>
                             {(groups, removeGroup, loadingGroups) =>
-                                <div className="form-inline">
-                                    <label className="me-2" htmlFor={`group-${model.serviceProviderName}`}><Translate value="action.source-group">Group</Translate>: </label>
-                                    <select
+                                <div className="form-inline" style={{maxWidth: '50%'}}>
+                                    <label className="me-2 mb-2" htmlFor={`group-${model.serviceProviderName}`}>
+                                        <Translate value="action.source-group">Group</Translate>:
+                                    </label>
+                                    <Form.Select
                                         id={`group-${model.id}`}
                                         name={`group-${model.id}`}
                                         className="form-control form-control-sm"
@@ -71,8 +74,7 @@ export function MetadataHeader ({ showGroup, model, current = true, enabled = tr
                                         {groups.map((g, ridx) => (
                                             <option key={ridx} value={g.resourceId}>{g.name}</option>
                                         ))}
-                                    </select>
-
+                                    </Form.Select>
                                 </div>
                             }
                         </GroupsProvider>

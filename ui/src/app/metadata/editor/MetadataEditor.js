@@ -28,6 +28,8 @@ export function MetadataEditor ({ restore, current, reload }) {
 
     const { type, id, section } = useParams();
 
+    console.log(type, id);
+
     const { update, loading } = useMetadataUpdater(`${ API_BASE_PATH }${getMetadataPath(type)}`, current, reload);
 
     const notificationDispatch = useNotificationDispatcher();
