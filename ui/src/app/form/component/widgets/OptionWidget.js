@@ -91,7 +91,7 @@ const OptionWidget = ({
     };
 
     return (
-        <Form.Group className="mb-0">
+        <Form.Group className="mb-3">
             <Form.Label className={`${(touched && rawErrors?.length > 0) ? "text-danger" : ""}`} htmlFor={`option-selector-${id}`}>
                 <span>
                     <Translate value={label || schema.title} />

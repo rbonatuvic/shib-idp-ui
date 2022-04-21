@@ -34,7 +34,7 @@ const RadioWidget = ({
     const inline = Boolean(options && options.inline);
 
     return (
-        <Form.Group className="mb-0">
+        <Form.Group className="mb-3">
             <Form.Label className="d-block">
                 <span>
                     <Translate value={label || schema.title} />

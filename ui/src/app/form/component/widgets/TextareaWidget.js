@@ -45,7 +45,7 @@ const TextareaWidget = ({
     };
 
     return (
-        <>
+        <div className="mb-3">
             <Form.Label className={`${touched && rawErrors?.length > 0 ? "text-danger" : ""}`}>
                 <span>
                     <Translate value={label || schema.title} />
@@ -82,7 +82,7 @@ const TextareaWidget = ({
                     })}
                 </ListGroup>
             )}
-        </>
+        </div>
     );
 };
 

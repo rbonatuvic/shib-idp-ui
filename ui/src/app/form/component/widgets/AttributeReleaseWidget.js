@@ -143,7 +143,7 @@ const AttributeReleaseWidget = ({
                                 <td className="align-middle"><Translate value={`label.attribute-${option.label}`}>{option.label}</Translate></td>
                                 <td className="">
                                     <fieldset className="d-flex justify-content-end">
-                                        <div className="custom-control custom-checkbox bordered-custom-checkbox">
+                                        <div className="custom-control custom-checkbox bordered-custom-checkbox pe-2">
                                             <Form.Check
                                                 custom
                                                 required={required}

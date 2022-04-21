@@ -38,8 +38,6 @@ const TextWidget = ({
         _onBlur(evt);
     };
 
-    console.log(schema.description);
-
     // const classNames = [rawErrors?.length > 0 ? "is-invalid" : "", type === 'file' ? 'custom-file-label': ""]
     return (
         <Form.Group className="mb-3">
