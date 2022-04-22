@@ -81,7 +81,7 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
                     <div className="col col-xl-6 col-lg-9 col-xs-12">
                         <div className="bg-light border rounded px-4 pt-4 pb-1">
                             <Form onSubmit={handleSubmit(onNext)}>
-                                <Form.Group className={errors.name ? 'text-danger' : ''}>
+                                <Form.Group className={`${errors.name ? 'text-danger' : ''} mb-3`}>
                                     <Form.Label>
                                         <span><Translate value={'label.metadata-provider-name-dashboard-display-only'} /></span>
                                         <InfoIcon value="tooltip.metadata-provider-name" />
@@ -96,7 +96,7 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
                                         {errors?.name?.type === 'required' && <Translate value={`message.service-resolver-name-required`} />}
                                     </Form.Text>
                                 </Form.Group>
-                                <Form.Group>
+                                <Form.Group className="mb-3">
                                     <Form.Label>
                                         <span>
                                             <Translate value={'label.metadata-provider-type'} />
@@ -104,10 +104,10 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
                                         </span>
                                         <InfoIcon value="tooltip.metadata-provider-type" />
                                     </Form.Label>
-                                    <Form.Control disabled={loading} custom as="select" defaultValue={''} placeholder={translator(`label.select-metadata-type`)} {...register('type', {required: true})}>
+                                    <Form.Select disabled={loading} defaultValue={''} placeholder={translator(`label.select-metadata-type`)} {...register('type', {required: true})}>
                                         <option disabled value="">{translator(`label.select-metadata-type`)}</option>
                                         {types.map(t => <option key={t} value={t}>{t}</option>)}
-                                    </Form.Control>
+                                    </Form.Select>
                                 </Form.Group>
                             </Form>
                         </div>

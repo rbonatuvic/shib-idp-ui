@@ -19,7 +19,7 @@ export function FieldTemplate ({
 
     return (
         <>{!props.hidden ?
-            <Form.Group>
+            <Form.Group className="mb-3">
                 <div>
                     {children}
                 </div>

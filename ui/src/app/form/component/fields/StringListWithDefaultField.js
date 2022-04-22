@@ -132,7 +132,7 @@ const StringListWithDefaultField = ({
                                     className="flex-grow-1"
                                     value={p.value}
                                     onChange={({ target: { value } }) => setValue(p, value)}></Form.Control>
-                                <Form.Control className="mx-4" custom name="default" type="radio"
+                                <Form.Control className="mx-4" name="default" type="radio"
                                     checked={ p.default }
                                     onChange={ () => setDefault(p) }
                                 ></Form.Control>

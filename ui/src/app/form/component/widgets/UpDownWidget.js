@@ -44,7 +44,7 @@ const UpDownWidget = ({
     };
 
     return (
-        <Form.Group className="mb-0">
+        <Form.Group>
             <Form.Label>
                 <span>
                     <Translate value={label || schema.title} />

@@ -145,7 +145,6 @@ const AttributeReleaseWidget = ({
                                     <fieldset className="d-flex justify-content-end">
                                         <div className="custom-control custom-checkbox bordered-custom-checkbox pe-2">
                                             <Form.Check
-                                                custom
                                                 required={required}
                                                 checked={checked}
                                                 className="bg-transparent"

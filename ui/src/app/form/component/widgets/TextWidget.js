@@ -40,7 +40,7 @@ const TextWidget = ({
 
     // const classNames = [rawErrors?.length > 0 ? "is-invalid" : "", type === 'file' ? 'custom-file-label': ""]
     return (
-        <Form.Group className="mb-3">
+        <Form.Group>
             <Form.Label className={`${rawErrors?.length > 0 && touched ? "text-danger" : ""}`} htmlFor={id}>
                 <span>
                     <Translate value={label || schema.title} />
