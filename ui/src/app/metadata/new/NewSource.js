@@ -10,7 +10,7 @@ import { faCopy, faLink, faPlusSquare } from '@fortawesome/free-solid-svg-icons'
 
 export function NewSource() {
 
-    const { path } = useRouteMatch();
+    const { path, url } = useRouteMatch();
 
     const [showNav, setShowNav] = React.useState(true);
 
@@ -87,7 +87,7 @@ export function NewSource() {
                                 <MetadataCopy onShowNav={ (s) => { setShowNav(s) } } />
                             } />
                             <Route exact path={`${path}`} render={() =>
-                                <Redirect to={`${path}/blank`} />
+                                <Redirect to={`${url}/blank`} />
                             } />
                         </Switch>
                     </MetadataSchema>

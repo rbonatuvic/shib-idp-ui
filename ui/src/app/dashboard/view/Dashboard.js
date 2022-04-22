@@ -20,7 +20,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 export function Dashboard () {
 
-    const { path } = useRouteMatch();
+    const { path, url } = useRouteMatch();
     const location = useLocation();
 
     const isAdmin = useIsAdmin();
@@ -97,7 +97,7 @@ export function Dashboard () {
             </Nav>
             <Switch>
                 <Route exact path={`${path}`}>
-                    <Redirect to={`${path}/metadata/manager/resolvers`} />
+                    <Redirect to={`${url}/metadata/manager/resolvers`} />
                 </Route>
                 <Route path={`${path}/metadata/manager/resolvers`} component={SourcesTab} />
                 <Route path={`${path}/metadata/manager/providers`} component={ProvidersTab} />

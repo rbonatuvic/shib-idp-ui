@@ -9,7 +9,7 @@ import { EditFilter } from './view/EditFilter';
 
 export function Filter() {
 
-    const { path } = useRouteMatch();
+    const { path, url } = useRouteMatch();
 
     return (
         <Switch>
@@ -31,7 +31,7 @@ export function Filter() {
                 </MetadataFilterSelector>
             } />
             <Route exact path={`${path}/new`} render={() =>
-                <Redirect to={`${path}/new/common`} />
+                <Redirect to={`${url}/new/common`} />
             } />
         </Switch>
     );

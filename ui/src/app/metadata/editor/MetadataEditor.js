@@ -28,8 +28,6 @@ export function MetadataEditor ({ restore, current, reload }) {
 
     const { type, id, section } = useParams();
 
-    console.log(type, id);
-
     const { update, loading } = useMetadataUpdater(`${ API_BASE_PATH }${getMetadataPath(type)}`, current, reload);
 
     const notificationDispatch = useNotificationDispatcher();
@@ -72,6 +70,8 @@ export function MetadataEditor ({ restore, current, reload }) {
 
     const gotoDetail = (state = null) => {
         setBlocking(false);
+        
+        console.log(`/metadata/${type}/${id}`);
         history.push(`/metadata/${type}/${id}`, state);
     };
 

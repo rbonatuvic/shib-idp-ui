@@ -7,7 +7,7 @@ import { GroupsList } from './container/GroupsList';
 
 export function Groups() {
 
-    let { path } = useRouteMatch();
+    let { path, url } = useRouteMatch();
 
     return (
         <>
@@ -26,7 +26,7 @@ export function Groups() {
                     <EditGroup />
                 } />
                 <Route path={`${path}`} exact render={
-                    <Redirect to={`${path}/list`} />
+                    <Redirect to={`${url}/list`} />
                 } />
             </Switch>
         </>
