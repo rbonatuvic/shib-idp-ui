@@ -1,7 +1,7 @@
 plugins {
     id 'groovy'
     id 'jacoco'
-    id 'org.springframework.boot' version '2.4.2' apply false
+    id 'org.springframework.boot' version '2.5.12' apply false
     id 'io.spring.dependency-management' version '1.0.7.RELEASE'
     id 'io.freefair.lombok' version '5.3.0'
 }
@@ -10,7 +10,7 @@ sourceCompatibility = 11
 targetCompatibility = 11
 
 repositories {
-    jcenter()
+    mavenCentral()
     maven {
         url 'https://build.shibboleth.net/nexus/content/groups/public'
         artifactUrls = ['https://build.shibboleth.net/nexus/content/repositories/thirdparty-snapshots']
@@ -28,27 +28,19 @@ generateLombokConfig.enabled = false
 dependencies {
     compileOnly project(':backend')
 
-    compile "org.pac4j:spring-security-pac4j:4.0.0"
-    compile "org.pac4j:pac4j-core:3.3.0"
-    compile "org.pac4j:pac4j-http:3.3.0"
-    compile "org.pac4j:pac4j-saml:3.3.0", {
+    compile 'org.pac4j:spring-security-pac4j:7.0.3'
+    // pac4j is "off" - spring security 7.0.3 here uses the pac4j 5.4.3 core, thus differences in versions
+    compile 'org.pac4j:pac4j-core:5.4.3'
+    compile 'org.pac4j:pac4j-http:5.4.3'
+    compile 'org.pac4j:pac4j-saml:5.4.3', {
         // opensaml libraries are provided
         exclude group: 'org.opensaml'
     }
 
-// These updated versions don't play well with the opensaml 3.4.6 version - until we can update openSAML....
-//    compile "org.pac4j:spring-security-pac4j:6.0.0" // pac4j is "off" - spring 6.0.0 here uses 5.1 core, thus differences in versions
-//    compile "org.pac4j:pac4j-core:5.1.0"
-//    compile "org.pac4j:pac4j-http:5.1.0"
-//    compile "org.pac4j:pac4j-saml:5.1.0", {
-//        // opensaml libraries are provided
-//        exclude group: 'org.opensaml'
-//    }
-
     testCompile project(':backend')
-    testCompile "org.springframework.boot:spring-boot-starter-test"
-    testCompile "org.spockframework:spock-core:1.3-groovy-2.5"
-    testCompile "org.spockframework:spock-spring:1.3-groovy-2.5"
+    testCompile 'org.springframework.boot:spring-boot-starter-test:2.6.7'
+    testCompile 'org.spockframework:spock-core:2.1-groovy-2.5'
+    testCompile 'org.spockframework:spock-spring:2.1-groovy-2.5'
 
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:2.6.7'
 }

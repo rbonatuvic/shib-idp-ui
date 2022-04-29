@@ -1,10 +1,10 @@
 package net.unicon.shibui.pac4j.authenticator;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
-import lombok.AllArgsConstructor;
 import org.pac4j.core.context.WebContext;
+import org.pac4j.core.context.session.SessionStore;
+import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.profile.CommonProfile;
-import org.pac4j.saml.credentials.SAML2Credentials;
 import org.pac4j.saml.credentials.authenticator.SAML2Authenticator;
 
 import java.util.Map;
@@ -23,9 +23,9 @@ public class ShibuiSAML2Authenticator extends SAML2Authenticator {
      * @param context
      */
     @Override
-    public void validate(final SAML2Credentials credentials, final WebContext context) {
-        super.validate(credentials, context);
-        CommonProfile profile = credentials.getUserProfile();
+    public void validate(final Credentials credentials, final WebContext context, final SessionStore sessionStore) {
+        super.validate(credentials, context, sessionStore);
+        CommonProfile profile = (CommonProfile) credentials.getUserProfile();
         profile.setRoles(userService.getUserRoles(profile.getUsername()));
         credentials.setUserProfile(profile);
     }
