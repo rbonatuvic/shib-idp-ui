@@ -7,15 +7,16 @@ import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
-import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.SignableXMLObject;
+import org.opensaml.xmlsec.signature.Signature;
 
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
-
 
 @MappedSuperclass
 @EqualsAndHashCode(callSuper = true)
@@ -42,23 +43,27 @@ public abstract class AbstractDescriptor extends AbstractAttributeExtensibleXMLO
     }
 
     @Override
-    public Long getCacheDuration() {
-        return cacheDuration;
+    public Duration getCacheDuration() {
+        return Duration.ofMillis(cacheDuration);
     }
 
     @Override
-    public void setCacheDuration(Long cacheDuration) {
-        this.cacheDuration = cacheDuration;
+    public void setCacheDuration(@Nullable final Duration duration) {
+        if (duration == null) {
+            cacheDuration = 0l;
+        } else {
+            cacheDuration = duration.toMillis();
+        }
     }
 
     @Override
-    public DateTime getValidUntil() {
-        return validUntil;
+    public Instant getValidUntil() {
+        return Instant.ofEpochMilli(validUntil.getMillis());
     }
 
     @Override
-    public void setValidUntil(DateTime validUntil) {
-        this.validUntil = validUntil;
+    public void setValidUntil(Instant validUntilInstant) {
+        this.validUntil = new DateTime(validUntilInstant.toEpochMilli());
     }
 
     @Override
