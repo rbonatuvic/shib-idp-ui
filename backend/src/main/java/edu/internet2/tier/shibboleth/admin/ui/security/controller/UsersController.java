@@ -6,6 +6,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,7 @@ import jline.internal.Log;
 @RestController
 @RequestMapping("/api/admin/users")
 @Slf4j
+@Tags(value = {@Tag(name = "admin")})
 public class UsersController {
     private UserRepository userRepository;
     private UserService userService;

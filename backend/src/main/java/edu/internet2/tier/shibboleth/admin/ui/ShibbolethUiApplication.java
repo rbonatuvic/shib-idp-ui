@@ -2,6 +2,8 @@ package edu.internet2.tier.shibboleth.admin.ui;
 
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import javax.script.ScriptException;
 @EnableScheduling
 @EnableWebSecurity
 @EnableAsync
+@OpenAPIDefinition(info=@Info(description = "The Shibboleth UI is specifically designed to help manage and edit metadata-driven configuration support for Shibboleth", title = "Shibboleth UI API", version = "1.0"))
 public class ShibbolethUiApplication extends SpringBootServletInitializer {
 
     private static final Logger logger = LoggerFactory.getLogger(ShibbolethUiApplication.class);

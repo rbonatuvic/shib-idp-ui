@@ -15,6 +15,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.envers.Audited;
@@ -38,38 +39,46 @@ public abstract class AbstractAuditable implements Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Hidden
     protected Long id;
 
     @CreationTimestamp
     @CreatedDate
     @Column(nullable = false, updatable = false, columnDefinition = "DATETIME(6)")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+    @Hidden
     private LocalDateTime createdDate;
 
     @UpdateTimestamp
     @LastModifiedDate
     @Column(nullable = false, columnDefinition = "DATETIME(6)")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+    @Hidden
     private LocalDateTime modifiedDate;
 
     @Column(name = "created_by")
     @CreatedBy
+    @Hidden
     private String createdBy;
 
     @Column(name = "modified_by")
     @LastModifiedBy
+    @Hidden
     private String modifiedBy;
 
     @Transient
     @JsonProperty
+    @Hidden
     private boolean current;
 
     @Override
+    @Hidden
     public Long getAudId() {
         return id;
     }
 
     @Override
+    @Hidden
     public void setAudId(@NotNull Long id) {
         this.id = id;
     }

@@ -5,6 +5,8 @@ import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocat
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry
 import edu.internet2.tier.shibboleth.admin.ui.service.JsonSchemaBuilderService
 import groovy.util.logging.Slf4j
+import io.swagger.v3.oas.annotations.tags.Tag
+import io.swagger.v3.oas.annotations.tags.Tags
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -25,6 +27,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 @RestController
 @RequestMapping('/api/ui/NameIdFormatFilter')
 @Slf4j
+@Tags(value = [@Tag(name = "ui")])
 class NameIdFormatFilterUiDefinitionController {
 
     @Autowired
