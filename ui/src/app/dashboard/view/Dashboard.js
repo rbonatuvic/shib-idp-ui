@@ -17,7 +17,7 @@ import API_BASE_PATH from '../../App.constant';
 import { useNonAdminSources } from '../../metadata/hooks/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import Badge from 'react-bootstrap/esm/Badge';
+import Badge from 'react-bootstrap/Badge';
 
 export function Dashboard () {
 

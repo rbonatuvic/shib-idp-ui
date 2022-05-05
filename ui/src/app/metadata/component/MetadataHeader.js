@@ -9,7 +9,7 @@ import { createNotificationAction, NotificationTypes, useNotificationDispatcher 
 import { useTranslator } from '../../i18n/hooks';
 import { useMetadataLoader } from '../hoc/MetadataSelector';
 import Form from 'react-bootstrap/Form';
-import Badge from 'react-bootstrap/esm/Badge';
+import Badge from 'react-bootstrap/Badge';
 
 export function MetadataHeader ({ showGroup, model, current = true, enabled = true, children, ...props }) {
 

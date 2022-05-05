@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Badge from "react-bootstrap/esm/Badge";
+import Badge from "react-bootstrap/Badge";
 
 const selectValue = (value, selected, all) => {
     const at = all.indexOf(value);
