@@ -39,7 +39,9 @@ export function NewFilter() {
 
     const gotoDetail = (state = null) => {
         setBlocking(false);
-        history.push(`/metadata/provider/${id}`, state);
+        setTimeout(() => {
+            history.push(`/metadata/provider/${id}`, state);
+        });
     };
 
     const onNavigate = (path) => {

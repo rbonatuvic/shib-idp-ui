@@ -49,6 +49,7 @@ export function MetadataEditor ({ restore, current, reload }) {
     function save(metadata) {
         update(`/${id}`, definition.parser(metadata, base))
             .then(() => {
+                notificationDispatch(createNotificationAction('Entity saved'));
                 gotoDetail({ refresh: true });
             })
             .catch((err) => {
@@ -70,9 +71,7 @@ export function MetadataEditor ({ restore, current, reload }) {
 
     const gotoDetail = (state = null) => {
         setBlocking(false);
-        
-        console.log(`/metadata/${type}/${id}`);
-        history.push(`/metadata/${type}/${id}`, state);
+        setTimeout(() => history.push(`/metadata/${type}/${id}`, state) );
     };
 
     const onNavigate = (path) => {
