@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Badge from "react-bootstrap/esm/Badge";
 
 const selectValue = (value, selected, all) => {
     const at = all.indexOf(value);
@@ -117,10 +118,10 @@ const AttributeReleaseWidget = ({
                         >
                         <strong><Translate value="label.bundle-disp" params={{name: option.label}}></Translate></strong>
                         <p id={`bundle-descr-${i}`} className="sr-only">Bundled attributes: {option.value.join(', ')}</p>
-                        <span className={`${option.selected ? 'badge-primary' : 'badge-light'} badge border p-2`}>
+                        <Badge bg={ option.selected ? 'primary' : 'light' } className={`border p-2`}>
                             <Translate value="action.select-bundle">Select Bundle</Translate>
                             <FontAwesomeIcon icon={faCheck} className="ms-1" />
-                        </span>
+                        </Badge>
                     </ListGroup.Item>
                 ))}
             </ListGroup>

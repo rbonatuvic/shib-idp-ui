@@ -20,11 +20,17 @@ export function MetadataWizard ({type, data, onCallback}) {
 
     const [blocking, setBlocking] = React.useState(false);
 
+    const gotoDetail = () => {
+        setTimeout(() => {
+            history.push(`/dashboard/metadata/manager/${type === 'source' ? 'resolvers' : 'providers'}`);
+        }, 1);
+    };
+
     async function save(metadata) {
         await post('', metadata);
         if (response.ok) {
             setBlocking(false);
-            history.push(`/dashboard/metadata/manager/${type === 'source' ? 'resolvers' : 'providers'}`);
+            gotoDetail();
         } else {
             let msg;
             if (response.status) {

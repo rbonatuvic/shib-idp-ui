@@ -9,6 +9,7 @@ import { createNotificationAction, NotificationTypes, useNotificationDispatcher 
 import { useTranslator } from '../../i18n/hooks';
 import { useMetadataLoader } from '../hoc/MetadataSelector';
 import Form from 'react-bootstrap/Form';
+import Badge from 'react-bootstrap/esm/Badge';
 
 export function MetadataHeader ({ showGroup, model, current = true, enabled = true, children, ...props }) {
 
@@ -84,13 +85,13 @@ export function MetadataHeader ({ showGroup, model, current = true, enabled = tr
                 </div>
 
                 <p className="card-text">
-                    <span className={`badge badge-${enabled ? 'primary' : 'danger' }`}>
+                    <Badge bg={ enabled ? 'primary' : 'danger' }>
                         <Translate value={`value.${enabled ? 'enabled' : 'disabled'}`}>Enabled</Translate>
-                    </span>
+                    </Badge>
                     &nbsp;
-                    <span className={`badge badge-${current ? 'primary' : 'warning'}`}>
+                    <Badge bg={ enabled ? 'primary' : 'warning' }>
                         <Translate value={`value.${current ? 'current' : 'not-current'}`}>Current</Translate>
-                    </span>
+                    </Badge>
                 </p>
 
             </div>

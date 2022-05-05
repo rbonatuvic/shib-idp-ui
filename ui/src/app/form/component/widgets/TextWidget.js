@@ -51,6 +51,7 @@ const TextWidget = ({
             </Form.Label>
             <Form.Control
                 id={id}
+                name=""
                 placeholder={placeholder}
                 autoFocus={autofocus}
                 required={required}

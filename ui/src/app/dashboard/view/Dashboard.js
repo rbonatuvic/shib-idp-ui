@@ -17,6 +17,7 @@ import API_BASE_PATH from '../../App.constant';
 import { useNonAdminSources } from '../../metadata/hooks/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import Badge from 'react-bootstrap/esm/Badge';
 
 export function Dashboard () {
 
@@ -89,7 +90,7 @@ export function Dashboard () {
                     <Nav.Item>
                         <NavLink className="nav-link d-flex align-items-center" to={`${path}/admin/actions`}>
                             <Translate value="label.action-required">Action Required</Translate>
-                            <span className="badge badge-pill badge-danger ms-1">{actions}</span>
+                            <Badge pill bg="danger" className="ms-1">{actions}</Badge>
                         </NavLink>
                     </Nav.Item>
                 </>
