@@ -4,11 +4,12 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicMetadataRe
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
+import org.apache.commons.lang3.StringUtils;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.AbstractDynamicMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.AbstractReloadingMetadataResolver;
 
-import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toMillis;
+import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toTimeDuration;
 import static edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers.placeholderResolverService;
 
 /**
@@ -24,12 +25,12 @@ public class OpenSamlMetadataResolverConstructorHelper {
         if (attributes != null) {
             if (attributes.getBackgroundInitializationFromCacheDelay() != null) {
                 dynamicMetadataResolver
-                        .setBackgroundInitializationFromCacheDelay(toMillis(placeholderResolverService()
+                        .setBackgroundInitializationFromCacheDelay(toTimeDuration(placeholderResolverService()
                                 .resolveValueFromPossibleTokenPlaceholder(attributes.getBackgroundInitializationFromCacheDelay())));
             }
 
             if (attributes.getCleanupTaskInterval() != null) {
-                dynamicMetadataResolver.setCleanupTaskInterval(toMillis(placeholderResolverService()
+                dynamicMetadataResolver.setCleanupTaskInterval(toTimeDuration(placeholderResolverService()
                         .resolveValueFromPossibleTokenPlaceholder(attributes.getCleanupTaskInterval())));
             }
 
@@ -38,22 +39,22 @@ public class OpenSamlMetadataResolverConstructorHelper {
             }
 
             if (attributes.getMaxCacheDuration() != null) {
-                dynamicMetadataResolver.setMaxCacheDuration(toMillis(placeholderResolverService()
+                dynamicMetadataResolver.setMaxCacheDuration(toTimeDuration(placeholderResolverService()
                         .resolveValueFromPossibleTokenPlaceholder(attributes.getMaxCacheDuration())));
             }
 
             if (attributes.getMaxIdleEntityData() != null) {
-                dynamicMetadataResolver.setMaxIdleEntityData(toMillis(placeholderResolverService()
+                dynamicMetadataResolver.setMaxIdleEntityData(toTimeDuration(placeholderResolverService()
                         .resolveValueFromPossibleTokenPlaceholder(attributes.getMaxIdleEntityData())));
             }
 
             if (attributes.getMinCacheDuration() != null) {
-                dynamicMetadataResolver.setMinCacheDuration(toMillis(placeholderResolverService()
+                dynamicMetadataResolver.setMinCacheDuration(toTimeDuration(placeholderResolverService()
                         .resolveValueFromPossibleTokenPlaceholder(attributes.getMinCacheDuration())));
             }
 
             if (attributes.getBackgroundInitializationFromCacheDelay() != null) {
-                dynamicMetadataResolver.setBackgroundInitializationFromCacheDelay(toMillis(placeholderResolverService()
+                dynamicMetadataResolver.setBackgroundInitializationFromCacheDelay(toTimeDuration(placeholderResolverService()
                         .resolveValueFromPossibleTokenPlaceholder(attributes.getBackgroundInitializationFromCacheDelay())));
             }
 
@@ -98,16 +99,18 @@ public class OpenSamlMetadataResolverConstructorHelper {
         if (attributes != null) {
             if (attributes.getExpirationWarningThreshold() != null) {
                 reloadingMetadataResolver
-                        .setExpirationWarningThreshold(toMillis(placeholderResolverService()
+                        .setExpirationWarningThreshold(toTimeDuration(placeholderResolverService()
                                 .resolveValueFromPossibleTokenPlaceholder(attributes.getExpirationWarningThreshold())));
             }
             if (attributes.getMaxRefreshDelay() != null) {
-                reloadingMetadataResolver.setMaxRefreshDelay(toMillis(placeholderResolverService()
+                reloadingMetadataResolver.setMaxRefreshDelay(toTimeDuration(placeholderResolverService()
                         .resolveValueFromPossibleTokenPlaceholder(attributes.getMaxRefreshDelay())));
             }
             if (attributes.getMinRefreshDelay() != null) {
-                reloadingMetadataResolver.setMinRefreshDelay(toMillis(placeholderResolverService()
-                        .resolveValueFromPossibleTokenPlaceholder(attributes.getMinRefreshDelay())));
+                String minRefreshString = placeholderResolverService().resolveValueFromPossibleTokenPlaceholder(attributes.getMinRefreshDelay());
+                if (StringUtils.isNotBlank(minRefreshString)) {
+                    reloadingMetadataResolver.setMinRefreshDelay(toTimeDuration(minRefreshString));
+                }
             }
 
             if (attributes.getResolveViaPredicatesOnly() != null) {

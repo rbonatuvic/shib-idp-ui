@@ -10,6 +10,7 @@ sourceCompatibility = 11
 targetCompatibility = 11
 
 repositories {
+    jcenter()
     mavenCentral()
     maven {
         url 'https://build.shibboleth.net/nexus/content/groups/public'
@@ -39,8 +40,11 @@ dependencies {
 
     testCompile project(':backend')
     testCompile 'org.springframework.boot:spring-boot-starter-test:2.6.7'
-    testCompile 'org.spockframework:spock-core:2.1-groovy-2.5'
-    testCompile 'org.spockframework:spock-spring:2.1-groovy-2.5'
+    compile 'org.codehaus.groovy:groovy-all:3.0.10'
+    testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
+    testImplementation "org.spockframework:spock-core"
+    testImplementation "org.spockframework:spock-spring"
+    testCompile 'org.opensaml:opensaml-saml-api:4.2.0'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:2.6.7'
 }

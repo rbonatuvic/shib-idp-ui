@@ -22,7 +22,6 @@ import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet
-import org.joda.time.DateTime
 import org.opensaml.core.criterion.EntityIdCriterion
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
@@ -36,6 +35,8 @@ import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import spock.lang.Ignore
 import spock.lang.Unroll
+
+import java.time.Instant
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
@@ -475,7 +476,7 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         MetadataResolver metadataResolver(OpenSamlObjects openSamlObjects) {
             def aggregate = new ResourceBackedMetadataResolver(ResourceHelper.of(new ClassPathResource("/metadata/aggregate.xml"))){
                 @Override
-                DateTime getLastRefresh() {
+                Instant getLastRefresh() {
                     return null
                 }
             }

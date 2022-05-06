@@ -3,9 +3,9 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 plugins {
     id 'org.springframework.boot' version '2.5.12' apply false
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+    id 'groovy'
 }
 
-apply plugin: 'groovy'
 sourceCompatibility = 11
 targetCompatibility = 11
 
@@ -21,11 +21,10 @@ dependencyManagement {
 
 dependencies {
     testCompile "org.springframework.boot:spring-boot-starter-test:2.6.7"
-    testCompile "org.spockframework:spock-core:2.1-groovy-2.5"
-    testCompile "org.spockframework:spock-spring:2.1-groovy-2.5"
-
-    testCompile 'org.junit.jupiter:junit-jupiter-api:5.7.2'
-    testCompile 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+    compile 'org.codehaus.groovy:groovy-all:3.0.10'
+    testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
+    testImplementation "org.spockframework:spock-core"
+    testImplementation "org.spockframework:spock-spring"
 }
 
 jar {

@@ -112,6 +112,10 @@ springBoot {
 
 generateLombokConfig.enabled = false
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
     // opensaml deps
     ['opensaml-saml-api', 'opensaml-saml-impl', 'opensaml-xmlsec-api', 'opensaml-xmlsec-impl'].each {
@@ -122,7 +126,6 @@ dependencies {
     runtimeOnly "org.bouncycastle:bcprov-ext-jdk15on:1.70"
     runtimeOnly "org.bouncycastle:bcutil-jdk15on:1.70"
     runtimeOnly "org.bouncycastle:bcpkix-jdk15on:1.70"
-
 
     // shibboleth idp deps
     ['idp-profile-spring', 'idp-profile-api'].each {
@@ -159,8 +162,6 @@ dependencies {
     //For easy data mocking capabilities
     compile 'net.andreinc.mockneat:mockneat:0.1.4'
 
-    compile 'org.codehaus.groovy:groovy-all:3.0.7'
-
     //So it works on Java 9 without explicitly requiring to load that module (needed by Hibernate)
     runtimeOnly 'javax.xml.bind:jaxb-api:2.3.0'
     // runtime libraries for later java versions
@@ -169,16 +170,24 @@ dependencies {
     compile "com.h2database:h2"
     runtimeOnly 'org.postgresql:postgresql:42.3.4'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.2.0'
-    runtimeOnly 'mysql:mysql-connector-java:5.1.48'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.28'
 
     //Swagger
     compile 'io.springfox:springfox-swagger2:2.9.2'
     compile 'io.springfox:springfox-swagger-ui:2.9.2'
 
+    compile 'org.codehaus.groovy:groovy-all:3.0.10'
+    testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
+    testImplementation "org.spockframework:spock-core"
+    testImplementation "org.spockframework:spock-spring"
+    //testImplementation "org.spockframework:spock-junit4"
+    //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    //testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    //testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.8.2'
+
     testCompile 'org.springframework.boot:spring-boot-starter-test:2.6.7'
     testCompile 'org.springframework.security:spring-security-test:5.6.3'
-    testCompile "org.spockframework:spock-core:2.1-groovy-2.5"
-    testCompile "org.spockframework:spock-spring:2.1-groovy-2.5"
+    testCompile 'org.skyscreamer:jsonassert:1.5.0'
     testCompile "org.xmlunit:xmlunit-core:2.5.1"
     testRuntime 'cglib:cglib-nodep:3.2.5'
 
@@ -198,13 +207,9 @@ dependencies {
     integrationTestCompile 'jp.vmi:selenese-runner-java:3.20.0'
     integrationTestCompile 'org.springframework.boot:spring-boot-starter-test:2.6.7'
     integrationTestCompile 'org.springframework.security:spring-security-test:5.6.3'
-    integrationTestCompile 'org.spockframework:spock-core:2.1-groovy-2.5'
-    integrationTestCompile 'org.spockframework:spock-spring:2.1-groovy-2.5'
 
     // CSV file support
     compile 'com.opencsv:opencsv:4.4'
-
-    testCompile 'org.skyscreamer:jsonassert:1.5.0'
 
     // Envers for persistent entities versioning
     compile 'org.hibernate:hibernate-envers'

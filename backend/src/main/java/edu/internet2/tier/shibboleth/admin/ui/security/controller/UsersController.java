@@ -6,6 +6,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,6 @@ import edu.internet2.tier.shibboleth.admin.ui.security.exception.OwnershipConfli
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
-import groovy.util.logging.Slf4j;
 
 /**
  * Implementation of the REST resource endpoints exposing system users.

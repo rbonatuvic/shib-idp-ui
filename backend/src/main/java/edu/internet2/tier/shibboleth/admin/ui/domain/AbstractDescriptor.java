@@ -44,13 +44,13 @@ public abstract class AbstractDescriptor extends AbstractAttributeExtensibleXMLO
 
     @Override
     public Duration getCacheDuration() {
-        return Duration.ofMillis(cacheDuration);
+        return null == cacheDuration ? null : Duration.ofMillis(cacheDuration);
     }
 
     @Override
     public void setCacheDuration(@Nullable final Duration duration) {
         if (duration == null) {
-            cacheDuration = 0l;
+            cacheDuration = null;
         } else {
             cacheDuration = duration.toMillis();
         }
@@ -58,7 +58,7 @@ public abstract class AbstractDescriptor extends AbstractAttributeExtensibleXMLO
 
     @Override
     public Instant getValidUntil() {
-        return Instant.ofEpochMilli(validUntil.getMillis());
+        return null == validUntil ? null : Instant.ofEpochMilli(validUntil.getMillis());
     }
 
     @Override
