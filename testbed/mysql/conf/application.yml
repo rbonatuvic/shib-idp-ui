@@ -3,7 +3,7 @@ spring:
     include:
   datasource:
     platform: mysql
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://db:3306/shibui
     username: shibui
     password: shibui
