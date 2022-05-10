@@ -15,8 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.time.Duration;
 import java.time.Instant;
 
+import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toPositiveNonZeroDuration;
 import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toTimeDuration;
 import static edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers.placeholderResolverService;
 
@@ -48,7 +50,9 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
                         sourceResolver.getReloadableMetadataResolverAttributes(), parserPool);
 
         this.setBackupFile(placeholderResolverService().resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackingFile()));
-        this.setBackupFileInitNextRefreshDelay(toTimeDuration(placeholderResolverService().resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackupFileInitNextRefreshDelay())));
+        this.setBackupFileInitNextRefreshDelay(toPositiveNonZeroDuration(
+                        placeholderResolverService().resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackupFileInitNextRefreshDelay()),
+                        Duration.ofSeconds(5)));
         if (sourceResolver.getInitializeFromBackupFile() != null) {
             this.setInitializeFromBackupFile(sourceResolver.getInitializeFromBackupFile());
         }

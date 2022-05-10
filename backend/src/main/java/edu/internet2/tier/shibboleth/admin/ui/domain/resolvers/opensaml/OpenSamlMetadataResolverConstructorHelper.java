@@ -4,11 +4,13 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicMetadataRe
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
-import org.apache.commons.lang3.StringUtils;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.AbstractDynamicMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.AbstractReloadingMetadataResolver;
 
+import java.time.Duration;
+
+import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toPositiveNonZeroDuration;
 import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toTimeDuration;
 import static edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers.placeholderResolverService;
 
@@ -102,16 +104,14 @@ public class OpenSamlMetadataResolverConstructorHelper {
                         .setExpirationWarningThreshold(toTimeDuration(placeholderResolverService()
                                 .resolveValueFromPossibleTokenPlaceholder(attributes.getExpirationWarningThreshold())));
             }
-            if (attributes.getMaxRefreshDelay() != null) {
-                reloadingMetadataResolver.setMaxRefreshDelay(toTimeDuration(placeholderResolverService()
-                        .resolveValueFromPossibleTokenPlaceholder(attributes.getMaxRefreshDelay())));
-            }
-            if (attributes.getMinRefreshDelay() != null) {
-                String minRefreshString = placeholderResolverService().resolveValueFromPossibleTokenPlaceholder(attributes.getMinRefreshDelay());
-                if (StringUtils.isNotBlank(minRefreshString)) {
-                    reloadingMetadataResolver.setMinRefreshDelay(toTimeDuration(minRefreshString));
-                }
-            }
+
+            // Open SAML 4.x libarry requires values non-null, greater than zero for min and max refresh rates
+            reloadingMetadataResolver.setMaxRefreshDelay(toPositiveNonZeroDuration(
+                            placeholderResolverService().resolveValueFromPossibleTokenPlaceholder(attributes.getMaxRefreshDelay()),
+                            Duration.ofHours(4)));
+            reloadingMetadataResolver.setMinRefreshDelay(toPositiveNonZeroDuration(
+                            placeholderResolverService().resolveValueFromPossibleTokenPlaceholder(attributes.getMinRefreshDelay()),
+                            Duration.ofMinutes(5)));
 
             if (attributes.getResolveViaPredicatesOnly() != null) {
                 reloadingMetadataResolver.setResolveViaPredicatesOnly(attributes.getResolveViaPredicatesOnly());

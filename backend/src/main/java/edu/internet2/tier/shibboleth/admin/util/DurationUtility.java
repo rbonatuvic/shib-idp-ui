@@ -41,4 +41,9 @@ public class DurationUtility {
         long value = toMillis(xmlDuration);
         return java.time.Duration.ofMillis(value);
     }
+
+    public static java.time.Duration toPositiveNonZeroDuration (String xmlDuration, java.time.Duration defaultDuration) {
+        long value = toMillis(xmlDuration);
+        return value > 0 ? java.time.Duration.ofMillis(value) : defaultDuration;
+    }
 }

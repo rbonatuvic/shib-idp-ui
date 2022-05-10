@@ -94,10 +94,8 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
       <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
         <saml:AttributeValue>givenName</saml:AttributeValue>
         <saml:AttributeValue>employeeNumber</saml:AttributeValue>
+        <saml2:AttributeValue xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">testme</saml2:AttributeValue>
       </saml:Attribute>
-      <saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-        <saml2:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">testme</saml2:AttributeValue>
-      </saml2:Attribute>
     </mdattr:EntityAttributes>
   </md:Extensions>
   <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
@@ -132,7 +130,9 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         assert metadataResolverRepository.findAll().size() > 0
         def ed = metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion('http://test.scaldingspoon.org/test1')))
         def resultString = openSamlObjects.marshalToXmlString(ed)
+        println("RESULTSTRING:")
         println(resultString)
+        // line 99 above being added to release all values, not its own thing
         def diff = DiffBuilder.compare(Input.fromString(expectedXML)).withTest(Input.fromString(resultString)).ignoreComments().ignoreWhitespace().build()
         !diff.hasDifferences()
     }
