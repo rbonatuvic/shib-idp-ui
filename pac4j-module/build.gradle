@@ -40,7 +40,9 @@ dependencies {
     compile 'org.pac4j:pac4j-saml:5.4.3', {
         // opensaml libraries are provided
         exclude group: 'org.opensaml'
+        exclude group: 'commons-collections'
     }
+    compile 'org.apache.commons:commons-collections4:4.3'
 
     testCompile project(':backend')
     testCompile 'org.springframework.boot:spring-boot-starter-test:2.6.7'
