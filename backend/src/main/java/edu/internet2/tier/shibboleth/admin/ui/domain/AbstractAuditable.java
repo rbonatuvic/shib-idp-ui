@@ -18,8 +18,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -27,7 +25,6 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -80,7 +77,7 @@ public abstract class AbstractAuditable implements Auditable {
 
     @Override
     public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+        this.createdDate = createdDate == null ? null : createdDate.truncatedTo(ChronoUnit.NANOS);
     }
 
     @Override
@@ -90,7 +87,7 @@ public abstract class AbstractAuditable implements Auditable {
 
     @Override
     public void setModifiedDate(LocalDateTime modifiedDate) {
-        this.modifiedDate = modifiedDate;
+        this.modifiedDate = modifiedDate == null ? null : modifiedDate.truncatedTo(ChronoUnit.NANOS);
     }
 
     public String getCreatedBy() {

@@ -169,8 +169,8 @@ dependencies {
 
     compile "com.h2database:h2"
     runtimeOnly 'org.postgresql:postgresql:42.3.4'
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.2.0'
-    runtimeOnly 'mysql:mysql-connector-java:8.0.28'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.0.4'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.29'
 
     //Swagger
     compile 'io.springfox:springfox-swagger2:2.9.2'
@@ -180,10 +180,6 @@ dependencies {
     testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
     testImplementation "org.spockframework:spock-core"
     testImplementation "org.spockframework:spock-spring"
-    //testImplementation "org.spockframework:spock-junit4"
-    //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    //testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    //testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.8.2'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test:2.6.7'
     testCompile 'org.springframework.security:spring-security-test:5.6.3'
@@ -224,6 +220,7 @@ dependencies {
     enversTestCompile sourceSets.test.output
     enversTestCompile configurations.compile
     enversTestCompile configurations.testCompile
+    enversTestCompile configurations.testImplementation
 
     enversTestRuntime configurations.runtime
     enversTestRuntime configurations.testRuntime
