@@ -14,6 +14,10 @@ apply plugin: 'jacoco'
 sourceCompatibility = 11
 targetCompatibility = 11
 
+test {
+    useJUnitPlatform() // Needed by spock to find specification tests
+}
+
 repositories {
     jcenter()
     maven {
@@ -111,10 +115,6 @@ springBoot {
 }
 
 generateLombokConfig.enabled = false
-
-test {
-    useJUnitPlatform()
-}
 
 dependencies {
     // opensaml deps
@@ -222,6 +222,7 @@ dependencies {
     enversTestCompile configurations.testCompile
     enversTestCompile configurations.testImplementation
 
+    enversTestRuntime configurations.testImplementation
     enversTestRuntime configurations.runtime
     enversTestRuntime configurations.testRuntime
 }
@@ -249,6 +250,7 @@ task enversTest(type: Test) {
     classpath = sourceSets.enversTest.runtimeClasspath
     systemProperties = System.properties
     systemProperties['user.dir'] = workingDir
+    useJUnitPlatform()
 }
 
 check {
