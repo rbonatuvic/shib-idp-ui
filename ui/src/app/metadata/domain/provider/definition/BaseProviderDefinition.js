@@ -78,6 +78,9 @@ export const BaseProviderDefinition = {
     },
     overrideSchema: (schema) => schema,
     uiSchema: {
+        '@type': {
+            'ui:readonly': true
+        },
         name: {
             'ui:help': 'message.must-be-unique'
         },

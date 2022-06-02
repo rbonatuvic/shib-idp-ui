@@ -44,8 +44,6 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
 
     const providerNames = data.map(p => p.name);
 
-    console.log(errors);
-
     return (
         <>{showSelector ?
             <>
