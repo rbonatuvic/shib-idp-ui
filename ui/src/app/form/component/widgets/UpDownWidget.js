@@ -27,7 +27,7 @@ const UpDownWidget = ({
 }) => {
     const _onChange = ({
         target: { value },
-    }) => onChange(value);
+    }) => setFieldValue(value);
     const _onBlur = ({ target: { value } }) =>
         onBlur(id, value);
     const _onFocus = ({
@@ -37,6 +37,10 @@ const UpDownWidget = ({
     const translator = useTranslator();
 
     const [touched, setTouched] = React.useState(false);
+    const [fieldValue, setFieldValue] = React.useState(value);
+    React.useEffect(() => {
+        onChange(fieldValue);
+    }, [fieldValue, onChange]);
 
     const onCustomBlur = (evt) => {
         setTouched(true);
@@ -60,7 +64,7 @@ const UpDownWidget = ({
                 disabled={disabled}
                 readOnly={readonly}
                 placeholder={uiSchema['ui:placeholder'] ? translator(uiSchema['ui:placeholder']) : ''}
-                value={value || value === 0 ? value : ""}
+                value={fieldValue}
                 step={schema.multipleOf}
                 onChange={_onChange}
                 onBlur={onCustomBlur}

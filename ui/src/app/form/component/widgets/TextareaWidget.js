@@ -28,8 +28,8 @@ const TextareaWidget = ({
 }) => {
     const _onChange = ({
         target: { value },
-    }) =>
-        onChange(value === "" ? options.emptyValue : value);
+    }) => setFieldValue(value === "" ? options.emptyValue : value);
+
     const _onBlur = ({
         target: { value },
     }) => onBlur(id, value);
@@ -38,6 +38,11 @@ const TextareaWidget = ({
     }) => onFocus(id, value);
 
     const [touched, setTouched] = React.useState(false);
+    const [fieldValue, setFieldValue] = React.useState(value || value === 0 ? value : "");
+
+    React.useEffect(() => {
+        onChange(fieldValue);
+    }, [fieldValue, onChange]);
 
     const onCustomBlur = (evt) => {
         setTouched(true);
@@ -60,7 +65,7 @@ const TextareaWidget = ({
                     placeholder={placeholder}
                     disabled={disabled}
                     readOnly={readonly}
-                    value={value}
+                    value={fieldValue}
                     required={required}
                     autoFocus={autofocus}
                     rows={options.rows || 5}
