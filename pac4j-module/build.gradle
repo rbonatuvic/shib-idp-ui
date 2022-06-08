@@ -1,9 +1,9 @@
 plugins {
     id 'groovy'
     id 'jacoco'
-    id 'org.springframework.boot' version '2.5.12' apply false
+    id 'org.springframework.boot'
     id 'io.spring.dependency-management' version '1.0.7.RELEASE'
-    id 'io.freefair.lombok' version '5.3.0'
+    id 'io.freefair.lombok'
 }
 
 sourceCompatibility = 11
@@ -15,6 +15,9 @@ repositories {
     maven {
         url 'https://build.shibboleth.net/nexus/content/groups/public'
         artifactUrls = ['https://build.shibboleth.net/nexus/content/repositories/thirdparty-snapshots']
+    }
+    maven {  // for the springboot plugin
+        url "https://plugins.gradle.org/m2/"
     }
 }
 
@@ -33,24 +36,24 @@ generateLombokConfig.enabled = false
 dependencies {
     compileOnly project(':backend')
 
-    compile 'org.pac4j:spring-security-pac4j:7.0.3'
-    // pac4j is "off" - spring security 7.0.3 here uses the pac4j 5.4.3 core, thus differences in versions
-    compile 'org.pac4j:pac4j-core:5.4.3'
-    compile 'org.pac4j:pac4j-http:5.4.3'
-    compile 'org.pac4j:pac4j-saml:5.4.3', {
+    compile "org.pac4j:spring-security-pac4j:${project.'pac4jSpringSecurityVersion'}"
+    compile "org.pac4j:pac4j-core:${project.'pac4JVersion'}"
+    compile "org.pac4j:pac4j-http:${project.'pac4JVersion'}"
+    compile "org.pac4j:pac4j-saml:${project.'pac4JVersion'}", {
         // opensaml libraries are provided
         exclude group: 'org.opensaml'
         exclude group: 'commons-collections'
     }
-    compile 'org.apache.commons:commons-collections4:4.3'
+    compile "org.apache.commons:commons-collections4:${project.'commonsCollections4Version'}"
 
     testCompile project(':backend')
-    testCompile 'org.springframework.boot:spring-boot-starter-test:2.6.7'
+    testCompile "org.opensaml:opensaml-saml-api:${project.'opensamlVersion'}"
+
+    testCompile "org.springframework.boot:spring-boot-starter-test:${project.'springbootVersion'}"
     compile 'org.codehaus.groovy:groovy-all:3.0.10'
     testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
     testImplementation "org.spockframework:spock-core"
     testImplementation "org.spockframework:spock-spring"
-    testCompile 'org.opensaml:opensaml-saml-api:4.2.0'
 
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:2.6.7'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${project.'springbootVersion'}"
 }

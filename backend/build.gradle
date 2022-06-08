@@ -1,11 +1,11 @@
 plugins {
-    id 'groovy'
-    id 'war'
-    id 'org.springframework.boot' version '2.5.12'
-    id 'com.gorylenko.gradle-git-properties' version '1.4.21'
-    id 'io.freefair.lombok' version '5.3.0'
-    id 'com.palantir.docker' version '0.28.0'
-    id 'com.palantir.docker-run' version '0.28.0'
+    id "groovy"
+    id "war"
+    id "org.springframework.boot"
+    id "io.freefair.lombok"
+    id "com.gorylenko.gradle-git-properties" version "1.4.21"
+    id "com.palantir.docker" version "0.28.0"
+    id "com.palantir.docker-run" version "0.28.0"
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -24,13 +24,16 @@ repositories {
         url 'https://build.shibboleth.net/nexus/content/groups/public'
         artifactUrls = ['https://build.shibboleth.net/nexus/content/repositories/thirdparty-snapshots']
     }
+    maven {  // for the springboot plugin
+        url "https://plugins.gradle.org/m2/"
+    }
     mavenLocal()
     mavenCentral()
 }
 
 configurations.all {
     resolutionStrategy {
-        force 'org.cryptacular:cryptacular:1.1.3'
+        force "org.cryptacular:cryptacular:${project.'cryptacularVersion'}"
 
         eachDependency { details ->
             if (details.requested.group == 'org.seleniumhq.selenium' && details.requested.name != 'htmlunit-driver') {
@@ -110,7 +113,7 @@ bootWar {
 }
 
 springBoot {
-    mainClassName = 'edu.internet2.tier.shibboleth.admin.ui.ShibbolethUiApplication'
+    mainClass = 'edu.internet2.tier.shibboleth.admin.ui.ShibbolethUiApplication'
     buildInfo()
 }
 
@@ -119,7 +122,7 @@ generateLombokConfig.enabled = false
 dependencies {
     // opensaml deps
     ['opensaml-saml-api', 'opensaml-saml-impl', 'opensaml-xmlsec-api', 'opensaml-xmlsec-impl'].each {
-        compile "org.opensaml:${it}:${project.'opensaml.version'}"
+        compile "org.opensaml:${it}:${project.'opensamlVersion'}"
     }
 
     runtimeOnly "org.bouncycastle:bcprov-jdk15on:1.70"
@@ -129,12 +132,12 @@ dependencies {
 
     // shibboleth idp deps
     ['idp-profile-spring', 'idp-profile-api'].each {
-        compile "net.shibboleth.idp:${it}:${project.'shibboleth.version'}"
+        compile "net.shibboleth.idp:${it}:${project.'shibbolethVersion'}"
     }
 
     // hibernate deps
     ['hibernate-core'].each {
-        compile "org.hibernate:${it}:${project.'hibernate.version'}"
+        compile "org.hibernate:${it}:${project.'hibernateVersion'}"
     }
 
     // spring boot auto-config starters
@@ -142,18 +145,18 @@ dependencies {
         compile "org.springframework.boot:spring-boot-${it}"
     }
     // To override older version with security issue - https://www.lunasec.io/docs/blog/log4j-zero-day/
-    implementation 'org.apache.logging.log4j:log4j-to-slf4j:2.17.2'
-    implementation 'org.apache.logging.log4j:log4j-api:2.17.2'
+    implementation "org.apache.logging.log4j:log4j-to-slf4j:${project.'log4JVersion'}"
+    implementation "org.apache.logging.log4j:log4j-api:${project.'log4JVersion'}"
 
     // TODO: figure out what this should really be
-    runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat:2.6.7'
+    runtimeOnly "org.springframework.boot:spring-boot-starter-tomcat:${project.'springbootVersion'}"
 
     //Spring Configuration Annotation Processor - makes IntelliJ happy about @ConfigurationProperties
-    compileOnly 'org.springframework.boot:spring-boot-configuration-processor:2.6.7'
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor:${project.'springbootVersion'}"
 
     // lucene deps
     ['core', 'analyzers-common', 'queryparser'].each {
-        compile "org.apache.lucene:lucene-${it}:${project.'lucene.version'}"
+        compile "org.apache.lucene:lucene-${it}:${project.'luceneVersion'}"
     }
 
     compile "org.liquibase:liquibase-core"
@@ -181,8 +184,8 @@ dependencies {
     testImplementation "org.spockframework:spock-core"
     testImplementation "org.spockframework:spock-spring"
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test:2.6.7'
-    testCompile 'org.springframework.security:spring-security-test:5.6.3'
+    testCompile "org.springframework.boot:spring-boot-starter-test:${project.'springbootVersion'}"
+    testCompile "org.springframework.security:spring-security-test:${project.'springSecurityVersion'}"
     testCompile 'org.skyscreamer:jsonassert:1.5.0'
     testCompile "org.xmlunit:xmlunit-core:2.5.1"
     testRuntime 'cglib:cglib-nodep:3.2.5'
@@ -201,18 +204,18 @@ dependencies {
     integrationTestCompile configurations.compile
     integrationTestCompile 'com.saucelabs:sebuilder-interpreter:1.0.6'
     integrationTestCompile 'jp.vmi:selenese-runner-java:3.20.0'
-    integrationTestCompile 'org.springframework.boot:spring-boot-starter-test:2.6.7'
-    integrationTestCompile 'org.springframework.security:spring-security-test:5.6.3'
+    integrationTestCompile "org.springframework.boot:spring-boot-starter-test:${project.'springbootVersion'}"
+    integrationTestCompile "org.springframework.security:spring-security-test:${project.'springSecurityVersion'}"
 
     // CSV file support
     compile 'com.opencsv:opencsv:4.4', {
         exclude group: 'commons-collections'
     }
 
-    compile 'org.apache.commons:commons-collections4:4.3'
+    compile "org.apache.commons:commons-collections4:${project.'commonsCollections4Version'}"
 
     // Envers for persistent entities versioning
-    compile 'org.hibernate:hibernate-envers'
+    compile "org.hibernate:hibernate-envers:${project.'hibernateVersion'}"
 
     //Pacj4 sub-project
     runtimeOnly project(':pac4j-module')
