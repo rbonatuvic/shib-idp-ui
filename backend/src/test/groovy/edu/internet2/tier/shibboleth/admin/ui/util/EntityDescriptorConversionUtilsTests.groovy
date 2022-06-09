@@ -1005,7 +1005,7 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                             it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
                                 it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
                                     it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(Logo).with {
-                                        it.url = 'http://test'
+                                        it.uri = 'http://test'
                                         it.height = 5
                                         it.width = 25
                                         it.XMLLang = 'en'
@@ -1034,7 +1034,7 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                             it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
                                 it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
                                     it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(Logo).with {
-                                        it.url = 'http://test'
+                                        it.uri = 'http://test'
                                         it.height = 5
                                         it.width = 25
                                         it.XMLLang = 'en'
@@ -1070,7 +1070,7 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                             it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
                                 it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
                                     it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(Logo).with {
-                                        it.url = 'http://test'
+                                        it.uri = 'http://test'
                                         it.height = 5
                                         it.width = 25
                                         it.XMLLang = 'en'

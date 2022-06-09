@@ -1,25 +1,25 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
-import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @Audited
 public class EmailAddress extends AbstractXMLObject implements org.opensaml.saml.saml2.metadata.EmailAddress {
-
-    private String address;
+    @Column(name = "address")
+    private String uri;
 
     @Override
-    public String getAddress() {
-        return address;
+    public String getURI() {
+        return uri;
     }
 
     @Override
-    public void setAddress(String address) {
-        this.address = address;
+    public void setURI(String uri) {
+        this.uri = uri;
     }
 }
