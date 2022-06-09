@@ -8,11 +8,11 @@ import net.unicon.shibui.pac4j.authenticator.ShibuiPac4JHeaderClientAuthenticato
 import net.unicon.shibui.pac4j.authenticator.ShibuiSAML2Authenticator;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.matching.PathMatcher;
+import org.pac4j.core.matching.matcher.PathMatcher;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
 import org.pac4j.http.client.direct.HeaderClient;
 import org.pac4j.saml.client.SAML2Client;
-import org.pac4j.saml.client.SAML2ClientConfiguration;
+import org.pac4j.saml.config.SAML2Configuration;
 import org.pac4j.saml.credentials.authenticator.SAML2Authenticator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -69,7 +69,7 @@ public class Pac4jConfiguration {
         case "SAML2":
         default:
             log.info("**** Configuring PAC4J SAML2");
-            final SAML2ClientConfiguration saml2Config = new SAML2ClientConfiguration();
+            final SAML2Configuration saml2Config = new SAML2Configuration();
             saml2Config.setKeystorePath(pac4jConfigProps.getKeystorePath());
             saml2Config.setKeystorePassword(pac4jConfigProps.getKeystorePassword());
             saml2Config.setPrivateKeyPassword(pac4jConfigProps.getPrivateKeyPassword());

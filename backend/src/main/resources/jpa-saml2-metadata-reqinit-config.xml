@@ -7,8 +7,8 @@
 		<!-- RequestInitiator provider -->
 		<ObjectProvider qualifiedName="init:RequestInitiator">
 			<BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.RequestInitiatorBuilder"/>
-			<MarshallingClass className="org.opensaml.saml.ext.saml2mdreqinit.impl.RequestInitiatorMarshaller"/>
-			<UnmarshallingClass className="org.opensaml.saml.ext.saml2mdreqinit.impl.RequestInitiatorUnmarshaller"/>
+			<MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointMarshaller"/>
+			<UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointUnmarshaller"/>
 		</ObjectProvider>
 
 	</ObjectProviders>

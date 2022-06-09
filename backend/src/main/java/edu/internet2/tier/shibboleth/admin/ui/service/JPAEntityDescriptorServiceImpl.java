@@ -156,7 +156,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getNameIDFormats().size() > 0) {
             ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);
             serviceProviderSsoDescriptorRepresentation.setNameIdFormats(
-                    ed.getSPSSODescriptor("").getNameIDFormats().stream().map(p -> p.getFormat()).collect(Collectors.toList())
+                    ed.getSPSSODescriptor("").getNameIDFormats().stream().map(p -> p.getURI()).collect(Collectors.toList())
             );
         }
 
@@ -165,7 +165,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             OrganizationRepresentation organizationRepresentation = new OrganizationRepresentation();
             organizationRepresentation.setName(ed.getOrganization().getOrganizationNames().get(0).getValue());
             organizationRepresentation.setDisplayName(ed.getOrganization().getDisplayNames().get(0).getValue());
-            organizationRepresentation.setUrl(ed.getOrganization().getURLs().get(0).getValue());
+            organizationRepresentation.setUrl(ed.getOrganization().getURLs().get(0).getURI());
             representation.setOrganization(organizationRepresentation);
         }
 
@@ -179,10 +179,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                     contactRepresentation.setType(contactPerson.getType().toString());
                 }
                 if (contactPerson.getGivenName() != null) {
-                    contactRepresentation.setName(contactPerson.getGivenName().getName());
+                    contactRepresentation.setName(contactPerson.getGivenName().getValue());
                 }
                 if (contactPerson.getEmailAddresses() != null && contactPerson.getEmailAddresses().size() > 0) {
-                    contactRepresentation.setEmailAddress(contactPerson.getEmailAddresses().get(0).getAddress());
+                    contactRepresentation.setEmailAddress(contactPerson.getEmailAddresses().get(0).getURI());
                 }
 
                 contactRepresentations.add(contactRepresentation);
@@ -200,17 +200,17 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 mduiRepresentation.setDisplayName(uiInfo.getDisplayNames().get(0).getValue());
             }
             if (uiInfo.getInformationURLs().size() > 0) {
-                mduiRepresentation.setInformationUrl(uiInfo.getInformationURLs().get(0).getValue());
+                mduiRepresentation.setInformationUrl(uiInfo.getInformationURLs().get(0).getURI());
             }
             if (uiInfo.getPrivacyStatementURLs().size() > 0) {
-                mduiRepresentation.setPrivacyStatementUrl(uiInfo.getPrivacyStatementURLs().get(0).getValue());
+                mduiRepresentation.setPrivacyStatementUrl(uiInfo.getPrivacyStatementURLs().get(0).getURI());
             }
             if (uiInfo.getDescriptions().size() > 0) {
                 mduiRepresentation.setDescription(uiInfo.getDescriptions().get(0).getValue());
             }
             if (uiInfo.getLogos().size() > 0) {
                 org.opensaml.saml.ext.saml2mdui.Logo logo = uiInfo.getLogos().get(0);
-                mduiRepresentation.setLogoUrl(logo.getURL());
+                mduiRepresentation.setLogoUrl(logo.getURI());
                 mduiRepresentation.setLogoHeight(logo.getHeight());
                 mduiRepresentation.setLogoWidth(logo.getWidth());
             }

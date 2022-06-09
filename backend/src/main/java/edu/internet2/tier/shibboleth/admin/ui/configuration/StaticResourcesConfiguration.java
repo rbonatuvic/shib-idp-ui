@@ -1,7 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 
 @Configuration
-@EnableConfigurationProperties({ResourceProperties.class})
+@EnableConfigurationProperties({WebProperties.class})
 public class StaticResourcesConfiguration implements WebMvcConfigurer {
     static final String[] STATIC_RESOURCES = new String[]{
             "/**/*.css",
@@ -36,16 +36,17 @@ public class StaticResourcesConfiguration implements WebMvcConfigurer {
     };
 
     @Autowired
-    private ResourceProperties resourceProperties = new ResourceProperties();
+    private WebProperties resourceProperties = new WebProperties();
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
         registry.addResourceHandler(STATIC_RESOURCES)
-                .addResourceLocations(resourceProperties.getStaticLocations())
+                .addResourceLocations(resourceProperties.getResources().getStaticLocations())
                 .setCachePeriod(10);
         registry.addResourceHandler("/**")
                 .addResourceLocations(
-                        Arrays.stream(resourceProperties.getStaticLocations())
+                        Arrays.stream(resourceProperties.getResources().getStaticLocations())
                                 .map(l -> l + "index.html")
                                 .toArray(String[]::new)
                 )

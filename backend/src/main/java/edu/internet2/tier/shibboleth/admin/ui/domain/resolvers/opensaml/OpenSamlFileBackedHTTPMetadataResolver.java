@@ -7,8 +7,6 @@ import net.shibboleth.utilities.java.support.xml.ParserPool;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.lucene.index.IndexWriter;
-import org.joda.time.DateTime;
-import org.joda.time.chrono.ISOChronology;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain;
 import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataResolver;
@@ -17,8 +15,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.time.Duration;
+import java.time.Instant;
 
-import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toMillis;
+import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toPositiveNonZeroDuration;
+import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toTimeDuration;
 import static edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers.placeholderResolverService;
 
 /**
@@ -49,8 +50,9 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
                         sourceResolver.getReloadableMetadataResolverAttributes(), parserPool);
 
         this.setBackupFile(placeholderResolverService().resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackingFile()));
-        this.setBackupFileInitNextRefreshDelay(toMillis(placeholderResolverService()
-                        .resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackupFileInitNextRefreshDelay())));
+        this.setBackupFileInitNextRefreshDelay(toPositiveNonZeroDuration(
+                        placeholderResolverService().resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackupFileInitNextRefreshDelay()),
+                        Duration.ofSeconds(5)));
         if (sourceResolver.getInitializeFromBackupFile() != null) {
             this.setInitializeFromBackupFile(sourceResolver.getInitializeFromBackupFile());
         }
@@ -64,7 +66,7 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
     // TODO: this is still probably not the best way to do this?
     @Nullable
     @Override
-    public DateTime getLastRefresh() {
+    public Instant getLastRefresh() {
         return null;
     }
 
@@ -115,14 +117,14 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
 
         try {
 
-            DateTime now = new DateTime(ISOChronology.getInstanceUTC());
+            Instant nowInstant = Instant.ofEpochMilli(System.currentTimeMillis());
             String mdId = getMetadataIdentifier();
 
             final byte[] mdBytes = fetchMetadata();
             if (mdBytes == null) {
-                processCachedMetadata(mdId, now);
+                processCachedMetadata(mdId, nowInstant);
             } else {
-                processNewMetadata(mdId, now, mdBytes);
+                processNewMetadata(mdId, nowInstant, mdBytes);
             }
         } catch (final Throwable t) {
             if (t instanceof Exception) {
