@@ -12,16 +12,16 @@ import javax.persistence.Entity;
 @Audited
 public class XSURI extends AbstractXMLObject implements org.opensaml.core.xml.schema.XSURI {
     @Column(name = "xsuriValue")
-    private String value;
+    private String uri;
 
     @Nullable
     @Override
-    public String getValue() {
-        return this.value;
+    public String getURI() {
+        return this.uri;
     }
 
     @Override
-    public void setValue(@Nullable String value) {
-        this.value = value;
+    public void setURI(@Nullable String uri) {
+        this.uri = uri;
     }
 }

@@ -11,10 +11,12 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.matching.Matcher;
+import org.pac4j.core.context.session.SessionStore;
+import org.pac4j.core.matching.matcher.Matcher;
 import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.jee.context.JEEContext;
+import org.pac4j.jee.context.session.JEESessionStore;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -103,8 +105,10 @@ public class AddNewUserFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        WebContext context = new J2EContext((HttpServletRequest)request, (HttpServletResponse)response);
-        if (!matcher.matches(context)) {
+        WebContext context = new JEEContext((HttpServletRequest)request, (HttpServletResponse)response);
+        Optional optionalSession = JEESessionStore.INSTANCE.buildFromTrackableSession(context, ((HttpServletRequest) request).getSession());
+        SessionStore session = optionalSession.isPresent() ? (SessionStore) optionalSession.get() : null;
+        if (!matcher.matches(context, session)) {
             return;
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
