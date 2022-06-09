@@ -1,1 +1,14 @@
+pluginManagement {
+    resolutionStrategy {
+        eachPlugin {
+            if ( requested.id.id == 'org.springframework.boot' ) {
+                useModule( "org.springframework.boot:spring-boot-gradle-plugin:$springbootVersion" )
+            }
+            if ( requested.id.id == 'io.freefair.lombok' ) {
+                useModule( "io.freefair.gradle:lombok-plugin:$lombokVersion" )
+            }
+        }
+    }
+}
+
 include 'backend', 'ui', 'pac4j-module', 'beacon', 'beacon:core', 'beacon:spring'

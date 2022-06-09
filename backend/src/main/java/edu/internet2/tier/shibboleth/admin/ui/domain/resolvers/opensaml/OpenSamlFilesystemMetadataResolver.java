@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
+import java.time.Instant;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -46,7 +47,7 @@ public class OpenSamlFilesystemMetadataResolver extends FilesystemMetadataResolv
     // TODO: this is still probably not the best way to do this?
     @Nullable
     @Override
-    public DateTime getLastRefresh() {
+    public Instant getLastRefresh() {
         return null;
     }
 

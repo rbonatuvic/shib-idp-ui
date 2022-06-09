@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.context.WebContext;
+import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.credentials.TokenCredentials;
 import org.pac4j.core.credentials.authenticator.Authenticator;
@@ -18,7 +19,7 @@ public class ShibuiPac4JHeaderClientAuthenticator implements Authenticator {
     private UserService userService;
 
     @Override
-    public void validate(Credentials credentials, WebContext context) {
+    public void validate(Credentials credentials, WebContext context, SessionStore sessionStore) {
         {
             if (credentials instanceof TokenCredentials) {
                 TokenCredentials creds = (TokenCredentials) credentials;

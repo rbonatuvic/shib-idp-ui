@@ -46,15 +46,15 @@
         <!-- AssertionIDRef -->
         <ObjectProvider qualifiedName="saml2:AssertionIDRef">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.AssertionIDRefBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.AssertionIDRefMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.AssertionIDRefUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
                 
         <!-- AssertionURIRef -->
         <ObjectProvider qualifiedName="saml2:AssertionURIRef">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.AssertionURIRefBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.AssertionURIRefMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.AssertionURIRefUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
 
         <!-- AttributeStatement provider -->
@@ -73,8 +73,8 @@
         <!-- Audience -->
         <ObjectProvider qualifiedName="saml2:Audience">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.AudienceBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.AudienceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.AudienceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
         
         <!-- AudienceRestriction -->
@@ -93,8 +93,8 @@
         <!-- AuthenticatingAuthority -->
         <ObjectProvider qualifiedName="saml2:AuthenticatingAuthority">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.AuthenticatingAuthorityBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.AuthenticatingAuthorityMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.AuthenticatingAuthorityUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
         
         <!-- AuthnContext -->
@@ -113,22 +113,22 @@
         <!-- AuthnContextClassRef -->
         <ObjectProvider qualifiedName="saml2:AuthnContextClassRef">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.AuthnContextClassRefBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.AuthnContextClassRefMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.AuthnContextClassRefUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
                 
         <!-- AuthnContextDecl -->
         <ObjectProvider qualifiedName="saml2:AuthnContextDecl">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.AuthnContextDeclBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.AuthnContextDeclMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.AuthnContextDeclUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSAnyMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSAnyUnmarshaller"/>
         </ObjectProvider>
         
         <!-- AuthnContextDeclRef -->
         <ObjectProvider qualifiedName="saml2:AuthnContextDeclRef">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.AuthnContextDeclRefBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.AuthnContextDeclRefMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.AuthnContextDeclRefUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
 
         <!-- AuthnStatement -->
@@ -207,8 +207,8 @@
         <!-- Issuer -->
         <ObjectProvider qualifiedName="saml2:Issuer">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.IssuerBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.IssuerMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.IssuerUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.soap.wstrust.impl.IssuerMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.soap.wstrust.impl.IssuerUnmarshaller"/>
         </ObjectProvider>
         
         <!-- KeyInfoConfirmationDataType -->
@@ -221,14 +221,14 @@
         <!-- NameID -->
         <ObjectProvider qualifiedName="saml2:NameID">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.NameIDBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDTypeMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDTypeUnmarshaller"/>
         </ObjectProvider>
         
         <ObjectProvider qualifiedName="saml2:NameIDType">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.NameIDBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDTypeMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDTypeUnmarshaller"/>
         </ObjectProvider>
  
         <!-- OneTimeUse -->

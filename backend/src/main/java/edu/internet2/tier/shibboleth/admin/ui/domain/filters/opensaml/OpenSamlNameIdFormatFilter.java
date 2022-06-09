@@ -6,6 +6,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.metadata.resolver.filter.impl.NameIDFormatFilter;
 import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
@@ -45,7 +46,7 @@ public class OpenSamlNameIdFormatFilter extends NameIDFormatFilter {
 
     @Nullable
     @Override
-    public XMLObject filter(@Nullable XMLObject metadata) throws FilterException {
+    public XMLObject filter(@Nullable XMLObject metadata, @Nonnull final MetadataFilterContext context) throws FilterException {
         if (metadata == null) {
             return null;
         }
@@ -84,7 +85,7 @@ public class OpenSamlNameIdFormatFilter extends NameIDFormatFilter {
 
         for (final String format : formats) {
             final NameIDFormat nif = formatBuilder.buildObject();
-            nif.setFormat(format);
+            nif.setURI(format);
             roleFormats.add(nif);
         }
     }

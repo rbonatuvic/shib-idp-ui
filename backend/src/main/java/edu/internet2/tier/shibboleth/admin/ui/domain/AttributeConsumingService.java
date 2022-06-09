@@ -86,7 +86,7 @@ public class AttributeConsumingService extends AbstractXMLObject implements org.
     }
 
     @Override
-    public List<org.opensaml.saml.saml2.metadata.RequestedAttribute> getRequestAttributes() {
+    public List<org.opensaml.saml.saml2.metadata.RequestedAttribute> getRequestedAttributes() {
         return (List<org.opensaml.saml.saml2.metadata.RequestedAttribute>) (List<? extends org.opensaml.saml.saml2.metadata.RequestedAttribute>) this.requestedAttributes;
     }
 
