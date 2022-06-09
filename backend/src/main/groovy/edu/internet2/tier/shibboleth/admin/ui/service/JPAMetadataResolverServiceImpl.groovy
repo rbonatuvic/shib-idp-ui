@@ -32,7 +32,7 @@ import groovy.util.logging.Slf4j
 import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
 import net.shibboleth.utilities.java.support.scripting.EvaluableScript
-import org.apache.commons.collections.CollectionUtils
+import org.apache.commons.collections4.CollectionUtils
 import org.opensaml.saml.common.profile.logic.EntityIdPredicate
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter

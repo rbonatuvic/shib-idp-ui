@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.envers.Audited;
 
 import javax.annotation.Nullable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
@@ -13,7 +14,8 @@ public class OrganizationURL extends AbstractXMLObject implements org.opensaml.s
 
     private String xMLLang;
 
-    private String value;
+    @Column(name="value")
+    private String uri;
 
     @Nullable
     @Override
@@ -28,12 +30,12 @@ public class OrganizationURL extends AbstractXMLObject implements org.opensaml.s
 
     @Nullable
     @Override
-    public String getValue() {
-        return value;
+    public String getURI() {
+        return uri;
     }
 
     @Override
-    public void setValue(@Nullable String value) {
-        this.value = value;
+    public void setURI(@Nullable String uri) {
+        this.uri = uri;
     }
 }
