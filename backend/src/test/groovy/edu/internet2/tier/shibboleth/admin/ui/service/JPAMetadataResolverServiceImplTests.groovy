@@ -22,7 +22,6 @@ import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet
-import org.joda.time.DateTime
 import org.opensaml.core.criterion.EntityIdCriterion
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
@@ -36,6 +35,8 @@ import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import spock.lang.Ignore
 import spock.lang.Unroll
+
+import java.time.Instant
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
@@ -93,10 +94,8 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
       <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
         <saml:AttributeValue>givenName</saml:AttributeValue>
         <saml:AttributeValue>employeeNumber</saml:AttributeValue>
+        <saml2:AttributeValue xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">testme</saml2:AttributeValue>
       </saml:Attribute>
-      <saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-        <saml2:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">testme</saml2:AttributeValue>
-      </saml2:Attribute>
     </mdattr:EntityAttributes>
   </md:Extensions>
   <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
@@ -131,7 +130,9 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         assert metadataResolverRepository.findAll().size() > 0
         def ed = metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion('http://test.scaldingspoon.org/test1')))
         def resultString = openSamlObjects.marshalToXmlString(ed)
+        println("RESULTSTRING:")
         println(resultString)
+        // line 99 above being added to release all values, not its own thing
         def diff = DiffBuilder.compare(Input.fromString(expectedXML)).withTest(Input.fromString(resultString)).ignoreComments().ignoreWhitespace().build()
         !diff.hasDifferences()
     }
@@ -475,7 +476,7 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         MetadataResolver metadataResolver(OpenSamlObjects openSamlObjects) {
             def aggregate = new ResourceBackedMetadataResolver(ResourceHelper.of(new ClassPathResource("/metadata/aggregate.xml"))){
                 @Override
-                DateTime getLastRefresh() {
+                Instant getLastRefresh() {
                     return null
                 }
             }

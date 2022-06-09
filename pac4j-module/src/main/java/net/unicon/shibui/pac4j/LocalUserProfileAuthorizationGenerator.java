@@ -4,7 +4,8 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.core.context.session.SessionStore;
+import org.pac4j.core.profile.UserProfile;
 
 import java.util.Optional;
 
@@ -16,9 +17,9 @@ public class LocalUserProfileAuthorizationGenerator implements AuthorizationGene
     }
 
     @Override
-    public CommonProfile generate(WebContext context, CommonProfile profile) {
+    public Optional<UserProfile> generate(WebContext context, SessionStore sessionStore, UserProfile profile) {
         Optional<User> user = userRepository.findByUsername(profile.getUsername());
         user.ifPresent(u -> profile.addRole(u.getRole()));
-        return profile;
+        return Optional.of(profile);
     }
 }

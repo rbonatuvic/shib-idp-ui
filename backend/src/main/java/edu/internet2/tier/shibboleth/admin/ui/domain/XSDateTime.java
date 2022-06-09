@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+import java.time.Instant;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
@@ -29,22 +30,20 @@ public class XSDateTime extends AbstractXMLObject implements org.opensaml.core.x
     @Nullable
     @Override
     //TODO: find good way to persist
-    public DateTime getValue() {
-        return this.dateTime;
+    public Instant getValue() {
+        return Instant.ofEpochMilli(this.dateTime.getMillis());
     }
 
     @Override
-    public void setValue(@Nullable DateTime newValue) {
-        this.dateTime = newValue;
+    public void setValue(@Nullable Instant newValue) {
+        this.dateTime = new DateTime(newValue.toEpochMilli());
     }
 
     @Nonnull
-    @Override
     public DateTimeFormatter getDateTimeFormatter() {
         return this.dateTimeFormatter;
     }
 
-    @Override
     public void setDateTimeFormatter(@Nonnull DateTimeFormatter newFormatter) {
         this.dateTimeFormatter = newFormatter;
     }
