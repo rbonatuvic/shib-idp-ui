@@ -9,8 +9,8 @@
         <!-- Description provider -->
         <ObjectProvider qualifiedName="mdui:Description">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.DescriptionBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.DescriptionMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.DescriptionUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameUnmarshaller"/>
         </ObjectProvider>
 
         <!-- DiscoHints provider -->
@@ -44,8 +44,8 @@
         <!-- DisplayName provider -->
         <ObjectProvider qualifiedName="mdui:DisplayName">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.DisplayNameBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.DisplayNameMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.DisplayNameUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameUnmarshaller"/>
         </ObjectProvider>
 
         <!-- DomainHint provider -->
@@ -69,8 +69,8 @@
         <!-- InformationURL provider -->
         <ObjectProvider qualifiedName="mdui:InformationURL">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.InformationURLBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.InformationURLMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.InformationURLUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIUnmarshaller"/>
         </ObjectProvider>
 
         <!-- IPHint provider -->
@@ -98,8 +98,8 @@
         <!-- PrivacyStatementURL provider -->
         <ObjectProvider qualifiedName="mdui:PrivacyStatementURL">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.PrivacyStatementURLBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.PrivacyStatementURLMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.PrivacyStatementURLUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIUnmarshaller"/>
         </ObjectProvider>
 
         <!-- UIInfo provider -->

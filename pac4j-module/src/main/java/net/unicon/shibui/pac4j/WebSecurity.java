@@ -7,7 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
 import static net.unicon.shibui.pac4j.Pac4jConfiguration.PAC4J_CLIENT_NAME;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.matching.Matcher;
+import org.pac4j.core.matching.matcher.Matcher;
 import org.pac4j.springframework.security.web.CallbackFilter;
 import org.pac4j.springframework.security.web.SecurityFilter;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;

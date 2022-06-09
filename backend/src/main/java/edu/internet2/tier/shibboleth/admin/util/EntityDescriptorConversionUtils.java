@@ -185,11 +185,11 @@ public class EntityDescriptorConversionUtils {
                 contactPerson.setType(contactRepresentation.getType());
 
                 GivenName givenName = openSamlObjects.buildDefaultInstanceOfType(GivenName.class);
-                givenName.setName(contactRepresentation.getName());
+                givenName.setValue(contactRepresentation.getName());
                 contactPerson.setGivenName(givenName);
 
                 EmailAddress emailAddress = openSamlObjects.buildDefaultInstanceOfType(EmailAddress.class);
-                emailAddress.setAddress(contactRepresentation.getEmailAddress());
+                emailAddress.setURI(contactRepresentation.getEmailAddress());
                 contactPerson.addEmailAddress(emailAddress);
 
                 ed.addContactPerson(contactPerson);
@@ -233,7 +233,7 @@ public class EntityDescriptorConversionUtils {
 
             OrganizationURL organizationURL = openSamlObjects.buildDefaultInstanceOfType(OrganizationURL.class);
             organizationURL.setXMLLang("en");
-            organizationURL.setValue(organizationRepresentation.getUrl());
+            organizationURL.setURI(organizationRepresentation.getUrl());
             organization.getURLs().add(organizationURL);
 
             ed.setOrganization(organization);
@@ -296,7 +296,7 @@ public class EntityDescriptorConversionUtils {
                 for (String nameidFormat : representation.getServiceProviderSsoDescriptor().getNameIdFormats()) {
                     NameIDFormat nameIDFormat = openSamlObjects.buildDefaultInstanceOfType(NameIDFormat.class);
 
-                    nameIDFormat.setFormat(nameidFormat);
+                    nameIDFormat.setURI(nameidFormat);
 
                     spssoDescriptor.getNameIDFormats().add(nameIDFormat);
                 }
@@ -327,7 +327,7 @@ public class EntityDescriptorConversionUtils {
             if (!Strings.isNullOrEmpty(mduiRepresentation.getInformationUrl())) {
                 InformationURL informationURL = openSamlObjects.buildDefaultInstanceOfType(InformationURL.class);
                 getUIInfo(ed).addInformationURL(informationURL);
-                informationURL.setValue(mduiRepresentation.getInformationUrl());
+                informationURL.setURI(mduiRepresentation.getInformationUrl());
                 informationURL.setXMLLang("en");
             } else {
                 ed.getOptionalSPSSODescriptor()
@@ -339,7 +339,7 @@ public class EntityDescriptorConversionUtils {
             if (!Strings.isNullOrEmpty(mduiRepresentation.getPrivacyStatementUrl())) {
                 PrivacyStatementURL privacyStatementURL = openSamlObjects.buildDefaultInstanceOfType(PrivacyStatementURL.class);
                 getUIInfo(ed).addPrivacyStatementURL(privacyStatementURL);
-                privacyStatementURL.setValue(mduiRepresentation.getPrivacyStatementUrl());
+                privacyStatementURL.setURI(mduiRepresentation.getPrivacyStatementUrl());
                 privacyStatementURL.setXMLLang("en");
             } else {
                 ed.getOptionalSPSSODescriptor()
@@ -363,7 +363,7 @@ public class EntityDescriptorConversionUtils {
             if (!Strings.isNullOrEmpty(mduiRepresentation.getLogoUrl())) {
                 Logo logo = openSamlObjects.buildDefaultInstanceOfType(Logo.class);
                 getUIInfo(ed).addLogo(logo);
-                logo.setURL(mduiRepresentation.getLogoUrl());
+                logo.setURI(mduiRepresentation.getLogoUrl());
                 logo.setHeight(mduiRepresentation.getLogoHeight());
                 logo.setWidth(mduiRepresentation.getLogoWidth());
                 logo.setXMLLang("en");

@@ -2,17 +2,12 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
-import groovy.json.JsonOutput
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet
-
-import org.joda.time.DateTime
 import org.opensaml.core.criterion.EntityIdCriterion
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
-import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,14 +17,13 @@ import org.springframework.context.annotation.Bean
 import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers
-import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.util.DefaultUriBuilderFactory
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import org.xmlunit.diff.DefaultNodeMatcher
 import org.xmlunit.diff.ElementSelectors
 import spock.lang.Specification
+
+import java.time.Instant
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -165,7 +159,7 @@ class EntitiesControllerIntegrationTests extends Specification {
             def resource = ResourceHelper.of(new ClassPathResource("/metadata/aggregate.xml"))
             def aggregate = new ResourceBackedMetadataResolver(resource){
                 @Override
-                DateTime getLastRefresh() {
+                Instant getLastRefresh() {
                     return null
                 }
             }
