@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import Translate from '../../i18n/components/translate';
 
 export function AccessRequest({ users, roles, onDeleteUser, onChangeUserRole }) {
@@ -40,12 +41,12 @@ export function AccessRequest({ users, roles, onDeleteUser, onChangeUserRole }) 
                                 <Translate value="label.role">Role</Translate>
                             </label>
                             <div className="col">
-                                <select id={`role-${i}`} name={user.username} value={user.role} className="form-control form-control-sm"
+                                <Form.Select id={`role-${i}`} name={user.username} value={user.role} className="form-control form-control-sm"
                                     disablevalidation="true" onChange={(event) => onChangeUserRole(user, event.target.value)}>
                                     {roles.map((role, ridx) =>
                                         <option value={role} key={ridx}>{ role }</option>
                                     )}
-                                </select>
+                                </Form.Select>
                             </div>
                         </div>
                     </div>
