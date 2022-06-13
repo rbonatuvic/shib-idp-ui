@@ -64,13 +64,15 @@ export function NewGroup() {
                         {(schema) => 
                         <FormManager initial={{}}>
                             {(data, errors) =>
-                            <GroupForm
+                            <>
+                                <GroupForm
                                 group={data}
                                 errors={errors}
                                 schema={schema}
                                 loading={loading}
                                 onSave={(data) => save(data)}
-                                onCancel={() => cancel()} />}
+                                onCancel={() => cancel()} />
+                            </>}
                         </FormManager> }
                     </Schema>
                 </div>
