@@ -2355,7 +2355,7 @@
       "id": "2ff5a597-9fe0-46b4-9ca5-63123ddb3cef",
       "comment": "",
       "command": "click",
-      "target": "css=.border-primary:nth-child(2) .fa-square",
+      "target": "xpath=//section/div/div/div[4]/div[2]/div/button",
       "targets": [
         ["css=.border-primary:nth-child(2) .fa-square", "css:finder"]
       ],

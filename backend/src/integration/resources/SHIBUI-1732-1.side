@@ -862,9 +862,9 @@
       "id": "62aae077-0f97-48ec-97cb-2111ea9e3400",
       "comment": "",
       "command": "assertText",
-      "target": "css=.row:nth-child(7) > .col-12 > .form-group > div > .mb-0 span",
+      "target": "css=.row:nth-child(7) > .col-12 > .mb-3 > div > div > .form-label > span",
       "targets": [
-        ["css=.row:nth-child(7) > .col-12 > .form-group > div > .mb-0 span", "css:finder"],
+        ["css=.row:nth-child(7) > .col-12 > .mb-3 > div > div > .form-label > span", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[7]/div/div/div/div/div[7]/div/div/div/div/label/span", "xpath:idRelative"],
         ["xpath=//div[7]/div/div/div/div/label/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom String Display')]", "xpath:innerText"]
