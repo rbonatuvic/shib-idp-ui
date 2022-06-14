@@ -132,10 +132,10 @@ const StringListWithDefaultField = ({
                                     className="flex-grow-1"
                                     value={p.value}
                                     onChange={({ target: { value } }) => setValue(p, value)}></Form.Control>
-                                <Form.Control className="mx-4" name="default" type="radio"
+                                <Form.Check className="mx-4" name="default" type="radio"
                                     checked={ p.default }
                                     onChange={ () => setDefault(p) }
-                                ></Form.Control>
+                                ></Form.Check>
                                 <Button variant="text" className="text-danger" onClick={() => removeItem(p)}>
                                     <FontAwesomeIcon icon={faTrash} />
                                 </Button>
