@@ -239,9 +239,14 @@
       "id": "a7cd7ab2-3309-4ca2-ae1b-0b566c161582",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-edit",
+      "target": "linkText=Edit",
       "targets": [
-        ["css=.fa-edit", "css:finder"]
+        ["linkText=Edit", "linkText"],
+        ["css=.text-end > .text-primary", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/div/section/div/div[2]/div[2]/table/tbody/tr/td[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/attributes/bundles/60fd84d7-9284-49d4-8ef7-ee06cb1652a0/edit')]", "xpath:href"],
+        ["xpath=//td[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Edit')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -395,9 +400,14 @@
       "id": "8ea152c6-4509-4969-b499-95272cb6b92e",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-edit",
+      "target": "linkText=Edit",
       "targets": [
-        ["css=.fa-edit", "css:finder"]
+        ["linkText=Edit", "linkText"],
+        ["css=.text-end > .text-primary", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/div/section/div/div[2]/div[2]/table/tbody/tr/td[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/attributes/bundles/60fd84d7-9284-49d4-8ef7-ee06cb1652a0/edit')]", "xpath:href"],
+        ["xpath=//td[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Edit')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
