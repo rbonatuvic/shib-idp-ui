@@ -3,6 +3,8 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry
+import io.swagger.v3.oas.annotations.tags.Tag
+import io.swagger.v3.oas.annotations.tags.Tags
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -10,11 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.dynamicHttpMetadataProviderSchema
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.filesystemMetadataProviderSchema
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.localDynamicMetadataProviderSchema
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.dynamicHttpMetadataProviderSchema
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 
 /**
  * Controller implementing REST resource responsible for exposing structure definition for metadata resolvers user
@@ -25,6 +27,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResour
  */
 @RestController
 @RequestMapping('/api/ui/MetadataResolver')
+@Tags(value = [@Tag(name = "ui")])
 class MetadataResolverUiDefinitionController {
 
     @Autowired

@@ -175,9 +175,8 @@ dependencies {
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.0.4'
     runtimeOnly 'mysql:mysql-connector-java:8.0.29'
 
-    //Swagger
-    compile 'io.springfox:springfox-swagger2:2.9.2'
-    compile 'io.springfox:springfox-swagger-ui:2.9.2'
+    //Swagger 3
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.8'
 
     compile 'org.codehaus.groovy:groovy-all:3.0.10'
     testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
