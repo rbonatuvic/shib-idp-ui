@@ -38,7 +38,7 @@ import java.util.Date;
                           "/api/entities" }, // existing - included to break no existing code
                 method = RequestMethod.GET)
 @Slf4j
-@Tags(value = {@Tag(name = "entity")})
+@Tags(value = {@Tag(name = "MDQ")})
 public class EntitiesController {
     @Autowired
     private EntityDescriptorService entityDescriptorService;
