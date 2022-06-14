@@ -26,7 +26,7 @@ function UserProvider({ children }) {
 
     const [user, setUser] = React.useState({});
 
-    const providerValue = React.useMemo(() => ({ user, loading }), [user, loading]);
+    const providerValue = React.useMemo(() => ({ user, loading, loadUser }), [user, loading, loadUser]);
 
     return (
         <Provider value={providerValue}>{children}</Provider>
@@ -41,6 +41,11 @@ function useCurrentUser() {
 function useCurrentUserLoading() {
     const { loading } = React.useContext(UserContext);
     return loading;
+}
+
+function useCurrentUserLoader() {
+    const { loadUser } = React.useContext(UserContext);
+    return loadUser;
 }
 
 function useIsAdmin() {
@@ -100,6 +105,7 @@ export {
     useIsAdminOrInGroup,
     useCanEnable,
     useCurrentUserLoading,
+    useCurrentUserLoader,
     useUserGroupRegexValidator,
     useUserGroup,
     useUserGroupNames
