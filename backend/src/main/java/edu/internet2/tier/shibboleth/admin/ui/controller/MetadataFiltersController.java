@@ -9,6 +9,9 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import static java.util.stream.Collectors.toList;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -38,6 +41,7 @@ import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/MetadataResolvers/{metadataResolverId}")
+@Tags(value = {@Tag(name = "metadata filters")})
 public class MetadataFiltersController {
     private static final Supplier<HttpClientErrorException> HTTP_400_BAD_REQUEST_EXCEPTION = () -> new HttpClientErrorException(BAD_REQUEST);
     private static final Supplier<HttpClientErrorException> HTTP_404_CLIENT_ERROR_EXCEPTION = () -> new HttpClientErrorException(NOT_FOUND);
