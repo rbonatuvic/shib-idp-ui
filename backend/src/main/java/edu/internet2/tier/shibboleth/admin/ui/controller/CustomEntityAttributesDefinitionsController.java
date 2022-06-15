@@ -1,10 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition;
+import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition;
-import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionService;
-
-@Controller
+@RestController
 @RequestMapping(value = "/api/custom/entity")
+@Tags(value = {@Tag(name = "attributes")})
 public class CustomEntityAttributesDefinitionsController {
     @Autowired
     private CustomEntityAttributesDefinitionService caService;
