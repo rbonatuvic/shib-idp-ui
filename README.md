@@ -2,14 +2,14 @@
 
 ## Requirements_
 
-* Java 8 (note that ONLY Java 8 is supported at this time; other later versions might work)
+* Java 11 (note that ONLY Java 11 is supported at this time; other later versions might work)
 
 ## Running
 
 There are currently 2 ways to run the application:
 
-1. As an executable
-1. deployed in a Java Servlet 3.0 container
+1. As an executable WAR using Java
+1. deployed in a Java Servlet 3.0 container such as Tomcat or Jetty
 
 Note that some features require encoded slashes in the URL. In tomcat (which is embedded in the war), this can be
 allowed with:
@@ -56,6 +56,7 @@ beginning with `#` are commented out.
 ```
 # Server Configuration
 #server.port=8080
+
 
 # Logging Configuration
 #logging.config=classpath:log4j2.xml
@@ -110,4 +111,10 @@ spring.profiles.active=default
 
 # Password for the default user. If not set, a password will be generated at startup
 #shibui.default-password=
+
+springdoc.use-management-port=true
+springdoc.pathsToMatch=/entities, /api/**
+# This property enables the openapi and swagger-ui endpoints to be exposed beneath the actuator base path.
+management.endpoints.web.exposure.include=openapi, swagger-ui
+management.server.port=9090
 ```

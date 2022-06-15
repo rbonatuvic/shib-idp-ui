@@ -1,15 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
+import lombok.extern.slf4j.Slf4j;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.apache.http.client.utils.DateUtils;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -17,28 +16,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
-import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
-import lombok.extern.slf4j.Slf4j;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.util.Date;
 
-@Controller
+/**
+ * EntitiesController is here to meet the requirements for this project being an MDQ. Despite similar logic to the
+ * EntitiesDescriptorController, the required endpoints that make this project an MDQ server are served by this controller.
+ */
+@RestController
 @RequestMapping(value = { "/entities", // per protocol - https://spaces.at.internet2.edu/display/MDQ/Metadata+Query+Protocol
                           "/api/entities" }, // existing - included to break no existing code
                 method = RequestMethod.GET)
 @Slf4j
-/**
-* EntitiesController is here to meet the requirements for this project being an MDQ. Despite similar logic to the 
-* EntitiesDescriptorController, the required endpoints that make this project an MDQ server are served by this controller.
-*/
+@Tags(value = {@Tag(name = "MDQ")})
 public class EntitiesController {
     @Autowired
     private EntityDescriptorService entityDescriptorService;
@@ -50,6 +50,8 @@ public class EntitiesController {
     private EntityDescriptorRepository entityDescriptorRepository;
 
     @RequestMapping(value = "/{entityId:.*}")
+    @Operation(description = "Endpoint based on the MDQ spec to return a single entity's information. see: https://spaces.at.internet2.edu/display/MDQ/Metadata+Query+Protocol",
+               summary = "Return a single entity from the entity's id", method = "GET")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getOne(final @PathVariable String entityId, HttpServletRequest request) throws UnsupportedEncodingException, ResolverException {
         EntityDescriptor entityDescriptor = this.getEntityDescriptor(entityId);
@@ -69,6 +71,8 @@ public class EntitiesController {
     }
 
     @RequestMapping(value = "/{entityId:.*}", produces = "application/xml")
+    @Operation(description = "Endpoint based on the MDQ spec to return a single entity's information. see: https://spaces.at.internet2.edu/display/MDQ/Metadata+Query+Protocol",
+               summary = "Return a single entity from the entity's id", method = "GET")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getOneXml(final @PathVariable String entityId) throws MarshallingException, ResolverException, UnsupportedEncodingException {
         EntityDescriptor entityDescriptor = this.getEntityDescriptor(entityId);
