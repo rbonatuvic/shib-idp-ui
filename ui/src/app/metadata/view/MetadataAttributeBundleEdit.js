@@ -3,7 +3,7 @@ import { faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Button from 'react-bootstrap/Button';
-import { Prompt, useHistory, useParams } from 'react-router';
+import { Prompt, useHistory, useParams } from 'react-router-dom';
 import Translate from '../../i18n/components/translate';
 import { MetadataAttributeEditor } from '../editor/MetadataAttributeEditor';
 
@@ -45,7 +45,7 @@ export function MetadataAttributeBundleEdit() {
                         <div className="section-header bg-info p-2 text-white">
                             <div className="row justify-content-between">
                                 <div className="col-md-12">
-                                    <span className="display-6"><Translate value="label.edit-attribute-bundle">Edit attribute bundle</Translate></span>
+                                    <span className="lead"><Translate value="label.edit-attribute-bundle">Edit attribute bundle</Translate></span>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@ export function MetadataAttributeBundleEdit() {
                                         <MetadataAttributeEditor definition={definition}>
                                             {(data, errors) =>
                                                 <React.Fragment>
-                                                    <Button variant="info" className="mr-2"
+                                                    <Button variant="info" className="me-2"
                                                         type="button"
                                                         onClick={() => update(data.resourceId, data, gotoDetail)}
                                                         disabled={errors.length > 0 || loading}

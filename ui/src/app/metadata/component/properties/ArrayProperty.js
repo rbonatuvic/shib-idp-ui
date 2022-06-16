@@ -36,7 +36,7 @@ export function ArrayProperty ({ property, columns, preview }) {
                                 <div className="d-flex py-2" tabIndex="0" key={`${i}-${n}`}>
                                     {property.differences && <span className="sr-only">Changed:</span> }
                                     {property.items.properties &&
-                                        <div style={{ width }} className="pl-4">
+                                        <div style={{ width }} className="ps-4">
                                             <Translate value={property.items.properties[prop].title}>{property.items.properties[prop].title}</Translate>
                                         </div>
                                     }
@@ -91,7 +91,7 @@ export function ArrayProperty ({ property, columns, preview }) {
                                         <ul style={ {width} } className="list-unstyled py-2 m-0">
                                             {v.map((item, idx) => 
                                                 <li key={idx} className={`d-flex align-items-center justify-content-between w-100 text-truncate border-bottom border-light py-2 ${v.length > 1 ? '' : 'border-0'}`}>
-                                                    <PropertyValue value={item} name={property.name} className="mr-auto" />
+                                                    <PropertyValue value={item} name={property.name} className="me-auto" />
                                                     {preview && item &&
                                                         <React.Fragment>
                                                             <FilterTargetPreview entityId={item}>

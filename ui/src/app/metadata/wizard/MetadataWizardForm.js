@@ -1,16 +1,7 @@
 import React from 'react';
-
-import Form from '@rjsf/bootstrap-4';
-
-import { fields, widgets } from '../../form/component';
-import { templates } from '../../form/component';
+import Form from '../../form/Form';
 import { useUiSchema } from '../hooks/schema';
-
 import { transformErrors } from '../domain/transform';
-
-function ErrorListTemplate () {
-    return (<></>);
-}
 
 export function MetadataWizardForm ({ metadata, definition, schema, current, onChange, onBlur = () => {}, validator }) {
 
@@ -36,14 +27,8 @@ export function MetadataWizardForm ({ metadata, definition, schema, current, onC
                     onBlur={() => onBlur(data)}
                     schema={schema}
                     uiSchema={uiSchema}
-                    FieldTemplate={templates.FieldTemplate}
-                    ObjectFieldTemplate={templates.ObjectFieldTemplate}
-                    ArrayFieldTemplate={templates.ArrayFieldTemplate}
-                    fields={fields}
-                    widgets={widgets}
                     liveValidate={true}
                     transformErrors={transformErrors}
-                    ErrorList={ErrorListTemplate}
                     validate={validator}>
                     <></>
                 </Form>

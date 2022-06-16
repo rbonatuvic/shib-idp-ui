@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Prompt, useHistory } from 'react-router';
+import { Prompt, useHistory } from 'react-router-dom';
 import Translate from '../../i18n/components/translate';
 import { useGroups } from '../hooks';
 import { Schema } from '../../form/Schema';
@@ -55,7 +55,7 @@ export function NewGroup() {
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
-                            <span className="display-6"><Translate value="label.new-group">Add a new group</Translate></span>
+                            <span className="lead"><Translate value="label.new-group">Add a new group</Translate></span>
                         </div>
                     </div>
                 </div>
@@ -64,13 +64,15 @@ export function NewGroup() {
                         {(schema) => 
                         <FormManager initial={{}}>
                             {(data, errors) =>
-                            <GroupForm
+                            <>
+                                <GroupForm
                                 group={data}
                                 errors={errors}
                                 schema={schema}
                                 loading={loading}
                                 onSave={(data) => save(data)}
-                                onCancel={() => cancel()} />}
+                                onCancel={() => cancel()} />
+                            </>}
                         </FormManager> }
                     </Schema>
                 </div>

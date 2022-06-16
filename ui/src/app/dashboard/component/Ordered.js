@@ -77,7 +77,9 @@ export function Ordered({ path = '/MetadataResolversPositionOrder', entities, ch
     }, [ordered])
 
     /*eslint-disable react-hooks/exhaustive-deps*/
-    React.useEffect(() => loadOrder(),[]);
+    React.useEffect(() => {
+        loadOrder();
+    }, []);
 
     React.useEffect(() => orderEntities(order, entities), [order, entities]);
 

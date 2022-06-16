@@ -15,7 +15,7 @@ import { MetadataConfirmRestore } from './view/MetadataConfirmRestore';
 
 export function Metadata () {
 
-    let { path } = useRouteMatch();
+    const { url, path } = useRouteMatch();
 
     return (
         <MetadataSelector>
@@ -57,7 +57,9 @@ export function Metadata () {
                             <Route path={`${path}/restore/:versionId/:section/edit`} render={() =>
                                 <MetadataRestore />
                             } />
-                            <Redirect exact path={`${path}`} to={`${path}/configuration/options`} />
+                            {<Route exact path={`${path}`} render={() =>
+                                <Redirect to={`${url}/configuration/options`} />
+                            } />}
                         </Switch>
                     </MetadataSchema>
                 </MetadataXmlLoader>

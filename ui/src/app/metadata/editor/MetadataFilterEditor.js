@@ -51,20 +51,20 @@ export function MetadataFilterEditor({children, onNavigate, block}) {
                         errors={errors}>
                     </MetadataEditorNav>
                 </div>
-                <div className="col-6 col-lg-3 order-2 text-right">
+                <div className="col-6 col-lg-3 order-2 text-end">
                     {children(metadata, errors.length > 0)}
                 </div>
                 <div className={`col-xs-12 col-lg-9 order-lg-1 order-3 align-items-start ${errors.length > 0 ? 'justify-content-between' : 'justify-content-end'}`}>
                     {errors.length > 0 &&
                         <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0 mb-2">
-                            <p className="m-0"><FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" /> <Translate value="message.editor-invalid" /></p>
+                            <p className="m-0"><FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="me-2" /> <Translate value="message.editor-invalid" /></p>
                         </Alert>
                     }
                     {warnings && warnings.hasOwnProperty(section) &&
                         <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
                             {warnings[section].map((w, widx) =>
                                 <p className="m-0" key={widx}>
-                                    <FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" />
+                                    <FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="me-2" />
                                     <Translate value={w} />
                                 </p>
                             )}

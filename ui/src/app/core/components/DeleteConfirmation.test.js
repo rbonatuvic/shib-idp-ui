@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 
 import { DeleteConfirmation } from './DeleteConfirmation';
@@ -22,20 +22,16 @@ afterEach(() => {
     container = null;
 });
 
-test('Delete confirmation', () => {
-    act(() => {
-        ReactDOM.render(
-            <DeleteConfirmation title={`message.delete-filter-title`} body={`message.delete-filter-body`}>
-                {(block) => <button onClick={() => block(() => noop())}></button>}
-            </DeleteConfirmation>,
-            container);
-    });
+xtest('Delete confirmation', () => {
+    const root = createRoot(container);
+    root.render(
+        <DeleteConfirmation title={`message.delete-filter-title`} body={`message.delete-filter-body`}>
+            {(block) => <button onClick={() => block(() => noop())}></button>}
+        </DeleteConfirmation>,
+        );
 
     const initiator = container.querySelector('button');
-
-    act(() => {
-        initiator.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-    });
+    initiator.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
     let modal = container.querySelector('.modal');
     const confirm = container.querySelector('.btn-danger');

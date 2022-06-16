@@ -28,8 +28,8 @@ const TextareaWidget = ({
 }) => {
     const _onChange = ({
         target: { value },
-    }) =>
-        onChange(value === "" ? options.emptyValue : value);
+    }) => setFieldValue(value === "" ? options.emptyValue : value);
+
     const _onBlur = ({
         target: { value },
     }) => onBlur(id, value);
@@ -38,6 +38,11 @@ const TextareaWidget = ({
     }) => onFocus(id, value);
 
     const [touched, setTouched] = React.useState(false);
+    const [fieldValue, setFieldValue] = React.useState(value || value === 0 ? value : "");
+
+    React.useEffect(() => {
+        onChange(fieldValue);
+    }, [fieldValue, onChange]);
 
     const onCustomBlur = (evt) => {
         setTouched(true);
@@ -45,13 +50,13 @@ const TextareaWidget = ({
     };
 
     return (
-        <>
+        <React.Fragment>
             <Form.Label className={`${touched && rawErrors?.length > 0 ? "text-danger" : ""}`}>
                 <span>
                     <Translate value={label || schema.title} />
-                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="ml-2 text-danger" size="sm" /> : null}
+                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="ms-2 text-danger" size="sm" /> : null}
                 </span>
-                {schema.description && <InfoIcon value={schema.description} className="ml-2"/>}
+                {schema.description && <InfoIcon value={schema.description} className="ms-2"/>}
             </Form.Label>
             <InputGroup>
                 <FormControl
@@ -60,7 +65,7 @@ const TextareaWidget = ({
                     placeholder={placeholder}
                     disabled={disabled}
                     readOnly={readonly}
-                    value={value}
+                    value={fieldValue}
                     required={required}
                     autoFocus={autofocus}
                     rows={options.rows || 5}
@@ -82,7 +87,7 @@ const TextareaWidget = ({
                     })}
                 </ListGroup>
             )}
-        </>
+        </React.Fragment>
     );
 };
 

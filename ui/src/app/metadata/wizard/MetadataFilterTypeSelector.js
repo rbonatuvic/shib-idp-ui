@@ -44,10 +44,13 @@ export function MetadataFilterTypeSelector({ types = [], children, actions}) {
                                         <span><Translate value={'label.metadata-provider-type'} /></span>
                                         <InfoIcon value="tooltip.metadata-provider-type" />
                                     </Form.Label>
-                                    <Form.Control custom as="select" defaultValue={''} placeholder={translator(`label.select-metadata-type`)} {...register('type', { required: true })}>
+                                    <Form.Select
+                                        defaultValue={''}
+                                        placeholder={translator(`label.select-metadata-type`)}
+                                        {...register('type', { required: true })}>
                                         <option disabled value="">{translator(`label.select-metadata-type`)}</option>
                                         {types.map(t => <option key={t} value={t}>{t}</option>)}
-                                    </Form.Control>
+                                    </Form.Select>
                                 </Form.Group>
                             </Form>
                         </div>
