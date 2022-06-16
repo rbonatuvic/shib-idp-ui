@@ -16,12 +16,19 @@ import { useMetadataSources } from '../hooks/api';
 
 import Translate from '../../i18n/components/translate';
 import { checkChanges } from '../hooks/utility';
-import { useUserGroup } from '../../core/user/UserContext';
+import { useCurrentUserLoader, useUserGroup } from '../../core/user/UserContext';
 
 
 export function MetadataSourceWizard ({ onShowNav, onSave, block, loading }) {
 
     const group = useUserGroup();
+
+    const userLoader = useCurrentUserLoader();
+
+    /*eslint-disable react-hooks/exhaustive-deps*/
+    React.useEffect(() => {
+        userLoader();
+    }, []);
 
     const { data } = useMetadataSources({
         cachePolicy: 'no-cache'
