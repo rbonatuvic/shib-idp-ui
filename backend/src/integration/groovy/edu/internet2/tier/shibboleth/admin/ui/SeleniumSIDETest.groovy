@@ -101,7 +101,7 @@ class SeleniumSIDETest extends Specification {
 
         where:
         name                                                                | file
-        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
+/*        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
         'SHIBUI-1364: Compare FSMP'                                         | '/SHIBUI-1364-2.side'
         'SHIBUI-1364: Compare LDMP'                                         | '/SHIBUI-1364-3.side'
         'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
@@ -126,9 +126,9 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1503: Non-admin can create metadata source'                 | '/SHIBUI-1503-1.side'
         'SHIBUI-1503: User can be deleted'                                  | '/SHIBUI-1503-2.side'
         'SHIBUI-1503: User can be enabled'                                  | '/SHIBUI-1503-3.side'
-        'SHIBUI-2052: Logged in user & role appear on dashboard'            | '/SHIBUI-2052.side'
+        'SHIBUI-2052: Logged in user & role appear on dashboard'            | '/SHIBUI-2052.side'*/
         'SHIBUI-1740: Group can be created, edited, deleted'                | '/SHIBUI-1740-1.side' // currently broken, see SHIBUI-2293
-        'SHIBUI-1740: Verify dev profile group membership'                  | '/SHIBUI-1740-2.side'
+/*        'SHIBUI-1740: Verify dev profile group membership'                  | '/SHIBUI-1740-2.side'
         'SHIBUI-1740: Verify admin-owned resource not visible to nonadmins' | '/SHIBUI-1740-3.side'
         'SHIBUI-1740: Verify nonadmin-owned resource visibility'            | '/SHIBUI-1740-4.side'
         'SHIBUI-1742: Verify enabler role allows enabling'                  | '/SHIBUI-1742-1.side'
@@ -146,6 +146,6 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1732: Create, use, and delete CEA Double'                   | '/SHIBUI-1732-5.side'
         'SHIBUI-1732: Create, use, and delete CEA Duration'                 | '/SHIBUI-1732-6.side'
         'SHIBUI-1732: Create, use, and delete CEA Spring Bean'              | '/SHIBUI-1732-7.side'
-        'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side' // Something about this test breaks all the other ones after it // ALSO broken by SHIBUI-2294
+        'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side' // Something about this test breaks all the other ones after it // ALSO broken by SHIBUI-2294*/
     }
 }
