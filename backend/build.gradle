@@ -201,6 +201,9 @@ dependencies {
     integrationTestCompile configurations.compile
     integrationTestCompile 'com.saucelabs:sebuilder-interpreter:1.0.6'
     integrationTestCompile 'jp.vmi:selenese-runner-java:3.20.0'
+    integrationTestCompile platform("org.spockframework:spock-bom:2.1-groovy-3.0")
+    integrationTestCompile "org.spockframework:spock-core"
+    integrationTestCompile "org.spockframework:spock-spring"
     integrationTestCompile 'org.springframework.boot:spring-boot-starter-test:2.6.7'
     integrationTestCompile 'org.springframework.security:spring-security-test:5.6.3'
 
@@ -237,6 +240,7 @@ task copyUI(type: Copy) {
 }
 
 task integrationTest(type: Test) {
+    useJUnitPlatform()
     group = 'verification'
     description = 'Run various integration tests'
     dependsOn 'copyUI'
