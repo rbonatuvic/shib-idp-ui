@@ -26,31 +26,37 @@ const TextWidget = ({
     rawErrors = [],
     ...props
 }) => {
-    const _onChange = ({target: { value }}) => onChange(value === "" ? options.emptyValue : value);
+    const _onChange = ({target: { value }}) => setFieldValue(value === "" ? options.emptyValue : value);
     const _onBlur = ({ target: { value } }) => onBlur(id, value);
     const _onFocus = ({target: { value }} ) => onFocus(id, value);
     const inputType = (type || schema.type) === 'string' ? 'text' : `${type || schema.type}`;
 
     const [touched, setTouched] = React.useState(false);
+    const [fieldValue, setFieldValue] = React.useState(value || value === 0 ? value : "");
 
     const onCustomBlur = (evt) => {
         setTouched(true);
         _onBlur(evt);
     };
 
+    React.useEffect(() => {
+        onChange(fieldValue);
+    }, [fieldValue, onChange]);
+
     // const classNames = [rawErrors?.length > 0 ? "is-invalid" : "", type === 'file' ? 'custom-file-label': ""]
     return (
-        <Form.Group className="mb-0">
+        <Form.Group>
             <Form.Label className={`${rawErrors?.length > 0 && touched ? "text-danger" : ""}`} htmlFor={id}>
                 <span>
                     <Translate value={label || schema.title} />
                     {(label || schema.title) && required ?
-                        <FontAwesomeIcon icon={faAsterisk} className="ml-2 text-danger" size="sm" /> : null}
+                        <FontAwesomeIcon icon={faAsterisk} className="ms-2 text-danger" size="sm" /> : null}
                 </span>
-                {schema.description && <InfoIcon value={schema.description} className="ml-2" />}
+                {schema.description && <InfoIcon value={schema.description || ''} className="ms-2" />}
             </Form.Label>
             <Form.Control
                 id={id}
+                name=""
                 placeholder={placeholder}
                 autoFocus={autofocus}
                 required={required}
@@ -59,7 +65,7 @@ const TextWidget = ({
                 className={rawErrors?.length > 0 && touched ? "is-invalid" : ""}
                 list={schema.examples ? `examples_${id}` : undefined}
                 type={inputType}
-                value={value || value === 0 ? value : ""}
+                value={fieldValue}
                 onChange={_onChange}
                 onBlur={onCustomBlur}
                 onFocus={_onFocus}

@@ -2005,11 +2005,15 @@
       "id": "4e0fa4f5-817f-41fb-9885-60f37b699436",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=tr > .text-right",
+      "target": "linkText=Test Provider",
       "targets": [
-        ["css=tr > .text-right", "css:finder"],
-        ["xpath=//td[5]", "xpath:position"],
-        ["xpath=//td[contains(.,'Enabled')]", "xpath:innerText"]
+        ["linkText=Test Provider", "linkText"],
+        ["css=.align-middle > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Test Provider')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/div/table/tbody/tr/td/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/source/bb384f9e-a87d-4e46-aa68-81d46b7c43e1/configuration/options')]", "xpath:href"],
+        ["xpath=//td/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Test Provider')]", "xpath:innerText"]
       ],
       "value": "10000"
     }, {

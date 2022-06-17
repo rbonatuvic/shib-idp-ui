@@ -4,7 +4,7 @@ import { MetadataSchema } from '../hoc/MetadataSchema';
 import { CopySource } from '../copy/CopySource';
 import { SaveCopy } from '../copy/SaveCopy';
 import { useMetadataEntity } from '../hooks/api';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 
 export function MetadataCopy ({ onShowNav }) {

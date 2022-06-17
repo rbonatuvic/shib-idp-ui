@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Badge from "react-bootstrap/Badge";
 
 const selectValue = (value, selected, all) => {
     const at = all.indexOf(value);
@@ -117,10 +118,10 @@ const AttributeReleaseWidget = ({
                         >
                         <strong><Translate value="label.bundle-disp" params={{name: option.label}}></Translate></strong>
                         <p id={`bundle-descr-${i}`} className="sr-only">Bundled attributes: {option.value.join(', ')}</p>
-                        <span className={`${option.selected ? 'badge-primary' : 'badge-light'} badge border p-2`}>
+                        <Badge bg={ option.selected ? 'primary' : 'light' } className={`border p-2`}>
                             <Translate value="action.select-bundle">Select Bundle</Translate>
-                            <FontAwesomeIcon icon={faCheck} className="ml-1" />
-                        </span>
+                            <FontAwesomeIcon icon={faCheck} className="ms-1" />
+                        </Badge>
                     </ListGroup.Item>
                 ))}
             </ListGroup>
@@ -130,7 +131,7 @@ const AttributeReleaseWidget = ({
                 <thead>
                     <tr className="table-secondary">
                         <th><Translate value="label.attribute-name">Attribute Name</Translate></th>
-                        <th className="text-right pr-2"><Translate value="label.yes">Yes</Translate></th>
+                        <th className="text-end pe-2"><Translate value="label.yes">Yes</Translate></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -143,9 +144,8 @@ const AttributeReleaseWidget = ({
                                 <td className="align-middle"><Translate value={`label.attribute-${option.label}`}>{option.label}</Translate></td>
                                 <td className="">
                                     <fieldset className="d-flex justify-content-end">
-                                        <div className="custom-control custom-checkbox bordered-custom-checkbox">
+                                        <div className="custom-control custom-checkbox bordered-custom-checkbox pe-2">
                                             <Form.Check
-                                                custom
                                                 required={required}
                                                 checked={checked}
                                                 className="bg-transparent"
@@ -165,7 +165,7 @@ const AttributeReleaseWidget = ({
                     })}
                     <tr>
                         <td><Translate value="label.check-all-attributes">Check All Attributes</Translate></td>
-                        <td className="text-right">
+                        <td className="text-end">
                             <Button type="button" variant="text" size="sm" className="text-success px-2" onClick={() => onCheckAll()} id="attributeRelease.checkAll">
                                 <FontAwesomeIcon icon={faCheck} size="lg" />
                                 <span className="sr-only"><Translate value="label.check-all-attributes">Check All Attributes</Translate></span>
@@ -174,7 +174,7 @@ const AttributeReleaseWidget = ({
                     </tr>
                     <tr>
                         <td><Translate value="label.clear-all-attributes">Clear All Attributes</Translate></td>
-                        <td className="text-right">
+                        <td className="text-end">
                             <Button type="button" variant="text" size="sm" className="text-danger px-2" onClick={() => onClearAll()} id="attributeRelease.clearAll">
                                 <FontAwesomeIcon icon={faTimes} size="lg" />
                                 <span className="sr-only"><Translate value="label.clear-all-attributes">Clear All Attributes</Translate></span>

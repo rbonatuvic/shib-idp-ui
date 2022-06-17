@@ -48,12 +48,7 @@ export const CustomAttributeDefinition = {
         },
         customAttrListDefinitions: {
             'ui:field': 'StringListWithDefaultField',
-            'ui:title': 'label.entity-attribute-list-options',
-            items: {
-                default: {
-                    'ui:widget': 'checkbox'
-                }
-            }
+            'ui:title': 'label.entity-attribute-list-options'
         }
     },
 

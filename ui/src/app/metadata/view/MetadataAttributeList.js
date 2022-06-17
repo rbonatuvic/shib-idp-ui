@@ -62,7 +62,7 @@ export function MetadataAttributeList ({entities, onDelete}) {
                                                 <td>{translator(`value.${attr.attributeType}`)}</td>
                                                 <td>{attr.helpText}</td>
                                                 <td>{attr.defaultValue?.toString()}</td>
-                                                <td className="text-right">
+                                                <td className="text-end">
                                                     <Link to={`../attributes/${attr.resourceId}/edit`} className="btn btn-link text-primary">
                                                         <FontAwesomeIcon icon={faEdit} size="lg" />
                                                         <span className="sr-only">

@@ -328,10 +328,10 @@
       "id": "2793bf1b-177b-461f-b06c-0a584ab6eaf0",
       "comment": "",
       "command": "click",
-      "target": "css=.row:nth-child(3) > .col-12 > .form-group .toggle-button",
+      "target": "css=.row:nth-child(3) > .col-12 > .mb-3 .toggle-button",
       "targets": [
-        ["css=.row:nth-child(3) > .col-12 > .form-group .toggle-button", "css:finder"],
-        ["xpath=(//button[@type='button'])[10]", "xpath:attributes"],
+        ["css=.row:nth-child(3) > .col-12 > .mb-3 .toggle-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[11]", "xpath:attributes"],
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[4]/div/div/div/div[3]/div/div/div/div/div/button", "xpath:idRelative"],
         ["xpath=//div[3]/div/div/div/div/div/button", "xpath:position"]
       ],
@@ -874,10 +874,10 @@
       "id": "6895180e-e563-4199-acda-f20823f58a03",
       "comment": "",
       "command": "click",
-      "target": "css=.text-left:nth-child(3)",
+      "target": "css=.nav-link:nth-child(3)",
       "targets": [
-        ["css=.text-left:nth-child(3)", "css:finder"],
-        ["xpath=(//button[@type='button'])[10]", "xpath:attributes"],
+        ["css=.nav-link:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[11]", "xpath:attributes"],
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div/nav/button[3]", "xpath:idRelative"],
         ["xpath=//button[3]", "xpath:position"],
         ["xpath=//button[contains(.,'Attributes')]", "xpath:innerText"]

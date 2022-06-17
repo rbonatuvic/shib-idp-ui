@@ -1,12 +1,16 @@
 import React from 'react';
 import {
     BrowserRouter as Router,
-    Switch,
     Redirect,
-    Route
 } from "react-router-dom";
+
+import {
+    Switch,
+    Route,
+} from "react-router";
 import { QueryParamProvider } from 'use-query-params';
 import { Provider as HttpProvider } from 'use-http';
+import Button from 'react-bootstrap/Button';
 
 import './App.scss';
 import { I18nProvider } from './i18n/context/I18n.provider';
@@ -27,7 +31,6 @@ import { Filter } from './metadata/Filter';
 import { Contention } from './metadata/contention/ContentionContext';
 import { SessionModal } from './core/user/SessionModal';
 import { Roles } from './admin/Roles';
-import Button from 'react-bootstrap/Button';
 import { Groups } from './admin/Groups';
 import { BASE_PATH } from './App.constant';
 

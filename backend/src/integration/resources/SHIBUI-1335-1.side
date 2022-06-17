@@ -1304,10 +1304,10 @@
       "id": "e16e4888-e311-4719-9f87-590ddb124dc4",
       "comment": "",
       "command": "click",
-      "target": "css=.text-left:nth-child(3)",
+      "target": "xpath=(//button[@type='button'])[11]",
       "targets": [
-        ["css=.text-left:nth-child(3)", "css:finder"],
-        ["xpath=(//button[@type='button'])[10]", "xpath:attributes"],
+        ["css=.nav-link:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[11]", "xpath:attributes"],
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div/nav/button[3]", "xpath:idRelative"],
         ["xpath=//button[3]", "xpath:position"],
         ["xpath=//button[contains(.,'Attributes')]", "xpath:innerText"]

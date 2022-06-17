@@ -8,6 +8,8 @@ import { useMetadataEntity } from '../hooks/api';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useTranslator } from '../../i18n/hooks';
 import { useMetadataLoader } from '../hoc/MetadataSelector';
+import Form from 'react-bootstrap/Form';
+import Badge from 'react-bootstrap/Badge';
 
 export function MetadataHeader ({ showGroup, model, current = true, enabled = true, children, ...props }) {
 
@@ -57,9 +59,11 @@ export function MetadataHeader ({ showGroup, model, current = true, enabled = tr
                         {isAdmin && showGroup &&
                         <GroupsProvider>
                             {(groups, removeGroup, loadingGroups) =>
-                                <div className="form-inline">
-                                    <label className="mr-2" htmlFor={`group-${model.serviceProviderName}`}><Translate value="action.source-group">Group</Translate>: </label>
-                                    <select
+                                <div className="form-inline" style={{maxWidth: '50%'}}>
+                                    <label className="me-2 mb-2" htmlFor={`group-${model.serviceProviderName}`}>
+                                        <Translate value="action.source-group">Group</Translate>:
+                                    </label>
+                                    <Form.Select
                                         id={`group-${model.id}`}
                                         name={`group-${model.id}`}
                                         className="form-control form-control-sm"
@@ -71,8 +75,7 @@ export function MetadataHeader ({ showGroup, model, current = true, enabled = tr
                                         {groups.map((g, ridx) => (
                                             <option key={ridx} value={g.resourceId}>{g.name}</option>
                                         ))}
-                                    </select>
-
+                                    </Form.Select>
                                 </div>
                             }
                         </GroupsProvider>
@@ -82,13 +85,13 @@ export function MetadataHeader ({ showGroup, model, current = true, enabled = tr
                 </div>
 
                 <p className="card-text">
-                    <span className={`badge badge-${enabled ? 'primary' : 'danger' }`}>
+                    <Badge bg={ enabled ? 'primary' : 'danger' }>
                         <Translate value={`value.${enabled ? 'enabled' : 'disabled'}`}>Enabled</Translate>
-                    </span>
+                    </Badge>
                     &nbsp;
-                    <span className={`badge badge-${current ? 'primary' : 'warning'}`}>
+                    <Badge bg={ enabled ? 'primary' : 'warning' }>
                         <Translate value={`value.${current ? 'current' : 'not-current'}`}>Current</Translate>
-                    </span>
+                    </Badge>
                 </p>
 
             </div>

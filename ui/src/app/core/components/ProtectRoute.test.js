@@ -1,7 +1,7 @@
 import React from 'react';
-import { act, render, fireEvent, waitFor, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { BrowserRouter, MemoryRouter, Route } from 'react-router-dom';
-import { AdminRoute } from './AdminRoute';
+import { ProtectRoute } from './ProtectRoute';
 
 const mockIsAdmin = jest.fn();
 
@@ -21,7 +21,7 @@ describe('AdminRoute user is admin', () => {
     });
 
     it('should render the component if user is an admin', () => {
-        render(<AdminRoute><React.Fragment>hi there</React.Fragment></AdminRoute>, { wrapper: MemoryRouter });
+        render(<ProtectRoute redirectTo={"/dashboard"}><React.Fragment>hi there</React.Fragment></ProtectRoute>, { wrapper: MemoryRouter });
         expect(screen.getByText('hi there')).toBeInTheDocument();
     });
 });
@@ -33,7 +33,7 @@ describe('AdminRoute user is NOT admin', () => {
 
     it('should redirect the user to the dashboard if not admin', () => {
         renderWithRouter(<React.Fragment>
-            <AdminRoute path="/foo"><React.Fragment>hi there</React.Fragment></AdminRoute>
+            <ProtectRoute redirectTo={'/dashboard'}><React.Fragment>hi there</React.Fragment></ProtectRoute>
             <Route path="/dashboard" render={ () => 'dashboard' } />
         </React.Fragment>, {route: '/foo'});
         expect(screen.getByText('dashboard')).toBeInTheDocument();

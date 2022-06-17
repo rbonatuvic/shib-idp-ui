@@ -33,7 +33,7 @@ export function useGroupUiSchema () {
 
 export function useGroupUiValidator() {
     return (formData, errors) => {
-        if (!isNil(formData?.validationRegex)) {
+        if (!isNil(formData?.validationRegex) && formData?.validationRegex !== '') {
             const isValid = isValidRegex(formData.validationRegex);
             if (!isValid) {
                 errors.validationRegex.addError('message.invalid-regex-pattern');

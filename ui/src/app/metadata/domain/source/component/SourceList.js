@@ -80,7 +80,7 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                             {isAdmin && onChangeGroup &&
                                                 <td className="align-middle">
                                                     <label htmlFor={`group-${source.serviceProviderName}`} className="sr-only"><Translate value="action.source-group">Group</Translate></label>
-                                                    <select
+                                                    <Form.Select
                                                         id={`group-${source.id}`}
                                                         name={`group-${source.id}`}
                                                         className="form-control"
@@ -92,15 +92,15 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                                         {groups.map((g, ridx) => (
                                                             <option key={ridx} value={g.resourceId}>{g.name}</option>
                                                         ))}
-                                                    </select>
+                                                    </Form.Select>
                                                 </td>
                                             }
                                             {onDelete && isAdmin &&
-                                                <td className="text-right align-middle">
+                                                <td className="text-end align-middle">
                                                     <OverlayTrigger trigger={source.serviceEnabled ? ['hover', 'focus'] : []} placement="left"
                                                         overlay={
                                                             <Popover id={`delete-source-btn-${idx}`}>
-                                                                <Popover.Content>A metadata source must be disabled before it can be deleted.</Popover.Content>
+                                                                <Popover.Body>A metadata source must be disabled before it can be deleted.</Popover.Body>
                                                             </Popover>
                                                         }>
                                                         <span className="d-inline-block">
