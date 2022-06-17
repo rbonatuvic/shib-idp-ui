@@ -970,12 +970,13 @@
       "id": "78967fb5-8f61-46ce-9c14-9b6ceb12b03a",
       "comment": "",
       "command": "click",
-      "target": "css=.form-group:nth-child(2) .toggle-button",
+      "target": "css=.mb-3:nth-child(2) .toggle-button",
       "targets": [
-        ["css=.form-group:nth-child(2) .toggle-button", "css:finder"],
-        ["xpath=(//button[@type='button'])[13]", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div[2]/div[2]/form/div/div/div/div/div[6]/div/div/div/div/div[2]/div/div/div/div/button", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div/div/div/button", "xpath:position"]
+        ["css=.mb-3:nth-child(2) .toggle-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[14]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div[2]/div[2]/form/div/div/div/div/div[5]/div/div/div/div/div[2]/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Options')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -1012,7 +1013,7 @@
       "id": "d7406190-0bb0-4df8-9c0b-7e393952b6a2",
       "comment": "",
       "command": "click",
-      "target": "css=.form-group:nth-child(3) .toggle-button",
+      "target": "css=.mb-3:nth-child(3) .toggle-button",
       "targets": [
         ["css=.form-group:nth-child(3) .toggle-button", "css:finder"],
         ["xpath=(//button[@type='button'])[15]", "xpath:attributes"],
@@ -1054,11 +1055,11 @@
       "id": "19182110-0f86-4601-ae12-0b90967ef68a",
       "comment": "",
       "command": "click",
-      "target": "css=.form-group:nth-child(4) .toggle-button",
+      "target": "css=.mb-3:nth-child(4) .toggle-button",
       "targets": [
-        ["css=.form-group:nth-child(4) .toggle-button", "css:finder"],
-        ["xpath=(//button[@type='button'])[17]", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div[2]/div[2]/form/div/div/div/div/div[6]/div/div/div/div/div[2]/div[3]/div/div/div/button", "xpath:idRelative"],
+        ["css=.mb-3:nth-child(4) .toggle-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[18]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div[2]/div[2]/form/div/div/div/div/div[5]/div/div/div/div/div[2]/div[3]/div/div/div/button", "xpath:idRelative"],
         ["xpath=//div[3]/div/div/div/button", "xpath:position"]
       ],
       "value": ""

@@ -26,11 +26,11 @@ export function ContentionModal ({ theirs = [], ours = [], onUseTheirs, onUseOur
                 <div className="d-flex w-50 justify-content-center mb-4 mx-auto">
                     <FontAwesomeIcon icon={faExclamationTriangle} size="3x" className="text-warning" />
                     {theirs && theirs.length > 0 ?
-                    <p className="ml-2">
+                    <p className="ms-2">
                         <Translate value="message.contention-new-version">A newer version of this metadata source has been saved. Below are a list of changes. You can use your changes or their changes.</Translate>
                     </p>
                     :
-                    <p className="ml-2">
+                    <p className="ms-2">
                         <Translate value="message.contention-error">There was a problem saving due to a mismatched version.</Translate>
                     </p>
                     }

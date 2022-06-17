@@ -136,7 +136,7 @@ const FilterTargetField = ({
                     <div>
                         <label htmlFor={id} className="d-flex justify-content-start align-items-center control-label">
                             <Translate value="action.search-by">Search By</Translate>
-                            <FontAwesomeIcon icon={faAsterisk} className="text-danger ml-1 mr-2" />
+                            <FontAwesomeIcon icon={faAsterisk} className="text-danger ms-1 me-2" />
                             <InfoIcon value={translate('action.search-by')}></InfoIcon>
                         </label>
                         <Dropdown>
@@ -247,7 +247,7 @@ const FilterTargetField = ({
                                 
                             </div>
                             {targetType === 'ENTITY' &&
-                                <div className="ml-2">
+                                <div className="ms-2">
                                     <Button variant="success"
                                         type="button"
                                         disabled={!term || !match}
@@ -275,14 +275,14 @@ const FilterTargetField = ({
                                                 {preview &&
                                                     <Button disabled={loading || !xml} type="button" 
                                                     variant="link"
-                                                    className="text-right" onClick={() => preview(id)}>
+                                                    className="text-end" onClick={() => preview(id)}>
                                                         <FontAwesomeIcon icon={loading ? faSpinner : xml ? faEye : faEyeSlash} pulse={loading} size="lg" className="text-success sr-hidden" />
                                                         <span className="sr-only"><Translate value="action.preview">Preview</Translate></span>
                                                     </Button>
                                                 }
                                                 <Button type="button" 
                                                 variant="link"
-                                                className="text-right" onClick={() => removeId(id)}>
+                                                className="text-end" onClick={() => removeId(id)}>
                                                     <FontAwesomeIcon icon={faTrash} size="lg" className="text-danger sr-hidden" />
                                                     <span className="sr-only"><Translate value="action.remove">Remove</Translate></span>
                                                 </Button>

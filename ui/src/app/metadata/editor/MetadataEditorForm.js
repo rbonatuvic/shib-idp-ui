@@ -1,19 +1,14 @@
 import React from 'react';
 
-import Form from '@rjsf/bootstrap-4';
+import Form from '../../form/Form';
 import FormCheck from 'react-bootstrap/FormCheck';
 
-import { fields, widgets } from '../../form/component';
-import { templates } from '../../form/component';
 import { useUiSchema } from '../hooks/schema';
 import Alert from 'react-bootstrap/Alert';
 
 import { transformErrors } from '../domain/transform';
 import { useUserGroup } from '../../core/user/UserContext';
 
-function ErrorListTemplate () {
-    return (<></>);
-}
 
 export function MetadataEditorForm({ metadata, definition, schema, current, onChange, validator }) {
 
@@ -62,14 +57,8 @@ export function MetadataEditorForm({ metadata, definition, schema, current, onCh
                     onSubmit={() => onSubmit()}
                     schema={schema}
                     uiSchema={uiSchema}
-                    FieldTemplate={templates.FieldTemplate}
-                    ObjectFieldTemplate={templates.ObjectFieldTemplate}
-                    ArrayFieldTemplate={templates.ArrayFieldTemplate}
-                    fields={fields}
-                    widgets={widgets}
                     liveValidate={true}
                     transformErrors={transformErrors}
-                    ErrorList={ErrorListTemplate}
                     validate={validator}
                     formContext={context}>
                     <></>

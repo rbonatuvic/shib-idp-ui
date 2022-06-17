@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Prompt, useHistory } from 'react-router';
+import { Prompt, useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import Translate from '../../i18n/components/translate';
 import { useRoles } from '../hooks';
@@ -61,7 +61,7 @@ export function EditRole() {
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
-                            <span className="display-6"><Translate value="label.edit-role">Edit role</Translate></span>
+                            <span className="lead"><Translate value="label.edit-role">Edit role</Translate></span>
                         </div>
                     </div>
                 </div>

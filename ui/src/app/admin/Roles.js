@@ -7,7 +7,7 @@ import { RoleList } from './container/RoleList';
 
 export function Roles() {
 
-    let { path } = useRouteMatch();
+    let { path, url } = useRouteMatch();
 
     return (
         <>
@@ -25,7 +25,9 @@ export function Roles() {
                 <Route path={`${path}/:id/edit`} render={() =>
                     <EditRole />
                 } />
-                <Redirect exact path={`${path}`} to={`${path}/list`} />
+                <Route path={`${path}`} exact render={() => 
+                    <Redirect to={`${url}/list`} />
+                } />
             </Switch>
         </>
     );

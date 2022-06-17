@@ -5,21 +5,22 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/Button';
+import { useAccordionButton } from "react-bootstrap/AccordionButton";
+import AccordionContext from "react-bootstrap/AccordionContext";
 
 import AddButton from "../AddButton";
 import IconButton from "../IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import Translate from "../../../i18n/components/translate";
+
 
 const { isMultiSelect, getDefaultRegistry } = utils;
 
 const ArrayFieldTemplate = (props) => {
     const { schema, registry = getDefaultRegistry() } = props;
-
     // TODO: update types so we don't have to cast registry as any
     if (isMultiSelect(schema, (registry).rootSchema)) {
-        
         return <DefaultFixedArrayFieldTemplate {...props} />;
     } else {
         return <DefaultNormalArrayFieldTemplate {...props} />;
@@ -57,6 +58,21 @@ const ArrayFieldDescription = ({
 
 // Used in the two templates
 
+const CustomToggle = ({children, eventKey, type, callback}) => {
+    const { activeEventKey } = React.useContext(AccordionContext);
+
+    const decoratedOnClick = useAccordionButton(eventKey, () => callback && callback(eventKey));
+    const isCurrentEventKey = activeEventKey === eventKey;
+
+    return (
+        <Button variant="icon" eventKey="0" className="px-0" onClick={decoratedOnClick}>
+            <FontAwesomeIcon icon={ isCurrentEventKey ? faCaretDown : faCaretRight } />&nbsp;
+            {children}
+        </Button>
+    );
+}
+
+
 const ObjectArrayItem = ({type, ...props}) => {
     const btnStyle = {
         flex: 1,
@@ -65,14 +81,13 @@ const ObjectArrayItem = ({type, ...props}) => {
         fontWeight: "bold",
     };
     return (
-        <div key={props.key} className={`mt-2 bg-light border rounded p-2 list-group`}>
+        <div key={props.key} className={`mt-2 mb-3 bg-light border rounded p-2 list-group`}>
             <Accordion defaultActiveKey="0">
             <div className={`list-group-item`}>
                 <div className="mb-4 pb-2 d-flex justify-content-between align-items-center border-bottom">
-                    <Accordion.Toggle as={Button} variant="link" eventKey="0" className="px-0">
-                        <FontAwesomeIcon icon={faCaretDown} />&nbsp;
+                    <CustomToggle eventKey={'0'} type={type}>
                         <Translate value={'label.new-of-type'} params={{type}} />
-                    </Accordion.Toggle>
+                    </CustomToggle>
                     {props.hasToolbar && (
                         <div className="d-flex flex-row align-items-start">
                             {(props.hasMoveUp || props.hasMoveDown) && (
@@ -121,7 +136,7 @@ const ObjectArrayItem = ({type, ...props}) => {
                     )}
                 </div>
                 <Accordion.Collapse eventKey="0">
-                    <div className="mr-2 flex-grow-1">{props.children}</div>
+                    <div className="me-2 flex-grow-1">{props.children}</div>
                 </Accordion.Collapse>
             </div>
             </Accordion>
@@ -140,9 +155,9 @@ const DefaultArrayItem = (props) => {
     const uiSchemaOptions = props.uiSchema ? props.uiSchema['ui:options'] || {} : {};
 
     return (
-        <div key={props.key} className={`mt-2 `}>
+        <div key={props.key} className={`mt-2 mb-3`}>
             <div className="mb-2  d-flex align-items-start">
-                <div className={`mr-2 flex-grow-1 ${uiSchemaOptions.classNames}`}>{props.children}</div>
+                <div className={`me-2 flex-grow-1 ${uiSchemaOptions.classNames}`}>{props.children}</div>
                 {props.hasToolbar && (
                     <div className="d-flex flex-row align-items-start">
                         {(props.hasMoveUp || props.hasMoveDown) && (
@@ -239,7 +254,7 @@ const DefaultNormalArrayFieldTemplate = (props) => {
     const showTitle = props.uiSchema.hasOwnProperty("ui:title") ? props.uiSchema["ui:title"] === false && !props.canAdd ? false : true : true;
 
     return (
-        <Row className="p-0 m-0">
+        <Row className="p-0 m-0 mb-3">
             <Col className="p-0 m-0">
                 <div className="d-flex align-items-center">
                     {showTitle && <ArrayFieldTitle

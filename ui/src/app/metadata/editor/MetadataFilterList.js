@@ -1,7 +1,7 @@
 import React from 'react';
 import { faArrowLeft, faCogs, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useHistory, useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router-dom';
 
 import Translate from '../../i18n/components/translate';
 import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/MetadataSchema';
@@ -35,7 +35,7 @@ export function MetadataFilterList() {
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
-                            <span className="display-6">
+                            <span className="lead">
                                 <FontAwesomeIcon icon={faCogs} />&nbsp;
                                 Edit metadata {type} - {current.name}
                             </span>
@@ -63,7 +63,7 @@ export function MetadataFilterList() {
                                 </NavLink>
                             </MetadataEditorNav>
                         </div>
-                        <div className="d-flex justify-content-end ml-auto">
+                        <div className="d-flex justify-content-end ms-auto">
                             <Link to="./new" className="btn btn-success">
                                 <FontAwesomeIcon icon={faPlus} />&nbsp;
                                 <Translate value="action.add-filter">Add Filter</Translate>

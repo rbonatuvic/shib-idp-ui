@@ -85,17 +85,15 @@ const SelectWidget = ({
     const [touched, setTouched] = React.useState(false);
 
     return (
-        <Form.Group>
+        <Form.Group className="mb-3">
             <Form.Label className={`${touched && rawErrors?.length > 0 ? "text-danger" : ""}`} htmlFor={id}>
                 <span>
                     <Translate value={label || schema.title} />
-                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="ml-2 text-danger" size="sm" /> : null}
+                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="ms-2 text-danger" size="sm" /> : null}
                 </span>
-                {schema.description && <InfoIcon value={schema.description} className="ml-2" />}
+                {schema.description && <InfoIcon value={schema.description} className="ms-2" />}
             </Form.Label>
-            <Form.Control
-                as="select"
-                custom
+            <Form.Select
                 id={id}
                 value={typeof value === "undefined" ? emptyValue : value}
                 required={required}
@@ -131,7 +129,7 @@ const SelectWidget = ({
                     {translator(label)}
                 </option>
                 )}
-            </Form.Control>
+            </Form.Select>
             {rawErrors?.length > 0 && touched && (
                 <ListGroup as="ul">
                     {rawErrors.map((error, i) => {

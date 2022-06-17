@@ -28,7 +28,7 @@ export function ProviderList({ entities, reorder = true, first, last, onEnable, 
                         <th className="w-15"><Translate value="label.provider-type">Provider Type</Translate></th>
                         <th className="w-15"><Translate value="label.author">Author</Translate></th>
                         <th className="w-15"><Translate value="label.creation-date">Created Date</Translate></th>
-                        <th className="text-right w-15"><Translate value="label.enabled">Enabled</Translate></th>
+                        <th className="text-end w-15"><Translate value="label.enabled">Enabled</Translate></th>
                     </tr>
                 </thead>
                 <tbody>
