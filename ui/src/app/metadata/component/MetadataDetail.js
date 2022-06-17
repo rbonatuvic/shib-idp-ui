@@ -18,7 +18,7 @@ export function MetadataDetail ({ children }) {
                                 <Link to="/dashboard"><Translate value="action.dashboard">Dashboard</Translate></Link>
                             </li>
                             <li className="breadcrumb-item active" aria-current="page">
-                                <span className="display-6">
+                                <span className="">
                                     { metadata.serviceProviderName || metadata.name }
                                 </span>
                             </li>

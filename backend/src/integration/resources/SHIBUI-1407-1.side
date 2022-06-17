@@ -1497,9 +1497,12 @@
       "id": "fd33610c-dbca-410d-b2a4-117a1b2b6a79",
       "comment": "",
       "command": "click",
-      "target": "css=.mt-2:nth-child(2) .mr-2 .svg-inline--fa",
+      "target": "css=.is-invalid > .toggle-button",
       "targets": [
-        ["css=.mt-2:nth-child(2) .mr-2 .svg-inline--fa", "css:finder"]
+        ["css=.is-invalid > .toggle-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[12]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[9]/div/div/div/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div/div/div/div/div/button", "xpath:position"]
       ],
       "value": ""
     }, {

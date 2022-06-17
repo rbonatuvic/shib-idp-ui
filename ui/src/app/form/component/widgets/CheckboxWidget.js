@@ -31,7 +31,7 @@ const CheckboxWidget = (props) => {
 
     // const desc = label || schema.description;
     return (
-        <Form.Group className={`checkbox ${disabled || readonly ? "disabled" : ""}`}>
+        <Form.Group className={`checkbox mb-3 ${disabled || readonly ? "disabled" : ""}`}>
             <Form.Check
                 id={id}
                 label={<span className="d-flex justify-content-start">
@@ -39,7 +39,7 @@ const CheckboxWidget = (props) => {
                         <Translate value={label || schema.title} />
                         {(label || schema.title) && required ? <span className="text-danger">*</span> : null}
                     </span>
-                    {schema.description && <InfoIcon value={schema.description} className="ml-2" />}
+                    {schema.description && <InfoIcon value={schema.description} className="ms-2" />}
                 </span>}
                 checked={typeof value === "undefined" ? false : typeof value === 'boolean' ? value : value === 'true' ? true : false}
                 required={required}

@@ -45,7 +45,7 @@ export function DeleteSourceConfirmation ({children}) {
             <Modal show={!!deleting} onHide={() => setDeleting(null)}>
                 <Modal.Header><Translate value="message.delete-source-title">Delete Metadata Source?</Translate></Modal.Header>
                 <Modal.Body className="d-flex align-content-center">
-                    <FontAwesomeIcon className="text-danger mr-4" size="4x" icon={faExclamationTriangle} />
+                    <FontAwesomeIcon className="text-danger me-4" size="4x" icon={faExclamationTriangle} />
                     <p className="text-danger font-weight-bold mb-0">
                         <Translate value="message.delete-source-body">You are deleting a metadata source. This cannot be undone. Continue?</Translate>
                     </p>

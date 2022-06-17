@@ -21,7 +21,7 @@ export function MetadataSection ({ section, index = -1, onEdit, children }) {
                             </span>
                             }
                             
-                            <span className="text ml-2">
+                            <span className="text ms-2">
                                 <Translate value={ section.label } />
                             </span>
                         </h2>

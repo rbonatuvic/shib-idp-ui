@@ -5,7 +5,7 @@ import { Switch, Route, Redirect, useRouteMatch, useLocation } from 'react-route
 import { NavLink } from 'react-router-dom';
 
 import Translate from '../../i18n/components/translate';
-import { AdminRoute } from '../../core/components/AdminRoute';
+import { ProtectRoute } from '../../core/components/ProtectRoute';
 
 import { SourcesTab } from './SourcesTab';
 import { ProvidersTab } from './ProvidersTab';
@@ -17,10 +17,11 @@ import API_BASE_PATH from '../../App.constant';
 import { useNonAdminSources } from '../../metadata/hooks/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import Badge from 'react-bootstrap/Badge';
 
 export function Dashboard () {
 
-    const { path } = useRouteMatch();
+    const { path, url } = useRouteMatch();
     const location = useLocation();
 
     const isAdmin = useIsAdmin();
@@ -89,7 +90,7 @@ export function Dashboard () {
                     <Nav.Item>
                         <NavLink className="nav-link d-flex align-items-center" to={`${path}/admin/actions`}>
                             <Translate value="label.action-required">Action Required</Translate>
-                            <span className="badge badge-pill badge-danger ml-1">{actions}</span>
+                            <Badge pill bg="danger" className="ms-1">{actions}</Badge>
                         </NavLink>
                     </Nav.Item>
                 </>
@@ -97,14 +98,20 @@ export function Dashboard () {
             </Nav>
             <Switch>
                 <Route exact path={`${path}`}>
-                    <Redirect to={`${path}/metadata/manager/resolvers`} />
+                    <Redirect to={`${url}/metadata/manager/resolvers`} />
                 </Route>
                 <Route path={`${path}/metadata/manager/resolvers`} component={SourcesTab} />
-                <AdminRoute path={`${path}/metadata/manager/providers`} component={ProvidersTab} />
-                <AdminRoute path={`${path}/admin/management`} component={AdminTab} />
-                <Route path={`${path}/admin/actions`}>
-                    <ActionsTab sources={sources} users={users} reloadSources={loadSources} reloadUsers={loadUsers} />
-                </Route>
+                <Route path={`${path}/metadata/manager/providers`} component={ProvidersTab} />
+                <Route path={`${path}/admin/management`} render={() =>
+                    <ProtectRoute redirectTo="/dashboard">
+                        <AdminTab />
+                    </ProtectRoute>
+                } />
+                <Route path={`${path}/admin/actions`} render={() =>
+                    <ProtectRoute redirectTo="/dashboard">
+                        <ActionsTab sources={sources} users={users} reloadSources={loadSources} reloadUsers={loadUsers} />
+                    </ProtectRoute>
+                } />
             </Switch></>
             }
         </div>

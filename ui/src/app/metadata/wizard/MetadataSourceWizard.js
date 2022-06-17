@@ -16,12 +16,19 @@ import { useMetadataSources } from '../hooks/api';
 
 import Translate from '../../i18n/components/translate';
 import { checkChanges } from '../hooks/utility';
-import { useUserGroup } from '../../core/user/UserContext';
+import { useCurrentUserLoader, useUserGroup } from '../../core/user/UserContext';
 
 
 export function MetadataSourceWizard ({ onShowNav, onSave, block, loading }) {
 
     const group = useUserGroup();
+
+    const userLoader = useCurrentUserLoader();
+
+    /*eslint-disable react-hooks/exhaustive-deps*/
+    React.useEffect(() => {
+        userLoader();
+    }, []);
 
     const { data } = useMetadataSources({
         cachePolicy: 'no-cache'
@@ -60,8 +67,6 @@ export function MetadataSourceWizard ({ onShowNav, onSave, block, loading }) {
     const validator = useMetadataDefinitionValidator(data, null, group);
     const warnings = definition.warnings && definition.warnings(metadata);
 
-    React.useEffect(() => console.log(loading), [loading]);
-
     return (
         <>
             <div className="row mb-4">
@@ -75,7 +80,7 @@ export function MetadataSourceWizard ({ onShowNav, onSave, block, loading }) {
                     <Col xs="12" lg="6" className="align-items-start">
                         <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
                             {warnings[current].map((w, widx) =>
-                                <p className="m-0" key={widx}><FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" /> <Translate value={w} /></p>
+                                <p className="m-0" key={widx}><FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="me-2" /> <Translate value={w} /></p>
                             )}
                         </Alert>
                     </Col>

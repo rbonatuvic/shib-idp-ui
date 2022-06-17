@@ -32,8 +32,6 @@ export const DynamicHttpMetadataProviderWizard = {
 
         const includeMatch = models.some(m => !isNil(m?.metadataRequestURLConstructionScheme?.match));
 
-        console.log(models)
-
         if (includeMatch) {
             return ({
                 ...schema,

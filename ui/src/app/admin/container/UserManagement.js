@@ -85,7 +85,7 @@ export default function UserManagement({ users, children, reload}) {
             <Modal show={!!deleting} onHide={() => setDeleting(null)}>
                 <Modal.Header toggle={toggle}><Translate value="message.delete-user-title">Delete User?</Translate></Modal.Header>
                 <Modal.Body className="d-flex align-content-center">
-                    <FontAwesomeIcon className="text-danger mr-4" size="4x" icon={faExclamationTriangle} />
+                    <FontAwesomeIcon className="text-danger me-4" size="4x" icon={faExclamationTriangle} />
                     <p className="text-danger font-weight-bold mb-0">
                         <Translate value="message.delete-user-body">You are requesting to delete a user. If you complete this process the user will be removed. This cannot be undone. Do you wish to continue?</Translate>
                     </p>

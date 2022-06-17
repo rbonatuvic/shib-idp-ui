@@ -1,18 +1,12 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import Form from '@rjsf/bootstrap-4';
+import Form from '../../form/Form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faSave } from '@fortawesome/free-solid-svg-icons';
 import Translate from '../../i18n/components/translate';
 
 import { useRoleUiSchema } from '../hooks';
-import { fields, widgets } from '../../form/component';
-import { templates } from '../../form/component';
 import { FormContext, setFormDataAction, setFormErrorAction } from '../../form/FormManager';
-
-function ErrorListTemplate() {
-    return (<></>);
-}
 
 export function RoleForm({ role = {}, errors = [], loading = false, schema, onSave, onCancel }) {
 
@@ -28,7 +22,7 @@ export function RoleForm({ role = {}, errors = [], loading = false, schema, onSa
         <div className="container-fluid">
             <div className="d-flex justify-content-end align-items-center">
                 <React.Fragment>
-                    <Button variant="info" className="mr-2"
+                    <Button variant="info" className="me-2"
                         type="button"
                         onClick={() => onSave(role)}
                         disabled={errors.length > 0 || loading}
@@ -51,13 +45,7 @@ export function RoleForm({ role = {}, errors = [], loading = false, schema, onSa
                         onChange={(form) => onChange(form)}
                         schema={schema}
                         uiSchema={uiSchema}
-                        FieldTemplate={templates.FieldTemplate}
-                        ObjectFieldTemplate={templates.ObjectFieldTemplate}
-                        ArrayFieldTemplate={templates.ArrayFieldTemplate}
-                        fields={fields}
-                        widgets={widgets}
-                        liveValidate={true}
-                        ErrorList={ErrorListTemplate}>
+                        liveValidate={true}>
                         <></>
                     </Form>
                 </div>

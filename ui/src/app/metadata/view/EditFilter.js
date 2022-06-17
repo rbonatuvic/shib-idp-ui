@@ -3,7 +3,7 @@ import { faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from 'react-bootstrap/Button';
 
-import { Prompt, useHistory, useParams } from 'react-router';
+import { Prompt, useHistory, useParams } from 'react-router-dom';
 import Translate from '../../i18n/components/translate';
 import { MetadataFilterEditor } from '../editor/MetadataFilterEditor';
 import { MetadataForm } from '../hoc/MetadataFormContext';
@@ -64,7 +64,7 @@ export function EditFilter() {
             />
             <section className="section" tabIndex="0">
                 <div className="section-header bg-info px-4 py-2 text-white">
-                    <span className="display-6"><Translate value="label.edit-filter">Edit filter</Translate></span>
+                    <span className="lead"><Translate value="label.edit-filter">Edit filter</Translate></span>
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
                         <MetadataSchema type={filter['@type']}>
@@ -72,7 +72,7 @@ export function EditFilter() {
                                 <React.Fragment>
                                     <div className="container-fluid">
                                         <div className="form-inline">
-                                            <label htmlFor="staticType" className="mr-3">Filter Type</label>
+                                            <label htmlFor="staticType" className="me-3">Filter Type</label>
                                             <input type="text" readOnly disabled className="form-control" id="staticType" value={filter['@type']} />
                                         </div>
                                     </div>
@@ -80,7 +80,7 @@ export function EditFilter() {
                                 <MetadataFilterEditor onNavigate={onNavigate } block={ (b) => setBlocking(b) }>
                                         {(filter, isInvalid) =>
                                             <div className="d-flex justify-content-end">
-                                                <Button variant="info" className="mr-2"
+                                                <Button variant="info" className="me-2"
                                                     type="button"
                                                     onClick={() => save(filter)}
                                                     disabled={isInvalid || loading}

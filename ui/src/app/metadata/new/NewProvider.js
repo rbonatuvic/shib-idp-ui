@@ -15,7 +15,7 @@ export function NewProvider() {
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
-                            <span className="display-6"><Translate value="label.add-a-new-metadata-provider">Add a new metadata provider</Translate></span>
+                            <span className="lead"><Translate value="label.add-a-new-metadata-provider">Add a new metadata provider</Translate></span>
                         </div>
                     </div>
                 </div>

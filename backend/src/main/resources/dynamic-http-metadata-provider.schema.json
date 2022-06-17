@@ -174,8 +174,7 @@
                 "persistentCacheManagerDirectory": {
                     "title": "label.persistent-cache-manager-directory",
                     "description": "tooltip.persistent-cache-manager-directory",
-                    "type": "string",
-                    "minLength": 1
+                    "type": "string"
                 },
                 "initializeFromPersistentCacheInBackground": {
                     "title": "label.initialize-from-persistent-cache-in-background",
