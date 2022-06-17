@@ -35,13 +35,13 @@ export function DeleteConfirmation({ children, body, title }) {
             <Modal show={deleting} onHide={() => onCancelClick()}>
                 {title && <Modal.Header><Translate value={title}>Delete Metadata Source?</Translate></Modal.Header>}
                 <Modal.Body className="d-flex align-content-center">
-                    <FontAwesomeIcon className="text-danger mr-4" size="4x" icon={faExclamationTriangle} />
+                    <FontAwesomeIcon className="text-danger me-4" size="4x" icon={faExclamationTriangle} />
                     <p className="text-danger font-weight-bold mb-0">
                         <Translate value={body}>You are deleting an entity. This cannot be undone. Continue?</Translate>
                     </p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button className="mr-2" variant="danger" onClick={() => onConfirmClick()}>
+                    <Button className="me-2" variant="danger" onClick={() => onConfirmClick()}>
                         <Translate value="action.delete">Delete</Translate>
                     </Button>
                     <Button variant="secondary" onClick={() => onCancelClick()}>

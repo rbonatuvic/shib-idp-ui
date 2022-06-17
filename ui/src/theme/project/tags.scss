@@ -1,3 +1,4 @@
+@use "sass:map";
 @import '../variables';
 @import '~bootstrap/scss/_mixins';
 @import '~bootstrap/scss/_utilities';
@@ -17,7 +18,7 @@
 .tag {
     $text-space: 8px;
     $left-offset: 32px;
-
+    $line-height-lg: 1.3rem;
     font-size: $font-size-sm;
     line-height: $line-height-lg;
     position: relative;
@@ -27,10 +28,10 @@
     display: inline-block;
     // border-radius: $btn-border-radius-lg;
     max-width: 220px;
-    color: theme-color('white');
+    color: map.get($theme-colors, 'white');
 
-    &.tag-success { @include tag-variant(theme-color('success')); }
-    &.tag-primary { @include tag-variant(theme-color('primary')); }
+    &.tag-success { @include tag-variant(map.get($theme-colors, 'success')); }
+    &.tag-primary { @include tag-variant(map.get($theme-colors, 'primary')); }
 
     &:hover {
         text-decoration: none;
@@ -42,14 +43,15 @@
         width: 68px;
         height: 68px;
         background: $white;
-        color: theme-color('primary');
+        color: map.get($theme-colors, 'primary');
         left: -15px;
         top: -5px;
-        border: 8px solid theme-color('primary');
+        border: 8px solid map.get($theme-colors, 'primary');
         font-size: 36px;
         display: block;
         font-weight: bold;
         text-align: center;
+        line-height: 3.5rem;
     }
 
     &::after {

@@ -36,7 +36,7 @@ export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, 
     
     return (<>
         <div className="d-flex justify-content-start align-items-center">
-            <span className="mr-2">{ index + 1 }</span>
+            <span className="me-2">{ index + 1 }</span>
             {editable &&
             <div className="d-flex justify-content-between">
                 <Button variant="link" size="sm" onClick={() => onOrderUp(filter.resourceId)} disabled={isFirst}>
@@ -51,7 +51,7 @@ export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, 
             }
             <Button variant="link" className="mx-4" onClick={ () => setOpen(!open) }>{ filter.name }</Button>
             <span className="">{ filter['@type'] }</span>
-            <span className="ml-auto">
+            <span className="ms-auto">
                 <Form.Check type="switch"
                     id={`customSwitch-${filter.resourceId}`}
                     label={<Translate value={filter.filterEnabled ? 'label.enabled' : 'label.disabled'} />}

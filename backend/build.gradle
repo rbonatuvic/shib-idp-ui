@@ -175,9 +175,8 @@ dependencies {
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.0.4'
     runtimeOnly 'mysql:mysql-connector-java:8.0.29'
 
-    //Swagger
-    compile 'io.springfox:springfox-swagger2:2.9.2'
-    compile 'io.springfox:springfox-swagger-ui:2.9.2'
+    //Swagger 3
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.8'
 
     compile 'org.codehaus.groovy:groovy-all:3.0.10'
     testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
@@ -206,6 +205,9 @@ dependencies {
     integrationTestCompile 'jp.vmi:selenese-runner-java:3.20.0'
     integrationTestCompile "org.springframework.boot:spring-boot-starter-test:${project.'springbootVersion'}"
     integrationTestCompile "org.springframework.security:spring-security-test:${project.'springSecurityVersion'}"
+    integrationTestCompile platform("org.spockframework:spock-bom:2.1-groovy-3.0")
+    integrationTestCompile "org.spockframework:spock-core"
+    integrationTestCompile "org.spockframework:spock-spring"
 
     // CSV file support
     compile 'com.opencsv:opencsv:4.4', {
@@ -240,6 +242,7 @@ task copyUI(type: Copy) {
 }
 
 task integrationTest(type: Test) {
+    useJUnitPlatform()
     group = 'verification'
     description = 'Run various integration tests'
     dependsOn 'copyUI'
@@ -251,6 +254,7 @@ task integrationTest(type: Test) {
 }
 
 task enversTest(type: Test) {
+    useJUnitPlatform()
     group = 'verification'
     description = 'Run tests pertaing to envers versioning engine'
     testClassesDirs = sourceSets.enversTest.output.classesDirs

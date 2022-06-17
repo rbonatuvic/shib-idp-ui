@@ -68,7 +68,7 @@ export function MetadataVersion() {
                                 {type === 'provider' &&
                                     <>
                                         <div className="numbered-header d-flex justify-content-start bg-light align-items-center">
-                                            <h2 className="title h4 m-0 ml-2 flex-grow-1">
+                                            <h2 className="title h4 m-0 ms-2 flex-grow-1">
                                                 <span className="text"><Translate value="label.filters">Filters</Translate></span>
                                             </h2>
                                             <div className="actions px-2">

@@ -718,6 +718,13 @@
       ],
       "value": "10000"
     }, {
+      "id": "563c9606-0174-4432-877a-ad769eb3206a",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "b1c779b1-d3ed-47cc-bc88-e5c280161c32",
       "comment": "",
       "command": "type",
@@ -1358,6 +1365,13 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "10000"
+    }, {
+      "id": "563c9606-0174-4432-877a-ad769eb3206a",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
     }, {
       "id": "92fdc836-2479-4faa-9e3d-447f5b82cc11",
       "comment": "",
@@ -2341,7 +2355,7 @@
       "id": "2ff5a597-9fe0-46b4-9ca5-63123ddb3cef",
       "comment": "",
       "command": "click",
-      "target": "css=.border-primary:nth-child(2) .fa-square",
+      "target": "xpath=//section/div/div/div[4]/div[2]/div/button",
       "targets": [
         ["css=.border-primary:nth-child(2) .fa-square", "css:finder"]
       ],

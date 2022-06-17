@@ -47,7 +47,7 @@ export function RoleList({ roles, onDelete }) {
                                             {(roles?.length > 0) ? roles.map((role, i) =>
                                                 <tr key={i}>
                                                     <td className="align-middle">{role.name}</td>
-                                                    <td className="text-right">
+                                                    <td className="text-end">
                                                         <React.Fragment>
                                                             <Link disabled={role.name === 'ROLE_ADMIN'} to={`../roles/${role.resourceId}/edit`} className={`btn btn-link text-primary ${role.name === 'ROLE_ADMIN' ? 'disabled' : ''}`}>
                                                                 <FontAwesomeIcon icon={faEdit} size="lg" />

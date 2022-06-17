@@ -117,7 +117,7 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1335: Verify Filesystem Metadata Provider'                  | '/SHIBUI-1335-2.side'
         'SHIBUI-1335: Verify Local Dynamic Metadata Provider'               | '/SHIBUI-1335-3.side'
         'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
-        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side'
+        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side' // Note that this script WILL NOT PASS in the Selenium IDE due to it thinking there is a syntax error where there is none.
         'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
         'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'

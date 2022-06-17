@@ -91,11 +91,11 @@ const OptionWidget = ({
     };
 
     return (
-        <Form.Group className="mb-0">
+        <Form.Group className="mb-3">
             <Form.Label className={`${(touched && rawErrors?.length > 0) ? "text-danger" : ""}`} htmlFor={`option-selector-${id}`}>
                 <span>
                     <Translate value={label || schema.title} />
-                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="text-danger ml-2" size="sm" /> : <span className="sr-only">Item {id + 1}</span>}
+                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="text-danger ms-2" size="sm" /> : <span className="sr-only">Item {id + 1}</span>}
                 </span>
                 {schema.description && <InfoIcon value={schema.description} />}
             </Form.Label>

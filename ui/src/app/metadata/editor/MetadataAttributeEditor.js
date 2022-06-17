@@ -3,14 +3,7 @@ import { MetadataFormContext, setFormDataAction, setFormErrorAction } from '../h
 import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/MetadataSchema';
 import { transformErrors } from '../domain/transform';
 
-import Form from '@rjsf/bootstrap-4';
-
-import { fields, widgets } from '../../form/component';
-import { templates } from '../../form/component';
-
-function ErrorListTemplate() {
-    return (<></>);
-}
+import Form from '../../form/Form';
 
 export function MetadataAttributeEditor({ children }) {
 
@@ -39,13 +32,7 @@ export function MetadataAttributeEditor({ children }) {
                         onChange={(form) => onChange(form)}
                         schema={schema}
                         uiSchema={definition.uiSchema}
-                        FieldTemplate={templates.FieldTemplate}
-                        ObjectFieldTemplate={templates.ObjectFieldTemplate}
-                        ArrayFieldTemplate={templates.ArrayFieldTemplate}
-                        fields={fields}
-                        widgets={widgets}
                         liveValidate={true}
-                        ErrorList={ErrorListTemplate}
                         transformErrors={transformErrors}>
                         <></>
                     </Form>

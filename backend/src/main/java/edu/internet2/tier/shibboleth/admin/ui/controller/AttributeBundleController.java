@@ -7,6 +7,8 @@ import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteExce
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.service.AttributeBundleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/custom/entity/bundles")
 @Slf4j
+@Tags(value = {@Tag(name = "bundles")})
 public class AttributeBundleController {
     @Autowired AttributeBundleService attributeBundleService;
 

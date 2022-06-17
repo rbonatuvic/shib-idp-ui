@@ -1,5 +1,9 @@
+@use "sass:map";
+
 @import '../variables';
 @import '~bootstrap/scss/_mixins';
+
+$custom-control-spacer-x: 1rem;
 
 .btn {
     -webkit-appearance: none;
@@ -37,24 +41,24 @@
         }
 
         .nav-link.btn {
-            @include button-size($input-btn-padding-y-lg, $input-btn-padding-x-lg, $font-size-sm, $line-height-lg, $btn-border-radius-lg);
+            @include button-size($input-btn-padding-y-lg, $input-btn-padding-x-lg, $font-size-sm, $btn-border-radius-lg);
             white-space: normal;
             height: 60px;
 
             &.previous {
-                $color: theme-color('secondary');
+                $color: map.get($theme-colors, 'secondary');
                 @include button-variant($color, $color);
             }
             &.current {
-                $color: theme-color('primary');
-                @include button-variant($color, $color, $color);
+                $color: map.get($theme-colors, 'primary');
+                @include button-variant($color, $color);
             }
             &.next {
-                $color: theme-color('success');
+                $color: map.get($theme-colors, 'success');
                 @include button-variant($color, $color);
             }
             &.save {
-                $color: theme-color('info');
+                $color: map.get($theme-colors, 'info');
                 @include button-variant($color, $color);
             }
 
@@ -96,19 +100,19 @@
             margin-left: $custom-control-spacer-x;
         }
         .nav-link.btn {
-            @include button-size($input-btn-padding-y-sm, $input-btn-padding-x-sm, $font-size-xs, $line-height-sm, $btn-border-radius-sm);
+            @include button-size($input-btn-padding-y-sm, $input-btn-padding-x-sm, $font-size-xs, $btn-border-radius-sm);
 
             &.next, &.save {
                 & > .direction {
-                    padding-left: $custom-control-spacer-x / 2;
-                    margin-left: $custom-control-spacer-x / 2;
+                    padding-left: calc($custom-control-spacer-x / 2);
+                    margin-left: calc($custom-control-spacer-x / 2);
                 }
             }
 
             &.previous {
                 & > .direction {
-                    padding-right: $custom-control-spacer-x / 2;
-                    margin-right: $custom-control-spacer-x / 2;
+                    padding-right: calc($custom-control-spacer-x / 2);
+                    margin-right: calc($custom-control-spacer-x / 2);
                 }
             }
 

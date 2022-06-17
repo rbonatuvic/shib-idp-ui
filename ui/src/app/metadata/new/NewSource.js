@@ -10,7 +10,7 @@ import { faCopy, faLink, faPlusSquare } from '@fortawesome/free-solid-svg-icons'
 
 export function NewSource() {
 
-    const { path } = useRouteMatch();
+    const { path, url } = useRouteMatch();
 
     const [showNav, setShowNav] = React.useState(true);
 
@@ -20,7 +20,7 @@ export function NewSource() {
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
-                            <span className="display-6"><Translate value="label.add-a-new-metadata-resolver">Add a new metadata source</Translate></span>
+                            <span className="lead"><Translate value="label.add-a-new-metadata-resolver">Add a new metadata source</Translate></span>
                         </div>
                     </div>
                 </div>
@@ -86,7 +86,9 @@ export function NewSource() {
                             <Route path={`${path}/copy`} render={() =>
                                 <MetadataCopy onShowNav={ (s) => { setShowNav(s) } } />
                             } />
-                            <Redirect exact path={`${path}`} to={`${path}/blank`} />
+                            <Route exact path={`${path}`} render={() =>
+                                <Redirect to={`${url}/blank`} />
+                            } />
                         </Switch>
                     </MetadataSchema>
                 </div>

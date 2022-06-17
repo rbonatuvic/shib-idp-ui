@@ -13,6 +13,8 @@ import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverVersionService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.util.OpenSamlChainingMetadataResolverUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.extern.slf4j.Slf4j;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -48,6 +50,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.
 @RestController
 @RequestMapping("/api")
 @Slf4j
+@Tags(value = {@Tag(name = "metadata resolvers")})
 public class MetadataResolversController {
 
     @Autowired

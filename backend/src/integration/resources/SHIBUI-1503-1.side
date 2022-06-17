@@ -458,8 +458,13 @@
       "id": "990aff50-4646-4258-a9f0-ef5f39b8dc83",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=.badge-pill",
-      "targets": [],
+      "target": "css=.rounded-pill",
+      "targets": [
+        ["css=.ms-1", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/div/div[4]/a/span", "xpath:idRelative"],
+        ["xpath=//div[4]/a/span", "xpath:position"],
+        ["xpath=//span[contains(.,'3')]", "xpath:innerText"]
+      ],
       "value": "30000"
     }, {
       "id": "d77d51d9-fbf7-4358-a995-41fcf0f6885f",
@@ -472,7 +477,7 @@
       "id": "9fd2f2ad-6315-48be-b1e5-b958956c20be",
       "comment": "",
       "command": "assertText",
-      "target": "css=.badge-pill",
+      "target": "css=.rounded-pill",
       "targets": [
         ["css=.badge-pill", "css:finder"],
         ["xpath=//li[4]/a/span", "xpath:position"],
