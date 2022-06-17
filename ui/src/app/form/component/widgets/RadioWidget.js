@@ -34,13 +34,13 @@ const RadioWidget = ({
     const inline = Boolean(options && options.inline);
 
     return (
-        <Form.Group className="mb-0">
+        <Form.Group className="mb-3">
             <Form.Label className="d-block">
                 <span>
                     <Translate value={label || schema.title} />
                     {(label || schema.title) && required ? <span className="text-danger">*</span> : null}
                 </span>
-                {schema.description && <InfoIcon value={schema.description} className="ml-2" />}
+                {schema.description && <InfoIcon value={schema.description} className="ms-2" />}
             </Form.Label>
             {(enumOptions).map((option, i) => {
                 const itemDisabled =

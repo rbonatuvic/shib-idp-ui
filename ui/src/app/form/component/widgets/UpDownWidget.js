@@ -27,7 +27,7 @@ const UpDownWidget = ({
 }) => {
     const _onChange = ({
         target: { value },
-    }) => onChange(value);
+    }) => setFieldValue(value);
     const _onBlur = ({ target: { value } }) =>
         onBlur(id, value);
     const _onFocus = ({
@@ -37,6 +37,10 @@ const UpDownWidget = ({
     const translator = useTranslator();
 
     const [touched, setTouched] = React.useState(false);
+    const [fieldValue, setFieldValue] = React.useState(value);
+    React.useEffect(() => {
+        onChange(fieldValue);
+    }, [fieldValue, onChange]);
 
     const onCustomBlur = (evt) => {
         setTouched(true);
@@ -44,13 +48,13 @@ const UpDownWidget = ({
     };
 
     return (
-        <Form.Group className="mb-0">
+        <Form.Group>
             <Form.Label>
                 <span>
                     <Translate value={label || schema.title} />
-                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="ml-2 text-danger" size="sm" /> : null}
+                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="ms-2 text-danger" size="sm" /> : null}
                 </span>
-                {schema.description && <InfoIcon value={schema.description} className="ml-2" />}
+                {schema.description && <InfoIcon value={schema.description} className="ms-2" />}
             </Form.Label>
             <Form.Control
                 id={id}
@@ -60,7 +64,7 @@ const UpDownWidget = ({
                 disabled={disabled}
                 readOnly={readonly}
                 placeholder={uiSchema['ui:placeholder'] ? translator(uiSchema['ui:placeholder']) : ''}
-                value={value || value === 0 ? value : ""}
+                value={fieldValue}
                 step={schema.multipleOf}
                 onChange={_onChange}
                 onBlur={onCustomBlur}

@@ -22,7 +22,7 @@ export function MetadataConfirmRestore () {
                                         <Link to="/dashboard"><Translate value="action.dashboard">Dashboard</Translate></Link>
                                     </li>
                                     <li className="breadcrumb-item active" aria-current="page">
-                                        <span className="display-6">
+                                        <span className="lead">
                                             {metadata && (metadata.name || metadata.serviceProviderName)}
                                         </span>
                                     </li>
@@ -50,7 +50,7 @@ export function MetadataConfirmRestore () {
                                                 <p><Translate value="message.restoring-this-version-will-copy" params={{ date: formatter(metadata.modifiedDate, true) }}>
                                                     Restoring this version will copy the Version ( date ) configuration and create a new Version from the selected version settings. You can then edit the configuration before saving the new version.</Translate>
                                                 </p>
-                                                <Link className="btn btn-light mr-2" to={`../../configuration/history`}><Translate value="action.cancel">Cancel</Translate></Link>
+                                                <Link className="btn btn-light me-2" to={`../../configuration/history`}><Translate value="action.cancel">Cancel</Translate></Link>
                                                 <Link className="btn btn-primary" to={`./common/edit`}><Translate value="action.restore">Restore</Translate></Link>
                                             </div>
                                         </div>

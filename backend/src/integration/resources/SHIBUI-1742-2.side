@@ -112,9 +112,13 @@
       "id": "548d864c-87ba-4889-823e-3e9729d596db",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-save",
+      "target": "css=.btn-info",
       "targets": [
-        ["css=.fa-save", "css:finder"]
+        ["css=.btn-info", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,' Save')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -270,7 +274,7 @@
       "id": "a378e628-4227-451b-9fb6-ef9edb7fc4fa",
       "comment": "",
       "command": "click",
-      "target": "css=table > tbody > tr:nth-child(5) > td.text-right > button",
+      "target": "css=tr:nth-child(5) .text-danger",
       "targets": [
         ["css=tr:nth-child(5) .text-danger path", "css:finder"]
       ],
@@ -377,7 +381,7 @@
       "id": "f4201d01-e582-4071-921b-ede543ce181a",
       "comment": "",
       "command": "click",
-      "target": "css=table > tbody > tr:nth-child(5) > td.text-right > button",
+      "target": "css=tr:nth-child(5) .text-danger",
       "targets": [
         ["css=tr:nth-child(5) .text-danger", "css:finder"],
         ["xpath=(//button[@type='button'])[9]", "xpath:attributes"],

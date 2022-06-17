@@ -10,7 +10,7 @@ import { MetadataAttributeBundleEdit } from './view/MetadataAttributeBundleEdit'
 
 export function Attribute() {
 
-    let { path } = useRouteMatch();
+    let { path, url } = useRouteMatch();
 
     return (
         <Switch>
@@ -36,7 +36,9 @@ export function Attribute() {
             <Route exact path={`${path}/bundles/:id/edit`} render={() =>
                 <MetadataAttributeBundleEdit />
             } />
-            <Redirect exact path={`${path}`} to={`${path}/list`} />
+            <Route exact path={`${path}`} render={() =>
+                <Redirect to={`${url}/list`} />
+            } />
         </Switch>
     );
 }

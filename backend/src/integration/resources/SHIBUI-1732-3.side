@@ -835,13 +835,6 @@
       ],
       "value": "Test"
     }, {
-      "id": "f21989e9-8b54-4e55-a6f7-c699939f0992",
-      "comment": "",
-      "command": "select",
-      "target": "name=type",
-      "targets": [],
-      "value": "label=FileBackedHttpMetadataResolver"
-    }, {
       "id": "3c298664-b8c4-40de-986e-a955c760ba3e",
       "comment": "",
       "command": "select",
@@ -1130,9 +1123,13 @@
       "id": "1690cd2a-caae-4e79-80e1-6c558683bdf2",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-save > path",
+      "target": "css=.btn-info",
       "targets": [
-        ["css=.fa-save > path", "css:finder"]
+        ["css=.btn-info", "css:finder"],
+        ["xpath=(//button[@type='button'])[7]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div/div[2]/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,' Save')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -1328,9 +1325,13 @@
       "id": "2dd7992f-ee99-45a3-ad85-20488c4bd4b1",
       "comment": "",
       "command": "click",
-      "target": "css=.border-primary:nth-child(2) .svg-inline--fa",
+      "target": "xpath=//section/div/div/div[4]/div[2]/div/button",
       "targets": [
-        ["css=.border-primary:nth-child(2) .svg-inline--fa", "css:finder"]
+        ["css=.border-primary:nth-child(2) .mx-auto", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/div[4]/div[2]/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Compare')]", "xpath:innerText"]
       ],
       "value": ""
     }, {

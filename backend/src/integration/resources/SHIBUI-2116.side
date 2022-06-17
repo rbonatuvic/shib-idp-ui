@@ -509,18 +509,6 @@
       ],
       "value": ""
     }, {
-      "id": "ab3f0a46-c48d-4521-b14a-c69bb30d781a",
-      "comment": "",
-      "command": "click",
-      "target": "css=.justify-content-start > .btn-primary",
-      "targets": [
-        ["css=.justify-content-start > .btn-primary", "css:finder"],
-        ["xpath=(//button[@type='button'])[10]", "xpath:attributes"],
-        ["xpath=//div[5]/div/div/div[3]/button", "xpath:position"],
-        ["xpath=//button[contains(.,'Discard Changes')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "f098bb58-cc06-401a-b231-1eeb73d13e76",
       "comment": "",
       "command": "waitForElementEditable",

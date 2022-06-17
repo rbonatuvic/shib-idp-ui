@@ -279,11 +279,11 @@
       "id": "84f35d35-ea9c-4a06-aaec-bee1c1922aec",
       "comment": "",
       "command": "click",
-      "target": "css=.row:nth-child(3) > .col-12 > .form-group .toggle-button",
+      "target": "css=.row:nth-child(3) > .col-12 > .mb-3 .toggle-button",
       "targets": [
-        ["css=.row:nth-child(3) > .col-12 > .form-group .toggle-button", "css:finder"],
-        ["xpath=(//button[@type='button'])[10]", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[4]/div/div/div/div[3]/div/div/div/div/div/button", "xpath:idRelative"],
+        ["css=.row:nth-child(3) > .col-12 > .mb-3 .toggle-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[11]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[3]/div/div/div/div[3]/div/div/div/div/div/button", "xpath:idRelative"],
         ["xpath=//div[3]/div/div/div/div/div/button", "xpath:position"]
       ],
       "value": ""

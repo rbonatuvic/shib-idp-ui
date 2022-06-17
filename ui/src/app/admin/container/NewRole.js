@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Prompt, useHistory } from 'react-router';
+import { Prompt, useHistory } from 'react-router-dom';
 import Translate from '../../i18n/components/translate';
 import { useRoles } from '../hooks';
 import { Schema } from '../../form/Schema';
@@ -55,7 +55,7 @@ export function NewRole() {
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
-                            <span className="display-6"><Translate value="label.new-role">Add a new role</Translate></span>
+                            <span className="lead"><Translate value="label.new-role">Add a new role</Translate></span>
                         </div>
                     </div>
                 </div>

@@ -17,9 +17,9 @@ export function TruncateText ({text}) {
             placement="top"
             overlay={
                 <Popover id="attribute-bundle-descr-popover">
-                    <Popover.Content>
+                    <Popover.Body>
                         {text}
-                    </Popover.Content>
+                    </Popover.Body>
                 </Popover>
             }
         >

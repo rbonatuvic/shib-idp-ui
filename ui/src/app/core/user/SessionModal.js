@@ -13,7 +13,7 @@ export function SessionModal({ show, children }) {
             <Modal show={show}>
                 <Modal.Header><Translate value="message.session-timeout-heading">Session timed out</Translate></Modal.Header>
                 <Modal.Body className="d-flex align-content-center">
-                    <FontAwesomeIcon className="text-danger mr-4" size="4x" icon={faExclamationTriangle} />
+                    <FontAwesomeIcon className="text-danger me-4" size="4x" icon={faExclamationTriangle} />
                     <p className="text-danger font-weight-bold mb-0">
                         <Translate value="message.session-timeout-body">Your session has timed out. Please login again.</Translate>
                     </p>
