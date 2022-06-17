@@ -108,7 +108,7 @@ export function MetadataUpload() {
                         </li>
                     </ul>
                     <fieldset className="bg-light border rounded p-4">
-                        <div className="form-group">
+                        <div className="form-group mb-3">
                             <label htmlFor="serviceProviderName">
                                 <Translate value="label.service-resolver-name-dashboard-display-only">Service Resolver Name (Dashboard Display Only)</Translate>
                                 <FontAwesomeIcon icon={faAsterisk} className="text-danger" />
@@ -122,8 +122,9 @@ export function MetadataUpload() {
                                 </Translate>
                             </small>}
                         </div>
-                        <div className="form-group">
-                            <Form.File
+                        <div className="form-group mb-3">
+                            <Form.Control
+                                type="file"
                                 id="custom-file"
                                 disabled={watchUrl}
                                 accept={'.xml'}
@@ -141,7 +142,7 @@ export function MetadataUpload() {
                             <Translate value="label.or">OR</Translate>
                             &mdash;
                         </div>
-                        <div className="form-group">
+                        <div className="form-group mb-3">
                             <label htmlFor="url"><Translate value="label.service-resolver-metadata-url">Service Resolver Metadata URL</Translate></label>
                             <input id="url" disabled={ watchFile && watchFile.length > 0 } type="text" className="form-control"{...register('url')} />
                         </div>

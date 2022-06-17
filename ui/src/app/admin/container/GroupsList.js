@@ -51,7 +51,7 @@ export function GroupsList({ groups, onDelete }) {
                                                 <tr key={i}>
                                                     <td>{group.name}</td>
                                                     <td>{group.description || ''}</td>
-                                                    <td className="text-right">
+                                                    <td className="text-end">
                                                         <Link to={`../groups/${group.resourceId}/edit`} className="btn btn-link text-primary">
                                                             <FontAwesomeIcon icon={faEdit} size="lg" />
                                                             <span className="sr-only">

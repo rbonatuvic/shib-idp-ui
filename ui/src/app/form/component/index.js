@@ -15,19 +15,21 @@ import TitleField from './fields/TitleField';
 import DescriptionField from './fields/DescriptionField';
 import FilterTargetField from './fields/FilterTargetField';
 import StringListWithDefaultField from './fields/StringListWithDefaultField';
+import ErrorListTemplate from './templates/ErrorListTemplate';
 
 export const fields = {
     // SchemaField: CustomSchemaField
     TitleField,
     DescriptionField,
     FilterTargetField,
-    StringListWithDefaultField
+    StringListWithDefaultField,
 };
 
 export const templates = {
     FieldTemplate,
     ArrayFieldTemplate,
-    ObjectFieldTemplate
+    ObjectFieldTemplate,
+    ErrorListTemplate,
 }
 
 export const widgets = {

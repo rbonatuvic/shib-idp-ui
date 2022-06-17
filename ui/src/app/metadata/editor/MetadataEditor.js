@@ -1,7 +1,7 @@
 import React from 'react';
 import { faCogs, faExclamationTriangle, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useHistory, useParams, Prompt } from 'react-router';
+import { useHistory, useParams, Prompt } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
@@ -49,6 +49,7 @@ export function MetadataEditor ({ restore, current, reload }) {
     function save(metadata) {
         update(`/${id}`, definition.parser(metadata, base))
             .then(() => {
+                notificationDispatch(createNotificationAction('Entity saved'));
                 gotoDetail({ refresh: true });
             })
             .catch((err) => {
@@ -70,7 +71,7 @@ export function MetadataEditor ({ restore, current, reload }) {
 
     const gotoDetail = (state = null) => {
         setBlocking(false);
-        history.push(`/metadata/${type}/${id}`, state);
+        setTimeout(() => history.push(`/metadata/${type}/${id}`, state) );
     };
 
     const onNavigate = (path) => {
@@ -102,7 +103,7 @@ export function MetadataEditor ({ restore, current, reload }) {
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
-                            <span className="display-6">
+                            <span className="lead">
                                 <FontAwesomeIcon icon={faCogs} />&nbsp;
                                 Edit metadata {type} - {metadata.serviceProviderName || metadata.name}
                             </span>
@@ -127,7 +128,7 @@ export function MetadataEditor ({ restore, current, reload }) {
                                 </NavLink>}
                             </MetadataEditorNav>
                         </div>
-                        <div className="col-6 col-lg-3 order-2 text-right">
+                        <div className="col-6 col-lg-3 order-2 text-end">
                             <Button
                                 variant="info"
                                 type="button"
@@ -149,7 +150,7 @@ export function MetadataEditor ({ restore, current, reload }) {
                                 <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
                                     {warnings[section].map((w, widx) =>
                                         <p className="m-0" key={widx}>
-                                            <FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" />
+                                            <FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="me-2" />
                                             <Translate value={w} />
                                         </p>
                                     )}
@@ -158,7 +159,7 @@ export function MetadataEditor ({ restore, current, reload }) {
                             {errors.length > 0 &&
                                 <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
                                     <p className="m-0">
-                                        <FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" />
+                                        <FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="me-2" />
                                         <Translate value="message.editor-invalid" />
                                     </p>
                                 </Alert>

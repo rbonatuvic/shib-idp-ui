@@ -54,12 +54,12 @@ export function MetadataEditorNav ({ definition, current, children, format = 'ta
                             variant="text"
                             type="button"
                             key={route.path}
-                            className={`nav-link text-left px-3 py-2 mb-1 ${route.path === current ? 'active' : 'text-primary '}`}
+                            className={`nav-link text-start px-3 py-2 mb-1 ${route.path === current ? 'active' : 'text-primary '}`}
                             onClick={() => onNavigate(route.path)}
                             aria-label={route.label}>
                             <Translate value={route.label}></Translate>
                             { /*errors.indexOf(route.path) > -1 &&
-                                <FontAwesomeIcon className={`ml-2 ${route.path === current ? '' : 'text-danger'}`} icon={ faExclamationTriangle } />
+                                <FontAwesomeIcon className={`ms-2 ${route.path === current ? '' : 'text-danger'}`} icon={ faExclamationTriangle } />
                             */}
                         </Button>
                     )}

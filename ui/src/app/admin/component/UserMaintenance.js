@@ -3,6 +3,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
@@ -41,7 +42,7 @@ export default function UserMaintenance({ users, roles, loading, onDeleteUser, o
                                         <td className="align-middle">{user.emailAddress}</td>
                                         <td className="align-middle">
                                             <label htmlFor={`role-${user.username}`} className="sr-only"><Translate value="action.user-role">User role</Translate></label>
-                                            <select
+                                            <Form.Select
                                                 id={`role-${user.username}`}
                                                 name={`role-${user.username}`}
                                                 className="form-control"
@@ -52,7 +53,7 @@ export default function UserMaintenance({ users, roles, loading, onDeleteUser, o
                                                 {roles.map((role, ridx) => (
                                                     <option key={role} value={role}>{role}</option>
                                                 ))}
-                                            </select>
+                                            </Form.Select>
                                         </td>
                                         <td className="align-middle">
                                             <OverlayTrigger
@@ -62,7 +63,7 @@ export default function UserMaintenance({ users, roles, loading, onDeleteUser, o
                                             }>
                                                 <span className="d-block">
                                                     <label htmlFor={`group-${user.username}`} className="sr-only"><Translate value="action.user-group">User group</Translate></label>
-                                                    <select
+                                                    <Form.Select
                                                         id={`group-${user.username}`}
                                                         name={`group-${user.username}`}
                                                         className="form-control"
@@ -74,7 +75,7 @@ export default function UserMaintenance({ users, roles, loading, onDeleteUser, o
                                                         {groups.map((g, ridx) => (
                                                             <option key={ridx} value={g.resourceId}>{g.name}</option>
                                                         ))}
-                                                    </select>
+                                                    </Form.Select>
                                                 </span>
                                             </OverlayTrigger>
                                             

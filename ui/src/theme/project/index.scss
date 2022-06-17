@@ -1,3 +1,5 @@
+@use "sass:map";
+
 @import './breadcrumb';
 @import './buttons';
 @import './forms';
@@ -14,10 +16,11 @@
 
 html, body {
     height: 100%;
+    font-size: 16px;
 }
 
 body {
-    background-color: theme-color("light");
+    background-color: map.get($theme-colors, 'light');
     padding-top: 56px;
 }
 
@@ -59,13 +62,13 @@ footer {
     background-color: $white;
     padding: 0 20px;
     font-size: $font-size-xs;
-    border-top: 3px solid map-get($theme-colors, primary);
+    border-top: 3px solid map.get($theme-colors, 'primary');
 
     .copyright {
         padding-top: 10px;
 
         a {
-            color: map-get($theme-colors, primary);
+            color: map.get($theme-colors, 'primary');
             text-decoration: underline;
         }
     }

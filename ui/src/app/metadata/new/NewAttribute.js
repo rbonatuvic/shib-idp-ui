@@ -3,7 +3,7 @@ import { faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from 'react-bootstrap/Button';
 
-import { Prompt, useHistory } from 'react-router';
+import { Prompt, useHistory } from 'react-router-dom';
 import Translate from '../../i18n/components/translate';
 import { MetadataAttributeEditor } from '../editor/MetadataAttributeEditor';
 import { useMetadataAttribute } from '../hooks/api';
@@ -54,7 +54,7 @@ export function NewAttribute() {
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
-                            <span className="display-6"><Translate value="label.new-attribute">Add a new metadata attribute</Translate></span>
+                            <span className="lead"><Translate value="label.new-attribute">Add a new metadata attribute</Translate></span>
                         </div>
                     </div>
                 </div>
@@ -64,7 +64,7 @@ export function NewAttribute() {
                             <MetadataAttributeEditor definition={definition}>
                                 {(filter, errors) =>
                                     <React.Fragment>
-                                        <Button variant="info" className="mr-2"
+                                        <Button variant="info" className="me-2"
                                             type="button"
                                             onClick={() => save(filter)}
                                             disabled={errors.length > 0 || loading}

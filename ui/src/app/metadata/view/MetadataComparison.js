@@ -68,7 +68,7 @@ export function MetadataComparison () {
                                 <React.Fragment>
                                     <div className="numbered-header d-flex justify-content-start bg-light align-items-center py-1">
                                         <h2 className="title h4 m-0 flex-grow-1">
-                                            <span className="text ml-2"><Translate value="label.metadata-filter">Metadata Filter</Translate></span>
+                                            <span className="text ms-2"><Translate value="label.metadata-filter">Metadata Filter</Translate></span>
                                         </h2>
                                     </div>
                                     <MetadataFilterVersionContext models={v} dates={config.dates}>
