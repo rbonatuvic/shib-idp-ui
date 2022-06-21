@@ -3,10 +3,12 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethod
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.Entity
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
@@ -16,6 +18,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.SvnMetadataResour
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.opensaml.config.JPAXMLObjectProviderInitializerForTest
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import groovy.xml.DOMBuilder
@@ -40,7 +43,7 @@ import java.time.Instant
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
-@ContextConfiguration(classes=[ JPAMRSIConfig, PlaceholderResolverComponentsConfiguration ])
+@ContextConfiguration(classes=[ JPAMRSIConfig, PlaceholderResolverComponentsConfiguration, JPAXMLObjectProviderInitializerForTest ])
 class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
 
     @Autowired
@@ -135,6 +138,27 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         // line 99 above being added to release all values, not its own thing
         def diff = DiffBuilder.compare(Input.fromString(expectedXML)).withTest(Input.fromString(resultString)).ignoreComments().ignoreWhitespace().build()
         !diff.hasDifferences()
+    }
+
+    def 'test generating AlgorithmFilter xml snippet'() {
+        given:
+        def filter = TestObjectGenerator.algorithmFilter()
+        EncryptionMethod encryptionMethod = new EncryptionMethod()
+        encryptionMethod.setAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc")
+        encryptionMethod.setElementLocalName("EncryptionMethod")
+        filter.addUnknownXMLObject(encryptionMethod)
+        Entity entity = new Entity()
+        entity.setValue("https://broken.example.org/sp")
+        filter.addUnknownXMLObject(entity)
+        Entity entity2 = new Entity()
+        entity2.setValue("https://also-broken.example.org/sp")
+        filter.addUnknownXMLObject(entity2)
+
+        when:
+        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/2268-simple.xml', domBuilder.parseText(writer.toString()))
     }
 
     def 'test generating EntityAttributesFilter xml snippet with condition script'() {

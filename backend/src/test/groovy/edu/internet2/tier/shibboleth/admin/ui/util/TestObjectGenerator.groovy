@@ -17,6 +17,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.AlgorithmFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
@@ -181,6 +182,14 @@ class TestObjectGenerator {
                 throw new RuntimeException("Did you forget to create a TestObjectGenerator.copyOf method for filtertype: ${filterType} ?")
         }
         randomFilter
+    }
+
+    static AlgorithmFilter algorithmFilter() {
+        return new AlgorithmFilter().with {
+            it.name = "Algorithm"
+            it.enabled = true;
+            it
+        }
     }
 
     SignatureValidationFilter signatureValidationFilter() {

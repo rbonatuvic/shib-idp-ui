@@ -9,6 +9,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteList
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.AlgorithmFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.opensaml.OpenSamlNameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
@@ -84,6 +85,16 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 Script() {
                     mkp.yieldUnescaped("\n<![CDATA[\n${protectedNamespaceScript()}\n]]>\n")
                 }
+            }
+        }
+    }
+
+    void constructXmlNodeForFilter(AlgorithmFilter filter, def markupBuilderDelegate) {
+        if (!filter.isFilterEnabled()) { return }
+        markupBuilderDelegate.MetadataFilter('xsi:type': 'Algorithm') {
+            // TODO: enhance. currently this does weird things with namespaces
+            filter.unknownXMLObjects.each { xmlObject ->
+                mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(xmlObject, false))
             }
         }
     }
