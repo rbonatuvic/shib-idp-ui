@@ -381,7 +381,21 @@
         ["xpath=//div[2]/div/div/div", "xpath:position"]
       ],
       "value": ""
-    }]
+    },{
+            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+            "comment": "",
+            "command": "open",
+            "target": "/api/heheheheheheheWipeout",
+            "targets": [],
+            "value": ""
+          }, {
+            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+            "comment": "",
+            "command": "assertText",
+            "target": "css=body",
+            "targets": [],
+            "value": "yes, you did it"
+          }]
   }],
   "suites": [{
     "id": "9c39a96d-d969-4bd7-bba4-074f847f14d0",
