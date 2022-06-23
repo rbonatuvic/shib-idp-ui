@@ -1,7 +1,7 @@
 import defaultsDeep from 'lodash/defaultsDeep';
 import { BaseProviderDefinition, HttpMetadataResolverAttributesSchema, MetadataFilterPluginsSchema } from './BaseProviderDefinition';
 
-import { DurationOptions } from '../../data';
+import { DurationOptions, RefreshOptions } from '../../data';
 import { BASE_PATH } from '../../../../App.constant';
 
 export const FileBackedHttpMetadataProviderWizard = {
@@ -155,12 +155,12 @@ export const FileBackedHttpMetadataProviderWizard = {
         reloadableMetadataResolverAttributes: {
             minRefreshDelay: {
                 'ui:widget': 'OptionWidget',
-                options: DurationOptions,
+                options: RefreshOptions,
                 'ui:placeholder': 'label.duration'
             },
             maxRefreshDelay: {
                 'ui:widget': 'OptionWidget',
-                options: DurationOptions,
+                options: RefreshOptions,
                 'ui:placeholder': 'label.duration'
             },
             refreshDelayFactor: {
