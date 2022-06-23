@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset liquibase:1.11.0 dbms:mysql
+-- changeset liquibase:1.11.0.1 dbms:mysql
 -- preconditions onFail:MARK_RAN
 -- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
 -- comment: /* we don't need to run this if the system is new */
@@ -60,7 +60,7 @@ ALTER TABLE service_name_aud
 GO
 
 
--- changeset liquibase:1.11.0 dbms:mariadb,postgresql
+-- changeset liquibase:1.11.0.1 dbms:mariadb,postgresql
 -- preconditions onFail:MARK_RAN
 -- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
 -- comment: /* we don't need to run this if the system is new */
@@ -120,7 +120,7 @@ ALTER TABLE service_name_aud
 GO
 
 
--- changeset liquibase:1.11.0 dbms:mssql
+-- changeset liquibase:1.11.0.1 dbms:mssql
 -- preconditions onFail:MARK_RAN
 -- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
 -- comment: /* we don't need to run this if the system is new */
@@ -156,3 +156,23 @@ EXEC sp_rename 'service_name.value', name_value, 'COLUMN'
 GO
 EXEC sp_rename 'service_name_aud.value', name_value, 'COLUMN'
 GO
+
+-- changeset liquibase:1.11.0.2 dbms:mariadb,postgresql,mssql,mysql
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- comment: /* we don't need to run this if the system is new */
+
+update filesystem_metadata_resolver set min_refresh_delay ='PT5M';
+update filesystem_metadata_resolver_aud set min_refresh_delay ='PT5M';
+update filesystem_metadata_resolver set max_refresh_delay ='PT4H';
+update filesystem_metadata_resolver_aud set max_refresh_delay ='PT4H';
+
+update file_backed_http_metadata_resolver set min_refresh_delay ='PT5M';
+update file_backed_http_metadata_resolver_aud set min_refresh_delay ='PT5M';
+update file_backed_http_metadata_resolver set max_refresh_delay ='PT4H';
+update file_backed_http_metadata_resolver_aud set max_refresh_delay ='PT4H';
+
+update resource_backed_metadata_resolver set min_refresh_delay ='PT5M';
+update resource_backed_metadata_resolver_aud set min_refresh_delay ='PT5M';
+update resource_backed_metadata_resolver set max_refresh_delay ='PT4H';
+update resource_backed_metadata_resolver_aud set max_refresh_delay ='PT4H';
