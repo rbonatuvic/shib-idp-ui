@@ -1,6 +1,66 @@
 -- liquibase formatted sql
 
--- changeset liquibase:1.11.0 dbms:mariadb,mysql,postgresql
+-- changeset liquibase:1.11.0 dbms:mysql
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- comment: /* we don't need to run this if the system is new */
+ALTER TABLE custom_entity_attr_list_items
+    CHANGE value item_value varchar(255);
+GO
+ALTER TABLE custom_entity_attr_list_items_aud
+    CHANGE value item_value varchar(255);
+GO
+ALTER TABLE entity_attributes_filter_target_value
+    CHANGE value target_value varchar(255);
+GO
+ALTER TABLE entity_attributes_filter_target_value_aud
+    CHANGE value target_value varchar(255);
+GO
+ALTER TABLE name_id_format_filter_target_value
+    CHANGE value target_value varchar(255);
+GO
+ALTER TABLE name_id_format_filter_target_value_aud
+    CHANGE value target_value varchar(255);
+GO
+ALTER TABLE organizationurl
+    CHANGE value uri_value varchar(255);
+GO
+ALTER TABLE organizationurl_aud
+    CHANGE value uri_value varchar(255);
+GO
+ALTER TABLE organization_display_name
+    CHANGE value name_value varchar(255);
+GO
+ALTER TABLE organization_display_name_aud
+    CHANGE value name_value varchar(255);
+GO
+ALTER TABLE organization_name
+    CHANGE value name_value varchar(255);
+GO
+ALTER TABLE organization_name_aud
+    CHANGE value name_value varchar(255);
+GO
+ALTER TABLE resource_backed_metadata_resolver
+    CHANGE file file_resource varchar(255);
+GO
+ALTER TABLE resource_backed_metadata_resolver_aud
+    CHANGE file file_resource varchar(255);
+GO
+ALTER TABLE service_description
+    CHANGE value name_value varchar(255);
+GO
+ALTER TABLE service_description_aud
+    CHANGE value name_value varchar(255);
+GO
+ALTER TABLE service_name
+    CHANGE value name_value varchar(255);
+GO
+ALTER TABLE service_name_aud
+    CHANGE value name_value varchar(255);
+GO
+
+
+-- changeset liquibase:1.11.0 dbms:mariadb,postgresql
 -- preconditions onFail:MARK_RAN
 -- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
 -- comment: /* we don't need to run this if the system is new */
