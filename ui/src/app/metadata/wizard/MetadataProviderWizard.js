@@ -49,7 +49,6 @@ export function MetadataProviderWizard({onSave, loading, block}) {
 
     return (
         <>
-
             <div className="row mb-4">
                 <div className="col-12">
                     <WizardNav onSave={save}
@@ -78,6 +77,7 @@ export function MetadataProviderWizard({onSave, loading, block}) {
                     </div>
                 </div>
             }
+            <pre>{JSON.stringify(errors, null, 4)}</pre>
         </>
     );
 }
