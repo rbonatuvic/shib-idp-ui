@@ -1,0 +1,43 @@
+{
+    "type": "object",
+    "required": [
+        "name",
+        "@type",
+        "xmlId",
+        "description"
+    ],
+    "properties": {
+        "name": {
+            "title": "label.metadata-provider-name-dashboard-display-only",
+            "description": "tooltip.metadata-provider-name-dashboard-display-only",
+            "type": "string",
+            "widget": {
+                "id": "string",
+                "help": "message.must-be-unique"
+            }
+        },
+        "@type": {
+            "title": "label.metadata-provider-type",
+            "description": "tooltip.metadata-provider-type",
+            "type": "string",
+            "const": "FilesystemMetadataResolver"
+        },
+        "xmlId": {
+            "title": "label.xml-id",
+            "description": "tooltip.xml-id",
+            "type": "string",
+            "minLength": 1
+        },
+        "enabled": {
+            "title": "label.enable-provider-upon-saving",
+            "description": "tooltip.enable-provider-upon-saving",
+            "type": "boolean",
+            "default": false
+        },
+        "description": {
+            "title": "label.description",
+            "description": "tooltip.description",
+            "type": "string"
+        }
+    }
+}
