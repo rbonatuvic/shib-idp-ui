@@ -1210,7 +1210,21 @@
         ["xpath=//div[2]/div[2]/div/div[5]/div/span[2]", "xpath:position"]
       ],
       "value": "PT10M"
-    }]
+    },{
+            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+            "comment": "",
+            "command": "open",
+            "target": "/api/heheheheheheheWipeout",
+            "targets": [],
+            "value": ""
+          }, {
+            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+            "comment": "",
+            "command": "assertText",
+            "target": "css=body",
+            "targets": [],
+            "value": "yes, you did it"
+          }]
   }],
   "suites": [{
     "id": "894bbaf7-9978-4d30-b4e3-3c4263e084aa",
