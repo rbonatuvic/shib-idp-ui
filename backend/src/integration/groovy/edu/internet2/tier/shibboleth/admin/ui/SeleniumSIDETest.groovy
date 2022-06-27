@@ -77,6 +77,9 @@ class SeleniumSIDETest extends Specification {
                 it.remoteUrl = 'http://selenium-hub:4444/wd/hub'
                 it.remoteBrowser = 'firefox'
             }
+            if (System.properties.getProperty('selenium.port')) {
+                this.setRandomPort("${System.properties.getProperty('selenium.port')}" as int)
+            }
             if (System.properties.getProperty('selenium.host')) {
                 it.baseurl = "http://${System.properties.getProperty('selenium.host')}:${this.randomPort}"
             } else {
