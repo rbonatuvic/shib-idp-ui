@@ -22,6 +22,9 @@ public class ExternalMetadataResolver extends MetadataResolver {
     @Column(unique = true)
     private String externalResolverId;
 
+    @Column
+    String name;
+
     public ExternalMetadataResolver() {
         type = "ExternalMetadataResolver";
     }
