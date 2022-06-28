@@ -141,7 +141,7 @@ const AttributeReleaseWidget = ({
                             enumDisabled && (enumDisabled).indexOf(option.value) !== -1;
                         return (
                             <tr key={index} className={`${bundle?.indexOf(option.value) > -1 ? 'text-light bg-info' : ''}`}>
-                                <td className="align-middle"><Translate value={`label.attribute-${option.label}`}>{option.label}</Translate></td>
+                                <td className="align-middle"><Translate value={`${option.label}`}>{option.label}</Translate></td>
                                 <td className="">
                                     <fieldset className="d-flex justify-content-end">
                                         <div className="custom-control custom-checkbox bordered-custom-checkbox pe-2">
