@@ -103,6 +103,20 @@ public class MetadataResolversController {
         }
     }
 
+    @GetMapping(value = "/MetadataResolvers/External", produces = "application/xml")
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getExternalXml() throws IOException, TransformerException {
+        // TODO: externalize
+        try (StringWriter writer = new StringWriter()) {
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+            transformer.transform(new DOMSource(metadataResolverService.generateExternalMetadataFilterConfiguration()), new StreamResult(writer));
+            return ResponseEntity.ok(writer.toString());
+        }
+    }
+
     @GetMapping("/MetadataResolvers/{resourceId}")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getOne(@PathVariable String resourceId) {
