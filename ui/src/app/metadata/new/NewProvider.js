@@ -20,7 +20,7 @@ export function NewProvider() {
                     </div>
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
-                    <MetadataProviderTypeSelector type={'provider'} types={[...data, 'ExternalMetadataResolver']}>
+                    <MetadataProviderTypeSelector type={'provider'} types={[...data]}>
                         {(data, onRestart) =>
                         <MetadataSchema type={data.type} wizard={true}>
                             <MetadataWizard type="provider"

@@ -6,7 +6,8 @@ export const ExternalMetadataProviderWizard = {
     ...BaseProviderDefinition,
     label: 'ExternalMetadataProvider',
     type: 'ExternalMetadataResolver',
-    schema: 'assets/schema/provider/external.schema.json',
+    // schema: 'assets/schema/provider/external.schema.json',
+    schema: `${API_BASE_PATH}/ui/MetadataResolver/ExternalMetadataResolver`,
     steps: [
         ...BaseProviderDefinition.steps,
         {
@@ -22,7 +23,7 @@ export const ExternalMetadataProviderWizard = {
         },
         {
             id: 'summary',
-            label: 'label.summary',
+            label: 'label.finished',
             index: 2,
             initialValues: [],
             fields: [
