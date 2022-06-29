@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset liquibase:1.11.0.1 dbms:mysql
+-- changeset liquibase:1.11.0.1 dbms:mysql,mariadb
 -- preconditions onFail:MARK_RAN
 -- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
 -- comment: /* we don't need to run this if the system is new */
@@ -60,7 +60,7 @@ ALTER TABLE service_name_aud
 GO
 
 
--- changeset liquibase:1.11.0.1 dbms:mariadb,postgresql
+-- changeset liquibase:1.11.0.1 dbms:postgresql
 -- preconditions onFail:MARK_RAN
 -- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
 -- comment: /* we don't need to run this if the system is new */
