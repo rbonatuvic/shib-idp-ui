@@ -97,7 +97,7 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         def resolver = new ExternalMetadataResolver().with {
             it.setEnabled(true)
             it.setName("testme")
-            it.setExternalResolverId("InCommonMD")
+            it.setXmlId("InCommonMD")
             it.setDescription("some description that won't appear in the xml")
             it.addFilter(new EntityAttributesFilter().with {
                 it.name = 'EntityAttributes'

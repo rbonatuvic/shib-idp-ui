@@ -288,7 +288,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForResolver(ExternalMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
-        markupBuilderDelegate.MetadataFilters(providerRef: 'InCommonMD') {
+        markupBuilderDelegate.MetadataFilters(providerRef: resolver.getXmlId()) {
             childNodes()
         }
     }

@@ -82,7 +82,7 @@ public class MetadataResolversController {
         return ResponseEntity.badRequest().body(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), ex.getMessage(), ex.getCause().getMessage()));
     }
 
-    @GetMapping("/MetadataResolvers")
+    @GetMapping(value = "/MetadataResolvers", produces = "application/json")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll() {
         List<MetadataResolver> resolvers = positionOrderContainerService.getAllMetadataResolversInDefinedOrderOrUnordered();
@@ -92,7 +92,6 @@ public class MetadataResolversController {
     @GetMapping(value = "/MetadataResolvers", produces = "application/xml")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getXml() throws IOException, TransformerException {
-        // TODO: externalize
         try (StringWriter writer = new StringWriter()) {
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -106,7 +105,6 @@ public class MetadataResolversController {
     @GetMapping(value = "/MetadataResolvers/External", produces = "application/xml")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getExternalXml() throws IOException, TransformerException {
-        // TODO: externalize
         try (StringWriter writer = new StringWriter()) {
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
