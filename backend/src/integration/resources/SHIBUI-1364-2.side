@@ -295,13 +295,13 @@
       "target": "id=option-selector-items-root_reloadableMetadataResolverAttributes_maxRefreshDelay-item-2",
       "targets": [
         ["id=option-selector-items-root_reloadableMetadataResolverAttributes_maxRefreshDelay-item-2", "id"],
-        ["linkText=PT1M", "linkText"],
+        ["linkText=PT10M", "linkText"],
         ["css=#option-selector-items-root_reloadableMetadataResolverAttributes_maxRefreshDelay-item-2", "css:finder"],
         ["xpath=//a[@id='option-selector-items-root_reloadableMetadataResolverAttributes_maxRefreshDelay-item-2']", "xpath:attributes"],
         ["xpath=//div[@id='option-selector-items-root_reloadableMetadataResolverAttributes_maxRefreshDelay']/a[3]", "xpath:idRelative"],
         ["xpath=(//a[contains(@href, '#')])[3]", "xpath:href"],
         ["xpath=//a[3]", "xpath:position"],
-        ["xpath=//a[contains(.,'PT1M')]", "xpath:innerText"]
+        ["xpath=//a[contains(.,'PT10M')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -681,7 +681,21 @@
         ["xpath=//div[2]/div/span[3]", "xpath:position"]
       ],
       "value": "12345"
-    }]
+    },{
+        "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+        "comment": "",
+        "command": "open",
+        "target": "/api/heheheheheheheWipeout",
+        "targets": [],
+        "value": ""
+      }, {
+        "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+        "comment": "",
+        "command": "assertText",
+        "target": "css=body",
+        "targets": [],
+        "value": "yes, you did it"
+      }]
   }],
   "suites": [{
     "id": "248ba015-77cd-430f-b973-d14fd4f39a27",

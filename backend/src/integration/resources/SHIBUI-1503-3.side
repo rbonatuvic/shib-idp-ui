@@ -214,7 +214,21 @@
         ["xpath=//a[contains(.,'Metadata Sources')]", "xpath:innerText"]
       ],
       "value": "Metadata Sources"
-    }]
+    },{
+            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+            "comment": "",
+            "command": "open",
+            "target": "/api/heheheheheheheWipeout",
+            "targets": [],
+            "value": ""
+          }, {
+            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+            "comment": "",
+            "command": "assertText",
+            "target": "css=body",
+            "targets": [],
+            "value": "yes, you did it"
+          }]
   }],
   "suites": [{
     "id": "173aaf44-c763-416e-ab3c-d5afd5ffcd29",
