@@ -23,7 +23,7 @@
             "const": "FilesystemMetadataResolver"
         },
         "xmlId": {
-            "title": "label.xml-id",
+            "title": "label.metadata-resolver-id",
             "description": "tooltip.xml-id",
             "type": "string",
             "minLength": 1
