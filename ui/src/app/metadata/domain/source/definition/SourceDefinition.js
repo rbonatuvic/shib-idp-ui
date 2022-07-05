@@ -24,12 +24,17 @@ export const SourceBase = {
 
         const sources = current ? data.filter(s => s.id !== current.id) : data;
         const entityIds = sources.map(s => s.entityId);
+        const names = sources.map(s => s.serviceProviderName);
         const pattern = group?.validationRegex ? new RegExp(group?.validationRegex) : null;
 
         return (formData, errors) => {
 
             if (entityIds.indexOf(formData.entityId) > -1) {
                 errors.entityId.addError('message.id-unique');
+            }
+
+            if (names.indexOf(formData.serviceProviderName) > -1) {
+                errors.serviceProviderName.addError('message.name-unique');
             }
 
             if (pattern && !pattern?.test(formData.entityId)) {
