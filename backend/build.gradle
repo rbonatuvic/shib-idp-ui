@@ -163,7 +163,7 @@ dependencies {
     compile group: 'org.jadira.usertype', name: 'usertype.core', version: '6.0.1.GA'
 
     //For easy data mocking capabilities
-    compile 'net.andreinc.mockneat:mockneat:0.1.4'
+    compile 'net.andreinc:mockneat:0.4.7'
 
     //So it works on Java 9 without explicitly requiring to load that module (needed by Hibernate)
     runtimeOnly 'javax.xml.bind:jaxb-api:2.3.0'
