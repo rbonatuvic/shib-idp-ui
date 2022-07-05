@@ -1,8 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.EntitiesVersioningConfiguration
@@ -10,22 +8,19 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConf
 import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConverterConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverValidationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.StringTrimModule
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.MetadataResolverValidationService
-import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.DefaultMetadataResolversPositionOrderContainerService
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryService
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAMetadataResolverServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverConverterService
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverVersionService
@@ -46,7 +41,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Unroll
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
 import static org.springframework.http.MediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -90,6 +84,34 @@ class MetadataResolversControllerIntegrationTests extends AbstractBaseDataJpaTes
 
     def cleanup() {
         metadataResolverRepository.deleteAll()
+    }
+
+    @WithMockAdmin
+    def "SHIBUI-2303: POST new FileBackedHttp -> "() {
+        given:
+        def resolver = new FileBackedHttpMetadataResolver().with {
+            it.name = 'HTTPMetadata'
+            it.xmlId = 'HTTPMetadata'
+            it.backingFile = '%{idp.home}/metadata/metadata.xml'
+            it.metadataURL = 'https://idp.unicon.net/idp/shibboleth'
+
+            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+//                it.minRefreshDelay = 'PT1M' // min > max
+                it.maxRefreshDelay = 'PT0M'
+                it
+            }
+            it.enabled = Boolean.FALSE
+            it.doInitialization = Boolean.TRUE
+            it.resourceId = 'fbhmr_res_id'
+            it
+        }
+
+        when:
+        def result = mockMvc.perform(post(BASE_URI).contentType(APPLICATION_JSON).content(mapper.writeValueAsString(resolver)))
+
+        then:
+        result.andExpect(status().isCreated()).andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("\$.name").value("HTTPMetadata"))
     }
 
     @WithMockAdmin
