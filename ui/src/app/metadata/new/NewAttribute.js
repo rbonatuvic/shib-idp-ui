@@ -11,7 +11,7 @@ import { useMetadataAttribute } from '../hooks/api';
 import {CustomAttributeDefinition} from '../domain/attribute/CustomAttributeDefinition';
 import MetadataSchema from '../hoc/MetadataSchema';
 import { MetadataForm } from '../hoc/MetadataFormContext';
-import { createNotificationAction, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 
 export function NewAttribute() {
     const history = useHistory();
@@ -25,11 +25,16 @@ export function NewAttribute() {
     const [blocking, setBlocking] = React.useState(false);
 
     async function save(metadata) {
+        let toast;
         const resp = await post(``, definition.parser(metadata));
         if (response.ok) {
+            toast =  createNotificationAction(`Added attribute successfully.`, NotificationTypes.SUCCESS);
             gotoDetail({ refresh: true });
         } else {
-            dispatch(createNotificationAction(`${resp.errorCode}: Unable to create attribute ... ${resp.errorMessage}`, 'danger', 5000));
+            toast = createNotificationAction(`${resp.errorCode}: Unable to create attribute ... ${resp.errorMessage}`, 'danger', 5000);
+        }
+        if (toast) {
+            dispatch(toast);
         }
     };
 
