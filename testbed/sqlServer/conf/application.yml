@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include:
+    include: dev
   datasource:
     platform: sqlserver
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -11,13 +11,13 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.SQLServerDialect
-#server:
-#  port: 8443
-#  ssl:
-#    key-store: "/conf/keystore.p12"
-#    key-store-password: "changeit"
-#    keyStoreType: "PKCS12"
-#    keyAlias: "tomcat"
+server:
+  port: 8443
+  ssl:
+    key-store: "/conf/keystore.p12"
+    key-store-password: "changeit"
+    keyStoreType: "PKCS12"
+    keyAlias: "tomcat"
 shibui:
   user-bootstrap-resource: file:/conf/users.csv
   roles: ROLE_ADMIN,ROLE_NONE,ROLE_USER,ROLE_PONY
