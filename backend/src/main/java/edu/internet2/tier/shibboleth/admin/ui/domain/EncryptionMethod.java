@@ -55,4 +55,6 @@ public class EncryptionMethod extends AbstractElementExtensibleXMLObject impleme
     public void setOAEPparams(@Nullable org.opensaml.xmlsec.encryption.OAEPparams oaePparams) {
         this.oaePparams = oaePparams;
     }
+
+
 }

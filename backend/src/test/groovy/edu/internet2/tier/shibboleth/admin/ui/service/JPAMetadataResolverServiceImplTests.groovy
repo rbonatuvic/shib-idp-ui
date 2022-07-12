@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethod
+import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethodBuilder
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
@@ -26,6 +27,7 @@ import groovy.xml.MarkupBuilder
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet
 import org.opensaml.core.criterion.EntityIdCriterion
+import org.opensaml.saml.common.xml.SAMLConstants
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver
@@ -143,10 +145,14 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
     def 'test generating AlgorithmFilter xml snippet'() {
         given:
         def filter = TestObjectGenerator.algorithmFilter()
-        EncryptionMethod encryptionMethod = new EncryptionMethod()
+        EncryptionMethod encryptionMethod =  new EncryptionMethod()
+        encryptionMethod.setElementLocalName(EncryptionMethod.DEFAULT_ELEMENT_LOCAL_NAME)
+        encryptionMethod.setNamespacePrefix(SAMLConstants.SAML20MD_PREFIX)
+        encryptionMethod.setNamespaceURI(SAMLConstants.SAML20MD_NS)
+        encryptionMethod.setSchemaLocation(SAMLConstants.SAML20MD_SCHEMA_LOCATION)
         encryptionMethod.setAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc")
-        encryptionMethod.setElementLocalName("EncryptionMethod")
         filter.addUnknownXMLObject(encryptionMethod)
+
         Entity entity = new Entity()
         entity.setValue("https://broken.example.org/sp")
         filter.addUnknownXMLObject(entity)

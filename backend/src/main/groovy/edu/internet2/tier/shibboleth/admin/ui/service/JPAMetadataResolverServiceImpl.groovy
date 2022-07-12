@@ -10,6 +10,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.AlgorithmFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.Entity
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.opensaml.OpenSamlNameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
@@ -90,11 +91,26 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(AlgorithmFilter filter, def markupBuilderDelegate) {
-        if (!filter.isFilterEnabled()) { return }
-        markupBuilderDelegate.MetadataFilter('xsi:type': 'Algorithm') {
-            // TODO: enhance. currently this does weird things with namespaces
+        if (!filter.isFilterEnabled()) {
+            return
+        }
+        markupBuilderDelegate.MetadataFilter(
+                'xsi:type': 'Algorithm',
+                'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+                'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd',
+                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata',
+                'xmlns': 'urn:mace:shibboleth:2.0:metadata',
+                'xmlns:security': 'urn:mace:shibboleth:2.0:security',
+                'xmlns:saml2': 'urn:oasis:names:tc:SAML:2.0:assertion'
+        ) {
             filter.unknownXMLObjects.each { xmlObject ->
-                mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(xmlObject, false))
+                {
+                    if (xmlObject instanceof Entity) {
+                        Entity(xmlObject.getValue())
+                    } else {
+                        mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(xmlObject, false))
+                    }
+                }
             }
         }
     }
