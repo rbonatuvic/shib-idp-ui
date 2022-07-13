@@ -116,60 +116,18 @@
                     "type": "string",
                     "title": "label.connection-request-timeout",
                     "description": "tooltip.connection-request-timeout",
-                    "widget": {
-                        "id": "datalist",
-                        "data": [
-                            "PT0S",
-                            "PT30S",
-                            "PT1M",
-                            "PT10M",
-                            "PT30M",
-                            "PT1H",
-                            "PT4H",
-                            "PT12H",
-                            "PT24H"
-                        ]
-                    },
                     "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "connectionTimeout": {
                     "type": "string",
                     "title": "label.connection-timeout",
                     "description": "tooltip.connection-timeout",
-                    "widget": {
-                        "id": "datalist",
-                        "data": [
-                            "PT0S",
-                            "PT30S",
-                            "PT1M",
-                            "PT10M",
-                            "PT30M",
-                            "PT1H",
-                            "PT4H",
-                            "PT12H",
-                            "PT24H"
-                        ]
-                    },
                     "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "socketTimeout": {
                     "type": "string",
                     "title": "label.socket-timeout",
                     "description": "tooltip.socket-timeout",
-                    "widget": {
-                        "id": "datalist",
-                        "data": [
-                            "PT0S",
-                            "PT30S",
-                            "PT1M",
-                            "PT10M",
-                            "PT30M",
-                            "PT1H",
-                            "PT4H",
-                            "PT12H",
-                            "PT24H"
-                        ]
-                    },
                     "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "tlsTrustEngineRef": {
@@ -211,21 +169,15 @@
                     },
                     "oneOf": [
                         {
-                            "enum": [
-                                "none"
-                            ],
+                            "enum": ["none"],
                             "description": "value.none"
                         },
                         {
-                            "enum": [
-                                "file"
-                            ],
+                            "enum": ["file"],
                             "description": "value.file"
                         },
                         {
-                            "enum": [
-                                "memory"
-                            ],
+                            "enum": ["memory"],
                             "description": "value.memory"
                         }
                     ]
