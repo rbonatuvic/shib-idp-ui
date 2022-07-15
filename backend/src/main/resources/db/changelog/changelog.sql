@@ -132,9 +132,9 @@ EXEC sp_rename 'entity_attributes_filter_target_value.value', target_value, 'COL
 GO
 EXEC sp_rename 'entity_attributes_filter_target_value_aud.value', target_value, 'COLUMN'
 GO
-EXEC sp_rename 'name_id_format_filter_target_value', target_value, 'COLUMN'
+EXEC sp_rename 'name_id_format_filter_target_value.value', target_value, 'COLUMN'
 GO
-EXEC sp_rename 'name_id_format_filter_target_value_aud', target_value, 'COLUMN'
+EXEC sp_rename 'name_id_format_filter_target_value_aud.value', target_value, 'COLUMN'
 GO
 EXEC sp_rename 'organizationurl.value', uri_value, 'COLUMN'
 GO
