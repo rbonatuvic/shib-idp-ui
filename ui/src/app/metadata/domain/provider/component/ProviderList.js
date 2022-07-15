@@ -12,7 +12,7 @@ import { Scroller } from '../../../../dashboard/component/Scroller';
 import { useIsAdmin } from '../../../../core/user/UserContext';
 import { useTranslator } from '../../../../i18n/hooks';
 
-export function ProviderList({ entities, reorder = true, first, last, onEnable, onOrderUp, onOrderDown }) {
+export function ProviderList({ children, entities, reorder = true, first, last, onEnable, onOrderUp, onOrderDown }) {
 
     const isAdmin = useIsAdmin();
     const translator = useTranslator();
@@ -91,6 +91,7 @@ export function ProviderList({ entities, reorder = true, first, last, onEnable, 
                     )}
                 </tbody>
             </table>
+            {children}
         </div>
         }
         </Scroller>

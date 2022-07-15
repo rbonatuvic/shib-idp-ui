@@ -16,7 +16,7 @@ import { useTranslator } from '../../../../i18n/hooks';
 import { useCanEnable, useIsAdmin } from '../../../../core/user/UserContext';
 import { GroupsProvider } from '../../../../admin/hoc/GroupsProvider';
 
-export default function SourceList({ entities, onDelete, onEnable, onChangeGroup }) {
+export default function SourceList({ entities, onDelete, onEnable, onChangeGroup, children }) {
 
     const translator = useTranslator();
     const isAdmin = useIsAdmin();
@@ -122,6 +122,7 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                             </GroupsProvider>
                         </tbody>
                     </table>
+                    {children}
                 </div>
             }
         </Scroller>
