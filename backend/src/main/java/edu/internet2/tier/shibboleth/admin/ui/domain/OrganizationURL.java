@@ -14,7 +14,7 @@ public class OrganizationURL extends AbstractXMLObject implements org.opensaml.s
 
     private String xMLLang;
 
-    @Column(name="value")
+    @Column(name="uri_value")
     private String uri;
 
     @Nullable
