@@ -26,7 +26,7 @@ public class EntityAttributesFilterTarget extends AbstractAuditable implements I
 
     @ElementCollection (fetch = FetchType.EAGER)
     @OrderColumn
-    @Column(length = 760)
+    @Column(length = 760, name="target_value")
     private List<String> value;
 
     public EntityAttributesFilterTargetType getEntityAttributesFilterTargetType() {
