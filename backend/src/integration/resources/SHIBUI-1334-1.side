@@ -1966,7 +1966,7 @@
         ["xpath=//metadata-configuration[@id='configuration']/div/section[9]/div/div[2]/object-property/array-property/div/div[5]/div/span", "xpath:idRelative"],
         ["xpath=//div/div[5]/div/span", "xpath:position"]
       ],
-      "value": "True"
+      "value": "true"
     }, {
       "id": "a1050ebe-55c5-4eac-8d12-615f3ff1cd72",
       "comment": "",
@@ -2281,7 +2281,7 @@
         ["xpath=//metadata-configuration[@id='configuration']/div/section[8]/div/div[2]/object-property/array-property/div/div/div[3]/div/span", "xpath:idRelative"],
         ["xpath=//section[8]/div/div[2]/object-property/array-property/div/div/div[3]/div/span", "xpath:position"]
       ],
-      "value": "True"
+      "value": "true"
     }, {
       "id": "2c46cdcd-d5a5-47fe-aa7b-0120fd2fcfc9",
       "comment": "",

@@ -2,16 +2,14 @@ version: "3.7"
 
 services:
   db:
-    image: postgres
     container_name: db
-    environment:
-      POSTGRES_USER: shibui
-      POSTGRES_PASSWORD: shibui
-      POSTGRES_DB: shibui
+    ports:
+      - 1433:1433
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
     networks:
       - front
-    ports:
-      - 5432:5432
   shibui:
     image: unicon/shibui
     ports:
@@ -21,10 +19,10 @@ services:
     volumes:
       - ./conf:/conf
       - ./conf/application.yml:/application.yml
-    networks:
-      - front
     depends_on:
       - db
+    networks:
+      - front
   mailhog:
     image: mailhog/mailhog:latest
     ports:
@@ -33,7 +31,6 @@ services:
     container_name: mailhog
     networks:
       - front
-
 networks:
   front:
     driver: bridge
