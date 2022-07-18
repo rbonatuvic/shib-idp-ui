@@ -252,18 +252,24 @@
         "reloadableMetadataResolverAttributes": {
             "$id": "reloadableMetadataResolverAttributes",
             "type": "object",
+            "required": [
+                "minRefreshDelay",
+                "maxRefreshDelay"
+            ],
             "properties": {
                 "minRefreshDelay": {
                     "title": "label.min-refresh-delay",
                     "description": "tooltip.min-refresh-delay",
                     "type": "string",
-                    "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                    "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$",
+                    "default": "PT5M"
                 },
                 "maxRefreshDelay": {
                     "title": "label.max-refresh-delay",
                     "description": "tooltip.max-refresh-delay",
                     "type": "string",
-                    "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                    "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$",
+                    "default": "PT4H"
                 },
                 "refreshDelayFactor": {
                     "title": "label.refresh-delay-factor",

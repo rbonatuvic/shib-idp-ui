@@ -1,18 +1,16 @@
 spring:
   profiles:
-    include:
+    include: dev
   datasource:
-    platform: postgres
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://db:5432/shibui
-    username: shibui
-    password: shibui
+    platform: sqlserver
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://db:1433
+    username: sa
+    password: Password1
   jpa:
-    show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL95Dialect
-        format_sql: true
+        dialect: org.hibernate.dialect.SQLServerDialect
 server:
   port: 8443
   ssl:
