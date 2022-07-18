@@ -113,7 +113,7 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
             it.resourceId = "testme"
             it.name = "testme"
             it.classpathMetadataResource = new ClasspathMetadataResource().with {
-                it.file = "metadata/aggregate.xml"
+                it.fileResource = "metadata/aggregate.xml"
                 it
             }
             it.metadataFilters.add(new EntityAttributesFilter().with {
@@ -305,7 +305,7 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         def resolver = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver().with {
             it.xmlId = 'ClasspathResourceMetadata'
             it.classpathMetadataResource = new ClasspathMetadataResource().with {
-                it.file = '/path/to/a/classpath/location/metadata.xml'
+                it.fileResource = '/path/to/a/classpath/location/metadata.xml'
                 it
             }
             it
