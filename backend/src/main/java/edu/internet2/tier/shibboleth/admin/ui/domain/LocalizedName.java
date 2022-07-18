@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 import org.hibernate.envers.Audited;
 
 import javax.annotation.Nullable;
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
@@ -11,6 +12,7 @@ public class LocalizedName extends AbstractXMLObject implements org.opensaml.sam
 
     private String xMLLang;
 
+    @Column(name = "name_value")
     private String value;
 
     @Nullable
