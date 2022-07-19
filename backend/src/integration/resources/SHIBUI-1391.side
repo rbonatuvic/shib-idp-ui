@@ -422,33 +422,12 @@
       ],
       "value": ""
     }, {
-      "id": "363af92e-0327-47b9-918c-1560adab40cc",
-      "comment": "",
-      "command": "click",
-      "target": "css=.toggle-button",
-      "targets": [
-        ["css=.toggle-button", "css:finder"],
-        ["xpath=(//button[@type='button'])[7]", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[5]/div/div/div/div/div[2]/div/div/div/div/div/div/div[2]/div/div/div/div/div/button", "xpath:idRelative"],
-        ["xpath=//div/div/div/div/button", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "a4470d6f-04a7-4c4b-8c1e-70cff2f35e8a",
       "comment": "",
-      "command": "click",
-      "target": "id=option-selector-items-root_metadataFilters_0_maxValidityInterval-item-1",
-      "targets": [
-        ["id=option-selector-items-root_metadataFilters_0_maxValidityInterval-item-1", "id"],
-        ["linkText=PT30S", "linkText"],
-        ["css=#option-selector-items-root_metadataFilters_0_maxValidityInterval-item-1", "css:finder"],
-        ["xpath=//a[@id='option-selector-items-root_metadataFilters_0_maxValidityInterval-item-1']", "xpath:attributes"],
-        ["xpath=//div[@id='option-selector-items-root_metadataFilters_0_maxValidityInterval']/a[2]", "xpath:idRelative"],
-        ["xpath=(//a[contains(@href, '#')])[2]", "xpath:href"],
-        ["xpath=//div[2]/a[2]", "xpath:position"],
-        ["xpath=//a[contains(.,'PT30S')]", "xpath:innerText"]
-      ],
-      "value": ""
+      "command": "type",
+      "target": "id=root_metadataFilters_0_maxValidityInterval",
+      "targets": [],
+      "value": "PT15M"
     }, {
       "id": "4530c1b4-8f27-4272-9633-c792a3a54f90",
       "comment": "",
@@ -743,21 +722,21 @@
         ["xpath=//div[2]/div/div/input", "xpath:position"]
       ],
       "value": ".*"
-    },{
-            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
-            "comment": "",
-            "command": "open",
-            "target": "/api/heheheheheheheWipeout",
-            "targets": [],
-            "value": ""
-          }, {
-            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
-            "comment": "",
-            "command": "assertText",
-            "target": "css=body",
-            "targets": [],
-            "value": "yes, you did it"
-          }]
+    }, {
+      "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }]
   }],
   "suites": [{
     "id": "248ba015-77cd-430f-b973-d14fd4f39a27",
