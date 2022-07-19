@@ -707,7 +707,7 @@
         ["xpath=//div/small", "xpath:position"],
         ["xpath=//small[contains(.,'Invalid Regular Expression')]", "xpath:innerText"]
       ],
-      "value": "Invalid Regular Expression"
+      "value": "Invalid regular expression"
     }, {
       "id": "0280c7b8-5714-43b8-89cc-f1260037bd44",
       "comment": "",
