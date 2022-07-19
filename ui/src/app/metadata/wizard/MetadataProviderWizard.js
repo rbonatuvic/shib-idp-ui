@@ -77,7 +77,6 @@ export function MetadataProviderWizard({onSave, loading, block}) {
                     </div>
                 </div>
             }
-            <pre>{JSON.stringify(errors, null, 4)}</pre>
         </>
     );
 }
