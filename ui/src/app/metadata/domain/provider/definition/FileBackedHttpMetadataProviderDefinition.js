@@ -1,6 +1,5 @@
 import defaultsDeep from 'lodash/defaultsDeep';
 import { BaseProviderDefinition, HttpMetadataResolverAttributesSchema, MetadataFilterPluginsSchema } from './BaseProviderDefinition';
-
 import { DurationOptions, MaxRefreshOptions, MinRefreshOptions } from '../../data';
 import { BASE_PATH } from '../../../../App.constant';
 

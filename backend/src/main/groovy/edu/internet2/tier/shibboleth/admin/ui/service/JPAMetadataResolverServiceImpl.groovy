@@ -419,7 +419,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 MetadataResource(
                         'xmlns:resource': 'urn:mace:shibboleth:2.0:resource',
                         'xsi:type': 'resource:ClasspathResource',
-                        'file': resolver.classpathMetadataResource.file)
+                        'file': resolver.classpathMetadataResource.fileResource)
             }
 
             childNodes()

@@ -1,15 +1,10 @@
 {
     "type": "object",
-    "required": [
-        "name",
-        "@type",
-        "xmlId",
-        "metadataFile"
-    ],
+    "required": ["name", "@type", "xmlId", "metadataFile"],
     "properties": {
         "name": {
             "title": "label.metadata-provider-name-dashboard-display-only",
-            "description": "tooltip.metadata-provider-name-dashboard-display-only",
+            "description": "tooltip.metadata-provider-name",
             "type": "string",
             "widget": {
                 "id": "string",
@@ -20,7 +15,7 @@
             "title": "label.metadata-provider-type",
             "description": "tooltip.metadata-provider-type",
             "type": "string",
-            "const": "FilesystemMetadataResolver"
+            "default": "FilesystemMetadataResolver"
         },
         "xmlId": {
             "title": "label.xml-id",
@@ -47,18 +42,21 @@
         },
         "reloadableMetadataResolverAttributes": {
             "type": "object",
+            "required": ["minRefreshDelay", "maxRefreshDelay"],
             "properties": {
                 "minRefreshDelay": {
                     "title": "label.min-refresh-delay",
                     "description": "tooltip.min-refresh-delay",
                     "type": "string",
-                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                    "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$",
+                    "default": "PT5M"
                 },
                 "maxRefreshDelay": {
                     "title": "label.max-refresh-delay",
                     "description": "tooltip.max-refresh-delay",
                     "type": "string",
-                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                    "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$",
+                    "default": "PT4H"
                 },
                 "refreshDelayFactor": {
                     "title": "label.refresh-delay-factor",
