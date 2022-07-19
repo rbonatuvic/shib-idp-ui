@@ -1,11 +1,6 @@
 {
     "type": "object",
-    "required": [
-        "name",
-        "@type",
-        "xmlId",
-        "metadataFile"
-    ],
+    "required": ["name", "@type", "xmlId", "metadataFile"],
     "properties": {
         "name": {
             "title": "label.metadata-provider-name-dashboard-display-only",
@@ -47,6 +42,7 @@
         },
         "reloadableMetadataResolverAttributes": {
             "type": "object",
+            "required": ["minRefreshDelay", "maxRefreshDelay"],
             "properties": {
                 "minRefreshDelay": {
                     "title": "label.min-refresh-delay",
