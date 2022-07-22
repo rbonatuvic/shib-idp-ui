@@ -97,11 +97,13 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         markupBuilderDelegate.MetadataFilter(
                 'xsi:type': 'Algorithm',
                 'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-                'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd',
+                'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:metadata:algsupport https://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-metadata-algsupport-v1.0.xsd http://www.w3.org/2000/09/xmldsig# https://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd http://www.w3.org/2009/xmlenc11# https://www.w3.org/TR/xmlenc-core1/xenc-schema-11.xsd',
                 'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata',
                 'xmlns': 'urn:mace:shibboleth:2.0:metadata',
                 'xmlns:security': 'urn:mace:shibboleth:2.0:security',
-                'xmlns:saml2': 'urn:oasis:names:tc:SAML:2.0:assertion'
+                'xmlns:saml2': 'urn:oasis:names:tc:SAML:2.0:assertion',
+                'xmlns:xenc11': 'http://www.w3.org/2009/xmlenc11#',
+                'xmlns:alg': 'urn:oasis:names:tc:SAML:metadata:algsupport'
         ) {
             filter.unknownXMLObjects.each { xmlObject ->
                 {

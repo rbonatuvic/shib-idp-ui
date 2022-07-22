@@ -3,6 +3,8 @@ package edu.internet2.tier.shibboleth.admin.ui.util
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import groovy.xml.XmlUtil
 import junit.framework.Assert
+import org.w3c.dom.Node
+
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer
 import javax.xml.transform.TransformerException
@@ -38,6 +40,19 @@ class TestHelpers {
     }
 
     static void generatedXmlIsTheSameAsExpectedXml(String expectedXmlResource, Document generatedXml) {
+        def Builder builder = Input.fromDocument(generatedXml)
+        def Source source = builder.build()
+        def myDiff = DiffBuilder.compare(Input.fromStream(TestHelpers.getResourceAsStream(expectedXmlResource)))
+                .withTest(builder)
+                .withAttributeFilter({attribute -> !attribute.name.equals("sourceDirectory")})
+                .ignoreComments()
+                .ignoreWhitespace()
+                .build()
+        System.out.println("@@@ \n" + getString(source) + "\n")
+        Assert.assertFalse(myDiff.toString(), myDiff.hasDifferences());
+    }
+
+    static void generatedXmlIsTheSameAsExpectedXml(String expectedXmlResource, Node generatedXml) {
         def Builder builder = Input.fromDocument(generatedXml)
         def Source source = builder.build()
         def myDiff = DiffBuilder.compare(Input.fromStream(TestHelpers.getResourceAsStream(expectedXmlResource)))

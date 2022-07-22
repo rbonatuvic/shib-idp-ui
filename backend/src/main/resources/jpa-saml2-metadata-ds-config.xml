@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLTooling xmlns="http://www.opensaml.org/xmltooling-config"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:ds="http://www.w3.org/2000/09/xmldsig"
+            xsi:schemaLocation="http://www.opensaml.org/xmltooling-config ../../src/schema/xmltooling-config.xsd
+                                http://www.w3.org/2000/09/xmldsig https://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd">
+
+    <ObjectProviders>
+        <!-- AlgorithmDigestMethod provider -->
+        <ObjectProvider qualifiedName="ds:DigestMethod">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.SignatureDigestMethodBuilder"/>
+            <MarshallingClass className="org.opensaml.xmlsec.signature.impl.DigestMethodMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.DigestMethodUnmarshaller"/>
+        </ObjectProvider>
+
+        <ObjectProvider qualifiedName="ds:DigestMethodType">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.SignatureDigestMethodBuilder"/>
+            <MarshallingClass className="org.opensaml.xmlsec.signature.impl.DigestMethodMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.DigestMethodUnmarshaller"/>
+        </ObjectProvider>
+
+    </ObjectProviders>
+</XMLTooling>

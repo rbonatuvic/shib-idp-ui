@@ -3,13 +3,16 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.AlgorithmDigestMethod
 import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethod
-import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethodBuilder
+import edu.internet2.tier.shibboleth.admin.ui.domain.SignatureDigestMethod
+import edu.internet2.tier.shibboleth.admin.ui.domain.SigningMethod
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.Entity
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.MGF
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
@@ -31,6 +34,7 @@ import org.opensaml.saml.common.xml.SAMLConstants
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver
+import org.opensaml.xmlsec.signature.support.SignatureConstants
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
@@ -165,6 +169,41 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
 
         then:
         generatedXmlIsTheSameAsExpectedXml('/conf/2268-simple.xml', domBuilder.parseText(writer.toString()))
+    }
+
+    def 'test generating complex AlgorithmFilter xml snippet'() {
+        given:
+        def filter = TestObjectGenerator.algorithmFilter()
+        EncryptionMethod encryptionMethod =  getEncryptionMethod("http://www.w3.org/2001/04/xmlenc#aes128-cbc")
+        filter.addUnknownXMLObject(encryptionMethod)
+
+        EncryptionMethod encryptionMethod2 = getEncryptionMethod("http://www.w3.org/2009/xmlenc11#rsa-oaep")
+//        MGF mgf = new MGF()
+//        mgf.setAlgorithm("http://www.w3.org/2009/xmlenc11#mgf1sha256")
+//        encryptionMethod2.addUnknownXMLObject(mgf)
+        SignatureDigestMethod dm = getSignatureDigestMethod("http://www.w3.org/2001/04/xmlenc#sha256")
+        encryptionMethod2.addUnknownXMLObject(dm)
+        filter.addUnknownXMLObject(encryptionMethod2)
+
+        AlgorithmDigestMethod dm2 = getDigestMethod("http://www.w3.org/2001/04/xmlenc#sha51")
+        filter.addUnknownXMLObject(dm2)
+
+        SigningMethod sm = new SigningMethod()
+        sm.setNamespaceURI(SAMLConstants.SAML20ALG_NS)
+        sm.setElementLocalName(SigningMethod.DEFAULT_ELEMENT_LOCAL_NAME)
+        sm.setNamespacePrefix(SAMLConstants.SAML20ALG_PREFIX)
+        sm.setAlgorithm("http://www.w3.org/2001/04/xmldsig-more#rsa-sha512")
+        filter.addUnknownXMLObject(sm)
+
+        Entity entity = new Entity()
+        entity.setValue("https://broken.example.org/sp")
+        filter.addUnknownXMLObject(entity)
+
+        when:
+        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/2268-complex.xml', domBuilder.parseText(writer.toString()))
     }
 
     def 'test generating EntityAttributesFilter xml snippet with condition script'() {
@@ -487,6 +526,34 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
 
         then:
         !DiffBuilder.compare(Input.fromStream(this.class.getResourceAsStream('/metadata/984-3-expected.xml'))).withTest(Input.fromString(openSamlObjects.marshalToXmlString(ed))).ignoreComments().ignoreWhitespace().build().hasDifferences()
+    }
+
+    private EncryptionMethod getEncryptionMethod(String algorithm){
+        EncryptionMethod encryptionMethod =  new EncryptionMethod()
+        encryptionMethod.setElementLocalName(EncryptionMethod.DEFAULT_ELEMENT_LOCAL_NAME)
+        encryptionMethod.setNamespacePrefix(SAMLConstants.SAML20MD_PREFIX)
+        encryptionMethod.setNamespaceURI(SAMLConstants.SAML20MD_NS)
+        encryptionMethod.setSchemaLocation(SAMLConstants.SAML20MD_SCHEMA_LOCATION)
+        encryptionMethod.setAlgorithm(algorithm)
+        return encryptionMethod
+    }
+
+    private AlgorithmDigestMethod getDigestMethod(String algorithm) {
+        AlgorithmDigestMethod dm = new AlgorithmDigestMethod()
+        dm.setNamespaceURI(SAMLConstants.SAML20ALG_NS)
+        dm.setElementLocalName(AlgorithmDigestMethod.DEFAULT_ELEMENT_LOCAL_NAME)
+        dm.setNamespacePrefix(SAMLConstants.SAML20ALG_PREFIX)
+        dm.setAlgorithm(algorithm)
+        return dm
+    }
+
+    private SignatureDigestMethod getSignatureDigestMethod(String algorithm) {
+        SignatureDigestMethod dm = new SignatureDigestMethod()
+        dm.setNamespaceURI(SignatureConstants.XMLSIG_NS)
+        dm.setElementLocalName(SignatureDigestMethod.DEFAULT_ELEMENT_LOCAL_NAME)
+        dm.setNamespacePrefix(SignatureConstants.XMLSIG_PREFIX)
+        dm.setAlgorithm(algorithm)
+        return dm
     }
 
     static genXmlSnippet(MarkupBuilder xml, Closure xmlNodeGenerator) {
