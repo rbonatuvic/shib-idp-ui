@@ -97,6 +97,11 @@ class MetadataFiltersControllerTests extends AbstractBaseDataJpaTest {
                     }
 
                     @Override
+                    Document generateExternalMetadataFilterConfiguration() {
+                        return null
+                    }
+
+                    @Override
                     MetadataResolver findByResourceId(String resourceId) throws EntityNotFoundException {
                         // This won't get called
                         return null
