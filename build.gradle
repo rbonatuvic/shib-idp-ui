@@ -29,14 +29,3 @@ release {
 
 afterReleaseBuild.dependsOn project.getTasksByName('githubRelease', false)
 afterReleaseBuild.dependsOn project.getTasksByName('dockerTagsPush', true)
-
-// force log4j version
-allprojects {
-    configurations.all {
-        resolutionStrategy.eachDependency { d ->
-            if (d.requested.group == 'org.apache.logging.log4j') {
-                d.useVersion project.'log4j.version'
-            }
-        }
-    }
-}
