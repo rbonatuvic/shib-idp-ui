@@ -23,7 +23,7 @@ githubRelease {
 
 release {
     git {
-        pushToRemote project.'i2.git.url'
+        pushToRemote.set(project.'i2.git.url')
     }
 }
 
