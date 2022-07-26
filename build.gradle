@@ -25,6 +25,7 @@ release {
     git {
         pushToRemote.set(project.'i2.git.url')
         pushReleaseVersionBranch.set(project.'i2.git.branch')
+        requireBranch.set('')
     }
 }
 
