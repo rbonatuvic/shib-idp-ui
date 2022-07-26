@@ -23,7 +23,7 @@ githubRelease {
 
 release {
     git {
-        pushToRemote.set(project.'i2.git.url')
+        pushToRemote.set(project.'i2.git.remote')
         requireBranch.set(project.'i2.git.branch')
     }
 }
