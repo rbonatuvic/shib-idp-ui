@@ -1,5 +1,4 @@
 import { metadataFilterProcessor } from '../utility/providerFilterProcessor';
-import { DurationOptions } from '../../data';
 import { MetadataFilterTypes } from '../../filter';
 
 export const BaseProviderDefinition = {
@@ -173,18 +172,12 @@ export const HttpMetadataResolverAttributesSchema = {
         }
     },
     connectionRequestTimeout: {
-        'ui:widget': 'OptionWidget',
-        options: DurationOptions,
         'ui:placeholder': 'label.duration'
     },
     connectionTimeout: {
-        'ui:widget': 'OptionWidget',
-        options: DurationOptions,
         'ui:placeholder': 'label.duration'
     },
     socketTimeout: {
-        'ui:widget': 'OptionWidget',
-        options: DurationOptions,
         'ui:placeholder': 'label.duration'
     },
     httpClientRef: {
@@ -222,8 +215,6 @@ export const MetadataFilterPluginsSchema = {
             }
         },
         maxValidityInterval: {
-            'ui:widget': 'OptionWidget',
-            options: DurationOptions,
             'ui:placeholder': 'label.duration'
         }
     }
