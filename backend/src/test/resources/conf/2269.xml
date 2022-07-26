@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MetadataFilter xsi:type="ByReference"
+                xmlns="urn:mace:shibboleth:2.0:metadata"
+                xmlns:security="urn:mace:shibboleth:2.0:security"
+                xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
+                xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd">
+
+    <MetadataFilters providerRef="InCommonMD">
+        <MetadataFilter xsi:type="EntityAttributes">
+            <saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
+                             Name="http://shibboleth.net/ns/attributes/releaseAllValues"
+                             NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+                <saml2:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="xsd:string">eduPersonPrincipalName</saml2:AttributeValue>
+            </saml2:Attribute>
+            <Entity>https://sp.example.org/shibboleth</Entity>
+        </MetadataFilter>
+    </MetadataFilters>
+
+</MetadataFilter>
