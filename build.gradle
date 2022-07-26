@@ -23,7 +23,7 @@ githubRelease {
 
 release {
     git {
-        pushToRemote = 'git@github.internet2.edu:TIER/shib-idp-ui.git'
+        pushToRemote = project.'i2.git.url'
     }
 }
 
