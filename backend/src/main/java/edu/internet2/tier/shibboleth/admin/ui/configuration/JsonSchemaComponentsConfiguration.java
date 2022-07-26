@@ -14,6 +14,7 @@ import org.springframework.core.io.ResourceLoader;
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.*;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.EXTERNAL_METADATA_RESOLVER;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.FILESYSTEM_METADATA_RESOLVER;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.LOCAL_DYNAMIC_METADATA_RESOLVER;
@@ -57,6 +58,8 @@ public class JsonSchemaComponentsConfiguration {
     @Setter
     private String nameIdFormatFilterUiSchemaLocation = "classpath:nameid-filter.schema.json";
 
+    private String externalMetadataResolverUiSchemaLocation = "classpath:external.schema.json";
+
     @Bean
     public JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry(ResourceLoader resourceLoader, ObjectMapper jacksonMapper) {
         return JsonSchemaResourceLocationRegistry.inMemory()
@@ -86,6 +89,12 @@ public class JsonSchemaComponentsConfiguration {
                         .build())
                 .register(DYNAMIC_HTTP_METADATA_RESOLVER, JsonSchemaLocationBuilder.with()
                         .jsonSchemaLocation(dynamicHttpMetadataResolverUiSchemaLocation)
+                        .resourceLoader(resourceLoader)
+                        .jacksonMapper(jacksonMapper)
+                        .detectMalformedJson(true)
+                        .build())
+                .register(EXTERNAL_METADATA_RESOLVER, JsonSchemaLocationBuilder.with()
+                        .jsonSchemaLocation(externalMetadataResolverUiSchemaLocation)
                         .resourceLoader(resourceLoader)
                         .jacksonMapper(jacksonMapper)
                         .detectMalformedJson(true)
