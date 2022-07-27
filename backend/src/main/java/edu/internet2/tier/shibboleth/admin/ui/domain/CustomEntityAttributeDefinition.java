@@ -35,7 +35,7 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     @ElementCollection
     @CollectionTable(name = "custom_entity_attr_list_items", joinColumns = @JoinColumn(name = "name"))
     @Fetch(FetchMode.JOIN)
-    @Column(name = "value", nullable = false)
+    @Column(name = "item_value", nullable = false)
     Set<String> customAttrListDefinitions = new HashSet<>();
 
     @Column(name = "default_value", nullable = true)
