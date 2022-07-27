@@ -43,7 +43,8 @@ import java.util.UUID;
         @JsonSubTypes.Type(value = FileBackedHttpMetadataResolver.class, name = "FileBackedHttpMetadataResolver"),
         @JsonSubTypes.Type(value = DynamicHttpMetadataResolver.class, name = "DynamicHttpMetadataResolver"),
         @JsonSubTypes.Type(value = FilesystemMetadataResolver.class, name = "FilesystemMetadataResolver"),
-        @JsonSubTypes.Type(value = ResourceBackedMetadataResolver.class, name = "ResourceBackedMetadataResolver")})
+        @JsonSubTypes.Type(value = ResourceBackedMetadataResolver.class, name = "ResourceBackedMetadataResolver"),
+        @JsonSubTypes.Type(value = ExternalMetadataResolver.class, name = "ExternalMetadataResolver")})
 @Audited
 @AuditOverride(forClass = AbstractAuditable.class)
 public class MetadataResolver extends AbstractAuditable implements IActivatable {
