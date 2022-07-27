@@ -16,32 +16,6 @@ pipeline {
         }
       }
     }
-
-    stage('Build Docker images') {
-      when {
-        expression {
-          return GIT_BRANCH in ['master']
-        }
-      }
-      steps {
-        sh '''./gradlew docker -x test
-        '''
-      }
-    }
-
-    stage('Deploy') {
-      when {
-        expression {
-          return GIT_BRANCH in ['master']
-        }
-      }
-      steps {
-        sh '''
-        docker stop shibui || true && docker rm shibui || true
-        docker run -d --restart always --name shibui -p 8080:8080 -v /etc/shibui:/conf -v /etc/shibui/application.yml:/application.yml -m 2GB --memory-swap=4GB --entrypoint /usr/bin/java unicon/shibui:latest -Xmx1G -jar app.war
-        '''
-      }
-    }
   }
   post {
     failure {
