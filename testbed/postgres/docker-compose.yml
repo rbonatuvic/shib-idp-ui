@@ -11,7 +11,7 @@ services:
     networks:
       - front
     ports:
-      - 3306:3306
+      - 5432:5432
   shibui:
     image: unicon/shibui
     ports:

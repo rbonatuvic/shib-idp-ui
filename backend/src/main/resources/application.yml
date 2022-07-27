@@ -1,3 +1,12 @@
+#spring:
+#  jpa:
+#    show-sql: false
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+# OR SEE: https://access.redhat.com/webassets/avalon/d/red-hat-jboss-enterprise-application-platform/7.2/javadocs/org/hibernate/dialect/package-summary.html
+
 #shibui:
 ## Default password must be set for the default user to be configured and setup
 #  default-rootuser:root
