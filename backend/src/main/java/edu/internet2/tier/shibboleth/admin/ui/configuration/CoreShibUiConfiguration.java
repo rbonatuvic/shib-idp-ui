@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorReposit
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.EntityDescriptorFilesScheduledTasks;
+import edu.internet2.tier.shibboleth.admin.ui.scheduled.ExternalMetadataProvidersScheduledTasks;
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.MetadataProvidersScheduledTasks;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener;
@@ -86,6 +87,14 @@ public class CoreShibUiConfiguration {
                     @Value("${shibui.metadataProviders.target}") final Resource resource,
                     final MetadataResolverService metadataResolverService) {
         return new MetadataProvidersScheduledTasks(resource, metadataResolverService, fileWritingService());
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "shibui.external.metadataProviders.target")
+    public ExternalMetadataProvidersScheduledTasks externalMetadataProvidersScheduledTasks(
+                    @Value("${shibui.external.metadataProviders.target}") final Resource resource,
+                    final MetadataResolverService metadataResolverService) {
+        return new ExternalMetadataProvidersScheduledTasks(resource, metadataResolverService, fileWritingService());
     }
 
     @Bean

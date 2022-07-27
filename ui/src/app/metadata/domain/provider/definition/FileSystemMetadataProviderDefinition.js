@@ -1,7 +1,7 @@
 import defaultsDeep from 'lodash/defaultsDeep';
 import API_BASE_PATH from "../../../../App.constant";
 import { BaseProviderDefinition } from "./BaseProviderDefinition";
-import { DurationOptions } from '../../data';
+import { MaxRefreshOptions, MinRefreshOptions } from '../../data';
 
 export const FileSystemMetadataProviderWizard = {
     ...BaseProviderDefinition,
@@ -74,12 +74,12 @@ export const FileSystemMetadataProviderWizard = {
         reloadableMetadataResolverAttributes: {
             minRefreshDelay: {
                 'ui:widget': 'OptionWidget',
-                options: DurationOptions,
+                options: MinRefreshOptions,
                 'ui:placeholder': 'label.duration'
             },
             maxRefreshDelay: {
                 'ui:widget': 'OptionWidget',
-                options: DurationOptions,
+                options: MaxRefreshOptions,
                 'ui:placeholder': 'label.duration'
             },
             refreshDelayFactor: {

@@ -8,6 +8,7 @@ import lombok.ToString;
 import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OrderColumn;
@@ -27,6 +28,7 @@ public class NameIdFormatFilterTarget extends AbstractAuditable implements IFilt
 
     @ElementCollection
     @OrderColumn
+    @Column(name="target_value")
     private List<String> value;
 
     public NameIdFormatFilterTargetType getNameIdFormatFilterTargetType() {

@@ -2,7 +2,6 @@ import { BaseProviderDefinition, HttpMetadataResolverAttributesSchema, MetadataF
 import API_BASE_PATH from '../../../../App.constant';
 import defaultsDeep from 'lodash/defaultsDeep';
 import isNil from 'lodash/isNil';
-import { DurationOptions } from '../../data';
 import { isValidRegex } from '../../../../core/utility/is_valid_regex';
 
 function findById(o, id) {
@@ -193,28 +192,18 @@ export const DynamicHttpMetadataProviderWizard = {
                 }
             },
             minCacheDuration: {
-                'ui:widget': 'OptionWidget',
-                options: DurationOptions,
                 'ui:placeholder': 'label.duration'
             },
             maxCacheDuration: {
-                'ui:widget': 'OptionWidget',
-                options: DurationOptions,
                 'ui:placeholder': 'label.duration'
             },
             maxIdleEntityData: {
-                'ui:widget': 'OptionWidget',
-                options: DurationOptions,
                 'ui:placeholder': 'label.duration'
             },
             cleanupTaskInterval: {
-                'ui:widget': 'OptionWidget',
-                options: DurationOptions,
                 'ui:placeholder': 'label.duration'
             },
             backgroundInitializationFromCacheDelay: {
-                'ui:widget': 'OptionWidget',
-                options: DurationOptions,
                 'ui:placeholder': 'label.duration',
                 visibleIf: {
                     initializeFromPersistentCacheInBackground: true
