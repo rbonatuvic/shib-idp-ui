@@ -46,7 +46,10 @@ dependencies {
         exclude group: 'org.opensaml'
         exclude group: 'commons-collections'
     }
+    // But we do need this opensaml lib that wasn't provided
+    implementation "org.opensaml:opensaml-storage-impl:${project.'opensamlVersion'}"
     compile "org.apache.commons:commons-collections4:${project.'commonsCollections4Version'}"
+
 
     testCompile project(':backend')
     testCompile "org.opensaml:opensaml-saml-api:${project.'opensamlVersion'}"
