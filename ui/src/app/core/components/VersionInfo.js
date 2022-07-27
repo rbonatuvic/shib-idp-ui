@@ -1,7 +1,7 @@
 import React from 'react';
 
 import useFetch from 'use-http';
-import { BASE_PATH } from '../../App.constant';
+import { ACTUATOR_PATH } from '../../App.constant';
 
 import Translate from '../../i18n/components/translate';
 
@@ -11,11 +11,15 @@ const year = new Date().getFullYear();
 const params = { year };
 
 export function VersionInfo () {
-
-    const { data = {} } = useFetch(`${BASE_PATH}actuator/info`, {}, []);
+    var opts = {
+        headers: {
+            'mode':'no-cors'
+        }
+    }
+    const { data = {} } = useFetch(`${ACTUATOR_PATH}actuator/info`, opts, []);
 
     const [ versionData, setVersionData ] = React.useState('');
-    
+
     React.useEffect(() => {
         setVersionData(formatter(data));
     }, [data]);
