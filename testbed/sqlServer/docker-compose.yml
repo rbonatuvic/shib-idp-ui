@@ -1,0 +1,36 @@
+version: "3.7"
+
+services:
+  db:
+    container_name: db
+    ports:
+      - 1433:1433
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    networks:
+      - front
+  shibui:
+    image: unicon/shibui
+    ports:
+      - 8080:8080
+      - 5005:5005
+      - 8443:8443
+    volumes:
+      - ./conf:/conf
+      - ./conf/application.yml:/application.yml
+    depends_on:
+      - db
+    networks:
+      - front
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - 1025:1025
+      - 8025:8025
+    container_name: mailhog
+    networks:
+      - front
+networks:
+  front:
+    driver: bridge
