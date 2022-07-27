@@ -101,152 +101,104 @@
             "order": [],
             "type": "object",
             "properties": {
-                "disregardTLSCertificate": {
-                    "type": "boolean",
-                    "title": "label.disregard-tls-cert",
-                    "description": "tooltip.disregard-tls-cert"
+              "disregardTLSCertificate": {
+                "type": "boolean",
+                "title": "label.disregard-tls-cert",
+                "description": "tooltip.disregard-tls-cert"
+              },
+              "httpClientRef": {
+                "type": "string",
+                "title": "",
+                "description": "",
+                "widget": "hidden"
+              },
+              "connectionRequestTimeout": {
+                "type": "string",
+                "title": "label.connection-request-timeout",
+                "description": "tooltip.connection-request-timeout",
+                "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+              },
+              "connectionTimeout": {
+                "type": "string",
+                "title": "label.connection-timeout",
+                "description": "tooltip.connection-timeout",
+                "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+              },
+              "socketTimeout": {
+                "type": "string",
+                "title": "label.socket-timeout",
+                "description": "tooltip.socket-timeout",
+                "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+              },
+              "tlsTrustEngineRef": {
+                "type": "string",
+                "title": "",
+                "description": ""
+              },
+              "httpClientSecurityParametersRef": {
+                "type": "string",
+                "title": "",
+                "description": ""
+              },
+              "proxyHost": {
+                "type": "string",
+                "title": "label.proxy-host",
+                "description": "tooltip.proxy-host"
+              },
+              "proxyPort": {
+                "type": "string",
+                "title": "label.proxy-port",
+                "description": "tooltip.proxy-port"
+              },
+              "proxyUser": {
+                "type": "string",
+                "title": "label.proxy-user",
+                "description": "tooltip.proxy-user"
+              },
+              "proxyPassword": {
+                "type": "string",
+                "title": "label.proxy-password",
+                "description": "tooltip.proxy-password"
+              },
+              "httpCaching": {
+                "type": "string",
+                "title": "label.http-caching",
+                "description": "tooltip.http-caching",
+                "widget": {
+                  "id": "select"
                 },
-                "httpClientRef": {
-                    "type": "string",
-                    "title": "",
-                    "description": "",
-                    "widget": "hidden"
-                },
-                "connectionRequestTimeout": {
-                    "type": "string",
-                    "title": "label.connection-request-timeout",
-                    "description": "tooltip.connection-request-timeout",
-                    "widget": {
-                        "id": "datalist",
-                        "data": [
-                            "PT0S",
-                            "PT30S",
-                            "PT1M",
-                            "PT10M",
-                            "PT30M",
-                            "PT1H",
-                            "PT4H",
-                            "PT12H",
-                            "PT24H"
-                        ]
-                    },
-                    "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
-                },
-                "connectionTimeout": {
-                    "type": "string",
-                    "title": "label.connection-timeout",
-                    "description": "tooltip.connection-timeout",
-                    "widget": {
-                        "id": "datalist",
-                        "data": [
-                            "PT0S",
-                            "PT30S",
-                            "PT1M",
-                            "PT10M",
-                            "PT30M",
-                            "PT1H",
-                            "PT4H",
-                            "PT12H",
-                            "PT24H"
-                        ]
-                    },
-                    "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
-                },
-                "socketTimeout": {
-                    "type": "string",
-                    "title": "label.socket-timeout",
-                    "description": "tooltip.socket-timeout",
-                    "widget": {
-                        "id": "datalist",
-                        "data": [
-                            "PT0S",
-                            "PT30S",
-                            "PT1M",
-                            "PT10M",
-                            "PT30M",
-                            "PT1H",
-                            "PT4H",
-                            "PT12H",
-                            "PT24H"
-                        ]
-                    },
-                    "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
-                },
-                "tlsTrustEngineRef": {
-                    "type": "string",
-                    "title": "",
-                    "description": ""
-                },
-                "httpClientSecurityParametersRef": {
-                    "type": "string",
-                    "title": "",
-                    "description": ""
-                },
-                "proxyHost": {
-                    "type": "string",
-                    "title": "label.proxy-host",
-                    "description": "tooltip.proxy-host"
-                },
-                "proxyPort": {
-                    "type": "string",
-                    "title": "label.proxy-port",
-                    "description": "tooltip.proxy-port"
-                },
-                "proxyUser": {
-                    "type": "string",
-                    "title": "label.proxy-user",
-                    "description": "tooltip.proxy-user"
-                },
-                "proxyPassword": {
-                    "type": "string",
-                    "title": "label.proxy-password",
-                    "description": "tooltip.proxy-password"
-                },
-                "httpCaching": {
-                    "type": "string",
-                    "title": "label.http-caching",
-                    "description": "tooltip.http-caching",
-                    "widget": {
-                        "id": "select"
-                    },
-                    "oneOf": [
-                        {
-                            "enum": [
-                                "none"
-                            ],
-                            "description": "value.none"
-                        },
-                        {
-                            "enum": [
-                                "file"
-                            ],
-                            "description": "value.file"
-                        },
-                        {
-                            "enum": [
-                                "memory"
-                            ],
-                            "description": "value.memory"
-                        }
-                    ]
-                },
-                "httpCacheDirectory": {
-                    "type": "string",
-                    "title": "label.http-caching-directory",
-                    "description": "tooltip.http-caching-directory"
-                },
-                "httpMaxCacheEntries": {
-                    "type": "integer",
-                    "title": "label.http-max-cache-entries",
-                    "description": "tooltip.http-max-cache-entries",
-                    "minimum": 0
-                },
-                "httpMaxCacheEntrySize": {
-                    "type": "integer",
-                    "title": "label.max-cache-entry-size",
-                    "description": "tooltip.max-cache-entry-size",
-                    "minimum": 0
-                }
+                "oneOf": [
+                  {
+                    "enum": ["none"],
+                    "description": "value.none"
+                  },
+                  {
+                    "enum": ["file"],
+                    "description": "value.file"
+                  },
+                  {
+                    "enum": ["memory"],
+                    "description": "value.memory"
+                  }
+                ]
+              },
+              "httpCacheDirectory": {
+                "type": "string",
+                "title": "label.http-caching-directory",
+                "description": "tooltip.http-caching-directory"
+              },
+              "httpMaxCacheEntries": {
+                "type": "integer",
+                "title": "label.http-max-cache-entries",
+                "description": "tooltip.http-max-cache-entries",
+                "minimum": 0
+              },
+              "httpMaxCacheEntrySize": {
+                "type": "integer",
+                "title": "label.max-cache-entry-size",
+                "description": "tooltip.max-cache-entry-size",
+                "minimum": 0
+              }
             }
         },
         "reloadableMetadataResolverAttributes": {
@@ -257,13 +209,15 @@
                     "title": "label.min-refresh-delay",
                     "description": "tooltip.min-refresh-delay",
                     "type": "string",
-                    "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                    "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$",
+                    "default": "PT5M"
                 },
                 "maxRefreshDelay": {
                     "title": "label.max-refresh-delay",
                     "description": "tooltip.max-refresh-delay",
                     "type": "string",
-                    "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                    "pattern": "^$|^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$",
+                    "default": "PT4H"
                 },
                 "refreshDelayFactor": {
                     "title": "label.refresh-delay-factor",
