@@ -35,6 +35,7 @@ const keys = [
     'audId',
     'resourceId',
     'current',
+    'metadataFilters',
     '@type'
 ];
 
