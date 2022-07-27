@@ -1325,13 +1325,9 @@
       "id": "2dd7992f-ee99-45a3-ad85-20488c4bd4b1",
       "comment": "",
       "command": "click",
-      "target": "xpath=//section/div/div/div[4]/div[2]/div/button",
+      "target": "css=#filters > div:nth-child(3) > div:nth-child(2) > div > button",
       "targets": [
-        ["css=.border-primary:nth-child(2) .mx-auto", "css:finder"],
-        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/div[4]/div[2]/div/button", "xpath:idRelative"],
-        ["xpath=//div[2]/div/button", "xpath:position"],
-        ["xpath=//button[contains(.,'Compare')]", "xpath:innerText"]
+        ["css=.border-primary:nth-child(2) .svg-inline--fa", "css:finder"]
       ],
       "value": ""
     }, {
@@ -1553,21 +1549,21 @@
         ["xpath=//ul[2]/li[2]/span", "xpath:position"]
       ],
       "value": "bar"
-    },{
-            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
-            "comment": "",
-            "command": "open",
-            "target": "/api/heheheheheheheWipeout",
-            "targets": [],
-            "value": ""
-          }, {
-            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
-            "comment": "",
-            "command": "assertText",
-            "target": "css=body",
-            "targets": [],
-            "value": "yes, you did it"
-          }]
+    }, {
+      "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }]
   }],
   "suites": [{
     "id": "575d414c-556d-45f7-b2f2-c9971ad51348",
