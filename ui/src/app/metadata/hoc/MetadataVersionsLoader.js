@@ -52,8 +52,8 @@ export function MetadataVersionsLoader ({versions, children}) {
 
     return (
         <React.Fragment>
-            {children(versions.map(v => list[v]).filter(v => !!v))}
             {loading && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
+            {children(versions.map(v => list[v]).filter(v => !!v))}
         </React.Fragment>
     );
 }

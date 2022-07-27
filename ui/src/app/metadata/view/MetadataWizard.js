@@ -58,11 +58,13 @@ export function MetadataWizard ({type, data, onCallback}) {
             />
             <Wizard>
                 {type === 'source' ?
-                    <MetadataSourceWizard onSave={save} loading={loading} block={setBlocking} onShowNav={onCallback} />
+                    <React.Fragment>
+                        <MetadataSourceWizard onSave={save} loading={loading} block={setBlocking} onShowNav={onCallback} />
+                        {loading && <div className="d-flex justify-content-center text-primary col-6"><Spinner size="4x" /></div> }
+                    </React.Fragment>
                     :
                     <MetadataProviderWizard onSave={save} loading={loading} block={setBlocking} onRestart={onCallback} />
                 }
-                {loading && <div className="d-flex justify-content-center text-primary col-6"><Spinner size="4x" /></div> }
             </Wizard>
         </MetadataForm>
     );
