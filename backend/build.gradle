@@ -171,9 +171,10 @@ dependencies {
     runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:2.3.0'
 
     compile "com.h2database:h2"
-    runtimeOnly 'org.postgresql:postgresql:42.3.4'
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.0.4'
-    runtimeOnly 'mysql:mysql-connector-java:8.0.29'
+    runtimeOnly "org.postgresql:postgresql:${project.'postgresVersion'}"
+    runtimeOnly "org.mariadb.jdbc:mariadb-java-client:${project.'mariadbVersion'}"
+    runtimeOnly "mysql:mysql-connector-java:${project.'mysqlVersion'}"
+    runtimeOnly "com.microsoft.sqlserver:mssql-jdbc:${project.'sqlserverVersion'}"
 
     //Swagger 3
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.8'
