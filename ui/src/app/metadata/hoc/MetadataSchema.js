@@ -5,6 +5,7 @@ import { useTranslator } from '../../i18n/hooks';
 
 export const MetadataSchemaContext = React.createContext();
 export const MetadataDefinitionContext = React.createContext();
+export const MetadataSchemaLoading = React.createContext();
 
 export function MetadataSchema({ type, children, wizard = false }) {
 
@@ -35,8 +36,10 @@ export function MetadataSchema({ type, children, wizard = false }) {
     return (
         <MetadataDefinitionContext.Provider value={definition}>
             {type && definition && schema &&
-                <MetadataSchemaContext.Provider value={{ schema, loading }}>
-                    {children}
+                <MetadataSchemaContext.Provider value={ schema }>
+                    <MetadataSchemaLoading.Provider value={ loading }>
+                        {children}
+                    </MetadataSchemaLoading.Provider>
                 </MetadataSchemaContext.Provider>
             }
         </MetadataDefinitionContext.Provider>
@@ -44,13 +47,11 @@ export function MetadataSchema({ type, children, wizard = false }) {
 }
 
 export function useMetadataSchemaContext () {
-    const {schema} = React.useContext(MetadataSchemaContext);
-    return schema;
+    return React.useContext(MetadataSchemaContext);
 }
 
 export function useMetadataSchemaLoading () {
-    const {loading} = React.useContext(MetadataSchemaContext);
-    return loading;
+    return React.useContext(MetadataSchemaLoading);
 }
 
 export function useMetadataDefinitionContext() {
