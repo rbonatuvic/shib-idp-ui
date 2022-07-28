@@ -8,7 +8,6 @@ import { useMetadataEntity } from '../hooks/api';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { Prompt, useHistory } from 'react-router-dom';
 import { useTranslator } from '../../i18n/hooks';
-import Spinner from '../../core/components/Spinner';
 
 export function MetadataWizard ({type, data, onCallback}) {
 
@@ -58,10 +57,7 @@ export function MetadataWizard ({type, data, onCallback}) {
             />
             <Wizard>
                 {type === 'source' ?
-                    <React.Fragment>
-                        <MetadataSourceWizard onSave={save} loading={loading} block={setBlocking} onShowNav={onCallback} />
-                        {loading && <div className="d-flex justify-content-center text-primary col-6"><Spinner size="4x" /></div> }
-                    </React.Fragment>
+                    <MetadataSourceWizard onSave={save} loading={loading} block={setBlocking} onShowNav={onCallback} />
                     :
                     <MetadataProviderWizard onSave={save} loading={loading} block={setBlocking} onRestart={onCallback} />
                 }
