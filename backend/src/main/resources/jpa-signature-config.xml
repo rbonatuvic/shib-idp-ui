@@ -250,12 +250,12 @@
             <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSBase64BinaryUnmarshaller"/>
         </ObjectProvider>
 
-        <!-- X509SubjectName -->
+        <!-- X509SubjectName : CONFLICT/BREAKING to add this
         <ObjectProvider qualifiedName="ds:X509SubjectName">
             <BuilderClass className="org.opensaml.xmlsec.signature.impl.X509SubjectNameBuilder"/>
             <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
             <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
-        </ObjectProvider>
+        </ObjectProvider>-->
 
         <!-- Y -->
         <ObjectProvider qualifiedName="ds:Y">
