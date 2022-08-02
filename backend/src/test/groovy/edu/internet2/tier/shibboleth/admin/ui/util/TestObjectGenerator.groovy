@@ -30,7 +30,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProt
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.SvnMetadataResource
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
@@ -607,7 +606,7 @@ class TestObjectGenerator {
             it.name = 'ClasspathResourceMetadata'
             it.xmlId = 'ClasspathResourceMetadata'
             it.classpathMetadataResource = new ClasspathMetadataResource().with {
-                it.file = 'metadata/metadata.xml'
+                it.fileResource = 'metadata/metadata.xml'
                 it
             }
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {

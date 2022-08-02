@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.File;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -134,5 +135,17 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
                                                           t.getClass().getName(), t.getMessage()));
             }
         }
+    }
+
+    @Override
+    public void validateBackupFile(final File backupFile) throws ResolverException {
+        // NOPE, not going to validate this because the file reference is likely not to exist on the shibui server nor even be a
+        // valid path on the running server. The file is needed for the XML, but we shouldn't be validating it.
+    }
+
+    @Override
+    protected byte[] fetchMetadata() throws ResolverException {
+        // NOPE, we don't need to try and fetch the metadata from either the URI nor the file
+        return null;
     }
 }
