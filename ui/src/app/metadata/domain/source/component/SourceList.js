@@ -23,7 +23,8 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
     const canEnable = useCanEnable();
 
     return (
-        <Scroller entities={entities}>
+        <React.Fragment>
+            <Scroller entities={entities}>
             {(limited) =>
                 <div className="table-responsive mt-3 source-list">
                     <table className="table table-striped w-100 table-hover">
@@ -122,9 +123,11 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                             </GroupsProvider>
                         </tbody>
                     </table>
-                    {children}
                 </div>
             }
-        </Scroller>
+            </Scroller>
+            {children}
+        </React.Fragment>
+        
     );
 }

@@ -18,83 +18,86 @@ export function ProviderList({ children, entities, reorder = true, first, last, 
     const translator = useTranslator();
 
     return (
-        <Scroller entities={entities}>
-        {(limited) => <div className="table-responsive mt-3 provider-list!">
-            <table className="table table-striped w-100 table-hover">
-                <thead>
-                    <tr>
-                        <th><Translate value="label.order">Order</Translate></th>
-                        <th className="w-25"><Translate value="label.title">Title</Translate></th>
-                        <th className="w-15"><Translate value="label.provider-type">Provider Type</Translate></th>
-                        <th className="w-15"><Translate value="label.author">Author</Translate></th>
-                        <th className="w-15"><Translate value="label.creation-date">Created Date</Translate></th>
-                        <th className="text-end w-15"><Translate value="label.enabled">Enabled</Translate></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {limited.map((provider, idx) =>
-                        <tr key={idx}>
-                            <td className="align-middle">
-                                <div className="d-flex align-items-center">
-                                    {reorder ?
-                                        <div className="provider-index text-center text-primary font-weight-bold">{idx + 1}</div>
-                                        :
-                                        <div className="provider-index text-center text-primary font-weight-bold">&mdash;</div>
-                                    }
-                                    &nbsp;
-                                    <Button 
-                                        onClick={ () => onOrderDown(provider.resourceId) }
-                                        variant="link"
-                                        className=" px-1"
-                                        disabled={provider.resourceId === last || !reorder}
-                                        aria-label="Decrease reorder by 1">
-                                            <FontAwesomeIcon className="text-info" icon={faChevronCircleDown} size="lg" />
-                                        <i className="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
-                                    </Button>
-                                    <Button
-                                        onClick={ () => onOrderUp(provider.resourceId) }
-                                        variant="link"
-                                        className="px-1"
-                                        aria-label="Increase reorder by 1"
-                                        disabled={provider.resourceId === first || !reorder}>
-                                        <FontAwesomeIcon className="text-info" icon={faChevronCircleUp} size="lg" />
-                                        <i className="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
-                                    </Button>
-                                </div>
-                            </td>
-                            <td className="align-middle">
-                                <Link to={`/metadata/provider/${provider.resourceId}/configuration/options`}>{provider.name}</Link>
-                            </td>
-                            <td className="align-middle">{ provider['@type'] }</td>
-                            <td className="align-middle">{ provider.createdBy }</td>
-                            <td className="align-middle"><FormattedDate date={provider.createdDate} /></td>
-                            <td className="align-middle">
-                                <span className="d-flex justify-content-end">
-                                {onEnable && isAdmin ?
-                                    <Form.Check
-                                        size="lg"
-                                        type="switch"
-                                        id={`enable-switch-${provider.resourceId}`}
-                                        aria-label={translator(provider.enabled ? 'label.disable' : 'label.enable')}
-                                        onChange={({ target: { checked } }) => onEnable(provider, checked)}
-                                        checked={provider.enabled}
-                                    >
-                                    </Form.Check>
-                                    :
-                                    <Badge variant={provider.enabled ? 'success' : 'danger'}>
-                                        <Translate value={provider.enabnled ? 'value.enabled' : 'value.disabled'}></Translate>
-                                    </Badge>
-                                }
-                                </span>
-                            </td>
+        <React.Fragment>
+            <Scroller entities={entities}>
+            {(limited) => <div className="table-responsive mt-3 provider-list!">
+                <table className="table table-striped w-100 table-hover">
+                    <thead>
+                        <tr>
+                            <th><Translate value="label.order">Order</Translate></th>
+                            <th className="w-25"><Translate value="label.title">Title</Translate></th>
+                            <th className="w-15"><Translate value="label.provider-type">Provider Type</Translate></th>
+                            <th className="w-15"><Translate value="label.author">Author</Translate></th>
+                            <th className="w-15"><Translate value="label.creation-date">Created Date</Translate></th>
+                            <th className="text-end w-15"><Translate value="label.enabled">Enabled</Translate></th>
                         </tr>
-                    )}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {limited.map((provider, idx) =>
+                            <tr key={idx}>
+                                <td className="align-middle">
+                                    <div className="d-flex align-items-center">
+                                        {reorder ?
+                                            <div className="provider-index text-center text-primary font-weight-bold">{idx + 1}</div>
+                                            :
+                                            <div className="provider-index text-center text-primary font-weight-bold">&mdash;</div>
+                                        }
+                                        &nbsp;
+                                        <Button 
+                                            onClick={ () => onOrderDown(provider.resourceId) }
+                                            variant="link"
+                                            className=" px-1"
+                                            disabled={provider.resourceId === last || !reorder}
+                                            aria-label="Decrease reorder by 1">
+                                                <FontAwesomeIcon className="text-info" icon={faChevronCircleDown} size="lg" />
+                                            <i className="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
+                                        </Button>
+                                        <Button
+                                            onClick={ () => onOrderUp(provider.resourceId) }
+                                            variant="link"
+                                            className="px-1"
+                                            aria-label="Increase reorder by 1"
+                                            disabled={provider.resourceId === first || !reorder}>
+                                            <FontAwesomeIcon className="text-info" icon={faChevronCircleUp} size="lg" />
+                                            <i className="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
+                                        </Button>
+                                    </div>
+                                </td>
+                                <td className="align-middle">
+                                    <Link to={`/metadata/provider/${provider.resourceId}/configuration/options`}>{provider.name}</Link>
+                                </td>
+                                <td className="align-middle">{ provider['@type'] }</td>
+                                <td className="align-middle">{ provider.createdBy }</td>
+                                <td className="align-middle"><FormattedDate date={provider.createdDate} /></td>
+                                <td className="align-middle">
+                                    <span className="d-flex justify-content-end">
+                                    {onEnable && isAdmin ?
+                                        <Form.Check
+                                            size="lg"
+                                            type="switch"
+                                            id={`enable-switch-${provider.resourceId}`}
+                                            aria-label={translator(provider.enabled ? 'label.disable' : 'label.enable')}
+                                            onChange={({ target: { checked } }) => onEnable(provider, checked)}
+                                            checked={provider.enabled}
+                                        >
+                                        </Form.Check>
+                                        :
+                                        <Badge variant={provider.enabled ? 'success' : 'danger'}>
+                                            <Translate value={provider.enabnled ? 'value.enabled' : 'value.disabled'}></Translate>
+                                        </Badge>
+                                    }
+                                    </span>
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+            }
+            </Scroller>
             {children}
-        </div>
-        }
-        </Scroller>
+        </React.Fragment>
+        
     );
 }
 
