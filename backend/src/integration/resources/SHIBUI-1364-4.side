@@ -1418,22 +1418,13 @@
       ],
       "value": ""
     }, {
-      "id": "e83dc2da-ad95-4e50-b969-57721eb8f1dc",
-      "comment": "",
-      "command": "click",
-      "target": "css=.d-flex:nth-child(5) > .border-primary:nth-child(2) .svg-inline--fa",
-      "targets": [
-        ["css=.d-flex:nth-child(5) > .border-primary:nth-child(2) .svg-inline--fa", "css:finder"]
-      ],
-      "value": ""
-    }, {
       "id": "c2102a31-6e18-4d6c-8146-e23459403b65",
       "comment": "",
       "command": "assertText",
-      "target": "css=.border-primary:nth-child(2) > .bg-primary-light .mb-0:nth-child(1)",
+      "target": "css=.d-flex:nth-child(3) > .border-primary:nth-child(2) .mb-0:nth-child(1)",
       "targets": [
-        ["css=.border-primary:nth-child(2) > .bg-primary-light .mb-0:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/div[4]/div[2]/div/div/p", "xpath:idRelative"],
+        ["css=.d-flex:nth-child(3) > .border-primary:nth-child(2) .mb-0:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='filters']/div[3]/div[2]/div/div/p", "xpath:idRelative"],
         ["xpath=//p", "xpath:position"],
         ["xpath=//p[contains(.,'Entity Attributes Filter V2')]", "xpath:innerText"]
       ],
@@ -1442,10 +1433,10 @@
       "id": "cac6c125-c81b-40af-ae21-2b717df9511e",
       "comment": "",
       "command": "assertText",
-      "target": "css=.border-primary:nth-child(3) > .bg-primary-light .mb-0:nth-child(1)",
+      "target": "css=.d-flex:nth-child(3) .bg-lighter .mb-0:nth-child(1)",
       "targets": [
-        ["css=.border-primary:nth-child(3) > .bg-primary-light .mb-0:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/div[4]/div[3]/div/div/p", "xpath:idRelative"],
+        ["css=.d-flex:nth-child(3) .bg-lighter .mb-0:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='filters']/div[3]/div[3]/div/div/p", "xpath:idRelative"],
         ["xpath=//div[3]/div/div/p", "xpath:position"]
       ],
       "value": "Entity Attributes Filter"
