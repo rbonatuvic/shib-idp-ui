@@ -2013,7 +2013,7 @@
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[9]/div/div[2]/div[2]/div[2]/div", "xpath:idRelative"],
         ["xpath=//section[9]/div/div[2]/div[2]/div[2]/div", "xpath:position"]
       ],
-      "value": "True"
+      "value": "true"
     }, {
       "id": "1406d7e4-907d-4359-8de8-a40206f0993e",
       "comment": "",
@@ -2289,7 +2289,7 @@
         ["xpath=//div[@id='root']/div/main/div/section/div/div/section[8]/div/div[2]/div[2]/div[3]/div", "xpath:idRelative"],
         ["xpath=//section[8]/div/div[2]/div[2]/div[3]/div", "xpath:position"]
       ],
-      "value": "True"
+      "value": "true"
     }, {
       "id": "2c46cdcd-d5a5-47fe-aa7b-0120fd2fcfc9",
       "comment": "",

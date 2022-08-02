@@ -412,3 +412,6 @@ beacon/spring/out
 
 # macOS jenv
 .java-version
+/a.xml
+/application.yml
+/backend/src/test/resources/conf/deletem.xml
