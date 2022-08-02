@@ -118,6 +118,9 @@ export function Dashboard () {
                             loadingUsers={loading} />
                     </ProtectRoute>
                 } />
+                <Route exact path={`${path}/*`}>
+                    <Redirect to={`${url}/metadata/manager/resolvers`} />
+                </Route>
             </Switch></>
             }
         </div>
