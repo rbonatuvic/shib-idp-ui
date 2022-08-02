@@ -15,6 +15,6 @@ import javax.persistence.Embeddable;
 @Setter
 @EqualsAndHashCode
 public class ClasspathMetadataResource {
-
-    private String file;
+    // renamed from "file" to work with SQLServer
+    private String fileResource;
 }

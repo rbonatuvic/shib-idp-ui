@@ -33,6 +33,7 @@ import { SessionModal } from './core/user/SessionModal';
 import { Roles } from './admin/Roles';
 import { Groups } from './admin/Groups';
 import { BASE_PATH } from './App.constant';
+import { ProtectRoute } from './core/components/ProtectRoute';
 
 
 function App() {
@@ -81,12 +82,32 @@ function App() {
                                                     </Route>
                                                     <Route path="/dashboard" component={Dashboard} />
                                                     <Route path="/metadata/source/new" component={NewSource} />
-                                                    <Route path="/metadata/provider/new" component={NewProvider} />
-                                                    <Route path="/metadata/attributes" component={Attribute} />
-                                                    <Route path="/metadata/provider/:id/filter" component={Filter} />
+                                                    <Route path="/metadata/provider/new" render={() =>
+                                                        <ProtectRoute redirectTo="/dashboard">
+                                                            <NewProvider />
+                                                        </ProtectRoute>
+                                                    } />
+                                                    <Route path="/metadata/attributes"  render={() =>
+                                                        <ProtectRoute redirectTo="/dashboard">
+                                                            <Attribute />
+                                                        </ProtectRoute>
+                                                    } />
+                                                    <Route path="/metadata/provider/:id/filter"  render={() =>
+                                                        <ProtectRoute redirectTo="/dashboard">
+                                                            <Filter />
+                                                        </ProtectRoute>
+                                                    } />
                                                     <Route path="/metadata/:type/:id" component={Metadata} />
-                                                    <Route path="/roles" component={Roles} />
-                                                    <Route path="/groups" component={Groups} />
+                                                    <Route path="/roles" render={() =>
+                                                        <ProtectRoute redirectTo="/dashboard">
+                                                            <Roles />
+                                                        </ProtectRoute>
+                                                    } />
+                                                    <Route path="/groups" render={() =>
+                                                        <ProtectRoute redirectTo="/dashboard">
+                                                            <Groups />
+                                                        </ProtectRoute>
+                                                    } />
                                                     <Route path="*">
                                                         <Redirect to="/dashboard" />
                                                     </Route>
