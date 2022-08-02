@@ -1974,7 +1974,7 @@
         ["xpath=//metadata-configuration[@id='configuration']/div/section[9]/div/div[2]/object-property/array-property/div/div[5]/div/span", "xpath:idRelative"],
         ["xpath=//div/div[5]/div/span", "xpath:position"]
       ],
-      "value": "True"
+      "value": "true"
     }, {
       "id": "1406d7e4-907d-4359-8de8-a40206f0993e",
       "comment": "",
