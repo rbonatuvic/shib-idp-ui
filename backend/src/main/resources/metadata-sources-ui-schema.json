@@ -102,7 +102,7 @@
         },
         "assertionConsumerServices": {
             "title": "label.assertion-consumer-service-endpoints",
-            "description": "",
+            "description": "tooltip.assertion-consumer-service-endpoints",
             "type": "array",
             "items": {
                 "$ref": "#/definitions/AssertionConsumerService"
