@@ -230,7 +230,19 @@
             <MarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDTypeMarshaller"/>
             <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDTypeUnmarshaller"/>
         </ObjectProvider>
- 
+
+        <ObjectProvider qualifiedName="saml2:Issuer">
+            <BuilderClass className="org.opensaml.saml.saml2.core.impl.IssuerBuilder"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDTypeMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDTypeUnmarshaller"/>
+        </ObjectProvider>
+
+        <ObjectProvider qualifiedName="saml2:IssuerType">
+            <BuilderClass className="org.opensaml.saml.saml2.core.impl.IssuerBuilder"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDTypeMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDTypeUnmarshaller"/>
+        </ObjectProvider>
+
         <!-- OneTimeUse -->
         <ObjectProvider qualifiedName="saml2:OneTimeUse">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.OneTimeUseBuilder"/>

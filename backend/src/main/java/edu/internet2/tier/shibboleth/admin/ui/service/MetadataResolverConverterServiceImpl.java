@@ -99,7 +99,7 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
                 break;
             case CLASSPATH:
                 resource = ResourceHelper.of(new ClassPathResource(placeholderResolverService()
-                        .resolveValueFromPossibleTokenPlaceholder(resolver.getClasspathMetadataResource().getFile())));
+                        .resolveValueFromPossibleTokenPlaceholder(resolver.getClasspathMetadataResource().getFileResource())));
                 break;
             default:
                 throw new RuntimeException("Unsupported resource type!");

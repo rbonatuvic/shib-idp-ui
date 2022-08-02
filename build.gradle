@@ -1,6 +1,6 @@
 plugins {
     id 'base'
-    id 'net.researchgate.release' version '2.6.0'
+    id 'net.researchgate.release' version '3.0.0'
     id 'com.github.breadmoirai.github-release' version '2.2.9'
 }
 
@@ -23,7 +23,8 @@ githubRelease {
 
 release {
     git {
-        pushToRemote = 'i2'
+        pushToRemote.set(project.'i2.git.remote')
+        requireBranch.set(project.'i2.git.branch')
     }
 }
 
