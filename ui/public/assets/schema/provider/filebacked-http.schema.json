@@ -42,8 +42,8 @@
             "const": "FileBackedHttpMetadataResolver"
         },
         "enabled": {
-            "title": "label.enable-service",
-            "description": "tooltip.enable-service",
+            "title": "label.enable-provider-upon-saving",
+            "description": "tooltip.enable-provider-upon-saving",
             "type": "boolean",
             "default": false
         },
