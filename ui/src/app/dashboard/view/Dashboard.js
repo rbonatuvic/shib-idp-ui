@@ -112,6 +112,9 @@ export function Dashboard () {
                         <ActionsTab sources={sources} users={users} reloadSources={loadSources} reloadUsers={loadUsers} />
                     </ProtectRoute>
                 } />
+                <Route exact path={`${path}/*`}>
+                    <Redirect to={`${url}/metadata/manager/resolvers`} />
+                </Route>
             </Switch></>
             }
         </div>
