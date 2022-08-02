@@ -41,8 +41,8 @@ export function MetadataFilterTypeSelector({ types = [], children, actions}) {
                             <Form onSubmit={handleSubmit()}>
                                 <Form.Group className="mb-0">
                                     <Form.Label>
-                                        <span><Translate value={'label.metadata-provider-type'} /></span>
-                                        <InfoIcon value="tooltip.metadata-provider-type" />
+                                        <span><Translate value={'label.metadata-filter-type'} /></span>
+                                        <InfoIcon value="tooltip.metadata-filter-type" />
                                     </Form.Label>
                                     <Form.Select
                                         defaultValue={''}
