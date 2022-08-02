@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.dynamicHttpMetadataProviderSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.externalMetadataProviderSchema
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.filesystemMetadataProviderSchema
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.localDynamicMetadataProviderSchema
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
-
 /**
  * Controller implementing REST resource responsible for exposing structure definition for metadata resolvers user
  * interface in terms of JSON schema.
@@ -49,6 +49,9 @@ class MetadataResolverUiDefinitionController {
                 break
             case SchemaType.DYNAMIC_HTTP_METADATA_RESOLVER:
                 jsonSchemaLocation = dynamicHttpMetadataProviderSchema(this.jsonSchemaResourceLocationRegistry)
+                break
+            case SchemaType.EXTERNAL_METADATA_RESOLVER:
+                jsonSchemaLocation = externalMetadataProviderSchema(this.jsonSchemaResourceLocationRegistry)
                 break
             default:
                 throw new UnsupportedOperationException("Json schema for an unsupported metadata resolver (" + resolverType + ") was requested")

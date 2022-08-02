@@ -7,6 +7,7 @@ import Form from "react-bootstrap/Form";
 
 import Translate from "../../../i18n/components/translate";
 import { InfoIcon } from "../InfoIcon";
+import { useTranslator } from "../../../i18n/hooks";
 
 const TextWidget = ({
     id,
@@ -43,6 +44,8 @@ const TextWidget = ({
         onChange(fieldValue);
     }, [fieldValue, onChange]);
 
+    const translator = useTranslator();
+
     // const classNames = [rawErrors?.length > 0 ? "is-invalid" : "", type === 'file' ? 'custom-file-label': ""]
     return (
         <Form.Group>
@@ -57,7 +60,7 @@ const TextWidget = ({
             <Form.Control
                 id={id}
                 name=""
-                placeholder={placeholder}
+                placeholder={translator(placeholder)}
                 autoFocus={autofocus}
                 required={required}
                 disabled={disabled}
