@@ -46,3 +46,19 @@ export function useGroupUiValidator() {
 export function useRoleUiSchema() {
     return {};
 }
+
+export function useProperties (opts = { cachePolicy: 'no-cache' }) {
+    return useFetch(`${API_BASE_PATH}/admin/properties`, opts);
+}
+
+export function useProperty (id, opts = { cachePolicy: 'no-cache' }) {
+    return useFetch(`${API_BASE_PATH}/admin/property/${id}`, opts);
+}
+
+export function usePropertyUiSchema () {
+    return {
+        description: {
+            'ui:widget': 'textarea'
+        }
+    };
+}

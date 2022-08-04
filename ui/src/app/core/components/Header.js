@@ -7,7 +7,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes, faUsersCog, faSpinner, faUserCircle, faCog, faBoxOpen, faTags, faIdBadge } from '@fortawesome/free-solid-svg-icons';
+import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes, faUsersCog, faSpinner, faUserCircle, faCog, faBoxOpen, faTags, faIdBadge, faFileLines } from '@fortawesome/free-solid-svg-icons';
 
 import Translate from '../../i18n/components/translate';
 import { useTranslator } from '../../i18n/hooks';
@@ -87,6 +87,10 @@ export function Header () {
                             <Dropdown.Item as={Link} to="/roles" className="text-primary py-2" id="advanced-nav-dropdown-roles">
                                 <FontAwesomeIcon icon={faIdBadge} className="me-2" fixedWidth />
                                 <Translate value="action.roles" />
+                            </Dropdown.Item>
+                            <Dropdown.Item as={Link} to="/properties" className="text-primary py-2" id="advanced-nav-dropdown-properties">
+                                <FontAwesomeIcon icon={faFileLines} className="me-2" fixedWidth />
+                                <Translate value="action.properties" />
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
