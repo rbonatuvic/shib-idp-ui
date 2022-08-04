@@ -5,8 +5,10 @@ import Translate from '../../i18n/components/translate';
 import SourceList from '../../metadata/domain/source/component/SourceList';
 import { useMetadataEntities, useMetadataEntity } from '../../metadata/hooks/api';
 import { Search } from '../component/Search';
+import { Spinner } from '../../core/components/Spinner';
 
 import { NotificationContext, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
+
 
 const searchProps = ['serviceProviderName', 'entityId', 'createdBy'];
 
@@ -16,7 +18,7 @@ export function SourcesTab () {
 
     const [sources, setSources] = React.useState([]);
 
-    const { get, response } = useMetadataEntities('source', {
+    const { get, response, loading } = useMetadataEntities('source', {
         cachePolicy: 'no-cache'
     });
 
@@ -68,7 +70,9 @@ export function SourcesTab () {
                                         entities={searched}
                                         onDelete={(id) => remove(id, loadSources)}
                                         onEnable={(s, e) => enable(s, e, loadSources) }
-                                        onChangeGroup={changeSourceGroup} />
+                                        onChangeGroup={changeSourceGroup}>
+                                            {loading && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
+                                    </SourceList>
                                 }
                             </MetadataActions>
                         }
