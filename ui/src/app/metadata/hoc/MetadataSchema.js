@@ -5,10 +5,12 @@ import { useTranslator } from '../../i18n/hooks';
 
 export const MetadataSchemaContext = React.createContext();
 export const MetadataDefinitionContext = React.createContext();
+export const MetadataSchemaLoading = React.createContext();
 
 export function MetadataSchema({ type, children, wizard = false }) {
 
     const definition = React.useMemo(() => wizard ? getWizard(type) : getDefinition(type), [type, wizard]);
+    const [loading, setLoading] = React.useState(false);
 
     const { get, response } = useFetch(``, {
         cachePolicy: 'no-cache'
@@ -21,19 +23,23 @@ export function MetadataSchema({ type, children, wizard = false }) {
         if (response.ok) {
             setSchema(source);
         }
+        setLoading(false);
     }
 
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
         setSchema(null);
         loadSchema(definition);
+        setLoading(true);
     }, [definition]);
 
     return (
         <MetadataDefinitionContext.Provider value={definition}>
             {type && definition && schema &&
-                <MetadataSchemaContext.Provider value={schema}>
-                    {children}
+                <MetadataSchemaContext.Provider value={ schema }>
+                    <MetadataSchemaLoading.Provider value={ loading }>
+                        {children}
+                    </MetadataSchemaLoading.Provider>
                 </MetadataSchemaContext.Provider>
             }
         </MetadataDefinitionContext.Provider>
@@ -42,6 +48,10 @@ export function MetadataSchema({ type, children, wizard = false }) {
 
 export function useMetadataSchemaContext () {
     return React.useContext(MetadataSchemaContext);
+}
+
+export function useMetadataSchemaLoading () {
+    return React.useContext(MetadataSchemaLoading);
 }
 
 export function useMetadataDefinitionContext() {
