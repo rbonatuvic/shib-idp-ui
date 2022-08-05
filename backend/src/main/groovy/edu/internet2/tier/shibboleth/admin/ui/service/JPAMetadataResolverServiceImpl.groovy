@@ -13,6 +13,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.Algorithm
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.Entity
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.opensaml.OpenSamlNameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ExternalMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
@@ -315,6 +316,12 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
+    void constructXmlNodeForResolver(ExternalMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
+        markupBuilderDelegate.MetadataFilters(providerRef: resolver.getXmlId()) {
+            childNodes()
+        }
+    }
+
     void constructXmlNodeForResolver(FileBackedHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
         markupBuilderDelegate.MetadataProvider(id: resolver.xmlId,
                 'xsi:type': 'FileBackedHTTPMetadataProvider',
@@ -478,11 +485,11 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd'
             ) {
 
-
                 resolversPositionOrderContainerService.allMetadataResolversInDefinedOrderOrUnordered.each {
                     edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr ->
-                        //TODO: We do not currently marshall the internal incommon chaining resolver (with BaseMetadataResolver type)
-                        if ((mr.type != 'BaseMetadataResolver') && (mr.enabled)) {
+                        // We do not currently marshall the internal incommon chaining resolver (with BaseMetadataResolver type)
+                        // We do not want to include the custom type: ExternalMetadataResolver
+                        if ((mr.type != 'BaseMetadataResolver') && (mr.type != 'ExternalMetadataResolver') && (mr.enabled)) {
                             constructXmlNodeForResolver(mr, delegate) {
                                 //TODO: enhance
                                 def didNamespaceProtectionFilter = !(shibUIConfiguration.protectedAttributeNamespaces && shibUIConfiguration.protectedAttributeNamespaces.size() > 0)
@@ -499,6 +506,42 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                                     }
                                 }
                                 doNamespaceProtectionFilter()
+                            }
+                        }
+                }
+            }
+            return DOMBuilder.newInstance().parseText(writer.toString())
+        }
+    }
+
+    @Override
+    Document generateExternalMetadataFilterConfiguration() {
+        // TODO: this can probably be a better writer
+        new StringWriter().withCloseable { writer ->
+            def xml = new MarkupBuilder(writer)
+            xml.omitEmptyAttributes = true
+            xml.omitNullAttributes = true
+
+            // https://shibboleth.atlassian.net/wiki/spaces/IDP4/pages/1279033515/ByReferenceFilter
+            xml.MetadataFilter(
+                    'xsi:type': 'ByReference',
+                    'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+                    'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd',
+                    'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata',
+                    'xmlns': 'urn:mace:shibboleth:2.0:metadata',
+                    'xmlns:security': 'urn:mace:shibboleth:2.0:security',
+                    'xmlns:saml2': 'urn:oasis:names:tc:SAML:2.0:assertion'
+            ) {
+                resolversPositionOrderContainerService.allMetadataResolversInDefinedOrderOrUnordered.each {
+                    edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr ->
+                        // Only include the custom type: ExternalMetadataResolver
+                        if ((mr.type == 'ExternalMetadataResolver') && (mr.enabled)) {
+                            constructXmlNodeForResolver(mr, delegate) {
+                                mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
+                                    if (filter.isFilterEnabled()) {
+                                        constructXmlNodeForFilter(filter, delegate)
+                                    }
+                                }
                             }
                         }
                 }
