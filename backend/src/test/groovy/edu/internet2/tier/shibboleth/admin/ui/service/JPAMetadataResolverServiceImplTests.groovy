@@ -4,11 +4,18 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.AlgorithmDigestMethod
+import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethod
+import edu.internet2.tier.shibboleth.admin.ui.domain.SignatureDigestMethod
+import edu.internet2.tier.shibboleth.admin.ui.domain.SigningMethod
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSString
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.Entity
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.MGF
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.PRF
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ExternalMetadataResolver
@@ -19,6 +26,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.SvnMetadataResour
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.opensaml.config.JPAXMLObjectProviderInitializerForTest
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
@@ -48,7 +56,6 @@ import java.time.Instant
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
-@ContextConfiguration(classes=[ JPAMRSIConfig, PlaceholderResolverComponentsConfiguration ])
 @ContextConfiguration(classes=[ JPAMRSIConfig, PlaceholderResolverComponentsConfiguration, JPAXMLObjectProviderInitializerForTest ])
 class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
 
@@ -217,9 +224,12 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         filter.addUnknownXMLObject(encryptionMethod)
 
         EncryptionMethod encryptionMethod2 = getEncryptionMethod("http://www.w3.org/2009/xmlenc11#rsa-oaep")
-//        MGF mgf = new MGF()
-//        mgf.setAlgorithm("http://www.w3.org/2009/xmlenc11#mgf1sha256")
-//        encryptionMethod2.addUnknownXMLObject(mgf)
+        MGF mgf = new MGF()
+        mgf.setAlgorithm("http://www.w3.org/2009/xmlenc11#mgf1sha256")
+        encryptionMethod2.addUnknownXMLObject(mgf)
+        PRF prf = new PRF()
+        prf.setAlgorithm("http://www.w3.org/2009/xmlenc11#mgf1sha384")
+        encryptionMethod2.addUnknownXMLObject(prf)
         SignatureDigestMethod dm = getSignatureDigestMethod("http://www.w3.org/2001/04/xmlenc#sha256")
         encryptionMethod2.addUnknownXMLObject(dm)
         filter.addUnknownXMLObject(encryptionMethod2)

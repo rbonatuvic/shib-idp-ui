@@ -6,7 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.envers.Audited;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.xmlsec.encryption.AlgorithmIdentifierType;
 
+import javax.annotation.Nullable;
 import javax.persistence.Entity;
 
 @Entity
@@ -15,6 +18,19 @@ import javax.persistence.Entity;
 @Setter
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public abstract class AbstractAlgorithmIdentifierType extends AbstractXMLObject {
+public abstract class AbstractAlgorithmIdentifierType extends AbstractXMLObject implements AlgorithmIdentifierType {
     private String algorithm;
+
+    @Nullable
+    @Override
+    public XMLObject getParameters() {
+        // implement?
+        return null;
+    }
+
+    @Override
+    public void setParameters(@Nullable final XMLObject newParameters) {
+        // do nothing?
+    }
+
 }

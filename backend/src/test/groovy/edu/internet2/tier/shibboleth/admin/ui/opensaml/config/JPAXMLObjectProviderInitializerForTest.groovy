@@ -6,7 +6,7 @@ class JPAXMLObjectProviderInitializerForTest extends AbstractXMLObjectProviderIn
     @Override
     protected String[] getConfigResources() {
         return new String[]{
-                "/jpa-saml2-metadata-config.xml", "jpa-saml2-metadata-algorithm-config.xml", "jpa-saml2-metadata-ds-config.xml"
+                "/jpa-saml2-metadata-config.xml", "jpa-saml2-metadata-algorithm-config.xml", "jpa-encryption-config.xml", "jpa-signature-config.xml"
         }
     }
 }

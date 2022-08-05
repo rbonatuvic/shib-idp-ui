@@ -104,7 +104,8 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 'xmlns:security': 'urn:mace:shibboleth:2.0:security',
                 'xmlns:saml2': 'urn:oasis:names:tc:SAML:2.0:assertion',
                 'xmlns:xenc11': 'http://www.w3.org/2009/xmlenc11#',
-                'xmlns:alg': 'urn:oasis:names:tc:SAML:metadata:algsupport'
+                'xmlns:alg': 'urn:oasis:names:tc:SAML:metadata:algsupport',
+                'xmlns:ds': 'http://www.w3.org/2000/09/xmldsig#'
         ) {
             filter.unknownXMLObjects.each { xmlObject ->
                 {
