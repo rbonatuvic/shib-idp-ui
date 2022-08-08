@@ -1,7 +1,6 @@
 import defaultsDeep from 'lodash/defaultsDeep';
 
 import API_BASE_PATH from "../../../../App.constant";
-import {DurationOptions} from '../../data';
 import { BaseProviderDefinition } from "./BaseProviderDefinition";
 
 export const LocalDynamicMetadataProviderWizard = {
@@ -77,23 +76,15 @@ export const LocalDynamicMetadataProviderWizard = {
                 }
             },
             minCacheDuration: {
-                'ui:widget': 'OptionWidget',
-                options: DurationOptions,
                 'ui:placeholder': 'label.duration'
             },
             maxCacheDuration: {
-                'ui:widget': 'OptionWidget',
-                options: DurationOptions,
                 'ui:placeholder': 'label.duration'
             },
             maxIdleEntityData: {
-                'ui:widget': 'OptionWidget',
-                options: DurationOptions,
                 'ui:placeholder': 'label.duration'
             },
             cleanupTaskInterval: {
-                'ui:widget': 'OptionWidget',
-                options: DurationOptions,
                 'ui:placeholder': 'label.duration'
             }
         }

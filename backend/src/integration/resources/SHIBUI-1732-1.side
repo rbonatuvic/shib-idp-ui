@@ -862,9 +862,9 @@
       "id": "62aae077-0f97-48ec-97cb-2111ea9e3400",
       "comment": "",
       "command": "assertText",
-      "target": "css=.row:nth-child(7) > .col-12 > .form-group > div > .mb-0 span",
+      "target": "css=.row:nth-child(7) > .col-12 > .mb-3 > div > div > .form-label > span",
       "targets": [
-        ["css=.row:nth-child(7) > .col-12 > .form-group > div > .mb-0 span", "css:finder"],
+        ["css=.row:nth-child(7) > .col-12 > .mb-3 > div > div > .form-label > span", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[7]/div/div/div/div/div[7]/div/div/div/div/label/span", "xpath:idRelative"],
         ["xpath=//div[7]/div/div/div/div/label/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom String Display')]", "xpath:innerText"]
@@ -1031,7 +1031,21 @@
       "target": "css=table > tbody > tr",
       "targets": [],
       "value": ""
-    }]
+    },{
+            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+            "comment": "",
+            "command": "open",
+            "target": "/api/heheheheheheheWipeout",
+            "targets": [],
+            "value": ""
+          }, {
+            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+            "comment": "",
+            "command": "assertText",
+            "target": "css=body",
+            "targets": [],
+            "value": "yes, you did it"
+          }]
   }],
   "suites": [{
     "id": "a9b788f1-5f67-4d2c-82a5-30dc53eb75e9",

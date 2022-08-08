@@ -1,11 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.i18n.MappedResourceBundleMessageSource;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -18,8 +20,9 @@ import java.util.stream.Collectors;
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-@Controller
+@RestController
 @RequestMapping(value = "/api/messages")
+@Tags(value = {@Tag(name = "messages")})
 public class InternationalizationMessagesController {
     @Autowired
     MappedResourceBundleMessageSource messageSource;

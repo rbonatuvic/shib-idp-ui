@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 import lombok.EqualsAndHashCode;
 import org.hibernate.envers.Audited;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
@@ -10,16 +11,16 @@ import javax.persistence.Entity;
 @Audited
 public class NameIDFormat extends AbstractXMLObject implements org.opensaml.saml.saml2.metadata.NameIDFormat {
 
-    private String format;
-
+    @Column(name = "format")
+    private String uri;
 
     @Override
-    public String getFormat() {
-        return format;
+    public String getURI() {
+        return uri;
     }
 
     @Override
-    public void setFormat(String format) {
-        this.format = format;
+    public void setURI(String uri) {
+        this.uri = uri;
     }
 }

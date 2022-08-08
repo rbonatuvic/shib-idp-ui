@@ -2,6 +2,8 @@ package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 
 import java.util.Optional;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.IRolesService;
 
 @RestController
 @RequestMapping("/api/admin/roles")
+@Tags(value = {@Tag(name = "admin")})
 public class RolesController {
     @Autowired
     private IRolesService rolesService;

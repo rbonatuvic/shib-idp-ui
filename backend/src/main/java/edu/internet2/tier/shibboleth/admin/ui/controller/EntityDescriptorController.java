@@ -9,6 +9,8 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.extern.slf4j.Slf4j;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,7 @@ import java.util.ConcurrentModificationException;
 @RestController
 @RequestMapping("/api")
 @Slf4j
+@Tags(value = {@Tag(name = "entity")})
 public class EntityDescriptorController {
     static URI getResourceUriFor(String resourceId) {
         return ServletUriComponentsBuilder

@@ -1995,9 +1995,9 @@
         ["css=.d-flex:nth-child(1) > .py-2 > span", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[9]/div/div[2]/div[2]/div/div/span", "xpath:idRelative"],
         ["xpath=//section[9]/div/div[2]/div[2]/div/div/span", "xpath:position"],
-        ["xpath=//span[contains(.,'True')]", "xpath:innerText"]
+        ["xpath=//span[contains(.,'true')]", "xpath:innerText"]
       ],
-      "value": "True"
+      "value": "true"
     }, {
       "id": "1406d7e4-907d-4359-8de8-a40206f0993e",
       "comment": "",
@@ -2291,9 +2291,9 @@
         ["css=.d-flex:nth-child(1) > .py-2 > span", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div/div/section[8]/div/div[2]/div[2]/div/div/span", "xpath:idRelative"],
         ["xpath=//section[8]/div/div[2]/div[2]/div/div/span", "xpath:position"],
-        ["xpath=//span[contains(.,'True')]", "xpath:innerText"]
+        ["xpath=//span[contains(.,'true')]", "xpath:innerText"]
       ],
-      "value": "True"
+      "value": "true"
     }, {
       "id": "2c46cdcd-d5a5-47fe-aa7b-0120fd2fcfc9",
       "comment": "",
@@ -2878,7 +2878,21 @@
         ["xpath=//section[2]/div/div[2]/div[2]/div/div/div/span[3]", "xpath:position"]
       ],
       "value": "Display Name"
-    }]
+    },{
+            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+            "comment": "",
+            "command": "open",
+            "target": "/api/heheheheheheheWipeout",
+            "targets": [],
+            "value": ""
+          }, {
+            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+            "comment": "",
+            "command": "assertText",
+            "target": "css=body",
+            "targets": [],
+            "value": "yes, you did it"
+          }]
   }],
   "suites": [{
     "id": "d2caeac4-7520-4e3c-96b1-840610b6983c",
