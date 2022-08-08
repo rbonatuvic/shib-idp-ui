@@ -13,6 +13,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.ConditionRef
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.ConditionScript
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.Entity
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.MGF
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.PRF
@@ -217,6 +219,40 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         generatedXmlIsTheSameAsExpectedXml('/conf/2268-simple.xml', domBuilder.parseText(writer.toString()))
     }
 
+    def 'test generating AlgorithmFilter shibui-2268 actual'() {
+        given:
+        def filter = TestObjectGenerator.algorithmFilter()
+        EncryptionMethod encryptionMethod =  new EncryptionMethod()
+        encryptionMethod.setElementLocalName(EncryptionMethod.DEFAULT_ELEMENT_LOCAL_NAME)
+        encryptionMethod.setNamespacePrefix(SAMLConstants.SAML20MD_PREFIX)
+        encryptionMethod.setNamespaceURI(SAMLConstants.SAML20MD_NS)
+        encryptionMethod.setSchemaLocation(SAMLConstants.SAML20MD_SCHEMA_LOCATION)
+        encryptionMethod.setAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc")
+        filter.addUnknownXMLObject(encryptionMethod)
+
+        Entity entity = new Entity()
+        entity.setValue("https://broken.example.org/sp")
+        filter.addUnknownXMLObject(entity)
+
+        ConditionRef cr = new ConditionRef()
+        cr.setValue("shibboleth.Conditions.TRUE")
+        filter.addUnknownXMLObject(cr)
+
+        ConditionScript cs = new ConditionScript()
+        cs.setValue("\"use strict\";\nfalse;")
+        filter.addUnknownXMLObject(cs)
+
+        when:
+        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/2268-actual.xml', domBuilder.parseText(writer.toString()))
+    }
+
+    /**
+     * This test was written before we simplified the concept of what we'd allow the users to build in the UI. Because the test was
+     * already done and working, it was left here for completeness.
+     */
     def 'test generating complex AlgorithmFilter xml snippet'() {
         given:
         def filter = TestObjectGenerator.algorithmFilter()

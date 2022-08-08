@@ -332,7 +332,7 @@ task generateSources {
             }
         }
 
-        new XmlSlurper().parse(file('src/main/resources/jpa-saml2-metadata-ds-config.xml')).with { builders ->
+        new XmlSlurper().parse(file('src/main/resources/jpa-signature-config.xml')).with { builders ->
             builders.ObjectProviders.ObjectProvider.BuilderClass.each {
                 processLine(it['@className'].toString(), 'src/main/templates/SignatureBuilderTemplate.java')
             }

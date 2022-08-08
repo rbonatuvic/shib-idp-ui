@@ -16,13 +16,13 @@ import javax.annotation.Nullable;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 /**
- * The textual content (value/uri) is an entityID.
+ * The textual content is the JS script (the export of the XML will wrap it appropriately)
  */
-public class Entity extends AbstractXMLObject implements org.opensaml.core.xml.schema.XSString {
+public class ConditionScript extends AbstractXMLObject implements org.opensaml.core.xml.schema.XSString {
     private String uri;
 
-    public Entity(){
-        setElementLocalName("Entity");
+    public ConditionScript() {
+        setElementLocalName("ConditionScript");
     }
 
     @Nullable

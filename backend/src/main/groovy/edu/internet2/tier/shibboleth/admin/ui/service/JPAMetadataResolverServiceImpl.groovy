@@ -10,6 +10,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.AlgorithmFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.ConditionRef
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.ConditionScript
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.Entity
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.opensaml.OpenSamlNameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
@@ -111,6 +113,15 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 {
                     if (xmlObject instanceof Entity) {
                         Entity(xmlObject.getValue())
+                    } else if (xmlObject instanceof ConditionRef) {
+                        ConditionRef(xmlObject.getValue())
+                    } else if (xmlObject instanceof ConditionScript) {
+                        ConditionScript() {
+                            Script() {
+                                def script = xmlObject.getValue()
+                                mkp.yieldUnescaped("\n<![CDATA[\n${script}\n]]>\n")
+                            }
+                        }
                     } else {
                         mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(xmlObject, false))
                     }
@@ -133,10 +144,8 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                         Entity(it)
                     }
                     break
-                case EntityAttributesFilterTarget
-                        .EntityAttributesFilterTargetType.CONDITION_SCRIPT:
-                case EntityAttributesFilterTarget
-                        .EntityAttributesFilterTargetType.REGEX:
+                case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.CONDITION_SCRIPT:
+                case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.REGEX:
                     ConditionScript() {
                         Script() {
                             def script

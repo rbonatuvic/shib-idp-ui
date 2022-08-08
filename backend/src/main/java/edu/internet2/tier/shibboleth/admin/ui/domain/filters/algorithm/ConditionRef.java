@@ -16,13 +16,13 @@ import javax.annotation.Nullable;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 /**
- * The textual content (value/uri) is an entityID.
+ * The textual content (the value/uri) is the Bean ID of type Predicate<EntityDescriptor>
  */
-public class Entity extends AbstractXMLObject implements org.opensaml.core.xml.schema.XSString {
+public class ConditionRef extends AbstractXMLObject implements org.opensaml.core.xml.schema.XSString {
     private String uri;
 
-    public Entity(){
-        setElementLocalName("Entity");
+    public ConditionRef() {
+        setElementLocalName("ConditionRef");
     }
 
     @Nullable
