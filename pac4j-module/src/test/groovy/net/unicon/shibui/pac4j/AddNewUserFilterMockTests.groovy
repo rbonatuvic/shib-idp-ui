@@ -7,7 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.RolesServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService
-import org.pac4j.core.matching.PathMatcher
+import org.pac4j.core.matching.matcher.PathMatcher
 import org.pac4j.saml.profile.SAML2Profile
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties

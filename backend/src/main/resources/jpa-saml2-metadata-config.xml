@@ -21,10 +21,10 @@
         <!-- AffiliateMember -->
         <ObjectProvider qualifiedName="saml2md:AffiliateMember">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.AffiliateMemberBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AffiliateMemberMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AffiliateMemberUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
-        
+
         <!-- AffiliationDescriptor -->
         <ObjectProvider qualifiedName="saml2md:AffiliationDescriptor">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.AffiliationDescriptorBuilder"/>
@@ -41,15 +41,15 @@
         <!-- AssertionConsumerService -->
         <ObjectProvider qualifiedName="saml2md:AssertionConsumerService">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.AssertionConsumerServiceBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AssertionConsumerServiceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AssertionConsumerServiceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.IndexedEndpointMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.IndexedEndpointUnmarshaller"/>
         </ObjectProvider>
-                
+
         <!-- AssertionIDRequestService -->
         <ObjectProvider qualifiedName="saml2md:AssertionIDRequestService">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.AssertionIDRequestServiceBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AssertionIDRequestServiceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AssertionIDRequestServiceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointUnmarshaller"/>
         </ObjectProvider>
         
         <!-- AttributeAuthorityDescriptor -->
@@ -81,24 +81,24 @@
         <!-- AttributeProfile -->
         <ObjectProvider qualifiedName="saml2md:AttributeProfile">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.AttributeProfileBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AttributeProfileMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AttributeProfileUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
 
         <!-- AttributeService -->
         <ObjectProvider qualifiedName="saml2md:AttributeService">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.AttributeServiceBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AttributeServiceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AttributeServiceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointUnmarshaller"/>
         </ObjectProvider>
         
         <!-- ArtifactResolutionService -->
         <ObjectProvider qualifiedName="saml2md:ArtifactResolutionService">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.ArtifactResolutionServiceBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.ArtifactResolutionServiceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.ArtifactResolutionServiceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.IndexedEndpointMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.IndexedEndpointUnmarshaller"/>
         </ObjectProvider>
-        
+
         <!-- AuthnAuthorityDescriptor -->
         <ObjectProvider qualifiedName="saml2md:AuthnAuthorityDescriptor">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.AuthnAuthorityDescriptorBuilder"/>
@@ -115,24 +115,24 @@
         <!-- AuthnQueryService -->
         <ObjectProvider qualifiedName="saml2md:AuthnQueryService">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.AuthnQueryServiceBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AuthnQueryServiceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AuthnQueryServiceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointUnmarshaller"/>
         </ObjectProvider>
         
         <!-- AuthzService -->
         <ObjectProvider qualifiedName="saml2md:AuthzService">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.AuthzServiceBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AuthzServiceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.AuthzServiceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointUnmarshaller"/>
         </ObjectProvider>
                 
         <!-- Company -->
         <ObjectProvider qualifiedName="saml2md:Company">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.CompanyBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.CompanyMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.CompanyUnmarshaller"/>
+            <MarshallingClass className=" org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className=" org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
-        
+
         <!-- ContactPerson -->
         <ObjectProvider qualifiedName="saml2md:ContactPerson">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.ContactPersonBuilder"/>
@@ -149,15 +149,15 @@
         <!-- EmailAddress -->
         <ObjectProvider qualifiedName="saml2md:EmailAddress">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.EmailAddressBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EmailAddressMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EmailAddressUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
         
         <!-- EncryptionMethod -->
         <ObjectProvider qualifiedName="saml2md:EncryptionMethod">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethodBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EncryptionMethodMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EncryptionMethodUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.xmlsec.encryption.impl.EncryptionMethodMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.encryption.impl.EncryptionMethodUnmarshaller"/>
         </ObjectProvider>
         
         <!-- EntitiesDescriptor -->
@@ -202,8 +202,8 @@
         <!-- GivenName -->
         <ObjectProvider qualifiedName="saml2md:GivenName">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.GivenNameBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.GivenNameMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.GivenNameUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
         
         <!-- IDPSSODescriptor -->
@@ -235,22 +235,22 @@
         <!-- ManageNameIDService -->
         <ObjectProvider qualifiedName="saml2md:ManageNameIDService">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.ManageNameIDServiceBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.ManageNameIDServiceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.ManageNameIDServiceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointUnmarshaller"/>
         </ObjectProvider>
         
         <!-- NameIDFormat -->
         <ObjectProvider qualifiedName="saml2md:NameIDFormat">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.NameIDFormatBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.NameIDFormatMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.NameIDFormatUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
                 
         <!-- NameIDMappingService -->
         <ObjectProvider qualifiedName="saml2md:NameIDMappingService">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.NameIDMappingServiceBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.NameIDMappingServiceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.NameIDMappingServiceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointUnmarshaller"/>
         </ObjectProvider>
         
         <!-- Organization -->
@@ -269,22 +269,22 @@
         <!-- OrganizationDisplayName -->
         <ObjectProvider qualifiedName="saml2md:OrganizationDisplayName">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayNameBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.OrganizationDisplayNameMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.OrganizationDisplayNameUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameUnmarshaller"/>
         </ObjectProvider>
         
         <!-- OrganizationName -->
         <ObjectProvider qualifiedName="saml2md:OrganizationName">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationNameBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.OrganizationNameMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.OrganizationNameUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameUnmarshaller"/>
         </ObjectProvider>
         
         <!-- OrganizationURL -->
         <ObjectProvider qualifiedName="saml2md:OrganizationURL">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURLBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.OrganizationURLMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.OrganizationURLUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIUnmarshaller"/>
         </ObjectProvider>
         
         <!-- PDPDescriptor -->
@@ -316,29 +316,29 @@
         <!-- ServiceDescription -->
         <ObjectProvider qualifiedName="saml2md:ServiceDescription">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.ServiceDescriptionBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.ServiceDescriptionMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.ServiceDescriptionUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameUnmarshaller"/>
         </ObjectProvider>
                 
         <!-- ServiceName -->
         <ObjectProvider qualifiedName="saml2md:ServiceName">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.ServiceNameBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.ServiceNameMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.ServiceNameUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameUnmarshaller"/>
         </ObjectProvider>
                 
         <!-- SingleLogoutService -->
         <ObjectProvider qualifiedName="saml2md:SingleLogoutService">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutServiceBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.SingleLogoutServiceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.SingleLogoutServiceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointUnmarshaller"/>
         </ObjectProvider>
         
         <!-- SingleSignOnService -->
         <ObjectProvider qualifiedName="saml2md:SingleSignOnService">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.SingleSignOnServiceBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.SingleSignOnServiceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.SingleSignOnServiceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EndpointUnmarshaller"/>
         </ObjectProvider>
         
         <!-- SPSSODescriptor -->
@@ -357,15 +357,15 @@
         <!-- SurName -->
         <ObjectProvider qualifiedName="saml2md:SurName">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.SurNameBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.SurNameMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.SurNameUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
         
         <!-- TelephoneNumber -->
         <ObjectProvider qualifiedName="saml2md:TelephoneNumber">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.TelephoneNumberBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.TelephoneNumberMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.TelephoneNumberUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
  
     </ObjectProviders>

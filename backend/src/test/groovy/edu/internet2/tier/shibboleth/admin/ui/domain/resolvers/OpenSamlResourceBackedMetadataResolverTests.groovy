@@ -15,7 +15,7 @@ class OpenSamlResourceBackedMetadataResolverTests extends Specification {
     def 'test refresh'() {
         when:
         def rbmr = new ResourceBackedMetadataResolver(name: 'test', xmlId: 'test', classpathMetadataResource: new ClasspathMetadataResource('metadata/metadata.xml'))
-        def x = new OpenSamlResourceBackedMetadataResolver(openSamlObjects.parserPool, null, rbmr, ResourceHelper.of(new ClassPathResource(rbmr.classpathMetadataResource.file)))
+        def x = new OpenSamlResourceBackedMetadataResolver(openSamlObjects.parserPool, null, rbmr, ResourceHelper.of(new ClassPathResource(rbmr.classpathMetadataResource.fileResource)))
         x.refilter()
 
         then:

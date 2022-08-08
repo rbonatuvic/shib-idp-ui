@@ -830,9 +830,9 @@
       "id": "af84ef03-8d0a-4201-b217-40926b723582",
       "comment": "",
       "command": "assertText",
-      "target": "css=.row:nth-child(7) > .col-12 > .form-group > div > .mb-0 span",
+      "target": "css=.row:nth-child(7) > .col-12 > .mb-3 > div > div > .form-label > span",
       "targets": [
-        ["css=.row:nth-child(7) > .col-12 > .form-group > div > .mb-0 span", "css:finder"],
+        ["css=.row:nth-child(7) > .col-12 > .mb-3 > div > div > .form-label > span", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[7]/div/div/div/div/div[7]/div/div/div/div/label/span", "xpath:idRelative"],
         ["xpath=//div[7]/div/div/div/div/label/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Long Display')]", "xpath:innerText"]
@@ -993,12 +993,33 @@
       ],
       "value": ""
     }, {
+      "id": "14c486b1-bdff-4474-94e3-b4286303a8fd",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "e3892564-1a1b-4ee6-bbab-49d3cb3079d7",
       "comment": "",
       "command": "assertElementNotPresent",
       "target": "css=table > tbody > tr",
       "targets": [],
       "value": ""
+    }, {
+      "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
     }]
   }],
   "suites": [{

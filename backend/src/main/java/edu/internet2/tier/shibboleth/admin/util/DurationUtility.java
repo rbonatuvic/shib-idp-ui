@@ -36,4 +36,14 @@ public class DurationUtility {
         duration.addTo(zero); // potentially can return undesired results for large xmlDurations
         return zero.getTime();
     }
+
+    public static java.time.Duration toTimeDuration(String xmlDuration) {
+        long value = toMillis(xmlDuration);
+        return java.time.Duration.ofMillis(value);
+    }
+
+    public static java.time.Duration toPositiveNonZeroDuration (String xmlDuration, java.time.Duration defaultDuration) {
+        long value = toMillis(xmlDuration);
+        return value > 0 ? java.time.Duration.ofMillis(value) : defaultDuration;
+    }
 }

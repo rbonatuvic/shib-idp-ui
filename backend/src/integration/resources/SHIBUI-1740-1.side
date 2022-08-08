@@ -142,9 +142,13 @@
       "id": "fa3bb65e-b526-4813-ad6f-c528f527a5a5",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-save",
+      "target": "css=.btn-info",
       "targets": [
-        ["css=.fa-save", "css:finder"]
+        ["css=.btn-info", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,' Save')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -298,7 +302,21 @@
       "target": "xpath=//li[contains(.,'Deleted group successfully.')]",
       "targets": [],
       "value": "Deleted group successfully."
-    }]
+    },{
+            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+            "comment": "",
+            "command": "open",
+            "target": "/api/heheheheheheheWipeout",
+            "targets": [],
+            "value": ""
+          }, {
+            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+            "comment": "",
+            "command": "assertText",
+            "target": "css=body",
+            "targets": [],
+            "value": "yes, you did it"
+          }]
   }],
   "suites": [{
     "id": "bb170239-568b-4e90-991e-1a5882465aaa",

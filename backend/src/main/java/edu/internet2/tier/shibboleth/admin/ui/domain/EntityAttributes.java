@@ -3,6 +3,8 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 import lombok.EqualsAndHashCode;
 import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.ext.saml2mdattr.impl.EntityAttributesImpl;
 import org.opensaml.saml.saml2.core.Assertion;
 
 import javax.annotation.Nullable;
@@ -54,5 +56,18 @@ public class EntityAttributes extends AbstractElementExtensibleXMLObject impleme
         children.addAll(this.getAssertions());
 
         return Collections.unmodifiableList(children);
+    }
+
+    @Override
+    public List<SAMLObject> getEntityAttributesChildren() {
+        ArrayList<SAMLObject> children = new ArrayList<>();
+
+        if (this.getAssertions().size() == 0 && this.getAttributes().size() == 0) {
+            return null;
+        }
+
+        children.addAll(this.getAttributes());
+        children.addAll(this.getAssertions());
+        return children;
     }
 }

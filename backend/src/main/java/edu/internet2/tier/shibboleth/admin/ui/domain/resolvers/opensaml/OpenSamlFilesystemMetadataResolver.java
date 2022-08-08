@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
+import java.time.Instant;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -46,7 +47,7 @@ public class OpenSamlFilesystemMetadataResolver extends FilesystemMetadataResolv
     // TODO: this is still probably not the best way to do this?
     @Nullable
     @Override
-    public DateTime getLastRefresh() {
+    public Instant getLastRefresh() {
         return null;
     }
 
@@ -86,5 +87,17 @@ public class OpenSamlFilesystemMetadataResolver extends FilesystemMetadataResolv
         } catch (FilterException e) {
             logger.error("An error occurred while attempting to filter metadata!", e);
         }
+    }
+
+    @Override
+    public void validateMetadataFile(@Nonnull final File file) throws ResolverException {
+        // NOPE, not going to validate this because the file reference is likely not to exist on the shibui server nor even be a
+        // valid path on the running server. The file is needed for the XML, but we shouldn't be validating it.
+    }
+
+    @Override
+    protected byte[] fetchMetadata() throws ResolverException {
+        // NOPE, we don't need to try and fetch the metadata
+        return null;
     }
 }
