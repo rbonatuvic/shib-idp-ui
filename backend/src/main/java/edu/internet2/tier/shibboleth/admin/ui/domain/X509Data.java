@@ -19,6 +19,7 @@ import javax.persistence.OrderColumn;
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,10 +75,11 @@ public class X509Data extends AbstractXMLObject implements org.opensaml.xmlsec.s
         this.xmlObjects.add(x509Certificate);
     }
 
+    // TODO: might need to really implement this
     @Nonnull
     @Override
     public List<X509CRL> getX509CRLs() {
-        return null;
+        return Collections.EMPTY_LIST;
     }
 
     @Nonnull

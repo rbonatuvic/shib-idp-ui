@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 @Audited
 public class Logo extends AbstractXMLObject implements org.opensaml.saml.ext.saml2mdui.Logo {
     @Column(name = "logUrl")
-    private String url;
+    private String uri;
 
     @Column(name = "logoHieght")
     private int height;
@@ -24,13 +24,13 @@ public class Logo extends AbstractXMLObject implements org.opensaml.saml.ext.sam
     private String xmlLang;
 
     @Override
-    public String getURL() {
-        return this.url;
+    public String getURI() {
+        return this.uri;
     }
 
     @Override
-    public void setURL(String url) {
-        this.url = url;
+    public void setURI(String uri) {
+        this.uri = uri;
     }
 
     @Override

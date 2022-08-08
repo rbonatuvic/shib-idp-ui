@@ -1,20 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.Hidden;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.envers.Audited;
@@ -24,10 +13,19 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import lombok.EqualsAndHashCode;
+import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 @MappedSuperclass
@@ -38,38 +36,46 @@ public abstract class AbstractAuditable implements Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Hidden
     protected Long id;
 
     @CreationTimestamp
     @CreatedDate
-    @Column(nullable = false, updatable = false, columnDefinition = "DATETIME(6)")
+    @Column(nullable = false, updatable = false)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+    @Hidden
     private LocalDateTime createdDate;
 
     @UpdateTimestamp
     @LastModifiedDate
-    @Column(nullable = false, columnDefinition = "DATETIME(6)")
+    @Column(nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+    @Hidden
     private LocalDateTime modifiedDate;
 
     @Column(name = "created_by")
     @CreatedBy
+    @Hidden
     private String createdBy;
 
     @Column(name = "modified_by")
     @LastModifiedBy
+    @Hidden
     private String modifiedBy;
 
     @Transient
     @JsonProperty
+    @Hidden
     private boolean current;
 
     @Override
+    @Hidden
     public Long getAudId() {
         return id;
     }
 
     @Override
+    @Hidden
     public void setAudId(@NotNull Long id) {
         this.id = id;
     }
@@ -81,7 +87,7 @@ public abstract class AbstractAuditable implements Auditable {
 
     @Override
     public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+        this.createdDate = createdDate == null ? null : createdDate.truncatedTo(ChronoUnit.NANOS);
     }
 
     @Override
@@ -91,7 +97,7 @@ public abstract class AbstractAuditable implements Auditable {
 
     @Override
     public void setModifiedDate(LocalDateTime modifiedDate) {
-        this.modifiedDate = modifiedDate;
+        this.modifiedDate = modifiedDate == null ? null : modifiedDate.truncatedTo(ChronoUnit.NANOS);
     }
 
     public String getCreatedBy() {

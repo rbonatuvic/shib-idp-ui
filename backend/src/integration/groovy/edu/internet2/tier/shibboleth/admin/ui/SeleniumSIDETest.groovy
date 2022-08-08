@@ -37,6 +37,9 @@ class SeleniumSIDETest extends Specification {
                 it.remoteUrl = 'http://selenium-hub:4444/wd/hub'
                 it.remoteBrowser = 'firefox'
             }
+            if (System.properties.getProperty('selenium.port')) {
+                this.setRandomPort("${System.properties.getProperty('selenium.port')}" as int)
+            }
             if (System.properties.getProperty('selenium.host')) {
                 it.baseurl = "http://${System.properties.getProperty('selenium.host')}:${this.randomPort}"
             } else {
@@ -73,6 +76,9 @@ class SeleniumSIDETest extends Specification {
                 it.driver = 'remote'
                 it.remoteUrl = 'http://selenium-hub:4444/wd/hub'
                 it.remoteBrowser = 'firefox'
+            }
+            if (System.properties.getProperty('selenium.port')) {
+                this.setRandomPort("${System.properties.getProperty('selenium.port')}" as int)
             }
             if (System.properties.getProperty('selenium.host')) {
                 it.baseurl = "http://${System.properties.getProperty('selenium.host')}:${this.randomPort}"
@@ -117,7 +123,7 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1335: Verify Filesystem Metadata Provider'                  | '/SHIBUI-1335-2.side'
         'SHIBUI-1335: Verify Local Dynamic Metadata Provider'               | '/SHIBUI-1335-3.side'
         'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
-        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side'
+        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side' // Note that this script WILL NOT PASS in the Selenium IDE due to it thinking there is a syntax error where there is none.
         'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
         'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
@@ -126,7 +132,14 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1503: Non-admin can create metadata source'                 | '/SHIBUI-1503-1.side'
         'SHIBUI-1503: User can be deleted'                                  | '/SHIBUI-1503-2.side'
         'SHIBUI-1503: User can be enabled'                                  | '/SHIBUI-1503-3.side'
-        'SHIBUI-2052: Logged in user & role appear on dashboard'            | '/SHIBUI-2052.side'
+        'SHIBUI-1732: Create, use, and delete CEA String'                   | '/SHIBUI-1732-1.side'
+        'SHIBUI-1732: Create, use, and delete CEA Boolean'                  | '/SHIBUI-1732-2.side'
+        'SHIBUI-1732: Create, use, and delete CEA List'                     | '/SHIBUI-1732-3.side'
+        'SHIBUI-1732: Create, use, and delete CEA Long'                     | '/SHIBUI-1732-4.side'
+        'SHIBUI-1732: Create, use, and delete CEA Double'                   | '/SHIBUI-1732-5.side'
+        'SHIBUI-1732: Create, use, and delete CEA Duration'                 | '/SHIBUI-1732-6.side'
+        'SHIBUI-1732: Create, use, and delete CEA Spring Bean'              | '/SHIBUI-1732-7.side'
+        'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side'
         'SHIBUI-1740: Group can be created, edited, deleted'                | '/SHIBUI-1740-1.side'
         'SHIBUI-1740: Verify dev profile group membership'                  | '/SHIBUI-1740-2.side'
         'SHIBUI-1740: Verify admin-owned resource not visible to nonadmins' | '/SHIBUI-1740-3.side'
@@ -138,14 +151,8 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1744: Verify attribute bundle CRUD operations'              | '/SHIBUI-1744-1.side'
         'SHIBUI-1744: Verify attribute bundles in metadata sources'         | '/SHIBUI-1744-2.side'
         'SHIBUI-1744: Verify attribute bundles in entity attribute filters' | '/SHIBUI-1744-3.side'
+        'SHIBUI-2052: Logged in user & role appear on dashboard'            | '/SHIBUI-2052.side'
         'SHIBUI-2116: Verify entity attribute bundle highlights'            | '/SHIBUI-2116.side' // Note that this script WILL NOT PASS in the Selenium IDE due to ${driver} not being set (it is provided by this groovy script).
-        'SHIBUI-1732: Create, use, and delete CEA String'                   | '/SHIBUI-1732-1.side'
-        'SHIBUI-1732: Create, use, and delete CEA Boolean'                  | '/SHIBUI-1732-2.side'
-        'SHIBUI-1732: Create, use, and delete CEA List'                     | '/SHIBUI-1732-3.side'
-        'SHIBUI-1732: Create, use, and delete CEA Long'                     | '/SHIBUI-1732-4.side'
-        'SHIBUI-1732: Create, use, and delete CEA Double'                   | '/SHIBUI-1732-5.side'
-        'SHIBUI-1732: Create, use, and delete CEA Duration'                 | '/SHIBUI-1732-6.side'
-        'SHIBUI-1732: Create, use, and delete CEA Spring Bean'              | '/SHIBUI-1732-7.side'
-        'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side' // Something about this test breaks all the other ones after it
+        'SHIBUI-2269: Verify XML generation of external filters'            | '/SHIBUI-2269.side'
     }
 }

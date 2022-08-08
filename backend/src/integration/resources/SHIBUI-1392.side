@@ -507,7 +507,21 @@
         ["xpath=//p[contains(.,'eval(true)')]", "xpath:innerText"]
       ],
       "value": "eval(true);"
-    }]
+    }, {
+             "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+             "comment": "",
+             "command": "open",
+             "target": "/api/heheheheheheheWipeout",
+             "targets": [],
+             "value": ""
+           }, {
+             "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+             "comment": "",
+             "command": "assertText",
+             "target": "css=body",
+             "targets": [],
+             "value": "yes, you did it"
+           }]
   }],
   "suites": [{
     "id": "4f69a686-bcaa-4963-84af-2e592e8c8842",

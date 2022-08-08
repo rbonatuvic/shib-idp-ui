@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.time.Instant;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -47,7 +48,7 @@ public class OpenSamlResourceBackedMetadataResolver extends ResourceBackedMetada
     // TODO: this is still probably not the best way to do this?
     @Nullable
     @Override
-    public DateTime getLastRefresh() {
+    public Instant getLastRefresh() {
         return null;
     }
 

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry
 import edu.internet2.tier.shibboleth.admin.ui.service.JsonSchemaBuilderService
+import io.swagger.v3.oas.annotations.tags.Tag
+import io.swagger.v3.oas.annotations.tags.Tags
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,6 +28,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
  */
 @RestController
 @RequestMapping('/api/ui/MetadataSources')
+@Tags(value = [@Tag(name = "ui")])
 class MetadataSourcesUiDefinitionController {
 
     private static final Logger logger = LoggerFactory.getLogger(MetadataSourcesUiDefinitionController.class);

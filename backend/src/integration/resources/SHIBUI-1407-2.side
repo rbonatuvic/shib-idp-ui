@@ -469,40 +469,18 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "232da257-962f-4a4b-8213-038ef90c96c3",
-      "comment": "",
-      "command": "click",
-      "target": "css=.toggle-button",
-      "targets": [
-        ["css=.toggle-button", "css:finder"],
-        ["xpath=(//button[@type='button'])[7]", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[5]/div/div/div/div/div[2]/div/div/div/div/div/div/div[2]/div/div/div/div/div/button", "xpath:idRelative"],
-        ["xpath=//div/div/div/div/button", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "293cf806-cec0-4b31-a7be-c77e938ac435",
-      "comment": "",
-      "command": "pause",
-      "target": "500",
-      "targets": [],
-      "value": ""
-    }, {
       "id": "b8d999f1-0c59-4a9a-9991-91d222f52b8e",
       "comment": "",
-      "command": "click",
-      "target": "id=option-selector-items-root_metadataFilters_0_maxValidityInterval-item-1",
+      "command": "type",
+      "target": "id=root_metadataFilters_0_maxValidityInterval",
       "targets": [
-        ["id=option-selector-items-root_metadataFilters_0_maxValidityInterval-item-1", "id"],
-        ["linkText=PT30S", "linkText"],
-        ["css=#option-selector-items-root_metadataFilters_0_maxValidityInterval-item-1", "css:finder"],
-        ["xpath=//a[@id='option-selector-items-root_metadataFilters_0_maxValidityInterval-item-1']", "xpath:attributes"],
-        ["xpath=//div[@id='option-selector-items-root_metadataFilters_0_maxValidityInterval']/a[2]", "xpath:idRelative"],
-        ["xpath=(//a[contains(@href, '#')])[2]", "xpath:href"],
-        ["xpath=//div[2]/a[2]", "xpath:position"],
-        ["xpath=//a[contains(.,'PT30S')]", "xpath:innerText"]
+        ["id=root_metadataFilters_0_maxValidityInterval", "id"],
+        ["css=#root_metadataFilters_0_maxValidityInterval", "css:finder"],
+        ["xpath=//input[@id='root_metadataFilters_0_maxValidityInterval']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[4]/div/div/div/div/div[2]/div/div/div/div/div/div/div[2]/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
       ],
-      "value": ""
+      "value": "PT15M"
     }, {
       "id": "8af1abb5-2c7a-4a4c-a8f7-0eb287100dde",
       "comment": "",
@@ -1032,6 +1010,20 @@
       "target": "isDiff",
       "targets": [],
       "value": "true"
+    }, {
+      "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
     }]
   }],
   "suites": [{

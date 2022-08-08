@@ -2,7 +2,7 @@ import React from 'react';
 import { WizardNav } from './WizardNav';
 import { MetadataWizardForm } from './MetadataWizardForm';
 import { setWizardIndexAction, useCurrentIndex, useIsLastPage, useWizardDispatcher } from './Wizard';
-import { useMetadataDefinitionContext, useMetadataDefinitionValidator, useMetadataSchemaContext } from '../hoc/MetadataSchema';
+import { useMetadataDefinitionContext, useMetadataDefinitionValidator, useMetadataSchemaContext, useMetadataSchemaLoading } from '../hoc/MetadataSchema';
 import { checkChanges, useMetadataSchema } from '../hooks/schema';
 import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMetadataFormData, useMetadataFormErrors } from '../hoc/MetadataFormContext';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
@@ -12,6 +12,7 @@ import { useMetadataProviders } from '../hooks/api';
 import { removeNull } from '../../core/utility/remove_null';
 
 import { useUserGroup } from '../../core/user/UserContext';
+import Spinner from '../../core/components/Spinner';
 
 export function MetadataProviderWizard({onSave, loading, block}) {
 
@@ -20,6 +21,7 @@ export function MetadataProviderWizard({onSave, loading, block}) {
 
     const definition = useMetadataDefinitionContext();
     const schema = useMetadataSchemaContext();
+    const schemaLoading = useMetadataSchemaLoading();
 
     const processed = useMetadataSchema(definition, schema);
 
@@ -49,7 +51,7 @@ export function MetadataProviderWizard({onSave, loading, block}) {
 
     return (
         <>
-
+            
             <div className="row mb-4">
                 <div className="col-12">
                     <WizardNav onSave={save}
@@ -58,6 +60,7 @@ export function MetadataProviderWizard({onSave, loading, block}) {
                 </div>
             </div>
             <hr />
+            {schemaLoading && <div className="d-flex justify-content-center text-primary col-6"><Spinner size="4x" /></div> }
             <div className="row">
                 <div className="col-12">
                     <MetadataWizardForm

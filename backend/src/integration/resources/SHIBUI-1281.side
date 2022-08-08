@@ -626,9 +626,12 @@
       "id": "c1534880-c4e5-4fbd-b200-c28f9f556ab9",
       "comment": "",
       "command": "click",
-      "target": "css=div.p-0.m-0.container-fluid > div:nth-child(2) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > button",
+      "target": "css=.is-invalid > .toggle-button",
       "targets": [
-        ["css=.is-invalid .svg-inline--fa", "css:finder"]
+        ["css=.is-invalid > .toggle-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[12]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[5]/div/div/div/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div/div/div/div/div/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -678,12 +681,12 @@
       "id": "97a98737-862d-4567-8b20-c5c991444ed0",
       "comment": "",
       "command": "click",
-      "target": "css=div.p-0.m-0.container-fluid > div:nth-child(3) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > button",
+      "target": "css=.is-invalid > .toggle-button",
       "targets": [
-        ["css=#\\/serviceProviderSsoDescriptor\\/nameIdFormats\\/2-container .btn", "css:finder"],
-        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
-        ["xpath=//div[@id='/serviceProviderSsoDescriptor/nameIdFormats/2-container']/div/div/button", "xpath:idRelative"],
-        ["xpath=//li[3]/div/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
+        ["css=.is-invalid > .toggle-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[14]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[5]/div/div/div/div[2]/div/div/div/div/div/div[2]/div[3]/div/div/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div/div/div/div/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -731,12 +734,12 @@
       "id": "e2e8d5d4-8b6a-42d5-9fe7-abb8a84216e3",
       "comment": "",
       "command": "click",
-      "target": "css=div.p-0.m-0.container-fluid > div:nth-child(4) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > button",
+      "target": "css=.is-invalid > .toggle-button",
       "targets": [
-        ["css=#\\/serviceProviderSsoDescriptor\\/nameIdFormats\\/3-container .btn", "css:finder"],
-        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
-        ["xpath=//div[@id='/serviceProviderSsoDescriptor/nameIdFormats/3-container']/div/div/button", "xpath:idRelative"],
-        ["xpath=//li[4]/div/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
+        ["css=.is-invalid > .toggle-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[16]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[5]/div/div/div/div[2]/div/div/div/div/div/div[2]/div[4]/div/div/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div/div/div/div/div/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -778,10 +781,11 @@
       "id": "23fd8856-32df-48ed-a198-a74e8ca71b10",
       "comment": "",
       "command": "type",
-      "target": "css=div.p-0.m-0.container-fluid > div:nth-child(5) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > div:nth-child(1) > input.rbt-input-main.form-control.rbt-input",
+      "target": "id=option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4",
       "targets": [
-        ["css=.focus", "css:finder"],
-        ["xpath=(//input[@value=''])[5]", "xpath:attributes"],
+        ["id=option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4", "id"],
+        ["css=#option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4", "css:finder"],
+        ["xpath=//input[@id='option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4']", "xpath:attributes"],
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[5]/div/div/div/div[2]/div/div/div/div/div/div[2]/div[5]/div/div/div/div/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[5]/div/div/div/div/div/div/div/input", "xpath:position"]
       ],
@@ -1970,7 +1974,7 @@
         ["xpath=//metadata-configuration[@id='configuration']/div/section[9]/div/div[2]/object-property/array-property/div/div[5]/div/span", "xpath:idRelative"],
         ["xpath=//div/div[5]/div/span", "xpath:position"]
       ],
-      "value": "True"
+      "value": "true"
     }, {
       "id": "1406d7e4-907d-4359-8de8-a40206f0993e",
       "comment": "",
@@ -1985,11 +1989,12 @@
       "id": "4e0fa4f5-817f-41fb-9885-60f37b699436",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=tr > .text-right",
+      "target": "css=td:nth-child(1)",
       "targets": [
-        ["css=tr > .text-right", "css:finder"],
-        ["xpath=//td[5]", "xpath:position"],
-        ["xpath=//td[contains(.,'Enabled')]", "xpath:innerText"]
+        ["css=.lead", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/span", "xpath:idRelative"],
+        ["xpath=//section/div/div/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Current Metadata Sources')]", "xpath:innerText"]
       ],
       "value": "10000"
     }, {
@@ -2106,7 +2111,21 @@
       "target": "css=td:nth-child(2)",
       "targets": [],
       "value": ""
-    }]
+    },{
+            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+            "comment": "",
+            "command": "open",
+            "target": "/api/heheheheheheheWipeout",
+            "targets": [],
+            "value": ""
+          }, {
+            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+            "comment": "",
+            "command": "assertText",
+            "target": "css=body",
+            "targets": [],
+            "value": "yes, you did it"
+          }]
   }],
   "suites": [{
     "id": "d2caeac4-7520-4e3c-96b1-840610b6983c",

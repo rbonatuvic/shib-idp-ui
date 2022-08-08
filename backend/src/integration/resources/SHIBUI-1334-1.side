@@ -1966,7 +1966,7 @@
         ["xpath=//metadata-configuration[@id='configuration']/div/section[9]/div/div[2]/object-property/array-property/div/div[5]/div/span", "xpath:idRelative"],
         ["xpath=//div/div[5]/div/span", "xpath:position"]
       ],
-      "value": "True"
+      "value": "true"
     }, {
       "id": "a1050ebe-55c5-4eac-8d12-615f3ff1cd72",
       "comment": "",
@@ -2005,11 +2005,15 @@
       "id": "4e0fa4f5-817f-41fb-9885-60f37b699436",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=tr > .text-right",
+      "target": "linkText=Test Provider",
       "targets": [
-        ["css=tr > .text-right", "css:finder"],
-        ["xpath=//td[5]", "xpath:position"],
-        ["xpath=//td[contains(.,'Enabled')]", "xpath:innerText"]
+        ["linkText=Test Provider", "linkText"],
+        ["css=.align-middle > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Test Provider')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/div/table/tbody/tr/td/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/source/bb384f9e-a87d-4e46-aa68-81d46b7c43e1/configuration/options')]", "xpath:href"],
+        ["xpath=//td/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Test Provider')]", "xpath:innerText"]
       ],
       "value": "10000"
     }, {
@@ -2277,7 +2281,7 @@
         ["xpath=//metadata-configuration[@id='configuration']/div/section[8]/div/div[2]/object-property/array-property/div/div/div[3]/div/span", "xpath:idRelative"],
         ["xpath=//section[8]/div/div[2]/object-property/array-property/div/div/div[3]/div/span", "xpath:position"]
       ],
-      "value": "True"
+      "value": "true"
     }, {
       "id": "2c46cdcd-d5a5-47fe-aa7b-0120fd2fcfc9",
       "comment": "",
@@ -2713,7 +2717,21 @@
         ["xpath=//section[2]/div/div[2]/div[2]/div/div/div/span[3]", "xpath:position"]
       ],
       "value": "Display Name"
-    }]
+    }, {
+             "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+             "comment": "",
+             "command": "open",
+             "target": "/api/heheheheheheheWipeout",
+             "targets": [],
+             "value": ""
+           }, {
+             "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+             "comment": "",
+             "command": "assertText",
+             "target": "css=body",
+             "targets": [],
+             "value": "yes, you did it"
+           }]
   }],
   "suites": [{
     "id": "d2caeac4-7520-4e3c-96b1-840610b6983c",
