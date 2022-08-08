@@ -9,6 +9,7 @@ import Translate from '../../i18n/components/translate';
 import { useMetadataHistory } from '../hooks/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import Spinner from '../../core/components/Spinner';
 
 const sortVersionsByDate = (versions) => {
     return versions.sort((a, b) => {
@@ -107,15 +108,12 @@ export function MetadataHistory () {
                         )}
                     </tbody>
                 </table>
+                {loading && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
                 <Button variant="primary" onClick={ () => compare(selected) } disabled={!selected.length}>
                     <Translate value="label.compare-selected">Compare Selected</Translate>
                     {selected.length > 0 && <span>({ selected.length })</span> }
                 </Button>
                 </>
-            </div>}
-            {loading && <div className="d-flex justify-content-center">
-                <i className="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
-                <span className="sr-only">Loading...</span>
             </div>}
         </>
     );
