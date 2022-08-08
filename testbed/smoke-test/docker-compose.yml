@@ -37,6 +37,14 @@ services:
       LDAP_DOMAIN: "unicon.local"
       HOSTNAME: "directory"
       LDAP_TLS_VERIFY_CLIENT: "try"
+  database:
+    image: postgres:14-alpine
+    networks:
+      - backend
+    environment:
+      POSTGRES_PASSWORD: shibui
+      POSTGRES_USER: shibui
+      POSTGRES_DB: shibui
   idp:
     build: ../integration/shibboleth-idp
     labels:
@@ -70,6 +78,9 @@ services:
       - "traefik.http.routers.shibui.tls=true"
       - "traefik.docker.network=smoke-test_reverse-proxy"
       - "traefik.enable=true"
+    depends_on:
+      database:
+        condition: service_started
     networks:
       - reverse-proxy
       - backend
@@ -81,16 +92,7 @@ services:
       - ../integration/shibboleth-idp/credentials/shib-idp/inc-md-cert-mdq.pem:/opt/shibboleth-idp/credentials/inc-md-cert-mdq.pem
     environment:
       - "IDP_HOME=/opt/shibboleth-idp"
-  database:
-    image: postgres:14-alpine
-    environment:
-      POSTGRES_PASSWORD: shibui
-      POSTGRES_USER: shibui
-      POSTGRES_DB: shibui
-    networks:
-      - backend
-    volumes:
-      - database_data:/var/lib/postgresql/data
+      
 networks:
   reverse-proxy:
   idp:
