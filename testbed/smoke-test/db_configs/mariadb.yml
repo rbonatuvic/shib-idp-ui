@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    include:
+  datasource:
+    platform: mysql
+    driver-class-name: com.mariadb.jdbc.Driver
+    url: jdbc:mariadb://database:3306/shibui
+    username: shibui
+    password: shibui
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDB103Dialect
