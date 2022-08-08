@@ -7,7 +7,7 @@ import { MetadataProviderTypeSelector } from '../wizard/MetadataProviderTypeSele
 
 export function NewProvider() {
 
-    const { data = [] } = useMetadataProviderTypes({}, []);
+    const { data = [], loading } = useMetadataProviderTypes({}, []);
 
     return (
         <div className="container-fluid p-3">
@@ -20,7 +20,7 @@ export function NewProvider() {
                     </div>
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
-                    <MetadataProviderTypeSelector type={'provider'} types={[...data]}>
+                    <MetadataProviderTypeSelector type={'provider'} types={[...data]} loading={loading}>
                         {(data, onRestart) =>
                         <MetadataSchema type={data.type} wizard={true}>
                             <MetadataWizard type="provider"
