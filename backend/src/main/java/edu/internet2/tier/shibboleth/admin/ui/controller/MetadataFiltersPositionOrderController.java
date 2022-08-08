@@ -4,6 +4,8 @@ import edu.internet2.tier.shibboleth.admin.ui.controller.support.RestControllers
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,7 @@ import static java.util.stream.Collectors.toList;
  */
 @RestController
 @RequestMapping("/api/MetadataResolvers/{metadataResolverId}/FiltersPositionOrder")
+@Tags(value = {@Tag(name = "metadata filters")})
 public class MetadataFiltersPositionOrderController {
 
     @Autowired

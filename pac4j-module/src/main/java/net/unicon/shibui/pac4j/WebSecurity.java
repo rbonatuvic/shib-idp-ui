@@ -5,9 +5,9 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IRolesService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
-import static net.unicon.shibui.pac4j.Pac4jConfiguration.PAC4J_CLIENT_NAME;
+import org.pac4j.core.authorization.authorizer.DefaultAuthorizers;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.matching.Matcher;
+import org.pac4j.core.matching.matcher.Matcher;
 import org.pac4j.springframework.security.web.CallbackFilter;
 import org.pac4j.springframework.security.web.SecurityFilter;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -25,6 +25,8 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 import javax.servlet.Filter;
 import java.util.Optional;
+
+import static net.unicon.shibui.pac4j.Pac4jConfiguration.PAC4J_CLIENT_NAME;
 
 @Configuration
 @AutoConfigureOrder(-1)
@@ -62,7 +64,8 @@ public class WebSecurity {
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests().antMatchers("/unsecured/**/*").permitAll();
 
-            final SecurityFilter securityFilter = new SecurityFilter(this.config, PAC4J_CLIENT_NAME);
+            // adding the authorizor bypasses the default behavior of checking CSRF in Pac4J's default securitylogic+defaultauthorizationchecker
+            final SecurityFilter securityFilter = new SecurityFilter(this.config, PAC4J_CLIENT_NAME, DefaultAuthorizers.IS_AUTHENTICATED);
 
             // add filter based on auth type 
             http.antMatcher("/**").addFilterBefore(getFilter(config, pac4jConfigurationProperties.getTypeOfAuth()), BasicAuthenticationFilter.class);

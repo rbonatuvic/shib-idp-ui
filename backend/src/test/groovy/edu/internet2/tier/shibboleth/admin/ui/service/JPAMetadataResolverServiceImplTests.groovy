@@ -1,14 +1,19 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
+import com.google.common.collect.Lists
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute
+import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeValue
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSString
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ExternalMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.RegexScheme
@@ -18,11 +23,11 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSaml
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet
-import org.joda.time.DateTime
 import org.opensaml.core.criterion.EntityIdCriterion
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
@@ -32,10 +37,14 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.ContextConfiguration
+import org.w3c.dom.Document
+import org.w3c.dom.Node
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import spock.lang.Ignore
 import spock.lang.Unroll
+
+import java.time.Instant
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
@@ -66,6 +75,7 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
     @Autowired
     TestObjectGenerator testObjectGenerator
 
+    AttributeUtility attributeUtility
     DOMBuilder domBuilder = DOMBuilder.newInstance()
     StringWriter writer = new StringWriter()
     MarkupBuilder markupBuilder
@@ -74,11 +84,49 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         markupBuilder = new MarkupBuilder(writer)
         markupBuilder.omitNullAttributes = true
         markupBuilder.omitEmptyAttributes = true
+        attributeUtility = new AttributeUtility(openSamlObjects)
     }
 
     def cleanup() {
         metadataResolverRepository.deleteAll()
         writer.close()
+    }
+
+    def 'test generating ExternalMetadataResolver XML'() {
+        given:
+        def resolver = new ExternalMetadataResolver().with {
+            it.setEnabled(true)
+            it.setName("testme")
+            it.setXmlId("InCommonMD")
+            it.setDescription("some description that won't appear in the xml")
+            it.addFilter(new EntityAttributesFilter().with {
+                it.name = 'EntityAttributes'
+                EntityAttributesFilterTarget filterTarget = testObjectGenerator.buildEntityAttributesFilterTarget()
+                filterTarget.setSingleValue("https://sp.example.org/shibboleth")
+                it.setEntityAttributesFilterTarget(filterTarget)
+                def attribute = attributeUtility.createAttributeWithStringValues('http://shibboleth.net/ns/attributes/releaseAllValues', null, 'eduPersonPrincipalName')
+                attribute.nameFormat = 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri'
+                attribute.namespacePrefix = 'saml2'
+                attribute.attributeValues.each { val ->
+                    ((XSString)val).namespacePrefix = 'saml2' +
+                            ''
+                }
+                it.attributes = [attribute]
+                it.intoTransientRepresentation()
+                it.enabled = true;
+                it
+            })
+            it
+        }
+        metadataResolverRepository.save(resolver)
+        metadataResolverService.reloadFilters("testme")
+
+        when:
+        Document doc = JPAMetadataResolverServiceImpl.cast(metadataResolverService).generateExternalMetadataFilterConfiguration()
+        Node node = doc.getFirstChild()
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/2269.xml', node)
     }
 
     def 'test adding a filter'() {
@@ -93,10 +141,8 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
       <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
         <saml:AttributeValue>givenName</saml:AttributeValue>
         <saml:AttributeValue>employeeNumber</saml:AttributeValue>
+        <saml2:AttributeValue xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">testme</saml2:AttributeValue>
       </saml:Attribute>
-      <saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-        <saml2:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">testme</saml2:AttributeValue>
-      </saml2:Attribute>
     </mdattr:EntityAttributes>
   </md:Extensions>
   <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
@@ -109,7 +155,7 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
             it.resourceId = "testme"
             it.name = "testme"
             it.classpathMetadataResource = new ClasspathMetadataResource().with {
-                it.file = "metadata/aggregate.xml"
+                it.fileResource = "metadata/aggregate.xml"
                 it
             }
             it.metadataFilters.add(new EntityAttributesFilter().with {
@@ -131,7 +177,9 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         assert metadataResolverRepository.findAll().size() > 0
         def ed = metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion('http://test.scaldingspoon.org/test1')))
         def resultString = openSamlObjects.marshalToXmlString(ed)
+        println("RESULTSTRING:")
         println(resultString)
+        // line 99 above being added to release all values, not its own thing
         def diff = DiffBuilder.compare(Input.fromString(expectedXML)).withTest(Input.fromString(resultString)).ignoreComments().ignoreWhitespace().build()
         !diff.hasDifferences()
     }
@@ -274,7 +322,7 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         def resolver = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver().with {
             it.xmlId = 'ClasspathResourceMetadata'
             it.classpathMetadataResource = new ClasspathMetadataResource().with {
-                it.file = '/path/to/a/classpath/location/metadata.xml'
+                it.fileResource = '/path/to/a/classpath/location/metadata.xml'
                 it
             }
             it
@@ -475,7 +523,7 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         MetadataResolver metadataResolver(OpenSamlObjects openSamlObjects) {
             def aggregate = new ResourceBackedMetadataResolver(ResourceHelper.of(new ClassPathResource("/metadata/aggregate.xml"))){
                 @Override
-                DateTime getLastRefresh() {
+                Instant getLastRefresh() {
                     return null
                 }
             }

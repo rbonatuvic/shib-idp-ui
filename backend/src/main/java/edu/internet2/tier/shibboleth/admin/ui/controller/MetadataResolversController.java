@@ -13,6 +13,8 @@ import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverVersionService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.util.OpenSamlChainingMetadataResolverUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.extern.slf4j.Slf4j;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -48,6 +50,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.
 @RestController
 @RequestMapping("/api")
 @Slf4j
+@Tags(value = {@Tag(name = "metadata resolvers")})
 public class MetadataResolversController {
 
     @Autowired
@@ -79,7 +82,7 @@ public class MetadataResolversController {
         return ResponseEntity.badRequest().body(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), ex.getMessage(), ex.getCause().getMessage()));
     }
 
-    @GetMapping("/MetadataResolvers")
+    @GetMapping(value = "/MetadataResolvers", produces = "application/json")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll() {
         List<MetadataResolver> resolvers = positionOrderContainerService.getAllMetadataResolversInDefinedOrderOrUnordered();
@@ -89,13 +92,25 @@ public class MetadataResolversController {
     @GetMapping(value = "/MetadataResolvers", produces = "application/xml")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getXml() throws IOException, TransformerException {
-        // TODO: externalize
         try (StringWriter writer = new StringWriter()) {
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
             transformer.transform(new DOMSource(metadataResolverService.generateConfiguration()), new StreamResult(writer));
+            return ResponseEntity.ok(writer.toString());
+        }
+    }
+
+    @GetMapping(value = "/MetadataResolvers/External", produces = "application/xml")
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getExternalXml() throws IOException, TransformerException {
+        try (StringWriter writer = new StringWriter()) {
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+            transformer.transform(new DOMSource(metadataResolverService.generateExternalMetadataFilterConfiguration()), new StreamResult(writer));
             return ResponseEntity.ok(writer.toString());
         }
     }

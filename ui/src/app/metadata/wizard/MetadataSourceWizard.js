@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/Col';
 import { WizardNav } from './WizardNav';
 import { MetadataWizardForm } from './MetadataWizardForm';
 import { setWizardIndexAction, useCurrentIndex, useIsFirstPage, useIsLastPage, useWizardDispatcher } from './Wizard';
-import { useMetadataDefinitionContext, useMetadataSchemaContext, useMetadataDefinitionValidator } from '../hoc/MetadataSchema';
+import { useMetadataDefinitionContext, useMetadataSchemaContext, useMetadataDefinitionValidator, useMetadataSchemaLoading } from '../hoc/MetadataSchema';
 import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMetadataFormData, useMetadataFormErrors } from '../hoc/MetadataFormContext';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Configuration } from '../hoc/Configuration';
@@ -16,12 +16,21 @@ import { useMetadataSources } from '../hooks/api';
 
 import Translate from '../../i18n/components/translate';
 import { checkChanges } from '../hooks/utility';
-import { useUserGroup } from '../../core/user/UserContext';
+import { useCurrentUserLoader, useUserGroup } from '../../core/user/UserContext';
+import Spinner from '../../core/components/Spinner';
 
 
 export function MetadataSourceWizard ({ onShowNav, onSave, block, loading }) {
 
     const group = useUserGroup();
+
+    const userLoader = useCurrentUserLoader();
+    const schemaLoading = useMetadataSchemaLoading();
+
+    /*eslint-disable react-hooks/exhaustive-deps*/
+    React.useEffect(() => {
+        userLoader();
+    }, []);
 
     const { data } = useMetadataSources({
         cachePolicy: 'no-cache'
@@ -68,6 +77,7 @@ export function MetadataSourceWizard ({ onShowNav, onSave, block, loading }) {
                 </div>
             </div>
             <hr />
+            {schemaLoading && <div className="d-flex justify-content-center text-primary col-6"><Spinner size="4x" /></div> }
             {warnings && warnings.hasOwnProperty(current) &&
                 <Row className="mb-4">
                     <Col xs="12" lg="6" className="align-items-start">

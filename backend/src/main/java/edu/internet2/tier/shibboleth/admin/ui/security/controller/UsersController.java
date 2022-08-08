@@ -6,6 +6,9 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +31,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.exception.OwnershipConfli
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
-import groovy.util.logging.Slf4j;
-import jline.internal.Log;
+
 
 /**
  * Implementation of the REST resource endpoints exposing system users.
@@ -37,6 +39,7 @@ import jline.internal.Log;
 @RestController
 @RequestMapping("/api/admin/users")
 @Slf4j
+@Tags(value = {@Tag(name = "admin")})
 public class UsersController {
     private UserRepository userRepository;
     private UserService userService;
@@ -76,7 +79,7 @@ public class UsersController {
             return results;
         }
         catch (Exception e) {
-            Log.error("Unable to fetch users because: {}", e.getMessage());
+            log.error("Unable to fetch users because: {}", e.getMessage());
             throw e;
         }
     }

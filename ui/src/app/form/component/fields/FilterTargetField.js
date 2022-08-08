@@ -11,6 +11,7 @@ import useFetch from 'use-http';
 import queryString from 'query-string';
 import API_BASE_PATH from '../../../App.constant';
 import isNil from 'lodash/isNil';
+import capitalize from 'lodash/capitalize';
 import Editor from 'react-simple-code-editor';
 // import { highlight, languages } from 'prismjs/components/prism-core';
 // import 'prismjs/components/prism-clike';
@@ -67,6 +68,9 @@ const FilterTargetField = ({
     const [match, setMatch] = React.useState(true);
     const [touched, setTouched] = React.useState(false);
     const [ids, setSearchIds] = React.useState([]);
+
+    const [errors, setErrors] = React.useState();
+    const translator = useTranslator();
 
     const { get, response } = useFetch(`${API_BASE_PATH}/EntityIds/search`, {
         cachePolicy: 'no-cache'
@@ -127,6 +131,10 @@ const FilterTargetField = ({
         setSelectedTarget([]);
         setSelectedType(option);
     };
+
+    React.useEffect(() => {
+        setErrors(errorSchema?.value?.__errors?.map((error, eIdx) => capitalize(translator(error))).join(', '));
+    }, [errorSchema]);
 
     return (
         <fieldset>
@@ -231,11 +239,8 @@ const FilterTargetField = ({
                                             onChange={ ({target: { value }}) => handleTextChange(value) } />
                                         {errorSchema?.value?.__errors ?
                                             <small className="form-text text-danger">
-                                                {errorSchema?.value?.__errors?.map((error, eIdx) =>
-                                                    <React.Fragment key={eIdx}>
-                                                        <Translate value={error}>{error}</Translate>
-                                                    </React.Fragment>
-                                                )}
+                                                {errors}
+                                                
                                             </small> :
                                             <small id="regex-help" className="form-text text-secondary">
                                                 <Translate value="message.required-for-regex">Required for Regex</Translate>

@@ -4,13 +4,14 @@ import {
     ArrayParam,
     withDefault
 } from 'use-query-params';
+import { scroller } from 'react-scroll';
 import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/MetadataSchema';
 import { MetadataVersionsLoader } from '../hoc/MetadataVersionsLoader';
 import { Configuration } from '../hoc/Configuration';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHistory } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faHistory } from '@fortawesome/free-solid-svg-icons';
 import Translate from '../../i18n/components/translate';
 import Form from 'react-bootstrap/Form';
 import { useTranslation } from '../../i18n/hooks';
@@ -18,6 +19,14 @@ import { MetadataFilterVersionList } from '../domain/filter/component/MetadataFi
 import { MetadataFilterVersionContext } from '../domain/filter/component/MetadataFilterVersionContext';
 import { useMetadataSchema } from '../hooks/schema';
 import { FilterableProviders } from '../domain/provider';
+import Button from 'react-bootstrap/Button';
+const onScrollTo = (element, offset = 0) => {
+        scroller.scrollTo(element, {
+            duration: 500,
+            smooth: true,
+            offset
+        });
+    };
 
 export function MetadataComparison () {
 
@@ -54,6 +63,12 @@ export function MetadataComparison () {
                                             <FontAwesomeIcon icon={faHistory} />&nbsp;
                                             <Translate value="action.version-history">Version History</Translate>
                                         </Link>
+                                        {type === 'provider' && canFilter &&
+                                            <Button variant="link" onClick={() => onScrollTo('filters')}>
+                                                <FontAwesomeIcon icon={faArrowDown} />&nbsp;
+                                                <Translate value="label.filters">Filters</Translate>
+                                            </Button>
+                                        }
                                     </div>
                                     <Form.Check type="switch"
                                         id="toggleLimited"
@@ -65,7 +80,7 @@ export function MetadataComparison () {
                                 <MetadataConfiguration configuration={config} />
 
                                 {type === 'provider' && canFilter && v &&
-                                <React.Fragment>
+                                <div id="filters">
                                     <div className="numbered-header d-flex justify-content-start bg-light align-items-center py-1">
                                         <h2 className="title h4 m-0 flex-grow-1">
                                             <span className="text ms-2"><Translate value="label.metadata-filter">Metadata Filter</Translate></span>
@@ -74,7 +89,7 @@ export function MetadataComparison () {
                                     <MetadataFilterVersionContext models={v} dates={config.dates}>
                                         {(c) => <MetadataFilterVersionList configuration={c} columns={ c.dates.length } limited={limited}/>}
                                     </MetadataFilterVersionContext>
-                                </React.Fragment>
+                                </div>
                                 }
                             </div>
                         }

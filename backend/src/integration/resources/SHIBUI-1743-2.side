@@ -451,9 +451,9 @@
       "id": "2627de6e-206f-4825-9918-dc8df830b17a",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-0 .border-0 > .m-0",
+      "target": "css=.border-0 > .m-0",
       "targets": [
-        ["css=.mb-0 .border-0 > .m-0", "css:finder"],
+        ["css=.border-0 > .m-0", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[8]/div/div/div/div/div[2]/div/div/div/div[2]/div/div/div/div/div/div/div/div/div/ul/li/small", "xpath:idRelative"],
         ["xpath=//small", "xpath:position"],
         ["xpath=//small[contains(.,'Pattern must match group url validation pattern: foo.*')]", "xpath:innerText"]
@@ -597,7 +597,21 @@
         ["xpath=//section[6]/div/div[2]/div[2]/div/div[2]/div/span", "xpath:position"]
       ],
       "value": "foobar"
-    }]
+    },{
+            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+            "comment": "",
+            "command": "open",
+            "target": "/api/heheheheheheheWipeout",
+            "targets": [],
+            "value": ""
+          }, {
+            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+            "comment": "",
+            "command": "assertText",
+            "target": "css=body",
+            "targets": [],
+            "value": "yes, you did it"
+          }]
   }],
   "suites": [{
     "id": "c1770d48-99b6-4866-af1c-d4e485b851ab",
