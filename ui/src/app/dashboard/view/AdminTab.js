@@ -5,12 +5,13 @@ import UserMaintenance from '../../admin/component/UserMaintenance';
 import API_BASE_PATH from '../../App.constant';
 
 import Translate from '../../i18n/components/translate';
+import Spinner from '../../core/components/Spinner';
 
 export function AdminTab () {
 
     const [users, setUsers] = React.useState([]);
 
-    const { get, response } = useFetch(`${API_BASE_PATH}/admin/users`, {
+    const { get, response, loading } = useFetch(`${API_BASE_PATH}/admin/users`, {
         cachePolicy: 'no-cache'
     }, []);
 
@@ -46,7 +47,9 @@ export function AdminTab () {
                                 onChangeUserRole={onChangeUserRole}
                                 onDeleteUser={onDeleteUser}
                                 onChangeUserGroup={onChangeUserGroup} />}
+                        
                     </UserManagement>
+                    {loading && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
                 </div>
             </div>
         </section>
