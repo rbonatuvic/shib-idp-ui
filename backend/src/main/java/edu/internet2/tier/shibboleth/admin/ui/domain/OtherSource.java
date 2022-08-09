@@ -1,5 +1,6 @@
-package edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm;
+package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.AbstractAlgorithmIdentifierType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

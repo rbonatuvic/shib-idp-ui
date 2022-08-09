@@ -1,0 +1,33 @@
+{
+    "type": "object",
+    "required": [
+        "name"
+    ],
+    "properties": {
+        "@type": {
+            "type": "string",
+            "default": "Algorithm"
+        },
+        "name": {
+            "title": "label.filter-algorithm",
+            "description": "tooltip.filter-algorithm",
+            "type": "string"
+        },
+        "filterEnabled": {
+            "title": "label.enable-filter",
+            "description": "tooltip.enable-filter",
+            "type": "boolean",
+            "default": false
+        },
+        "version": {
+            "type": "integer"
+        },
+        "resourceId": {
+            "type": "string"
+        },
+        "unknownXMLObjects": {
+
+        }
+    },
+    "definitions": {}
+}

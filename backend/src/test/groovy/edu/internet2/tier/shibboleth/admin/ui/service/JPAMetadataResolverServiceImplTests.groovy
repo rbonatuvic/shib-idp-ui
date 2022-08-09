@@ -1,23 +1,17 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
-
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.AlgorithmDigestMethod
 import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethod
 import edu.internet2.tier.shibboleth.admin.ui.domain.SignatureDigestMethod
-import edu.internet2.tier.shibboleth.admin.ui.domain.SigningMethod
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSString
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.ConditionRef
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.ConditionScript
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.Entity
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.MGF
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.PRF
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.AlgorithmFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ExternalMetadataResolver
@@ -194,101 +188,45 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         !diff.hasDifferences()
     }
 
-    def 'test generating AlgorithmFilter xml snippet'() {
+    def 'test generating AlgorithmFilter shibui-2268 entities'() {
         given:
         def filter = TestObjectGenerator.algorithmFilter()
-        EncryptionMethod encryptionMethod =  new EncryptionMethod()
-        encryptionMethod.setElementLocalName(EncryptionMethod.DEFAULT_ELEMENT_LOCAL_NAME)
-        encryptionMethod.setNamespacePrefix(SAMLConstants.SAML20MD_PREFIX)
-        encryptionMethod.setNamespaceURI(SAMLConstants.SAML20MD_NS)
-        encryptionMethod.setSchemaLocation(SAMLConstants.SAML20MD_SCHEMA_LOCATION)
-        encryptionMethod.setAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc")
-        filter.addUnknownXMLObject(encryptionMethod)
+        ArrayList<String> algs = new ArrayList<>()
+        algs.add("http://www.w3.org/2001/04/xmlenc#aes128-cbc")
+        filter.setAlgorithms(algs)
 
-        Entity entity = new Entity()
-        entity.setValue("https://broken.example.org/sp")
-        filter.addUnknownXMLObject(entity)
-        Entity entity2 = new Entity()
-        entity2.setValue("https://also-broken.example.org/sp")
-        filter.addUnknownXMLObject(entity2)
+        AlgorithmFilterTarget target = new AlgorithmFilterTarget()
+        target.setAlgorithmFilterTargetType(AlgorithmFilterTarget.AlgorithmFilterTargetType.ENTITY)
+        ArrayList<String> entities = new ArrayList<>()
+        entities.add("https://broken.example.org/sp")
+        entities.add("https://also-broken.example.org/sp")
+        target.setValue(entities)
+        filter.setAlgorithmFilterTarget(target)
 
         when:
         genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
 
         then:
-        generatedXmlIsTheSameAsExpectedXml('/conf/2268-simple.xml', domBuilder.parseText(writer.toString()))
+        generatedXmlIsTheSameAsExpectedXml('/conf/2268-entity.xml', domBuilder.parseText(writer.toString()))
     }
 
-    def 'test generating AlgorithmFilter shibui-2268 actual'() {
+    def 'test generating AlgorithmFilter shibui-2268 script'() {
         given:
         def filter = TestObjectGenerator.algorithmFilter()
-        EncryptionMethod encryptionMethod =  new EncryptionMethod()
-        encryptionMethod.setElementLocalName(EncryptionMethod.DEFAULT_ELEMENT_LOCAL_NAME)
-        encryptionMethod.setNamespacePrefix(SAMLConstants.SAML20MD_PREFIX)
-        encryptionMethod.setNamespaceURI(SAMLConstants.SAML20MD_NS)
-        encryptionMethod.setSchemaLocation(SAMLConstants.SAML20MD_SCHEMA_LOCATION)
-        encryptionMethod.setAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc")
-        filter.addUnknownXMLObject(encryptionMethod)
+        ArrayList<String> algs = new ArrayList<>()
+        algs.add("http://www.w3.org/2001/04/xmlenc#aes128-cbc")
+        filter.setAlgorithms(algs)
 
-        Entity entity = new Entity()
-        entity.setValue("https://broken.example.org/sp")
-        filter.addUnknownXMLObject(entity)
-
-        ConditionRef cr = new ConditionRef()
-        cr.setValue("shibboleth.Conditions.TRUE")
-        filter.addUnknownXMLObject(cr)
-
-        ConditionScript cs = new ConditionScript()
-        cs.setValue("\"use strict\";\nfalse;")
-        filter.addUnknownXMLObject(cs)
+        AlgorithmFilterTarget target = new AlgorithmFilterTarget()
+        target.setAlgorithmFilterTargetType(AlgorithmFilterTarget.AlgorithmFilterTargetType.CONDITION_SCRIPT)
+        target.setSingleValue("\"use strict\";\nfalse;")
+        filter.setAlgorithmFilterTarget(target)
 
         when:
         genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
 
         then:
-        generatedXmlIsTheSameAsExpectedXml('/conf/2268-actual.xml', domBuilder.parseText(writer.toString()))
-    }
-
-    /**
-     * This test was written before we simplified the concept of what we'd allow the users to build in the UI. Because the test was
-     * already done and working, it was left here for completeness.
-     */
-    def 'test generating complex AlgorithmFilter xml snippet'() {
-        given:
-        def filter = TestObjectGenerator.algorithmFilter()
-        EncryptionMethod encryptionMethod =  getEncryptionMethod("http://www.w3.org/2001/04/xmlenc#aes128-cbc")
-        filter.addUnknownXMLObject(encryptionMethod)
-
-        EncryptionMethod encryptionMethod2 = getEncryptionMethod("http://www.w3.org/2009/xmlenc11#rsa-oaep")
-        MGF mgf = new MGF()
-        mgf.setAlgorithm("http://www.w3.org/2009/xmlenc11#mgf1sha256")
-        encryptionMethod2.addUnknownXMLObject(mgf)
-        PRF prf = new PRF()
-        prf.setAlgorithm("http://www.w3.org/2009/xmlenc11#mgf1sha384")
-        encryptionMethod2.addUnknownXMLObject(prf)
-        SignatureDigestMethod dm = getSignatureDigestMethod("http://www.w3.org/2001/04/xmlenc#sha256")
-        encryptionMethod2.addUnknownXMLObject(dm)
-        filter.addUnknownXMLObject(encryptionMethod2)
-
-        AlgorithmDigestMethod dm2 = getDigestMethod("http://www.w3.org/2001/04/xmlenc#sha51")
-        filter.addUnknownXMLObject(dm2)
-
-        SigningMethod sm = new SigningMethod()
-        sm.setNamespaceURI(SAMLConstants.SAML20ALG_NS)
-        sm.setElementLocalName(SigningMethod.DEFAULT_ELEMENT_LOCAL_NAME)
-        sm.setNamespacePrefix(SAMLConstants.SAML20ALG_PREFIX)
-        sm.setAlgorithm("http://www.w3.org/2001/04/xmldsig-more#rsa-sha512")
-        filter.addUnknownXMLObject(sm)
-
-        Entity entity = new Entity()
-        entity.setValue("https://broken.example.org/sp")
-        filter.addUnknownXMLObject(entity)
-
-        when:
-        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
-
-        then:
-        generatedXmlIsTheSameAsExpectedXml('/conf/2268-complex.xml', domBuilder.parseText(writer.toString()))
+        generatedXmlIsTheSameAsExpectedXml('/conf/2268-script.xml', domBuilder.parseText(writer.toString()))
     }
 
     def 'test generating EntityAttributesFilter xml snippet with condition script'() {

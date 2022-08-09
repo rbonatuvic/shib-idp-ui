@@ -105,4 +105,16 @@ public abstract class JsonSchemaLocationLookup {
                 .lookup(NAME_ID_FORMAT_FILTER)
                 .orElseThrow(() -> new IllegalStateException("JSON schema resource location for name id format filter is not registered."));
     }
+
+//    /**
+//     * Searches algorithm filter JSON schema resource location object in the given location registry.
+//     *
+//     * @param resourceLocationRegistry
+//     * @return algorithm filter JSON schema resource location object
+//     * @throws IllegalStateException if schema is not found in the given registry
+//     */
+//    public static JsonSchemaResourceLocation algorithmFilterSchema(JsonSchemaResourceLocationRegistry resourceLocationRegistry) {
+//        return resourceLocationRegistry.lookup(ALGORITHM_FILTER)
+//                        .orElseThrow(() -> new IllegalStateException("JSON schema resource location for algorithm filter is not registered."));
+//    }
 }

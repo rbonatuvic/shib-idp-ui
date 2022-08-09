@@ -2,6 +2,8 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.google.common.base.Predicate
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethod
+import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethodBuilder
 import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
@@ -10,9 +12,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.AlgorithmFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.ConditionRef
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.ConditionScript
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.Entity
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.AlgorithmFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.opensaml.OpenSamlNameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ExternalMetadataResolver
@@ -109,24 +109,50 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 'xmlns:alg': 'urn:oasis:names:tc:SAML:metadata:algsupport',
                 'xmlns:ds': 'http://www.w3.org/2000/09/xmldsig#'
         ) {
-            filter.unknownXMLObjects.each { xmlObject ->
-                {
-                    if (xmlObject instanceof Entity) {
-                        Entity(xmlObject.getValue())
-                    } else if (xmlObject instanceof ConditionRef) {
-                        ConditionRef(xmlObject.getValue())
-                    } else if (xmlObject instanceof ConditionScript) {
-                        ConditionScript() {
-                            Script() {
-                                def script = xmlObject.getValue()
-                                mkp.yieldUnescaped("\n<![CDATA[\n${script}\n]]>\n")
-                            }
-                        }
-                    } else {
-                        mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(xmlObject, false))
-                    }
-                }
+            for (String algValue : filter.getAlgorithms()) {
+                EncryptionMethod method = new EncryptionMethodBuilder().buildObject();
+                method.setAlgorithm(algValue)
+                mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(method, false))
             }
+            switch (filter.algorithmFilterTarget.targetType) {
+                case AlgorithmFilterTarget.AlgorithmFilterTargetType.ENTITY:
+                    filter.algorithmFilterTarget.value.each {
+                        Entity(it)
+                    }
+                    break
+                case AlgorithmFilterTarget.AlgorithmFilterTargetType.CONDITION_REF:
+                    ConditionRef(xmlObject.getValue())
+                    break
+                case AlgorithmFilterTarget.AlgorithmFilterTargetType.CONDITION_SCRIPT:
+                    ConditionScript() {
+                        Script() {
+                            def script = filter.getAlgorithmFilterTarget().value[0]
+                            mkp.yieldUnescaped("\n<![CDATA[\n${script}\n]]>\n")
+                        }
+                    }
+                    break
+                default:
+                    // do nothing, we'd have exploded elsewhere previously.
+                    break
+            }
+//            filter.unknownXMLObjects.each { xmlObject ->
+//                {
+//                    if (xmlObject instanceof Entity) {
+//                        Entity(xmlObject.getValue())
+//                    } else if (xmlObject instanceof ConditionRef) {
+//                        ConditionRef(xmlObject.getValue())
+//                    } else if (xmlObject instanceof ConditionScript) {
+//                        ConditionScript() {
+//                            Script() {
+//                                def script = xmlObject.getValue()
+//                                mkp.yieldUnescaped("\n<![CDATA[\n${script}\n]]>\n")
+//                            }
+//                        }
+//                    } else {
+//                        mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(xmlObject, false))
+//                    }
+//                }
+//            }
         }
     }
 

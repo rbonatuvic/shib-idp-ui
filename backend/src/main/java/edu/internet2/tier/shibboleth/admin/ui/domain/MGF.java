@@ -1,5 +1,6 @@
-package edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm;
+package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.AbstractAlgorithmIdentifierType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,9 +16,9 @@ import javax.persistence.Entity;
 @Setter
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class PRF extends AbstractAlgorithmIdentifierType {
-    public PRF() {
-        setElementLocalName("PRF");
+public class MGF extends AbstractAlgorithmIdentifierType {
+    public MGF() {
+        setElementLocalName("MGF");
         setNamespaceURI(EncryptionConstants.XMLENC11_NS);
         setNamespacePrefix(EncryptionConstants.XMLENC11_PREFIX);
     }

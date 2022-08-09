@@ -14,8 +14,6 @@
                     xsi:type="Algorithm">
 
         <md:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/>
-        <Entity>https://broken.example.org/sp</Entity>
-        <ConditionRef>shibboleth.Conditions.TRUE</ConditionRef>
         <ConditionScript>
             <Script>
                 <![CDATA[
