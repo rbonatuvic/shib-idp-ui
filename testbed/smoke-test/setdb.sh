@@ -17,6 +17,6 @@ ln -s db_configs/$DB.docker-compose.override.yml docker-compose.override.yml
 fi
 
 rm -f shibui/application.yml
-cat shibui/application.yml.nodb db_configs/$DB.yml >> shibui/application.yml
+cat shibui/application.yml.nodb db_configs/$DB.application.yml >> shibui/application.yml
 
 echo "shibui will now use the $DB container"
