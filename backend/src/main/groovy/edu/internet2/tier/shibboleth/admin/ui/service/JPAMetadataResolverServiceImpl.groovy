@@ -11,8 +11,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteList
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.AlgorithmFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm.AlgorithmFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.AlgorithmFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.AlgorithmFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.opensaml.OpenSamlNameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ExternalMetadataResolver

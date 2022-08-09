@@ -1,4 +1,4 @@
-package edu.internet2.tier.shibboleth.admin.ui.domain.filters.algorithm;
+package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
