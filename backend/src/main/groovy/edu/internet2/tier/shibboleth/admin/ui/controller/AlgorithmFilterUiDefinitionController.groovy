@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 
 import javax.annotation.PostConstruct
 
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.algorithmFilterSchema
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 
 /**
@@ -51,6 +52,6 @@ class AlgorithmFilterUiDefinitionController {
 
     @PostConstruct
     void init() {
-//        this.jsonSchemaLocation = algorithmFilterSchema(this.jsonSchemaResourceLocationRegistry)
+        this.jsonSchemaLocation = algorithmFilterSchema(this.jsonSchemaResourceLocationRegistry)
     }
 }
