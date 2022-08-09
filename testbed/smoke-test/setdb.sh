@@ -4,7 +4,7 @@ DB=$1
 
 if [[ ! "$DB" =~ ^(postgres|mariadb|mysql|sqlServer)$ ]];
 then
-    echo "argument mst be one of: postgres mariadb mysql sqlServer"
+    echo "argument must be one of: postgres mariadb mysql sqlServer"
     exit 0;
 fi
 
