@@ -22,10 +22,10 @@
                     "title": "label.filter-target-type",
                     "type": "string",
                     "default": "ENTITY",
-                    "enum": ["ENTITY", "REGEX", "CONDITION_SCRIPT"],
+                    "enum": ["ENTITY", "CONDITION_REF", "CONDITION_SCRIPT"],
                     "enumNames": [
                         "value.entity-id",
-                        "value.regex",
+                        "value.reference",
                         "value.script"
                     ]
                 },
@@ -43,34 +43,44 @@
         },
         "@type": {
             "type": "string",
-            "default": "NameIDFormat"
+            "default": "Algorithm"
         },
         "version": {
             "type": "integer"
         },
-        "algorithm": {
-            "title": "label.algorithm",
-            "description": "tooltip.algorithm",
-            "type": "string",
-            "enum": [
-                "http://www.w3.org/2009/xmlenc11#aes256-gcm",
-                "http://www.w3.org/2009/xmlenc11#aes192-gcm",
-                "http://www.w3.org/2009/xmlenc11#aes128-gcm",
-                "http://www.w3.org/2001/04/xmlenc#aes256-cbc",
-                "http://www.w3.org/2001/04/xmlenc#aes192-cbc",
-                "http://www.w3.org/2001/04/xmlenc#aes128-cbc",
-                "http://www.w3.org/2001/04/xmlenc#tripledes-cbc"
-            ],
-            "enumNames": [
-                "value.algorithm-gcm-256",
-                "value.algorithm-gcm-192",
-                "value.algorithm-gcm-128",
-                "value.algorithm-cbc-256",
-                "value.algorithm-cbc-192",
-                "value.algorithm-cbc-128",
-                "value.algorithm-cbc-tripledes"
-            ]
+        "resourceId": {
+            "type": "string"
+        },
+        "algorithms": {
+            "$ref": "#/definitions/AlgorithmList"
         }
     },
-    "definitions": {}
+    "definitions": {
+        "AlgorithmList": {
+            "title": "label.algorithm",
+            "description": "tooltip.algorithm",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "http://www.w3.org/2009/xmlenc11#aes256-gcm",
+                    "http://www.w3.org/2009/xmlenc11#aes192-gcm",
+                    "http://www.w3.org/2009/xmlenc11#aes128-gcm",
+                    "http://www.w3.org/2001/04/xmlenc#aes256-cbc",
+                    "http://www.w3.org/2001/04/xmlenc#aes192-cbc",
+                    "http://www.w3.org/2001/04/xmlenc#aes128-cbc",
+                    "http://www.w3.org/2001/04/xmlenc#tripledes-cbc"
+                ],
+                "enumNames": [
+                    "value.algorithm-gcm-256",
+                    "value.algorithm-gcm-192",
+                    "value.algorithm-gcm-128",
+                    "value.algorithm-cbc-256",
+                    "value.algorithm-cbc-192",
+                    "value.algorithm-cbc-128",
+                    "value.algorithm-cbc-tripledes"
+                ]
+            }
+        }
+    }
 }
