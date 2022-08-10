@@ -256,7 +256,8 @@ const FilterTargetField = ({
                                     <Button variant="success"
                                         type="button"
                                         disabled={!term || !match}
-                                        onClick={() => onSelectValue(term)}>
+                                        onClick={() => onSelectValue(term)}
+                                        style={{minWidth: '160px'}}>
                                         <Translate value="action.add-entity-id">Add Entity ID</Translate>&nbsp;&nbsp;
                                         <FontAwesomeIcon icon={faPlus} />
                                     </Button>
