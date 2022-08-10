@@ -50,7 +50,7 @@ public abstract class MetadataFilter extends AbstractAuditable implements IConcr
 
     @JsonProperty("@type")
     @Transient
-    String type;
+    protected String type;
 
     @Transient
     private transient Integer version;
