@@ -53,7 +53,9 @@ export const AlgorithmFilterEditor = {
             label: 'label.options',
             index: 2,
             initialValues: [],
-            fields: []
+            fields: [
+                'algorithm'
+            ]
         }
     ]
 };
