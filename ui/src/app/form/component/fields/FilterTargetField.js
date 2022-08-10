@@ -128,7 +128,8 @@ const FilterTargetField = ({
     };
 
     const selectType = (option) => {
-        setSelectedTarget([]);
+        const t = option.value === 'REGEX' || option.value === 'CONDITION_REF' ? [''] : [];
+        setSelectedTarget(t);
         setSelectedType(option);
     };
 
@@ -240,7 +241,6 @@ const FilterTargetField = ({
                                         {errorSchema?.value?.__errors ?
                                             <small className="form-text text-danger">
                                                 {errors}
-                                                
                                             </small> :
                                             <small id="regex-help" className="form-text text-secondary">
                                                 <Translate value="message.required-for-regex">Required for Regex</Translate>
@@ -249,7 +249,25 @@ const FilterTargetField = ({
                                         }
                                     </>
                                 }
-                                
+                                {targetType === 'CONDITION_REF' &&
+                                    <>
+                                        <input id="targetInput"
+                                            className="form-control"
+                                            type="text"
+                                            name="script"
+                                            value={selectedTarget[0]}
+                                            onChange={ ({target: { value }}) => handleTextChange(value) } />
+                                        {errorSchema?.value?.__errors ?
+                                            <small className="form-text text-danger">
+                                                {errors}
+                                            </small> :
+                                            <small id="regex-help" className="form-text text-secondary">
+                                                <Translate value="message.required-for-condition-ref">Required for Condition Ref</Translate>
+                                                &nbsp;
+                                            </small>
+                                        }
+                                    </>
+                                }
                             </div>
                             {targetType === 'ENTITY' &&
                                 <div className="ms-2">
