@@ -1,0 +1,65 @@
+{
+    "type": "object",
+    "required": [
+        "name"
+    ],
+    "properties": {
+        "name": {
+            "title": "label.filter-name",
+            "description": "tooltip.filter-name",
+            "type": "string"
+        },
+        "filterEnabled": {
+            "title": "label.enable-filter",
+            "description": "tooltip.enable-filter",
+            "type": "boolean",
+            "default": false
+        },
+        "AlgorithmFilterTarget": {
+            "title": "label.search-criteria",
+            "description": "tooltip.search-criteria",
+            "type": "object",
+            "properties": {
+                "nameIdFormatFilterTargetType": {
+                    "title": "label.filter-target-type",
+                    "type": "string",
+                    "default": "ENTITY",
+                    "enum": [
+                        "ENTITY",
+                        "CONDITION_REF",
+                        "CONDITION_SCRIPT"
+                    ],
+                    "enumNames": [
+                        "value.entity-id",
+                        "value.reference",
+                        "value.script"
+                    ]
+                },
+                "value": {
+                    "title": "label.filter-target-value",
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value",
+                "algorithmFilterTargetType"
+            ]
+        },
+        "@type": {
+            "type": "string",
+            "default": "Algorithm"
+        },
+        "version": {
+            "type": "integer"
+        },
+        "resourceId": {
+            "type": "string"
+        }
+    },
+    "definitions": {}
+}

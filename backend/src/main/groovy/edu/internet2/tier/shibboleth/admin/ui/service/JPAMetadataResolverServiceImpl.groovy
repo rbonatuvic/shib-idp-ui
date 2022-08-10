@@ -2,6 +2,8 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.google.common.base.Predicate
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethod
+import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethodBuilder
 import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
@@ -9,6 +11,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteList
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.AlgorithmFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.AlgorithmFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.opensaml.OpenSamlNameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ExternalMetadataResolver
@@ -89,6 +93,69 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
+    void constructXmlNodeForFilter(AlgorithmFilter filter, def markupBuilderDelegate) {
+        if (!filter.isFilterEnabled()) {
+            return
+        }
+        markupBuilderDelegate.MetadataFilter(
+                'xsi:type': 'Algorithm',
+                'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+                'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:metadata:algsupport https://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-metadata-algsupport-v1.0.xsd http://www.w3.org/2000/09/xmldsig# https://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd http://www.w3.org/2009/xmlenc11# https://www.w3.org/TR/xmlenc-core1/xenc-schema-11.xsd',
+                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata',
+                'xmlns': 'urn:mace:shibboleth:2.0:metadata',
+                'xmlns:security': 'urn:mace:shibboleth:2.0:security',
+                'xmlns:saml2': 'urn:oasis:names:tc:SAML:2.0:assertion',
+                'xmlns:xenc11': 'http://www.w3.org/2009/xmlenc11#',
+                'xmlns:alg': 'urn:oasis:names:tc:SAML:metadata:algsupport',
+                'xmlns:ds': 'http://www.w3.org/2000/09/xmldsig#'
+        ) {
+            for (String algValue : filter.getAlgorithms()) {
+                EncryptionMethod method = new EncryptionMethodBuilder().buildObject();
+                method.setAlgorithm(algValue)
+                mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(method, false))
+            }
+            switch (filter.algorithmFilterTarget.targetType) {
+                case AlgorithmFilterTarget.AlgorithmFilterTargetType.ENTITY:
+                    filter.algorithmFilterTarget.value.each {
+                        Entity(it)
+                    }
+                    break
+                case AlgorithmFilterTarget.AlgorithmFilterTargetType.CONDITION_REF:
+                    ConditionRef(xmlObject.getValue())
+                    break
+                case AlgorithmFilterTarget.AlgorithmFilterTargetType.CONDITION_SCRIPT:
+                    ConditionScript() {
+                        Script() {
+                            def script = filter.getAlgorithmFilterTarget().value[0]
+                            mkp.yieldUnescaped("\n<![CDATA[\n${script}\n]]>\n")
+                        }
+                    }
+                    break
+                default:
+                    // do nothing, we'd have exploded elsewhere previously.
+                    break
+            }
+//            filter.unknownXMLObjects.each { xmlObject ->
+//                {
+//                    if (xmlObject instanceof Entity) {
+//                        Entity(xmlObject.getValue())
+//                    } else if (xmlObject instanceof ConditionRef) {
+//                        ConditionRef(xmlObject.getValue())
+//                    } else if (xmlObject instanceof ConditionScript) {
+//                        ConditionScript() {
+//                            Script() {
+//                                def script = xmlObject.getValue()
+//                                mkp.yieldUnescaped("\n<![CDATA[\n${script}\n]]>\n")
+//                            }
+//                        }
+//                    } else {
+//                        mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(xmlObject, false))
+//                    }
+//                }
+//            }
+        }
+    }
+
     void constructXmlNodeForFilter(EntityAttributesFilter filter, def markupBuilderDelegate) {
         if (!filter.isFilterEnabled()) { return }
         markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
@@ -103,10 +170,8 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                         Entity(it)
                     }
                     break
-                case EntityAttributesFilterTarget
-                        .EntityAttributesFilterTargetType.CONDITION_SCRIPT:
-                case EntityAttributesFilterTarget
-                        .EntityAttributesFilterTargetType.REGEX:
+                case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.CONDITION_SCRIPT:
+                case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.REGEX:
                     ConditionScript() {
                         Script() {
                             def script
