@@ -11,7 +11,10 @@ export const AlgorithmFilterWizard = {
         },
         algorithms: {
             "ui:options": {
-                orderable: false
+                orderable: false,
+            },
+            items: {
+                checkOnChange: true
             }
         }
     }, BaseFilterDefinition.uiSchema),
@@ -21,7 +24,24 @@ export const AlgorithmFilterWizard = {
     // schema: `${BASE_PATH}assets/schema/filter/algorithm.schema.json`,
     steps: [],
     validator: (data = [], current = { resourceId: null }, group) => {
-        return BaseFilterDefinition.validator(data, current, group, 'algorithmFilterTarget', 'algorithmFilterTargetType')
+        const base = BaseFilterDefinition.validator(data, current, group, 'algorithmFilterTarget', 'algorithmFilterTargetType');
+
+        return (formData, errors) => {
+            const errorList = base(formData, errors);
+            const { algorithms } = formData;
+
+            const dupes = algorithms.filter((item, index) => index !== algorithms.indexOf(item));
+            
+            if (dupes.length) {
+                algorithms.forEach((value, index) => {
+                    if (dupes.indexOf(value) > -1) {
+                        errors.algorithms[index].addError('message.algorithms-unique');
+                    }
+                });
+            }
+
+            return errorList;
+        }
     },
     formatter: (changes) => ({
         ...changes,
