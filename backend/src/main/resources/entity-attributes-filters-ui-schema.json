@@ -90,6 +90,11 @@
                     "description": "tooltip.force-authn",
                     "type": "boolean"
                 },
+                "ignoreRequestSignatures": {
+                    "title": "label.ignore-request-signatures",
+                    "description": "tooltip.ignore-request-signatures",
+                    "type": "boolean"
+                },
                 "omitNotBefore": {
                     "title": "label.omit-not-before-condition",
                     "type": "boolean",
