@@ -36,7 +36,8 @@ import static edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType.*;
         @JsonSubTypes.Type(value=EntityAttributesFilter.class, name="EntityAttributes"),
         @JsonSubTypes.Type(value=SignatureValidationFilter.class, name="SignatureValidation"),
         @JsonSubTypes.Type(value=RequiredValidUntilFilter.class, name="RequiredValidUntil"),
-        @JsonSubTypes.Type(value=NameIdFormatFilter.class, name="NameIDFormat")})
+        @JsonSubTypes.Type(value=NameIdFormatFilter.class, name="NameIDFormat"),
+        @JsonSubTypes.Type(value=AlgorithmFilter.class, name="Algorithm")})
 @Audited
 @AuditOverride(forClass = AbstractAuditable.class)
 public abstract class MetadataFilter extends AbstractAuditable implements IConcreteMetadataFilterType<MetadataFilter>, IActivatable {
