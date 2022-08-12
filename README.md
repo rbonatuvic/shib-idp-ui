@@ -91,10 +91,6 @@ spring.h2.console.enabled=true
 #spring.datasource.tomcat.initialSize=50
 #spring.datasource.tomcat.validationQuery=select 1
 
-# Liquibase properties
-liquibase.enabled=false
-#liquibase.change-log=classpath:edu/internet2/tier/shibboleth/admin/ui/database/masterchangelog.xml
-
 # Hibernate properties
 # for production never ever use create, create-drop. It's BEST to use validate
 spring.jpa.hibernate.ddl-auto=create
