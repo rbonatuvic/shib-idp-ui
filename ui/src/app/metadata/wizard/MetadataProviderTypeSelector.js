@@ -1,5 +1,5 @@
 import React from 'react';
-import { faArrowCircleRight, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faArrowCircleRight, faAsterisk, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { useForm } from 'react-hook-form';
@@ -10,11 +10,11 @@ import { InfoIcon } from '../../form/component/InfoIcon';
 import { useTranslator } from '../../i18n/hooks';
 import { useMetadataProviders } from '../hooks/api';
 
-export function MetadataProviderTypeSelector({ type, types = [], children}) {
+export function MetadataProviderTypeSelector({ type, types = [], loading, children}) {
 
     const translator = useTranslator();
 
-    const { data = [], loading } = useMetadataProviders({cachePolicy: 'no-cache'}, []);
+    const { data = [] } = useMetadataProviders({cachePolicy: 'no-cache'}, []);
 
     const [showSelector, setShowSelector] = React.useState(true);
 
@@ -81,7 +81,10 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
                             <Form onSubmit={handleSubmit(onNext)}>
                                 <Form.Group className={`${errors.name ? 'text-danger' : ''} mb-3`}>
                                     <Form.Label>
-                                        <span><Translate value={'label.metadata-provider-name-dashboard-display-only'} /></span>
+                                        <span>
+                                            <Translate value={'label.metadata-provider-name-dashboard-display-only'} />
+                                            <FontAwesomeIcon icon={faAsterisk} className="ms-2 text-danger" size="sm" /> 
+                                        </span>
                                         <InfoIcon value="tooltip.metadata-provider-name" />
                                     </Form.Label>
                                     <Form.Control
@@ -98,6 +101,7 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
                                     <Form.Label>
                                         <span>
                                             <Translate value={'label.metadata-provider-type'} />
+                                            <FontAwesomeIcon icon={faAsterisk} className="ms-2 text-danger" size="sm" />
                                             {loading && <FontAwesomeIcon icon={faSpinner} size="lg" spin={true} pulse={true} className="ms-2" /> }
                                         </span>
                                         <InfoIcon value="tooltip.metadata-provider-type" />
