@@ -13,7 +13,7 @@ export function MetadataXmlLoader({ children }) {
     const [xml, setXml] = React.useState();
 
     async function loadMetadataXml(id) {
-        const data = await get(`/${id}`)
+        const data = await get(`/${id}`);
         if (response.ok) {
             setXml(data);
         }
@@ -22,12 +22,16 @@ export function MetadataXmlLoader({ children }) {
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
         if (type === 'source') {
-            loadMetadataXml(id)
+            reload()
         }
     }, [id]);
 
+    function reload() {
+        loadMetadataXml(id);
+    }
+
     return (
-        <MetadataXmlContext.Provider value={xml}>
+        <MetadataXmlContext.Provider value={{reload, xml}}>
             {children}
         </MetadataXmlContext.Provider>
     );
