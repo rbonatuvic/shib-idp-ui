@@ -12,11 +12,16 @@ import { MetadataViewToggle } from '../component/MetadataViewToggle';
 import { downloadAsXml } from '../../core/utility/download_as_xml';
 
 export function MetadataXml () {
-    const xml = React.useContext(MetadataXmlContext);
+    const { xml, reload } = React.useContext(MetadataXmlContext);
     const entity = React.useContext(MetadataObjectContext);
     const { type } = useParams();
 
     const download = () => downloadAsXml(entity.name ? entity.name : entity.serviceProviderName, xml);
+
+    /*eslint-disable react-hooks/exhaustive-deps*/
+    React.useEffect(() => {
+        reload();
+    }, []);
 
     return (
         <>
