@@ -35,8 +35,8 @@
             "default": false
         },
         "description": {
-            "title": "label.description",
-            "description": "tooltip.description",
+            "title": "label.external-description",
+            "description": "tooltip.external-description",
             "type": "string"
         }
     }
