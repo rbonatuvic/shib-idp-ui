@@ -66,19 +66,20 @@ public class WebSecurity {
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests().antMatchers("/unsecured/**/*").permitAll();
 
-            // adding the authorizor bypasses the default behavior of checking CSRF in Pac4J's default securitylogic+defaultauthorizationchecker
+            // adding the authorizer bypasses the default behavior of checking CSRF in Pac4J's default securitylogic+defaultauthorizationchecker
             final SecurityFilter securityFilter = new SecurityFilter(this.config, PAC4J_CLIENT_NAME, DefaultAuthorizers.IS_AUTHENTICATED);
 
-            final LogoutFilter logoutFilter = new LogoutFilter(config);
-            logoutFilter.setLocalLogout(Boolean.TRUE);
+            // If the post logout URL is configured, setup the logout filter
             if (StringUtils.isNotEmpty(pac4jConfigurationProperties.getPostLogoutURL())){
+                final LogoutFilter logoutFilter = new LogoutFilter(config);
+                logoutFilter.setLocalLogout(Boolean.TRUE);
                 logoutFilter.setSuffix("login"); // "logout" is redirected before we ever hit the filters - sent to /login?logout
                 logoutFilter.setCentralLogout(Boolean.TRUE);
                 logoutFilter.setDefaultUrl(pac4jConfigurationProperties.getPostLogoutURL());
+                http.antMatcher("/**").addFilterBefore(logoutFilter, BasicAuthenticationFilter.class);
             }
 
             // add filters
-            http.antMatcher("/**").addFilterBefore(logoutFilter, BasicAuthenticationFilter.class);
             http.antMatcher("/**").addFilterBefore(getFilter(pac4jConfigurationProperties.getTypeOfAuth()), BasicAuthenticationFilter.class);
             http.antMatcher("/**").addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
 
