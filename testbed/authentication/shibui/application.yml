@@ -18,6 +18,7 @@ shibui:
     forceServiceProviderMetadataGeneration: true
     callbackUrl: "https://shibui.unicon.local/callback"
     maximumAuthenticationLifetime: 3600000
+    postLogoutURL: "https://idp.unicon.local/idp/profile/Logout"
     simpleProfileMapping:
       username: urn:oid:0.9.2342.19200300.100.1.1
       firstName: urn:oid:2.5.4.42

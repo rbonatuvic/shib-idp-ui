@@ -5,10 +5,12 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IRolesService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
+import org.jadira.usertype.spi.utils.lang.StringUtils;
 import org.pac4j.core.authorization.authorizer.DefaultAuthorizers;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.matching.matcher.Matcher;
 import org.pac4j.springframework.security.web.CallbackFilter;
+import org.pac4j.springframework.security.web.LogoutFilter;
 import org.pac4j.springframework.security.web.SecurityFilter;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
@@ -67,9 +69,19 @@ public class WebSecurity {
             // adding the authorizor bypasses the default behavior of checking CSRF in Pac4J's default securitylogic+defaultauthorizationchecker
             final SecurityFilter securityFilter = new SecurityFilter(this.config, PAC4J_CLIENT_NAME, DefaultAuthorizers.IS_AUTHENTICATED);
 
-            // add filter based on auth type 
-            http.antMatcher("/**").addFilterBefore(getFilter(config, pac4jConfigurationProperties.getTypeOfAuth()), BasicAuthenticationFilter.class);
+            final LogoutFilter logoutFilter = new LogoutFilter(config);
+            logoutFilter.setLocalLogout(Boolean.TRUE);
+            if (StringUtils.isNotEmpty(pac4jConfigurationProperties.getPostLogoutURL())){
+                logoutFilter.setSuffix("login"); // "logout" is redirected before we ever hit the filters - sent to /login?logout
+                logoutFilter.setCentralLogout(Boolean.TRUE);
+                logoutFilter.setDefaultUrl(pac4jConfigurationProperties.getPostLogoutURL());
+            }
+
+            // add filters
+            http.antMatcher("/**").addFilterBefore(logoutFilter, BasicAuthenticationFilter.class);
+            http.antMatcher("/**").addFilterBefore(getFilter(pac4jConfigurationProperties.getTypeOfAuth()), BasicAuthenticationFilter.class);
             http.antMatcher("/**").addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
+
             // add the new user filter
             http.addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userService, rolesService, getPathMatcher("exclude-paths-matcher"), groupService, emailService), SecurityFilter.class);
 
@@ -84,7 +96,7 @@ public class WebSecurity {
             return config.getMatchers().get(name);
         }
 
-        private Filter getFilter(Config config2, String typeOfAuth) {
+        private Filter getFilter(String typeOfAuth) {
             switch (typeOfAuth) {
             case "SAML2":
                 return new CallbackFilter(this.config);
