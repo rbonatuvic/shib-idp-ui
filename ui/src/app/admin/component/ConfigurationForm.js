@@ -1,22 +1,18 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import Form from '../../form/Form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faSave } from '@fortawesome/free-solid-svg-icons';
 import Translate from '../../i18n/components/translate';
 
-import { usePropertyUiSchema } from '../hooks';
 import { FormContext, setFormDataAction, setFormErrorAction } from '../../form/FormManager';
 
-export function PropertyForm({ property = {}, errors = [], loading = false, schema, onSave, onCancel }) {
+export function ConfigurationForm({ property = {}, errors = [], loading = false, schema, onSave, onCancel }) {
 
     const { dispatch } = React.useContext(FormContext);
     const onChange = ({ formData, errors }) => {
         dispatch(setFormDataAction(formData));
         dispatch(setFormErrorAction(errors));
     };
-
-    const uiSchema = usePropertyUiSchema();
 
     return (<>
         <div className="container-fluid">
@@ -40,14 +36,7 @@ export function PropertyForm({ property = {}, errors = [], loading = false, sche
             <hr />
             <div className="row">
                 <div className="col-12 col-lg-6 order-2">
-                    <Form formData={property}
-                        noHtml5Validate={true}
-                        onChange={(form) => onChange(form)}
-                        schema={schema}
-                        uiSchema={uiSchema}
-                        liveValidate={true}>
-                        <></>
-                    </Form>
+                    
                 </div>
             </div>
         </div>

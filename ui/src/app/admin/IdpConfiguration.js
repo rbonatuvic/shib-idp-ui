@@ -1,11 +1,11 @@
 import React from 'react';
 import { Switch, Route, useRouteMatch, Redirect } from 'react-router-dom';
-import { PropertiesProvider } from './hoc/PropertiesProvider';
-import { NewProperty } from './container/NewProperty';
-import { EditProperty } from './container/EditProperty';
-import { PropertyList } from './container/PropertyList';
+import { ConfigurationsProvider } from './hoc/ConfigurationsProvider';
+import { NewConfiguration } from './container/NewConfiguration';
+import { EditConfiguration } from './container/EditConfiguration';
+import { ConfigurationList } from './container/ConfigurationList';
 
-export function Properties() {
+export function IdpConfiguration() {
 
     let { path, url } = useRouteMatch();
 
@@ -13,17 +13,17 @@ export function Properties() {
         <>
             <Switch>
                 <Route path={`${path}/list`} render={() =>
-                    <PropertiesProvider>
+                    <ConfigurationsProvider>
                         {(properties, onDelete) =>
-                            <PropertyList properties={properties} onDelete={onDelete} />
+                            <ConfigurationList properties={properties} onDelete={onDelete} />
                         }
-                    </PropertiesProvider>
+                    </ConfigurationsProvider>
                 } />
                 <Route path={`${path}/new`} render={() =>
-                    <NewProperty />
+                    <NewConfiguration />
                 } />
                 <Route path={`${path}/:id/edit`} render={() =>
-                    <EditProperty />
+                    <EditConfiguration />
                 } />
                 <Route path={`${path}`} exact render={() => 
                     <Redirect to={`${url}/list`} />

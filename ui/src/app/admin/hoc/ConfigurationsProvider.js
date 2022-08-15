@@ -3,7 +3,7 @@ import { useProperties } from '../hooks';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useTranslator } from '../../i18n/hooks';
 
-export function PropertiesProvider({ children, cache = 'no-cache' }) {
+export function ConfigurationsProvider({ children, cache = 'no-cache' }) {
 
     const [properties, setProperties] = React.useState([]);
 

@@ -9,7 +9,7 @@ import { Translate } from '../../i18n/components/translate';
 
 import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
 
-export function PropertyList({ properties, onDelete }) {
+export function ConfigurationList({ properties, onDelete }) {
 
     const remove = (id) => {
         onDelete(id);
@@ -23,14 +23,14 @@ export function PropertyList({ properties, onDelete }) {
                         <div className="section-body border border-top-0 border-primary">
                             <div className="section-header bg-primary p-2 text-light">
                                 <span className="lead">
-                                    <Translate value="label.properties-management">Roles Management</Translate>
+                                    <Translate value="label.configuration-management">Configuration Management</Translate>
                                 </span>
                             </div>
                             <div className="p-3">
                                 <div className="d-flex justify-content-end w-100">
                                     <Link to="./new" className="btn btn-sm btn-success">
                                         <FontAwesomeIcon icon={faPlusCircle} /> &nbsp;
-                                        <Translate value="action.add-new-property">Add new property</Translate>
+                                        <Translate value="action.create-new-configuration">Create new configuration</Translate>
                                     </Link>
                                 </div>
                                 <div className="table-responsive mt-3">
@@ -38,7 +38,7 @@ export function PropertyList({ properties, onDelete }) {
                                         <thead>
                                             <tr>
                                                 <th>
-                                                    <Translate value="label.property-name">Role Name</Translate>
+                                                    <Translate value="label.configuration-name">Configuration Name (label)</Translate>
                                                 </th>
                                                 <th><span className="sr-only"><Translate value="label.actions">Actions</Translate></span></th>
                                             </tr>
@@ -49,7 +49,7 @@ export function PropertyList({ properties, onDelete }) {
                                                     <td className="align-middle">{property.name}</td>
                                                     <td className="text-end">
                                                         <React.Fragment>
-                                                            <Link disabled={property.name === 'ROLE_ADMIN'} to={`../properties/${property.resourceId}/edit`} className={`btn btn-link text-primary ${property.name === 'ROLE_ADMIN' ? 'disabled' : ''}`}>
+                                                            <Link disabled={property.name === 'ROLE_ADMIN'} to={`../configurations/${property.resourceId}/edit`} className={`btn btn-link text-primary ${property.name === 'ROLE_ADMIN' ? 'disabled' : ''}`}>
                                                                 <FontAwesomeIcon icon={faEdit} size="lg" />
                                                                 <span className="sr-only">
                                                                     <Translate value="action.edit">Edit</Translate>
@@ -65,7 +65,7 @@ export function PropertyList({ properties, onDelete }) {
                                                     </td>
                                                 </tr>
                                             ) : <tr>
-                                                <td colSpan="3">No properties defined.</td>
+                                                <td colSpan="3">No configurations.</td>
                                             </tr>}
                                         </tbody>
                                     </table>
