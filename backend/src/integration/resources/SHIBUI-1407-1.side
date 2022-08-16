@@ -2460,6 +2460,13 @@
       ],
       "value": "Test Provider"
     }, {
+      "id": "39637add-5eb4-40d0-b840-8eb1972ede0f",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "138ad58b-f0a2-436b-a8b0-43484f4180e6",
       "comment": "",
       "command": "assertText",
@@ -2608,21 +2615,21 @@
       "target": "isPresent",
       "targets": [],
       "value": "true"
-    },{
-            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
-            "comment": "",
-            "command": "open",
-            "target": "/api/heheheheheheheWipeout",
-            "targets": [],
-            "value": ""
-          }, {
-            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
-            "comment": "",
-            "command": "assertText",
-            "target": "css=body",
-            "targets": [],
-            "value": "yes, you did it"
-          }]
+    }, {
+      "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }]
   }],
   "suites": [{
     "id": "d2caeac4-7520-4e3c-96b1-840610b6983c",

@@ -243,6 +243,9 @@
         "omitNotBefore": {
           "type": "boolean"
         },
+        "ignoreRequestSignatures": {
+          "type": "boolean"
+        },
         "responderId": {
           "type": "string"
         },

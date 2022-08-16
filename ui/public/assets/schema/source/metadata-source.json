@@ -194,6 +194,12 @@
                     "type": "boolean",
                     "default": false
                 },
+                "ignoreRequestSignatures": {
+                    "title": "label.ignore-request-signatures",
+                    "description": "tooltip.ignore-request-signatures",
+                    "type": "boolean",
+                    "default": false
+                },
                 "useSha": {
                     "title": "label.use-sha1-signing-algorithm",
                     "description": "tooltip.usa-sha-algorithm",
