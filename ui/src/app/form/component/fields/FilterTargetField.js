@@ -146,7 +146,7 @@ const FilterTargetField = ({
                         <label htmlFor={id} className="d-flex justify-content-start align-items-center control-label">
                             <Translate value="action.search-by">Search By</Translate>
                             <FontAwesomeIcon icon={faAsterisk} className="text-danger ms-1 me-2" />
-                            <InfoIcon value={translate('action.search-by')}></InfoIcon>
+                            <InfoIcon value={translate('tooltip.search-by')}></InfoIcon>
                         </label>
                         <Dropdown>
                             <Dropdown.Toggle variant="outline-secondary" id={`dropdown-${type.title}`}>
@@ -171,7 +171,7 @@ const FilterTargetField = ({
                                 <i className="fa fa-asterisk text-danger" aria-hidden="true"></i>
                             </span>
                             <span>
-                                <InfoIcon value={translate('label.search-criteria-by')} params={{ displayType: translate(displayType) }}></InfoIcon>
+                                <InfoIcon value={translate('label.search-criteria-by', { displayType: translate(displayType) })}></InfoIcon>
                             </span>
                         </label>
                         <div className="d-flex justify-content-between">

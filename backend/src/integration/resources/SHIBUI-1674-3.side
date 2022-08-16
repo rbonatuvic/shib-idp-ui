@@ -1,0 +1,443 @@
+{
+  "id": "1b31a551-eb09-4bd4-8db9-694bf1539a46",
+  "version": "2.0",
+  "name": "SHIBUI-1674-3",
+  "url": "http://localhost:10101",
+  "tests": [{
+    "id": "841ade0e-83bd-4a4b-94f2-de6bd5c536b2",
+    "name": "SHIBUI-1674-3",
+    "commands": [{
+      "id": "d6b23986-6d14-4b10-be7b-a7e6f576e3b2",
+      "comment": "",
+      "command": "open",
+      "target": "/login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f77ecd77-01c2-4463-944e-1a69600f5297",
+      "comment": "",
+      "command": "type",
+      "target": "name=username",
+      "targets": [
+        ["name=username", "name"],
+        ["css=tr:nth-child(1) input", "css:finder"],
+        ["xpath=//input[@name='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "c9bf0a22-faa9-494c-b2ed-6c9653248551",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "adminpass"
+    }, {
+      "id": "7ab1d854-3582-4101-bd19-f94b8f438090",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "4059cae7-b9f9-49d0-a213-343bcaba66d1",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "f03af8d5-5875-4a2c-b93a-c3ddcbd4b16a",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "081f495b-4d84-4758-824c-1e85b6311e7f",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }, {
+      "id": "9e912dd5-6ace-45be-bafd-2d1655906575",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3bb52950-667c-4852-a98f-6a6fb5632ba5",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "36f741ba-efc6-4837-b4ee-6afaf64eaa9a",
+      "comment": "",
+      "command": "click",
+      "target": "id=advanced-nav-dropdown-toggle",
+      "targets": [
+        ["id=advanced-nav-dropdown-toggle", "id"],
+        ["css=#advanced-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='advanced-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='advanced-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Advanced')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c1ece675-f7dd-467b-a559-5abf32c5bbe2",
+      "comment": "",
+      "command": "click",
+      "target": "id=advanced-nav-dropdown-attr",
+      "targets": [
+        ["id=advanced-nav-dropdown-attr", "id"],
+        ["linkText=Custom entity attributes", "linkText"],
+        ["css=#advanced-nav-dropdown-attr", "css:finder"],
+        ["xpath=//a[contains(text(),'Custom entity attributes')]", "xpath:link"],
+        ["xpath=//a[@id='advanced-nav-dropdown-attr']", "xpath:attributes"],
+        ["xpath=//div[@id='advanced-nav-dropdown']/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/attributes')]", "xpath:href"],
+        ["xpath=//div[3]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Custom entity attributes')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b2d7669c-99d8-493c-8fa9-588191d0b7dc",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Add new attribute",
+      "targets": [
+        ["linkText=Add new attribute", "linkText"],
+        ["css=.btn-success", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/attributes/new')]", "xpath:href"],
+        ["xpath=//div[2]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'  Add new attribute')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6a47d0aa-0afe-4e61-afbf-44a56507a2e8",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.mb-3:nth-child(1) > div > div > .form-label > .btn path",
+      "targets": [
+        ["css=.mb-3:nth-child(1) > div > div > .form-label > .btn path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "f0c42874-f4d4-4bd6-ba45-d5456555df77",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "Name of the attribute that the service provider uses and requires from the identity provider. It corresponds to the <saml:Attribute Name=\"\"> element in the SAML assertion."
+    }, {
+      "id": "462beca1-71e3-4519-a478-f4e66824c3cc",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.mb-3:nth-child(1) > div > div > .form-label > .btn path",
+      "targets": [
+        ["css=.mb-3:nth-child(1) > div > div > .form-label > .btn path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "1d0954f7-b5f4-4c6d-9e4f-90d1557ff57f",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0500c6db-2e9a-41be-a4f8-7ca36e3a2949",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d316301e-1e75-4c95-bc8a-efa5575b3cfb",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.mb-3 > .form-label > .btn > .svg-inline--fa",
+      "targets": [
+        ["css=.mb-3 > .form-label > .btn > .svg-inline--fa", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "587a92b2-743d-4c22-8788-103995b8a593",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "Data type of the attribute such as boolean or string."
+    }, {
+      "id": "f2335699-a48b-4da0-906a-6b41fac18795",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.mb-3 > .form-label > .btn > .svg-inline--fa",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "15ab5915-5ee7-4942-9417-382d7171872f",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "37cdbafc-1379-4338-bce0-cb9bdfedc31f",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9d4d25d7-3f22-4ca9-976b-fde51c951f44",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.mb-3:nth-child(3) .btn > .svg-inline--fa",
+      "targets": [
+        ["css=.mb-3:nth-child(3) .btn > .svg-inline--fa", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "b1c748cd-a506-4d83-be8b-d4a768b815d8",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "A descriptive or human-friendly name for users of the Shibboleth IDP UI."
+    }, {
+      "id": "37ac1e21-a74a-48b8-a8da-5639d4c3daf0",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.mb-3:nth-child(3) .btn > .svg-inline--fa",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a5db41a9-79cb-4ac5-b637-15ab28b661a2",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2d273ecb-241c-4cdd-b7a9-202a9ca0241d",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6b365142-29d2-4d6f-a3ff-bcc06f8102ac",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.mb-3:nth-child(4) .btn path",
+      "targets": [
+        ["css=.mb-3:nth-child(4) .btn path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "cc340bf7-11bd-4d80-9878-852d06e0a6a0",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "Indicates how to interpret the attribute name. It corresponds to the <saml:Attribute NameFormat=\"\"> element in the SAML assertion. This is normally a uri or urn."
+    }, {
+      "id": "bb6a3d64-d0a9-43ab-b60c-20dab1f04e15",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.mb-3:nth-child(4) .btn path",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5ed8705f-fc06-43c4-8fb0-2200f2b17417",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ad456296-65ae-4eb3-ac6e-5d806fd8a9ba",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4d5c9b81-fa8b-4202-9617-9e66b11c6453",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.mb-3:nth-child(5) .btn path",
+      "targets": [
+        ["css=.mb-3:nth-child(5) .btn path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "e7f5bec5-f0a7-464c-88e0-762dd3fd814d",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "Provides a human readable value that identifies the subject. This value is not guaranteed to be unique and is designed to be used only for display purposes."
+    }, {
+      "id": "535899ed-dfc1-4e6d-98bf-1d798eba2653",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.mb-3:nth-child(5) .btn path",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "dd9c55ae-367a-4dc6-acd3-9a4fc70af3c8",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7f273e47-802d-42ce-9290-3ae6768a3835",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5e69982a-5611-4276-9145-b2ae74cafc5e",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.mb-3:nth-child(6) path",
+      "targets": [
+        ["css=.mb-3:nth-child(6) path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "e40ca8bd-05f0-4266-85cd-ddc6f072b268",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "Defines help text used in the Shibboleth IDP UI when adding the attribute."
+    }, {
+      "id": "1903d80f-cd05-4b27-a8ee-7450f6ddfb1f",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.mb-3:nth-child(6) path",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8d9f307d-d310-4fec-91d8-2d228bf07328",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a20bb255-c02f-46a2-a117-365506bf9820",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ff071936-517f-497a-bc8a-ffcc0244a860",
+      "comment": "",
+      "command": "click",
+      "target": "id=advanced-nav-dropdown-toggle",
+      "targets": [
+        ["id=advanced-nav-dropdown-toggle", "id"],
+        ["css=#advanced-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='advanced-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='advanced-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Advanced')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "bf20a8b1-5efa-44b6-bae6-2f0c44216c5a",
+      "comment": "",
+      "command": "click",
+      "target": "id=advanced-nav-dropdown-bundles",
+      "targets": [
+        ["id=advanced-nav-dropdown-bundles", "id"],
+        ["linkText=Attribute bundles", "linkText"],
+        ["css=#advanced-nav-dropdown-bundles", "css:finder"],
+        ["xpath=//a[contains(text(),'Attribute bundles')]", "xpath:link"],
+        ["xpath=//a[@id='advanced-nav-dropdown-bundles']", "xpath:attributes"],
+        ["xpath=//div[@id='advanced-nav-dropdown']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/attributes/bundles')]", "xpath:href"],
+        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'Attribute bundles')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a076e422-2bc2-4e73-b976-018306d00d42",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Add bundle",
+      "targets": [
+        ["linkText=Add bundle", "linkText"],
+        ["css=.btn-success", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/div/section/div/div[2]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/attributes/bundles/new')]", "xpath:href"],
+        ["xpath=//div[2]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'  Add bundle')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ca5dd037-f651-49bc-ae8e-2c4892a8dd8a",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.fa-circle-info",
+      "targets": [
+        ["css=.fa-circle-info", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "189111fe-dec8-4858-87dd-c2ae3b0d3318",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "A user friendly name to identify the bundle"
+    }, {
+      "id": "18eb0ada-bc95-4bad-b891-b5c952ce25d1",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "de808d8a-e49a-4c10-99fb-25e28127437d",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }]
+  }],
+  "suites": [{
+    "id": "d2caeac4-7520-4e3c-96b1-840610b6983c",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["841ade0e-83bd-4a4b-94f2-de6bd5c536b2"]
+  }],
+  "urls": ["http://localhost:10101/"],
+  "plugins": []
+}

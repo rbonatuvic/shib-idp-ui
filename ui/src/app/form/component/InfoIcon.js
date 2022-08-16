@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Translate from '../../i18n/components/translate';
 import { useTranslator } from '../../i18n/hooks';
 
-export function InfoIcon ({ value = '', placement='left', ...props }) {
+export function InfoIcon ({ value = '', placement='auto', ...props }) {
     const translate = useTranslator();
     return(
         <OverlayTrigger trigger={['hover', 'focus', 'click']} placement={placement} overlay={(
@@ -16,7 +16,7 @@ export function InfoIcon ({ value = '', placement='left', ...props }) {
             </Popover>
         )}
         aria-label={translate('tooltip.instruction')}>
-            <Button variant="text">
+            <Button variant="text" className="info-icon">
                 <span className="sr-only">Description</span>
                 <FontAwesomeIcon className="text-primary" icon={faInfoCircle} size="lg" {...props} />
             </Button>
