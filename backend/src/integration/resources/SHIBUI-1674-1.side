@@ -1,0 +1,762 @@
+{
+  "id": "1b31a551-eb09-4bd4-8db9-694bf1539a46",
+  "version": "2.0",
+  "name": "SHIBUI-1674-1",
+  "url": "http://localhost:10101",
+  "tests": [{
+    "id": "841ade0e-83bd-4a4b-94f2-de6bd5c536b2",
+    "name": "SHIBUI-1674-1",
+    "commands": [{
+      "id": "d6b23986-6d14-4b10-be7b-a7e6f576e3b2",
+      "comment": "",
+      "command": "open",
+      "target": "/login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f77ecd77-01c2-4463-944e-1a69600f5297",
+      "comment": "",
+      "command": "type",
+      "target": "name=username",
+      "targets": [
+        ["name=username", "name"],
+        ["css=tr:nth-child(1) input", "css:finder"],
+        ["xpath=//input[@name='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "c9bf0a22-faa9-494c-b2ed-6c9653248551",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "adminpass"
+    }, {
+      "id": "7ab1d854-3582-4101-bd19-f94b8f438090",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "4059cae7-b9f9-49d0-a213-343bcaba66d1",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "f03af8d5-5875-4a2c-b93a-c3ddcbd4b16a",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "081f495b-4d84-4758-824c-1e85b6311e7f",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }, {
+      "id": "9e912dd5-6ace-45be-bafd-2d1655906575",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3bb52950-667c-4852-a98f-6a6fb5632ba5",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "fc2df69a-a340-44c4-b3c3-ec21670be567",
+      "comment": "",
+      "command": "click",
+      "target": "id=metadata-nav-dropdown-toggle",
+      "targets": [
+        ["id=metadata-nav-dropdown-toggle", "id"],
+        ["css=#metadata-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='metadata-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2db70b89-b8e2-471f-8db9-cc9361058e72",
+      "comment": "",
+      "command": "click",
+      "target": "id=metadata-nav-dropdown-source",
+      "targets": [
+        ["id=metadata-nav-dropdown-source", "id"],
+        ["linkText=Add a new metadata source", "linkText"],
+        ["css=#metadata-nav-dropdown-source", "css:finder"],
+        ["xpath=//a[contains(text(),'Add a new metadata source')]", "xpath:link"],
+        ["xpath=//a[@id='metadata-nav-dropdown-source']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/source/new')]", "xpath:href"],
+        ["xpath=//div[2]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Add a new metadata source')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "93d20204-7dfa-44c0-8e61-6741e73594f5",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.mb-3:nth-child(2) .btn path",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "a7b2b925-2274-4dcc-a4e3-3b727c9a047a",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.mb-3:nth-child(2) .btn path",
+      "targets": [
+        ["css=.mb-3:nth-child(2) .btn path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "ca3dfd3d-553f-4f75-8bff-50fd057db7db",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "An entityID is the SAML identifier that uniquely names a service provider."
+    }, {
+      "id": "8b4eb229-ecfe-4994-902a-d08b55b86504",
+      "comment": "",
+      "command": "type",
+      "target": "id=root_serviceProviderName",
+      "targets": [
+        ["id=root_serviceProviderName", "id"],
+        ["css=#root_serviceProviderName", "css:finder"],
+        ["xpath=//input[@id='root_serviceProviderName']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/div/form/div/div/div/div/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "Tooltip Test"
+    }, {
+      "id": "8a48a499-f163-425a-a704-4a7efbb2c311",
+      "comment": "",
+      "command": "type",
+      "target": "id=root_entityId",
+      "targets": [
+        ["id=root_entityId", "id"],
+        ["css=#root_entityId", "css:finder"],
+        ["xpath=//input[@id='root_entityId']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/div/form/div/div/div/div/div/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "Test"
+    }, {
+      "id": "e8110e2e-5973-412c-b719-fe61261f4c06",
+      "comment": "",
+      "command": "click",
+      "target": "css=.nav-link",
+      "targets": [
+        ["css=.nav-link", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/nav/ul/li[2]/button", "xpath:idRelative"],
+        ["xpath=//li[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ca21608c-baaa-400d-b8bd-8ad0eb4b7a53",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.row:nth-child(1) > .col-12 > .mb-3 path",
+      "targets": [
+        ["css=.row:nth-child(1) > .col-12 > .mb-3 path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "5370bc80-c637-4b2b-8e5d-b3db821a228a",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "Name of the organization standing up the entity."
+    }, {
+      "id": "63043982-9758-4a64-8df7-6c902359979f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.next",
+      "targets": [
+        ["css=.next", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/nav/ul/li[3]/button", "xpath:idRelative"],
+        ["xpath=//li[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b56c1325-5438-4b5a-b626-79b030d04313",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.d-empty-none:nth-child(2) > .mb-3:nth-child(1) path",
+      "targets": [
+        ["css=.d-empty-none:nth-child(2) > .mb-3:nth-child(1) path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "63fb1e52-b70d-4a2e-a71b-52a47a80b732",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "The IdP Privacy Statement URL is a link to the IdP's Privacy Statement. The content of the Privacy Statement should be targeted at end users."
+    }, {
+      "id": "2b80c885-9e61-489c-bf8a-db8efc7c6a0e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.next",
+      "targets": [
+        ["css=.next", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/nav/ul/li[3]/button", "xpath:idRelative"],
+        ["xpath=//li[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f041b735-85f2-4005-ad80-16a82c683f60",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.ms-2 > path",
+      "targets": [
+        ["css=.ms-2 > path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "2f7c3fc3-d1ac-445a-850b-3696be0c22cf",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "This attribute contains a space-delimited collection of URIs that represent general classes of protocol support for the role in question. There are URIs defined by the various standards and profiles to represent the fact that an entity acting in a role \"supports\" a particular protocol family, such as SAML 2.0 or the Shibboleth profile of SAML 1.1."
+    }, {
+      "id": "c1eb927c-0f47-4b7a-8f7a-39f88f01f645",
+      "comment": "",
+      "command": "click",
+      "target": "css=.next",
+      "targets": [
+        ["css=.next", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/nav/ul/li[3]/button", "xpath:idRelative"],
+        ["xpath=//li[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "be222605-95ec-4a48-b02c-9b29f47e1ef5",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.fa-circle-info > path",
+      "targets": [
+        ["css=.fa-circle-info > path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "00d5a2db-9b4d-48c0-97d9-724f62415559",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "If your SP supports SAML 2.0 Single Logout, you will need to include one or more <md:SingleLogoutService> endpoint elements in the metadata."
+    }, {
+      "id": "45ff7f8d-4001-48bd-8f23-52b6d15cf94c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.next",
+      "targets": [
+        ["css=.next", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/nav/ul/li[3]/button", "xpath:idRelative"],
+        ["xpath=//li[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "397a8204-b6b1-442f-a491-4c89b1d320ff",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.mb-3:nth-child(1) > div > .mb-3 path",
+      "targets": [
+        ["css=.mb-3:nth-child(1) > div > .mb-3 path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "8d29bc2d-68e2-4e4c-b111-b9637ac4a7b3",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "Whether to sign requests."
+    }, {
+      "id": "e1c906a3-bd1d-4684-b6fb-56de3a653579",
+      "comment": "",
+      "command": "click",
+      "target": "css=.next",
+      "targets": [
+        ["css=.next", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/nav/ul/li[3]/button", "xpath:idRelative"],
+        ["xpath=//li[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6cfdcca2-1deb-4055-9b75-afbfbf728783",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.fa-circle-info > path",
+      "targets": [
+        ["css=.fa-circle-info > path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "8e3694e9-fcb8-40e9-94d9-4b3fe7dd4e46",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "An Assertion Consumer Service (or ACS) is SAML terminology for the location at a ServiceProvider that accepts <samlp:Response> messages (or SAML artifacts) for the purpose of establishing a session based on an assertion."
+    }, {
+      "id": "2658b197-a2d5-4060-9b34-eb80aee1ded2",
+      "comment": "",
+      "command": "click",
+      "target": "css=.next",
+      "targets": [
+        ["css=.next", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/nav/ul/li[3]/button", "xpath:idRelative"],
+        ["xpath=//li[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "56f49fe8-340c-46fa-bda9-0b3c0de98bdb",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.row:nth-child(1) > .col-12:nth-child(1) > .mb-3:nth-child(1) path:nth-child(1)",
+      "targets": [
+        ["css=.row:nth-child(1) > .col-12:nth-child(1) > .mb-3:nth-child(1) path:nth-child(1)", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "6f3d1d4a-f1ca-461b-9416-9d8e18ffccef",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "Sign Assertion declares that the service provider wants the <saml:Assertion> element to be digitally signed."
+    }, {
+      "id": "5c718136-9eba-46f9-b93b-da820abe2719",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.row:nth-child(1) > .col-12:nth-child(1) > .mb-3:nth-child(1) path:nth-child(1)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "268b3df4-a184-4a39-bec3-70dfc598b073",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f5024e0f-960b-4ce6-873e-4259e0d79ce8",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "54a74399-69aa-4412-85c2-a5bbb543d8be",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.row:nth-child(8) path:nth-child(1)",
+      "targets": [
+        ["css=.row:nth-child(8) path:nth-child(1)", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "e6976eca-f54b-4015-8f87-ba06a469ab28",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "Whether to ignore any SP-Requested Authentication Method."
+    }, {
+      "id": "87036a6f-aebd-4ef1-8cb8-03d082676c03",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.row:nth-child(8) path:nth-child(1)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "31fdddde-2472-4921-950c-ca56555c2d5b",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "30ec5f42-49cb-4917-aca8-640736b8f948",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "809daed0-c5d7-4cb6-89d7-be9409f1d7ae",
+      "comment": "",
+      "command": "click",
+      "target": "css=.next",
+      "targets": [
+        ["css=.next", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/nav/ul/li[3]/button", "xpath:idRelative"],
+        ["xpath=//li[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1fae7d2d-1e36-486a-b3a8-c76a3db141e4",
+      "comment": "",
+      "command": "click",
+      "target": "css=.next",
+      "targets": [
+        ["css=.next", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/nav/ul/li[3]/button", "xpath:idRelative"],
+        ["xpath=//li[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "23f5b4ad-7f9c-46e3-bf3f-b1ea57eb1ac7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.save",
+      "targets": [
+        ["css=.save", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/nav/ul/li[3]/button", "xpath:idRelative"],
+        ["xpath=//li[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "17c42282-eaa5-4641-8f39-969c0a13f561",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "linkText=Tooltip Test",
+      "targets": [
+        ["linkText=Tooltip Test", "linkText"],
+        ["css=.align-middle > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Tooltip Test')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/div/table/tbody/tr/td/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/source/14b50734-c3e2-48ac-bdb9-342b91174ca7/configuration/options')]", "xpath:href"],
+        ["xpath=//td/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Tooltip Test')]", "xpath:innerText"]
+      ],
+      "value": "30000"
+    }, {
+      "id": "beae53d2-254a-4422-a302-06a72dc6aacc",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Tooltip Test",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "edd4c7ed-ec92-4f61-8f2d-16bec5c79b60",
+      "comment": "",
+      "command": "click",
+      "target": "css=.mb-4:nth-child(3) .edit-link",
+      "targets": [
+        ["css=.mb-4:nth-child(3) .edit-link", "css:finder"],
+        ["xpath=(//button[@type='button'])[7]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//section/div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,' Edit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c974e795-454e-4271-86ef-609e3538b28f",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.row:nth-child(1) > .col-12 .svg-inline--fa",
+      "targets": [
+        ["css=.row:nth-child(1) > .col-12 .svg-inline--fa", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "e2e21f5c-bcf5-484f-b840-e1f2104b0921",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "Name of the organization standing up the entity."
+    }, {
+      "id": "2177712e-3ffa-4d70-a546-4425fa6b6565",
+      "comment": "",
+      "command": "click",
+      "target": "css=.nav-link:nth-child(2)",
+      "targets": [
+        ["css=.nav-link:nth-child(2)", "css:finder"],
+        ["xpath=(//button[@type='button'])[9]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/nav/button[2]", "xpath:idRelative"],
+        ["xpath=//nav/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'User Interface / MDUI Information')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5b8ce0c5-f2d1-4bca-acb1-c22a3ed02fd7",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.d-empty-none:nth-child(1) > .mb-3:nth-child(2) path",
+      "targets": [
+        ["css=.d-empty-none:nth-child(1) > .mb-3:nth-child(2) path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "65551475-41fb-42a3-aeea-2c92884adf6a",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "The IdP Information URL is a link to a comprehensive information page about the IdP. This page should expand on the content of the IdP Description field."
+    }, {
+      "id": "a952c81f-7dc1-4f26-812e-8c1a4101fa7a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.nav-link:nth-child(3)",
+      "targets": [
+        ["css=.nav-link:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[10]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/nav/button[3]", "xpath:idRelative"],
+        ["xpath=//button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'SP SSO Descriptor Information')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "013648f1-be7a-4fbf-a5c4-07482ca9fc96",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.ms-2 > path",
+      "targets": [
+        ["css=.ms-2 > path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "6851171e-6a6f-46e4-9317-bab6ad077127",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [],
+      "value": "This attribute contains a space-delimited collection of URIs that represent general classes of protocol support for the role in question. There are URIs defined by the various standards and profiles to represent the fact that an entity acting in a role \"supports\" a particular protocol family, such as SAML 2.0 or the Shibboleth profile of SAML 1.1."
+    }, {
+      "id": "b9c465ec-b07a-4c57-9caf-988bb1eac6ed",
+      "comment": "",
+      "command": "click",
+      "target": "css=.nav-link:nth-child(4)",
+      "targets": [
+        ["css=.nav-link:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='button'])[11]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/nav/button[4]", "xpath:idRelative"],
+        ["xpath=//button[4]", "xpath:position"],
+        ["xpath=//button[contains(.,'Logout Endpoints')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d727cd8d-5195-45e5-9df3-1e1d386e6f81",
+      "comment": "",
+      "command": "click",
+      "target": "css=.array-add-button",
+      "targets": [
+        ["css=.array-add-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[16]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div[2]/div/form/div/div/div/div/div[5]/div/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add ')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "825b4bb3-e40e-4b02-a053-5f8e15b9b672",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.row:nth-child(1) > .col-12 .btn > .svg-inline--fa",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8b309a28-ff0d-4e6b-8c49-26a9e13822d8",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [
+        ["css=.row:nth-child(1) > .col-12 .btn > .svg-inline--fa", "css:finder"]
+      ],
+      "value": "The location of the handler (when combined with the base handlerURL). This is the location to which an IdP sends messages using whatever protocol and binding it shares with the SP. Each combination of SLO protocol and binding is installed at a unique location to improve efficiency."
+    }, {
+      "id": "687f9331-fd88-43c5-ad58-0c4e04bc5adf",
+      "comment": "",
+      "command": "click",
+      "target": "css=.m-0 > .text-danger",
+      "targets": [
+        ["css=.m-0 > .text-danger", "css:finder"],
+        ["xpath=(//button[@type='button'])[19]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div[2]/div/form/div/div/div/div/div[5]/div/div/div/div/div[2]/div/div/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Delete')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "eb728c91-52d6-4505-85c2-ad274be14f88",
+      "comment": "",
+      "command": "click",
+      "target": "css=.nav-link:nth-child(5)",
+      "targets": [
+        ["css=.nav-link:nth-child(5)", "css:finder"],
+        ["xpath=(//button[@type='button'])[12]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/nav/button[5]", "xpath:idRelative"],
+        ["xpath=//button[5]", "xpath:position"],
+        ["xpath=//button[contains(.,'Security Information')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "84415564-f9d8-4b75-a6cf-5c269cb8eb9f",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.mb-3:nth-child(2) path",
+      "targets": [
+        ["css=.mb-3:nth-child(2) path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "75ae4766-62a2-47e1-9328-a7030fbfcdb1",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [
+        ["css=.row:nth-child(1) > .col-12 .btn > .svg-inline--fa", "css:finder"]
+      ],
+      "value": "Whether to sign assertions. Element declares that the service provider wants the <saml:Assertion> element to be digitally signed."
+    }, {
+      "id": "c069fd81-2679-4e6c-9115-63cf783a4b82",
+      "comment": "",
+      "command": "click",
+      "target": "css=.nav-link:nth-child(6)",
+      "targets": [
+        ["css=.nav-link:nth-child(6)", "css:finder"],
+        ["xpath=(//button[@type='button'])[13]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/nav/button[6]", "xpath:idRelative"],
+        ["xpath=//button[6]", "xpath:position"],
+        ["xpath=//button[contains(.,'Assertion Consumer Service')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ae3fd3f3-d7e9-4594-8f62-0bdd81fe207f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.array-add-button",
+      "targets": [
+        ["css=.array-add-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[16]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div[2]/div/form/div/div/div/div/div[7]/div/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add ')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ff8f4f9f-0832-4a08-910d-778156869d6a",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.mb-3 > .form-label > .btn path",
+      "targets": [
+        ["css=.mb-3 > .form-label > .btn path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "201ad760-133b-4ab6-8be9-ef0ef1849930",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [
+        ["css=.row:nth-child(1) > .col-12 .btn > .svg-inline--fa", "css:finder"]
+      ],
+      "value": "The binding attribute of the <md:AssertionConsumerService> element is a standard URI specified in the SAML 2.0 Binding specification."
+    }, {
+      "id": "a1a1d817-93ba-4a09-b52e-b660f000b018",
+      "comment": "",
+      "command": "click",
+      "target": "css=.fa-trash > path",
+      "targets": [
+        ["css=.fa-trash > path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "acea6b6b-04c4-4224-831c-9067cc09ee9a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.nav-link:nth-child(7)",
+      "targets": [
+        ["css=.nav-link:nth-child(7)", "css:finder"],
+        ["xpath=(//button[@type='button'])[14]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/nav/button[7]", "xpath:idRelative"],
+        ["xpath=//button[7]", "xpath:position"],
+        ["xpath=//button[contains(.,'Relying Party Overrides')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2928ba27-b934-499e-8dda-8441dbbb463d",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.row:nth-child(6) path:nth-child(1)",
+      "targets": [
+        ["css=.row:nth-child(6) path:nth-child(1)", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "085ff864-1a6b-469f-9009-9d6072e2d689",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=div[role=\"tooltip\"]",
+      "targets": [
+        ["css=.row:nth-child(1) > .col-12 .btn > .svg-inline--fa", "css:finder"]
+      ],
+      "value": "Disallows use (or reuse) of authentication results and login flows that don't provide a real-time proof of user presence in the login process."
+    }, {
+      "id": "1ff63b39-ee65-46a0-9258-56209aa63e4b",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0bc97fad-e6a1-4cb7-9c50-f43f5ff436a6",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }]
+  }],
+  "suites": [{
+    "id": "d2caeac4-7520-4e3c-96b1-840610b6983c",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["841ade0e-83bd-4a4b-94f2-de6bd5c536b2"]
+  }],
+  "urls": ["http://localhost:10101/"],
+  "plugins": []
+}
