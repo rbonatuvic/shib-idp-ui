@@ -158,3 +158,9 @@ custom:
       helpText: tooltip.force-authn
       attributeName: http://shibboleth.net/ns/profiles/forceAuthn
       attributeFriendlyName: forceAuthn
+    - name: ignoreRequestSignatures
+      displayName: label.ignore-request-signatures
+      displayType: boolean
+      helpText: tooltip.ignore-request-signatures
+      attributeName: http://shibboleth.net/ns/profiles/ignoreRequestSignatures
+      attributeFriendlyName: ignoreRequestSignatures
