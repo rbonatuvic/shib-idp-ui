@@ -28,7 +28,7 @@ export const AlgorithmFilterWizard = {
 
         return (formData, errors) => {
             const errorList = base(formData, errors);
-            const { algorithms } = formData;
+            const { algorithms = [] } = formData;
 
             const dupes = algorithms.filter((item, index) => index !== algorithms.indexOf(item));
             

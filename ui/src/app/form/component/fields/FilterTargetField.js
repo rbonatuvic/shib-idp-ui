@@ -171,7 +171,7 @@ const FilterTargetField = ({
                                 <i className="fa fa-asterisk text-danger" aria-hidden="true"></i>
                             </span>
                             <span>
-                                <InfoIcon value={translate('label.search-criteria-by', { displayType: translate(displayType) })}></InfoIcon>
+                                <InfoIcon value={translate('tooltip.search-criteria-by', { displayType: translate(displayType) })}></InfoIcon>
                             </span>
                         </label>
                         <div className="d-flex justify-content-between">
