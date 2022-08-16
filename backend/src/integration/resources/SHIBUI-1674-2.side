@@ -146,9 +146,9 @@
       "id": "2f6171c0-f11f-4d3a-99fe-4ba3ef743f3f",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(2) path",
+      "target": "css=.mb-3:nth-child(2) .info-icon > .svg-inline--fa",
       "targets": [
-        ["css=.mb-3:nth-child(2) path", "css:finder"]
+        ["css=.mb-3:nth-child(2) .info-icon > .svg-inline--fa", "css:finder"]
       ],
       "value": ""
     }, {
@@ -396,9 +396,9 @@
       "id": "3e9efc71-b8e5-4d0e-99f1-5605f0984768",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(1) path",
+      "target": "css=.mb-3:nth-child(1) .info-icon path",
       "targets": [
-        ["css=.mb-3:nth-child(1) path", "css:finder"]
+        ["css=.mb-3:nth-child(1) .info-icon path", "css:finder"]
       ],
       "value": ""
     }, {
@@ -423,7 +423,7 @@
     }, {
       "id": "b83ea670-06b0-45e7-b4e3-af137de66d44",
       "comment": "",
-      "command": "waitForElementEditable",
+      "command": "waitForElementVisible",
       "target": "id=root_xmlId",
       "targets": [],
       "value": "30000"
@@ -954,7 +954,7 @@
       "command": "assertText",
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
-      "value": "Flag indicating whether should initialize from the persistent cache in the background. Initializing from the cache in the background will improve IdP startup times."
+      "value": "Flag indicating whether the system should initialize from the persistent cache in the background. Initializing from the cache in the background will improve IdP startup times."
     }, {
       "id": "d1ee0afc-651b-4da5-bd99-eac47bbceb78",
       "comment": "",
@@ -1133,7 +1133,7 @@
       "command": "assertText",
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
-      "value": "this tooltip is broken"
+      "value": "A brief description of the purpose of this filter."
     }, {
       "id": "3252a66e-f891-479e-8a6a-53460b3af55c",
       "comment": "",
@@ -1232,6 +1232,13 @@
       "targets": [],
       "value": "The precise behavior of any <MetadataFilter> element is controlled by the xsi:type attribute."
     }, {
+      "id": "e4442dad-6000-49dd-96ca-85ea2a49e805",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "6f9ae687-770a-4932-bdc9-a33706a698b7",
       "comment": "",
       "command": "select",
@@ -1277,9 +1284,9 @@
       "id": "583b61c9-b021-452b-b488-1faf2be311b6",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(5) path:nth-child(1)",
+      "target": "css=.row:nth-child(6) .svg-inline--fa:nth-child(2)",
       "targets": [
-        ["css=.row:nth-child(5) path:nth-child(1)", "css:finder"]
+        ["css=.row:nth-child(6) .svg-inline--fa:nth-child(2)", "css:finder"]
       ],
       "value": ""
     }, {
@@ -1346,7 +1353,7 @@
       "command": "assertText",
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
-      "value": "Search Criteria by Entity ID"
+      "value": "The value used to search against, such as a regex pattern or entityID to match against."
     }, {
       "id": "6dc07848-bf6c-4468-8cb9-6434fb61098c",
       "comment": "",
@@ -1382,7 +1389,7 @@
       "command": "assertText",
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
-      "value": "Search Criteria by Regex"
+      "value": "The value used to search against, such as a regex pattern or entityID to match against."
     }, {
       "id": "0067cff3-9879-4a44-a6a1-70711255dc7c",
       "comment": "",
@@ -1418,7 +1425,7 @@
       "command": "assertText",
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
-      "value": "Search Criteria by Script"
+      "value": "The value used to search against, such as a regex pattern or entityID to match against."
     }, {
       "id": "cbfaac4f-35af-4014-b0a9-0748c9ae78f0",
       "comment": "",
