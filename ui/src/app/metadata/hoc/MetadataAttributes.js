@@ -1,7 +1,10 @@
 import React from 'react';
+import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useMetadataAttribute, useMetadataAttributes } from '../hooks/api';
 
 export function MetadataAttributes ({children}) {
+
+     const dispatch = useNotificationDispatcher();
 
     const { get, response } = useMetadataAttributes({
         cachePolicy: 'no-cache'
@@ -24,6 +27,7 @@ export function MetadataAttributes ({children}) {
         await del(`/${id}`);
         if (attrApi.response.ok) {
             loadAttributes();
+            dispatch(createNotificationAction(`Attribute deleted successfully`, NotificationTypes.SUCCESS, 5000));
         }
     }
 
