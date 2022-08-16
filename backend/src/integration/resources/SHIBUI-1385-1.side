@@ -2629,45 +2629,38 @@
       ],
       "value": ""
     }, {
-      "id": "56094f6e-45b7-42f6-9102-e4e19673240d",
+      "id": "85af384a-77b1-4d88-8915-9430afae4845",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=.mb-4:nth-child(3) div:nth-child(1) > .d-flex > .d-block:nth-child(2)",
-      "targets": [
-        ["css=.mb-4:nth-child(3) div:nth-child(1) > .d-flex > .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[2]/div/div[2]/div[2]/div/div/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[2]/div/div[2]/div[2]/div/div/div/span[2]", "xpath:position"]
-      ],
+      "target": "css=div:nth-child(1) > div > .bg-diff > .d-block:nth-child(2)",
+      "targets": [],
       "value": "30000"
+    }, {
+      "id": "eb302999-153d-492c-869c-8bf26e8134a0",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
     }, {
       "id": "5a976e2c-dc5f-4021-9cc6-3cad12e771ea",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(3) div:nth-child(1) > .d-flex > .d-block:nth-child(2)",
+      "target": "css=div:nth-child(1) > div > .bg-diff > .d-block:nth-child(2)",
       "targets": [
-        ["css=.mb-4:nth-child(3) div:nth-child(1) > .d-flex > .d-block:nth-child(2)", "css:finder"],
+        ["css=div:nth-child(1) > div > .bg-diff > .d-block:nth-child(2)", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div/div/section[2]/div/div[2]/div[2]/div/div/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[2]/div/div[2]/div[2]/div/div/div/span[2]", "xpath:position"]
+        ["xpath=//section[2]/div/div[2]/div[2]/div/div/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'Display Name v3')]", "xpath:innerText"]
       ],
       "value": "Display Name v3"
-    }, {
-      "id": "c2ebc46c-e443-47b9-b17b-0ac6d23b882c",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=.mb-4:nth-child(3) div:nth-child(1) > .d-flex > .d-block:nth-child(3)",
-      "targets": [
-        ["css=.mb-4:nth-child(3) div:nth-child(1) > .d-flex > .d-block:nth-child(3)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[2]/div/div[2]/div[2]/div/div/div/span[3]", "xpath:idRelative"],
-        ["xpath=//section[2]/div/div[2]/div[2]/div/div/div/span[3]", "xpath:position"]
-      ],
-      "value": "30000"
     }, {
       "id": "72328587-fe8d-4dc8-bc3d-a163f91a1ad6",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(3) div:nth-child(1) > .d-flex > .d-block:nth-child(3)",
+      "target": "css=div:nth-child(1) > div > .bg-diff > .d-block:nth-child(3)",
       "targets": [
-        ["css=.mb-4:nth-child(3) div:nth-child(1) > .d-flex > .d-block:nth-child(3)", "css:finder"],
+        ["css=div:nth-child(1) > div > .bg-diff > .d-block:nth-child(3)", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div/div/section[2]/div/div[2]/div[2]/div/div/div/span[3]", "xpath:idRelative"],
         ["xpath=//section[2]/div/div[2]/div[2]/div/div/div/span[3]", "xpath:position"]
       ],
@@ -2878,21 +2871,21 @@
         ["xpath=//section[2]/div/div[2]/div[2]/div/div/div/span[3]", "xpath:position"]
       ],
       "value": "Display Name"
-    },{
-            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
-            "comment": "",
-            "command": "open",
-            "target": "/api/heheheheheheheWipeout",
-            "targets": [],
-            "value": ""
-          }, {
-            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
-            "comment": "",
-            "command": "assertText",
-            "target": "css=body",
-            "targets": [],
-            "value": "yes, you did it"
-          }]
+    }, {
+      "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }]
   }],
   "suites": [{
     "id": "d2caeac4-7520-4e3c-96b1-840610b6983c",
