@@ -93,6 +93,7 @@
                 },
                 "x509Certificates": {
                     "title": "label.x509-certificates",
+                    "description": "tooltip.x509-certificates",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/Certificate"
