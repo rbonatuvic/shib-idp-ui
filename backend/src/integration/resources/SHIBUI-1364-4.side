@@ -1418,6 +1418,20 @@
       ],
       "value": ""
     }, {
+      "id": "a9bd983c-7743-4bec-87ad-7484e60cff99",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.d-flex:nth-child(3) > .border-primary:nth-child(2) .mb-0:nth-child(1)",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "0d53853f-597f-4c2a-8f6b-ef4e1109bf3c",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "c2102a31-6e18-4d6c-8146-e23459403b65",
       "comment": "",
       "command": "assertText",
