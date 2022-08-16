@@ -28,7 +28,7 @@
     "properties": {
         "name": {
             "title": "label.metadata-provider-name-dashboard-display-only",
-            "description": "tooltip.metadata-provider-name-dashboard-display-only",
+            "description": "tooltip.metadata-provider-name",
             "type": "string",
             "widget": {
                 "id": "string",
@@ -42,8 +42,8 @@
             "const": "FileBackedHttpMetadataResolver"
         },
         "enabled": {
-            "title": "label.enable-service",
-            "description": "tooltip.enable-service",
+            "title": "label.enable-provider-upon-saving",
+            "description": "tooltip.enable-provider-upon-saving",
             "type": "boolean",
             "default": false
         },
