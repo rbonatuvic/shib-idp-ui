@@ -400,11 +400,11 @@
       "id": "002e853c-ed14-430a-ba32-a3c59da26305",
       "comment": "",
       "command": "assertText",
-      "target": "css=.row:nth-child(7) span",
+      "target": "css=.row:nth-child(8) .form-label > span",
       "targets": [
-        ["css=.row:nth-child(7) span", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[9]/div/div/div/div[7]/div/div/div/div/label/span", "xpath:idRelative"],
-        ["xpath=//div[7]/div/div/div/div/label/span", "xpath:position"],
+        ["css=.row:nth-child(8) .form-label > span", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[9]/div/div/div/div[8]/div/div/div/div/label/span", "xpath:idRelative"],
+        ["xpath=//div[8]/div/div/div/div/label/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom String Display')]", "xpath:innerText"]
       ],
       "value": "Custom String Display"
@@ -475,11 +475,11 @@
       "id": "220200b4-4b3f-4c1b-9d89-e17a136fb4c1",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(8) div:nth-child(7) .d-block:nth-child(1)",
+      "target": "css=div:nth-child(8) .d-block:nth-child(1)",
       "targets": [
-        ["css=.mb-4:nth-child(8) div:nth-child(7) .d-block:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:idRelative"],
-        ["xpath=//section[8]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:position"],
+        ["css=div:nth-child(8) .d-block:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[8]/div/span", "xpath:idRelative"],
+        ["xpath=//div[8]/div/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom String Display')]", "xpath:innerText"]
       ],
       "value": "Custom String Display"
@@ -487,11 +487,11 @@
       "id": "33312edd-a161-428c-9e5a-63d1d245b1c7",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(8) div:nth-child(7) .d-block:nth-child(2)",
+      "target": "css=div:nth-child(8) .text-truncate",
       "targets": [
-        ["css=.mb-4:nth-child(8) div:nth-child(7) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[8]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(8) .text-truncate", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[8]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[8]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'Custom String Default Edited')]", "xpath:innerText"]
       ],
       "value": "Custom String Default Edited"
@@ -533,11 +533,11 @@
       "id": "77768da6-c87e-49c6-a2d1-322218196038",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(2)",
+      "target": "css=div:nth-child(8) .text-truncate",
       "targets": [
-        ["css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[7]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(8) .text-truncate", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[8]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[8]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'Custom String Default Edited')]", "xpath:innerText"]
       ],
       "value": "Custom String Default Edited"
@@ -545,11 +545,11 @@
       "id": "edb8ae5b-b1d6-4078-b3d2-d41ece0bbd28",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(1)",
+      "target": "css=div:nth-child(8) .d-block:nth-child(1)",
       "targets": [
-        ["css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:idRelative"],
-        ["xpath=//section[7]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:position"],
+        ["css=div:nth-child(8) .d-block:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[8]/div/span", "xpath:idRelative"],
+        ["xpath=//div[8]/div/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom String Display')]", "xpath:innerText"]
       ],
       "value": "Custom String Display"
@@ -862,11 +862,11 @@
       "id": "62aae077-0f97-48ec-97cb-2111ea9e3400",
       "comment": "",
       "command": "assertText",
-      "target": "css=.row:nth-child(7) > .col-12 > .mb-3 > div > div > .form-label > span",
+      "target": "css=.row:nth-child(8) .form-label > span",
       "targets": [
-        ["css=.row:nth-child(7) > .col-12 > .mb-3 > div > div > .form-label > span", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[7]/div/div/div/div/div[7]/div/div/div/div/label/span", "xpath:idRelative"],
-        ["xpath=//div[7]/div/div/div/div/label/span", "xpath:position"],
+        ["css=.row:nth-child(8) .form-label > span", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[7]/div/div/div/div/div[8]/div/div/div/div/label/span", "xpath:idRelative"],
+        ["xpath=//div[8]/div/div/div/div/label/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom String Display')]", "xpath:innerText"]
       ],
       "value": "Custom String Display"
@@ -939,11 +939,11 @@
       "id": "848c273e-a5b1-4ff8-90e2-ee0ecbadff2d",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(1) > div:nth-child(7) .d-block:nth-child(1)",
+      "target": "css=.mb-4:nth-child(4) div:nth-child(8) .d-block:nth-child(1)",
       "targets": [
-        ["css=div:nth-child(1) > div:nth-child(7) .d-block:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:idRelative"],
-        ["xpath=//div[2]/div[2]/div/div[7]/div/span", "xpath:position"],
+        ["css=.mb-4:nth-child(4) div:nth-child(8) .d-block:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[8]/div/span", "xpath:idRelative"],
+        ["xpath=//section[2]/div/div[2]/div[2]/div/div[8]/div/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom String Display')]", "xpath:innerText"]
       ],
       "value": "Custom String Display"
@@ -951,12 +951,12 @@
       "id": "4524e88f-bbfc-4f4f-b72d-30cce97564da",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(1) > div:nth-child(7) .text-truncate",
+      "target": "css=.mb-4:nth-child(4) div:nth-child(8) .d-block:nth-child(2)",
       "targets": [
-        ["css=div:nth-child(1) > div:nth-child(7) .text-truncate", "css:finder"],
-        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div[2]/div/div[7]/div/span[2]", "xpath:position"],
-        ["xpath=//span[contains(.,'Custom String Default')]", "xpath:innerText"]
+        ["css=.mb-4:nth-child(4) div:nth-child(8) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[8]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//section[2]/div/div[2]/div[2]/div/div[8]/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'Custom String Default Edited')]", "xpath:innerText"]
       ],
       "value": "Custom String Default Edited"
     }, {
@@ -1031,21 +1031,21 @@
       "target": "css=table > tbody > tr",
       "targets": [],
       "value": ""
-    },{
-            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
-            "comment": "",
-            "command": "open",
-            "target": "/api/heheheheheheheWipeout",
-            "targets": [],
-            "value": ""
-          }, {
-            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
-            "comment": "",
-            "command": "assertText",
-            "target": "css=body",
-            "targets": [],
-            "value": "yes, you did it"
-          }]
+    }, {
+      "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }]
   }],
   "suites": [{
     "id": "a9b788f1-5f67-4d2c-82a5-30dc53eb75e9",
