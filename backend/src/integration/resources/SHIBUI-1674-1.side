@@ -303,7 +303,7 @@
       "command": "assertText",
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
-      "value": "Whether to sign requests."
+      "value": "Whether to sign requests. Signing requests helps to verify that the request from the SP is authentic."
     }, {
       "id": "e1c906a3-bd1d-4684-b6fb-56de3a653579",
       "comment": "",
@@ -387,7 +387,9 @@
       "command": "mouseOver",
       "target": "css=.row:nth-child(8) path:nth-child(1)",
       "targets": [
-        ["css=.row:nth-child(8) path:nth-child(1)", "css:finder"]
+        ["css=.app-root", "css:finder"],
+        ["xpath=//div[@id='root']/div", "xpath:idRelative"],
+        ["xpath=//div[3]/div", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -396,7 +398,7 @@
       "command": "assertText",
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
-      "value": "Whether to ignore any SP-Requested Authentication Method."
+      "value": "Do not sign the full authentication response to the service provider. Enabling this property will reduce the size of the response to service providers who may have limitations to the size of the response."
     }, {
       "id": "87036a6f-aebd-4ef1-8cb8-03d082676c03",
       "comment": "",
@@ -719,9 +721,9 @@
       "id": "2928ba27-b934-499e-8dda-8441dbbb463d",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(6) path:nth-child(1)",
+      "target": "css=.row:nth-child(7) path:nth-child(1)",
       "targets": [
-        ["css=.row:nth-child(6) path:nth-child(1)", "css:finder"]
+        ["css=.row:nth-child(7) path:nth-child(1)", "css:finder"]
       ],
       "value": ""
     }, {
@@ -732,7 +734,7 @@
       "targets": [
         ["css=.row:nth-child(1) > .col-12 .btn > .svg-inline--fa", "css:finder"]
       ],
-      "value": "Disallows use (or reuse) of authentication results and login flows that don't provide a real-time proof of user presence in the login process."
+      "value": "Disallows use (or reuse) of authentication results and login flows that don't provide a real-time proof of user presence in the login process"
     }, {
       "id": "1ff63b39-ee65-46a0-9258-56209aa63e4b",
       "comment": "",
