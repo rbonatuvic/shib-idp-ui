@@ -22,7 +22,7 @@ public class ShibConfigurationProperty {
     @Column(name = "config_file", nullable = false)
     String configFile;
 
-    @Column(name = "default_value", nullable = false)
+    @Column(name = "default_value")
     String defaultValue;
 
     @Column(name = "description")
@@ -46,8 +46,16 @@ public class ShibConfigurationProperty {
     @Column(name = "property_type", nullable = false)
     PropertyType propertyType;
 
-    @Column(name = "property_value", nullable = false)
+    @Column(name = "property_value")
     String propertyValue;
+
+    @Column(name = "selection_items")
+    String selectionItems;
+
+    public void setPropertyType(String val) {
+        this.propertyType = PropertyType.valueOf(val);
+    }
+
 }
 
 enum PropertyType {

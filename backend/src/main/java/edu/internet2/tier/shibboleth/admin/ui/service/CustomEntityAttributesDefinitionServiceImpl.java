@@ -19,7 +19,7 @@ public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntity
     private ApplicationEventPublisher applicationEventPublisher;
     
     @Autowired
-    EntityManager entityManager;
+    EntityManager entityManager; // Why is this here - it isn't used
     
     @Autowired
     private CustomEntityAttributeDefinitionRepository repository;
