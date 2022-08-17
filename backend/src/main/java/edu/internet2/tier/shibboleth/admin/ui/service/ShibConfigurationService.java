@@ -9,4 +9,6 @@ public interface ShibConfigurationService {
     void addAll(Collection<ShibConfigurationProperty> newProperties);
 
     List<String> getExistingPropertyNames();
+
+    void save(ShibConfigurationProperty prop);
 }

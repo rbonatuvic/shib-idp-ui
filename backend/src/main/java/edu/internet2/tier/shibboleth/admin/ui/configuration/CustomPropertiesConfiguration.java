@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProper
 import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.ShibConfigurationProperty;
 import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionService;
+import edu.internet2.tier.shibboleth.admin.ui.service.ShibConfigurationService;
 import edu.internet2.tier.shibboleth.admin.ui.service.events.CustomEntityAttributeDefinitionChangeEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -28,6 +29,8 @@ public class CustomPropertiesConfiguration implements ApplicationListener<Custom
     private List<RelyingPartyOverrideProperty> overridesFromConfigFile = new ArrayList<>();
 
     private List<ShibConfigurationProperty> shibprops = new ArrayList<>();
+
+    private ShibConfigurationService shibConfigurationService;
 
     private void buildRelyingPartyOverrides() {
         // Start over with a clean map and get the CustomEntityAttributesDefinitions from the DB
@@ -81,13 +84,36 @@ public class CustomPropertiesConfiguration implements ApplicationListener<Custom
         this.ceadService = ceadService;
     }
 
+    @Autowired
+    public void setShibConfigurationService(ShibConfigurationService service) {
+        this.shibConfigurationService = service;
+    }
+
     /**
-     * This setter will get used by Spring's property system to create objects from a config file (should the properties exist)
+     * This setter will get used by Spring's property system to create objects from application.yml (should the properties exist)
      */
     public void setOverrides(List<RelyingPartyOverrideProperty> overridesFromConfigFile) {
         this.overridesFromConfigFile = overridesFromConfigFile;
     }
 
+    /**
+     * This setter will get used by Spring's property system to create objects from application.yml (should the properties exist)
+     */
+    public void setShibprops(List<ShibConfigurationProperty> props) {
+        this.shibprops = props;
+    }
+
+    /**
+     * Add any custom properties from the application.yml - any incoming property with the same name as an existing property will be
+     * ignored (ie this will not update/replace information for existing properties). This shouldn't be considered standard, but
+     * offers users the ability to add properties to their system from an addon module, new feature etc.
+     */
     private void updateShibPropsDatabase() {
+        List<String> existingPropNames = shibConfigurationService.getExistingPropertyNames();
+        shibprops.forEach(prop -> {
+            if (!existingPropNames.contains(prop.getPropertyName())) {
+                shibConfigurationService.save(prop);
+            }
+        });
     }
 }
