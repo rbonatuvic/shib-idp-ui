@@ -22,4 +22,9 @@ public class ShibConfigurationServiceImpl implements ShibConfigurationService {
     public List<String> getExistingPropertyNames() {
         return repository.getPropertyNames();
     }
+
+    @Override
+    public void save(ShibConfigurationProperty prop) {
+        repository.save(prop);
+    }
 }
