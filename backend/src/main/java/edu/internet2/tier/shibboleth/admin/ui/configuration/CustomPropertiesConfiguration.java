@@ -2,20 +2,19 @@ package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverrideProperty;
+import edu.internet2.tier.shibboleth.admin.ui.domain.ShibConfigurationProperty;
 import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionService;
 import edu.internet2.tier.shibboleth.admin.ui.service.events.CustomEntityAttributeDefinitionChangeEvent;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
 
 @Configuration
 @ConfigurationProperties(prefix = "custom")
@@ -27,6 +26,8 @@ public class CustomPropertiesConfiguration implements ApplicationListener<Custom
     private HashMap<String, IRelyingPartyOverrideProperty> overrides = new HashMap<>();
 
     private List<RelyingPartyOverrideProperty> overridesFromConfigFile = new ArrayList<>();
+
+    private List<ShibConfigurationProperty> shibprops = new ArrayList<>();
 
     private void buildRelyingPartyOverrides() {
         // Start over with a clean map and get the CustomEntityAttributesDefinitions from the DB
@@ -68,6 +69,7 @@ public class CustomPropertiesConfiguration implements ApplicationListener<Custom
     public void postConstruct() {
         // Make sure we have the right data
         buildRelyingPartyOverrides();
+        updateShibPropsDatabase();
     }
 
     public void setAttributes(List<? extends Map<String, String>> attributes) {
@@ -84,5 +86,8 @@ public class CustomPropertiesConfiguration implements ApplicationListener<Custom
      */
     public void setOverrides(List<RelyingPartyOverrideProperty> overridesFromConfigFile) {
         this.overridesFromConfigFile = overridesFromConfigFile;
+    }
+
+    private void updateShibPropsDatabase() {
     }
 }

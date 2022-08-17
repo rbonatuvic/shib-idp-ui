@@ -163,3 +163,16 @@ custom:
       helpText: tooltip.ignore-request-signatures
       attributeName: http://shibboleth.net/ns/profiles/ignoreRequestSignatures
       attributeFriendlyName: ignoreRequestSignatures
+  shibprops:
+    - category: asd # required
+      configFile: kj # required
+      defaultValue: foo
+      description: blak
+      idpVersion: 4.1 # required
+      module: h
+      moduleVersion: 1
+      note: nnn
+      propertyName: dddd # required
+      propertyType: dddd # required as one of: BOOLEAN, DURATION, INTEGER, SELECTION_LIST, SPRING_BEAN_ID, STRING
+      propertyValue: dddd
+      selectionItems: dddd,dddd # required if propertyType is SELECTION_LIST - comma seperated values
