@@ -11,4 +11,6 @@ public interface ShibConfigurationService {
     List<String> getExistingPropertyNames();
 
     void save(ShibConfigurationProperty prop);
+
+    List<ShibConfigurationProperty> getAll();
 }
