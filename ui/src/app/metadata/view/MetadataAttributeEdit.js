@@ -11,7 +11,7 @@ import { useMetadataAttribute } from '../hooks/api';
 import { CustomAttributeDefinition, CustomAttributeEditor } from '../domain/attribute/CustomAttributeDefinition';
 import MetadataSchema from '../hoc/MetadataSchema';
 import { MetadataForm } from '../hoc/MetadataFormContext';
-import { createNotificationAction, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 
 export function MetadataAttributeEdit() {
     const { id } = useParams();
@@ -35,11 +35,16 @@ export function MetadataAttributeEdit() {
     }
 
     async function save(metadata) {
+        let toast;
         const resp = await put(``, definition.parser(metadata));
         if (response.ok) {
+            toast =  createNotificationAction(`Updated attribute successfully.`, NotificationTypes.SUCCESS);
             gotoDetail({ refresh: true });
         } else {
-            dispatch(createNotificationAction(`${resp.errorCode}: Unable to edit attribute ... ${resp.errorMessage}`, 'danger', 5000));
+            toast = createNotificationAction(`${resp.errorCode}: Unable to edit attribute ... ${resp.errorMessage}`, 'danger', 5000);
+        }
+        if (toast) {
+            dispatch(toast);
         }
     };
 
