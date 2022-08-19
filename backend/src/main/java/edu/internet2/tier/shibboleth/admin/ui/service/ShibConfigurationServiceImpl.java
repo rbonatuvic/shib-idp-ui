@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibConfigu
 import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibPropertySet;
 import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibPropertySetting;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.repository.ProjectionIdAndName;
 import edu.internet2.tier.shibboleth.admin.ui.repository.ShibConfigurationRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.ShibPropertySetRepository;
@@ -11,12 +12,10 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.ShibPropertySettingRepo
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 
 @Service
 public class ShibConfigurationServiceImpl implements ShibConfigurationService {
@@ -32,6 +31,18 @@ public class ShibConfigurationServiceImpl implements ShibConfigurationService {
     @Override
     public void addAllConfigurationProperties(Collection<ShibConfigurationProperty> newProperties) {
         shibConfigurationRepository.saveAll(newProperties);
+    }
+
+    @Override
+    public ShibPropertySet create(ShibPropertySet set) throws ObjectIdExistsException {
+        try {
+            getSet(set.getResourceId());
+            throw new ObjectIdExistsException(Integer.toString(set.getResourceId()));
+        }
+        catch (EntityNotFoundException e) {
+            // we don't want to find the object
+        }
+        return save(set);
     }
 
     @Override
@@ -69,18 +80,17 @@ public class ShibConfigurationServiceImpl implements ShibConfigurationService {
     }
 
     @Override
-    public ShibPropertySet getSet(String name) {
-        return shibPropertySetRepository.findByName(name);
-    }
-
-    @Override
     public ShibConfigurationProperty save(ShibConfigurationProperty prop) {
         return shibConfigurationRepository.save(prop);
     }
 
     @Override
-    @Transactional
-    public ShibPropertySet save(ShibPropertySet incomingPropSet) {
+    public ShibPropertySet update(ShibPropertySet setToUpdate) throws EntityNotFoundException {
+        getSet(setToUpdate.getResourceId()); // check that it exists, if not it'll throw an exception
+        return save(setToUpdate);
+    }
+
+    private ShibPropertySet save(ShibPropertySet incomingPropSet) {
         ShibPropertySet result = new ShibPropertySet();
         List<ShibPropertySetting> propertiesToUpdate = new ArrayList<>();
 

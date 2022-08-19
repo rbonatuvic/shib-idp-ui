@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,16 +65,15 @@ public class ShibPropertiesController {
     @Secured("ROLE_ADMIN")
     @Transactional
     public ResponseEntity<?> createPropertySet(@RequestBody ShibPropertySet newSet) throws ObjectIdExistsException {
-        // If already defined, we won't/can't create a new one, nor will this call update on the definition
-        try {
-            ShibPropertySet set = service.getSet(newSet.getResourceId());
-            throw new ObjectIdExistsException(Integer.toString(newSet.getResourceId()));
-        }
-        catch (EntityNotFoundException e) {
-            // we hope not to find this - do nothing
-        }
-
-        ShibPropertySet result = service.save(newSet);
+        ShibPropertySet result = service.create(newSet);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @PutMapping("/property/set/{resourceId}")
+    @Secured("ROLE_ADMIN")
+    @Transactional
+    public ResponseEntity<?> updatePropertySet(@RequestBody ShibPropertySet setToUpdate, @PathVariable int resourceId) throws EntityNotFoundException {
+        ShibPropertySet result = service.update(setToUpdate);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

@@ -12,27 +12,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice(assignableTypes = {ShibPropertiesController.class})
 public class ShibPropertiesControllerExceptionHandler extends ResponseEntityExceptionHandler {
-
-//    @ExceptionHandler({ ConcurrentModificationException.class })
-//    public ResponseEntity<?> handleConcurrentModificationException(ConcurrentModificationException e, WebRequest request) {
-//        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(HttpStatus.CONFLICT, e.getMessage()));
-//    }
-
     @ExceptionHandler({ EntityNotFoundException.class })
     public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e, WebRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND, e.getMessage()));
     }
     
-//    @ExceptionHandler({ ForbiddenException.class })
-//    public ResponseEntity<?> handleForbiddenAccess(ForbiddenException e, WebRequest request) {
-//        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN, e.getMessage()));
-//    }
-
-//    @ExceptionHandler({ InvalidPatternMatchException.class })
-//    public ResponseEntity<?> handleInvalidUrlMatchException(InvalidPatternMatchException e, WebRequest request) {
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage()));
-//    }
-
     @ExceptionHandler({ ObjectIdExistsException.class })
     public ResponseEntity<?> handleObjectIdExistsException(ObjectIdExistsException e, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
