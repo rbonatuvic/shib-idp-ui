@@ -106,7 +106,7 @@ class ShibConfigurationServiceTests extends AbstractBaseDataJpaTest {
 
             it
         }
-        service.save(set)
+        service.create(set)
         ShibPropertySet dbSet = propertySetRepo.findByName("somerandom")
 
         then:
@@ -127,7 +127,7 @@ class ShibConfigurationServiceTests extends AbstractBaseDataJpaTest {
         defaultSet.properties.add(prop)
         // create a copy of the set so they can't possibly be real db entities
         def copySet = objectMapper.readValue(objectMapper.writeValueAsString(defaultSet), ShibPropertySet.class)
-        service.save(copySet)
+        service.update(copySet)
         def updatedSet = propertySetRepo.findByResourceId(defaultSetResourceId)
 
         then:
@@ -135,7 +135,7 @@ class ShibConfigurationServiceTests extends AbstractBaseDataJpaTest {
 
         when:
         updatedSet.properties.remove(0)
-        service.save(objectMapper.readValue(objectMapper.writeValueAsString(updatedSet), ShibPropertySet.class))
+        service.update(objectMapper.readValue(objectMapper.writeValueAsString(updatedSet), ShibPropertySet.class))
         def updatedSet2 = propertySetRepo.findByResourceId(defaultSetResourceId)
 
         then:

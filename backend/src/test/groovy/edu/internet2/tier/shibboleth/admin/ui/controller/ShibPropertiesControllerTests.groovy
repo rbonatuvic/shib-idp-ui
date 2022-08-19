@@ -23,6 +23,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -175,5 +176,35 @@ class ShibPropertiesControllerTests  extends AbstractBaseDataJpaTest {
         result.andExpect(status().isCreated()).andExpect(jsonPath("\$.name").value("somerandom"))
         def createdSet = propertySetRepo.findByName("somerandom")
         createdSet.getProperties().size() == 2
+    }
+
+    @WithMockAdmin
+    def "PUT /api/shib/property/set update set that doesn't exist"() {
+        when:
+        ShibPropertySet set = propertySetRepo.findByResourceId(defaultSetResourceId)
+        set.resourceId = 1234
+        def jsonBody = mapper.writeValueAsString(set)
+
+        then:
+        try {
+            mockMvc.perform(put('/api/shib/property/set/1234').contentType(APPLICATION_JSON).content(jsonBody))
+        }
+        catch (Exception e) {
+            e instanceof EntityNotFoundException
+        }
+    }
+
+    @WithMockAdmin
+    def "PUT /api/shib/property/set update set"() {
+        when:
+        ShibPropertySet set = propertySetRepo.findByResourceId(defaultSetResourceId)
+        set.name = "newName"
+        def jsonBody = mapper.writeValueAsString(set)
+        def url = "/api/shib/property/set/{resourceId}"
+        def result = mockMvc.perform(put(url, defaultSetResourceId).contentType(APPLICATION_JSON).content(jsonBody))
+
+        then:
+        result.andExpect(status().isOk()).andExpect(jsonPath("\$.name").value("newName"))
+        propertySetRepo.findByResourceId(defaultSetResourceId).name.equals("newName")
     }
 }
