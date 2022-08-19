@@ -1,7 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.opencsv.CSVReader
-import edu.internet2.tier.shibboleth.admin.ui.domain.ShibConfigurationProperty
+import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibConfigurationProperty
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.event.ApplicationStartedEvent
@@ -62,7 +62,7 @@ class ShibPropertiesBootstrap {
         // Save anything that's left
         if (propertiesMap.size() > 0) {
             log.info("Saving/loading [" + propertiesMap.size() + "] properties to the database")
-            service.addAll(propertiesMap.values())
+            service.addAllConfigurationProperties(propertiesMap.values())
         }
 
         log.info("COMPLETED: ensuring base Shibboleth properties configuration has loaded")

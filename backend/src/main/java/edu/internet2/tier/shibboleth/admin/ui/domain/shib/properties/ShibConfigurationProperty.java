@@ -1,4 +1,4 @@
-package edu.internet2.tier.shibboleth.admin.ui.domain;
+package edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.internet2.tier.shibboleth.admin.util.EmptyStringToNullConverter;

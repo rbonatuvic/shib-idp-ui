@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.ShibConfigurationProperty;
+import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibConfigurationProperty;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
