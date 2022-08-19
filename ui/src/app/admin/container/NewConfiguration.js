@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Prompt, useHistory } from 'react-router-dom';
 import Translate from '../../i18n/components/translate';
-import { useProperties } from '../hooks';
+import { useConfiguration } from '../hooks';
 import { Schema } from '../../form/Schema';
 import { FormManager } from '../../form/FormManager';
 import { ConfigurationForm } from '../component/ConfigurationForm';
@@ -10,13 +10,14 @@ import { ConfigurationForm } from '../component/ConfigurationForm';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useTranslator } from '../../i18n/hooks';
 import { BASE_PATH } from '../../App.constant';
+import { PropertiesProvider } from '../hoc/PropertiesProvider';
 
 export function NewConfiguration() {
     const history = useHistory();
     const notifier = useNotificationDispatcher();
     const translator = useTranslator();
 
-    const { post, response, loading } = useProperties({});
+    const { post, response, loading } = useConfiguration({});
 
     const [blocking, setBlocking] = React.useState(false);
 
@@ -55,24 +56,26 @@ export function NewConfiguration() {
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
-                            <span className="lead"><Translate value="label.new-property">Add a new property</Translate></span>
+                            <span className="lead"><Translate value="label.new-configuration">Create new configuration set</Translate></span>
                         </div>
                     </div>
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
-                    <Schema path={`/${BASE_PATH}assets/schema/configuration/configuration.json`}>
-                        {(schema) =>
-                            <FormManager initial={{}}>
-                                {(data, errors) =>
-                                    <ConfigurationForm
-                                        property={data}
-                                        errors={errors}
-                                        schema={schema}
-                                        loading={loading}
-                                        onSave={(data) => save(data)}
-                                        onCancel={() => cancel()} />}
-                            </FormManager>}
-                    </Schema>
+                    <PropertiesProvider>
+                        <Schema path={`/${BASE_PATH}assets/schema/configuration/configuration.json`}>
+                            {(schema) =>
+                                <FormManager initial={{}}>
+                                    {(data, errors) =>
+                                        <ConfigurationForm
+                                            configuration={data}
+                                            errors={errors}
+                                            schema={schema}
+                                            loading={loading}
+                                            onSave={(data) => save(data)}
+                                            onCancel={() => cancel()} />}
+                                </FormManager>}
+                        </Schema>
+                    </PropertiesProvider>
                 </div>
             </section>
         </div>

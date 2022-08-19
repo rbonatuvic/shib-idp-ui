@@ -3,11 +3,11 @@ import React from 'react';
 import { Prompt, useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import Translate from '../../i18n/components/translate';
-import { useProperties } from '../hooks';
+import { useConfigurations } from '../hooks';
 import { Schema } from '../../form/Schema';
 import { FormManager } from '../../form/FormManager';
 
-import { PropertyProvider } from '../hoc/PropertyProvider';
+import { ConfigurationsProvider } from '../hoc/ConfigurationsProvider';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useTranslator } from '../../i18n/hooks';
 import { BASE_PATH } from '../../App.constant';
@@ -22,7 +22,7 @@ export function EditConfiguration() {
 
     const history = useHistory();
 
-    const { put, response, loading } = useProperties();
+    const { put, response, loading } = useConfigurations();
 
     const [blocking, setBlocking] = React.useState(false);
 
@@ -66,7 +66,7 @@ export function EditConfiguration() {
                     </div>
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
-                    <PropertyProvider id={id}>
+                    <ConfigurationsProvider id={id}>
                         {(property) =>
                             <Schema path={`/${BASE_PATH}assets/schema/configuration/configuration.json`}>
                                 {(schema) =>
@@ -84,7 +84,7 @@ export function EditConfiguration() {
                                     }</>}
                             </Schema>
                         }
-                    </PropertyProvider>
+                    </ConfigurationsProvider>
                 </div>
             </section>
         </div>
