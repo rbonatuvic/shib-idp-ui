@@ -86,7 +86,6 @@ public class ShibPropertiesController {
             }
             Map<String,String> props = result.get(confFile);
             props.put(setting.getPropertyName(), setting.getPropertyValue());
-//            result.put(confFile,props);
         }
         return result;
     }
