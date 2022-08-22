@@ -1,12 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibPropertySet;
+import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibPropertySetting;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.service.ShibConfigurationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @RestController
 @RequestMapping(value = "/api/shib")
@@ -47,12 +58,56 @@ public class ShibPropertiesController {
         return ResponseEntity.ok(service.getAllPropertySets());
     }
 
-    @GetMapping("/property/set/{resourceId}")
+    @GetMapping(value="/property/set/{resourceId}", produces="applcation/json")
     @Transactional(readOnly = true)
     @Operation(description = "Return the property set with the given resourceId",
                summary = "Return the property set with the given resourceId", method = "GET")
     public ResponseEntity<?> getPropertySet(@PathVariable Integer resourceId) throws EntityNotFoundException {
         return ResponseEntity.ok(service.getSet(resourceId));
+    }
+
+    @GetMapping(value="/property/set/{resourceId}", produces="application/zip")
+    @Transactional(readOnly = true)
+    @Operation(description = "Return the property set with the given resourceId as a zip file of the properties files",
+               summary = "Return the property set with the given resourceId as a zip file of the properties files", method = "GET")
+    public ResponseEntity<?> getPropertySetAsZip(@PathVariable Integer resourceId) throws EntityNotFoundException, IOException {
+        ShibPropertySet set = service.getSet(resourceId);
+        StringBuilder sb = new StringBuilder("attachment; filename=\"").append(set.getName()).append(".zip\"");
+        return ResponseEntity.ok().header("Content-Disposition", sb.toString()).body(prepDownloadAsZip(convertPropertiesToMaps(set.getProperties())));
+    }
+
+    private Map<String, Map<String,String>> convertPropertiesToMaps(List<ShibPropertySetting> properties) {
+        HashMap<String, Map<String,String>> result = new HashMap<>();
+        for (ShibPropertySetting setting:properties){
+            String confFile = setting.getConfigFile();
+            if (!result.containsKey(confFile)) {
+                Map<String,String> props = new HashMap<>();
+                result.put(confFile,props);
+            }
+            Map<String,String> props = result.get(confFile);
+            props.put(setting.getPropertyName(), setting.getPropertyValue());
+//            result.put(confFile,props);
+        }
+        return result;
+    }
+
+    private byte[] prepDownloadAsZip(Map<String, Map<String,String>> propertiesFiles) throws IOException {
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+        ZipOutputStream zipOutputStream = new ZipOutputStream(byteOutputStream);
+
+        for (String filename : propertiesFiles.keySet()) {
+            zipOutputStream.putNextEntry(new ZipEntry(filename));
+            Map<String, String> properties = propertiesFiles.get(filename);
+            StringBuilder props = new StringBuilder();
+            for (String key : properties.keySet()) {
+                props.append(key).append("=").append(properties.get(key)).append("\n");
+            }
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(props.toString().getBytes());
+            IOUtils.copy(inputStream, zipOutputStream);
+            zipOutputStream.closeEntry();
+        }
+        zipOutputStream.close();
+        return byteOutputStream.toByteArray();
     }
 
     @DeleteMapping("/property/set/{resourceId}")

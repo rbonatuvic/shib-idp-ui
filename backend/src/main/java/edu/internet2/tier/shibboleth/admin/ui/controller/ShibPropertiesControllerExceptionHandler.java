@@ -10,13 +10,20 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
+
 @ControllerAdvice(assignableTypes = {ShibPropertiesController.class})
 public class ShibPropertiesControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ EntityNotFoundException.class })
     public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e, WebRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND, e.getMessage()));
     }
-    
+
+    @ExceptionHandler({ IOException.class })
+    public ResponseEntity<?> handleIOException(EntityNotFoundException e, WebRequest request) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating file");
+    }
+
     @ExceptionHandler({ ObjectIdExistsException.class })
     public ResponseEntity<?> handleObjectIdExistsException(ObjectIdExistsException e, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
