@@ -14,8 +14,8 @@ export function IdpConfiguration() {
             <Switch>
                 <Route path={`${path}/list`} render={() =>
                     <ConfigurationsProvider>
-                        {(properties, onDelete) =>
-                            <ConfigurationList properties={properties} onDelete={onDelete} />
+                        {(configurations, onDelete) =>
+                            <ConfigurationList configurations={configurations} onDelete={onDelete} />
                         }
                     </ConfigurationsProvider>
                 } />

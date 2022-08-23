@@ -1,5 +1,5 @@
 import React from 'react';
-import { faEdit, faPlusCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faEdit, faPlusCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Button from 'react-bootstrap/Button';
@@ -9,7 +9,7 @@ import { Translate } from '../../i18n/components/translate';
 
 import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
 
-export function ConfigurationList({ properties, onDelete }) {
+export function ConfigurationList({ configurations, onDelete }) {
 
     const remove = (id) => {
         onDelete(id);
@@ -44,18 +44,18 @@ export function ConfigurationList({ properties, onDelete }) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {(properties?.length > 0) ? properties.map((property, i) =>
+                                            {(configurations?.length > 0) ? configurations.map((c, i) =>
                                                 <tr key={i}>
-                                                    <td className="align-middle">{property.name}</td>
+                                                    <td className="align-middle">{c.name}</td>
                                                     <td className="text-end">
                                                         <React.Fragment>
-                                                            <Link disabled={property.name === 'ROLE_ADMIN'} to={`../configurations/${property.resourceId}/edit`} className={`btn btn-link text-primary ${property.name === 'ROLE_ADMIN' ? 'disabled' : ''}`}>
-                                                                <FontAwesomeIcon icon={faEdit} size="lg" />
+                                                            <Link to={`../configurations/${c.resourceId}/edit`} className={`btn btn-link text-primary`}>
+                                                                <FontAwesomeIcon icon={faDownload} size="lg" />
                                                                 <span className="sr-only">
-                                                                    <Translate value="action.edit">Edit</Translate>
+                                                                    <Translate value="action.download">Download</Translate>
                                                                 </span>
                                                             </Link>
-                                                            <Button disabled={property.name === 'ROLE_ADMIN'} variant="link" className="text-danger" onClick={() => block(() => remove(property.resourceId))}>
+                                                            <Button variant="link" className="text-danger" onClick={() => block(() => remove(c.resourceId))}>
                                                                 <FontAwesomeIcon icon={faTrash} size="lg" />
                                                                 <span className="sr-only">
                                                                     <Translate value="action.delete">Delete</Translate>
