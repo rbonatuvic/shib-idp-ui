@@ -9,6 +9,8 @@ import { ToggleButton } from '../../form/component/ToggleButton';
 import { useProperties, usePropertiesLoading } from '../hoc/PropertiesProvider';
 import { groupBy } from 'lodash';
 import { useCallback } from 'react';
+import Form from 'react-bootstrap/Form';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 export function ConfigurationForm({ configuration = {}, errors = [], schema, onSave, onCancel }) {
 
@@ -140,26 +142,34 @@ export function ConfigurationForm({ configuration = {}, errors = [], schema, onS
             <div className="my-4"></div>
             <div className='row'>
                 <div className='col-12'>
-                    <table className='w-100 table'>
-                        <thead>
-                            <tr>
-                                <th>Property</th>
-                                <th>Category</th>
-                                <th>Type</th>
-                                <th>Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {config.properties.map((p, idx) => (
-                                <tr key={idx}>
-                                    <td>{ p.propertyName }</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                    <Form>
+                        <table className='w-100 table align-middle'>
+                            <thead>
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Category</th>
+                                    <th>Type</th>
+                                    <th>Value</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {config.properties.map((p, idx) => (
+                                    <tr key={idx}>
+                                        <td>{ p.propertyName }</td>
+                                        <td>{ p.category }</td>
+                                        <td>{ p.displayType }</td>
+                                        <td>
+                                            <FloatingLabel
+                                                controlId={`valueInput-${p.propertyName}`}
+                                                label="value">
+                                                <Form.Control type="text" placeholder="Value" />
+                                            </FloatingLabel>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </Form>
                 </div>
             </div>
         </div>

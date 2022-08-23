@@ -48,7 +48,7 @@ export function useRoleUiSchema() {
 }
 
 export function useConfigurations (opts = { cachePolicy: 'no-cache' }) {
-    return useFetch(`${API_BASE_PATH}/admin/configurations`, opts);
+    return useFetch(`${BASE_PATH}/`, opts);
 }
 
 export function useConfiguration(id, opts = { cachePolicy: 'no-cache' }) {
