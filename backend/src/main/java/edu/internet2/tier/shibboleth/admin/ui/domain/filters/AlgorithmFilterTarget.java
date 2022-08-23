@@ -1,9 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.AbstractFilterTarget;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
@@ -17,15 +20,14 @@ import javax.persistence.Entity;
 @AuditOverride(forClass = AbstractAuditable.class)
 @JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 public class AlgorithmFilterTarget extends AbstractFilterTarget {
-    private AlgorithmFilterTargetType targetType;
+    @Getter
+    @Setter
+    private AlgorithmFilterTargetType algorithmFilterTargetType;
 
     @Override
+    @JsonIgnore
     public String getTargetTypeValue() {
-        return targetType == null ? "NONE" : targetType.name();
-    }
-
-    public void setAlgorithmFilterTargetType(AlgorithmFilterTargetType type) {
-        this.targetType = type;
+        return algorithmFilterTargetType == null ? "NONE" : algorithmFilterTargetType.name();
     }
 
     public enum AlgorithmFilterTargetType {

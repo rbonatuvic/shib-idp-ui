@@ -114,7 +114,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 method.setAlgorithm(algValue)
                 mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(method, false))
             }
-            switch (filter.algorithmFilterTarget.targetType) {
+            switch (filter.algorithmFilterTarget.algorithmFilterTargetType) {
                 case AlgorithmFilterTarget.AlgorithmFilterTargetType.ENTITY:
                     filter.algorithmFilterTarget.value.each {
                         Entity(it)
