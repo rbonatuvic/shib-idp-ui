@@ -88,11 +88,11 @@ public class OpenSamlObjects {
         this.unmarshallerFactory = registry.getUnmarshallerFactory();
     }
 
-    public String marshalToXmlString(XMLObject ed, boolean includeXMLDeclaration) throws MarshallingException {
-        Marshaller marshaller = this.marshallerFactory.getMarshaller(ed);
-        ed.releaseDOM();
-        ed.releaseChildrenDOM(true);
-        String entityDescriptorXmlString = null;
+    public String marshalToXmlString(XMLObject xmlObject, boolean includeXMLDeclaration) throws MarshallingException {
+        Marshaller marshaller = this.marshallerFactory.getMarshaller(xmlObject);
+        xmlObject.releaseDOM();
+        xmlObject.releaseChildrenDOM(true);
+        String resultString = null;
         if (marshaller != null) {
             try (StringWriter writer = new StringWriter()) {
                 Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -101,22 +101,22 @@ public class OpenSamlObjects {
                 if (!includeXMLDeclaration) {
                     transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
                 }
-                transformer.transform(new DOMSource(marshaller.marshall(ed)), new StreamResult(writer));
-                entityDescriptorXmlString = writer.toString();
+                transformer.transform(new DOMSource(marshaller.marshall(xmlObject)), new StreamResult(writer));
+                resultString = writer.toString();
             } catch (TransformerException | IOException e) {
                 logger.error(e.getMessage(), e);
             }
         }
 
-        if (entityDescriptorXmlString == null) {
+        if (resultString == null) {
             //Figure out the best way to deal with this case
-            throw new RuntimeException("Unable to marshal EntityDescriptor");
+            throw new RuntimeException("Unable to marshal xmlObject");
         }
-        return entityDescriptorXmlString;
+        return resultString;
     }
 
-    public String marshalToXmlString(XMLObject ed) throws MarshallingException {
-        return this.marshalToXmlString(ed, true);
+    public String marshalToXmlString(XMLObject xmlObject) throws MarshallingException {
+        return this.marshalToXmlString(xmlObject, true);
     }
 
     public EntityDescriptor unmarshalFromXml(byte[] entityDescriptorXml) throws Exception {

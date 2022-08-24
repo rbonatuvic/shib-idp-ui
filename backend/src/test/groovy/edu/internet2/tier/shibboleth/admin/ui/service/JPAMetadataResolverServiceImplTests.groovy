@@ -1,16 +1,17 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
-import com.google.common.collect.Lists
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute
-import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeValue
+import edu.internet2.tier.shibboleth.admin.ui.domain.AlgorithmDigestMethod
+import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethod
+import edu.internet2.tier.shibboleth.admin.ui.domain.SignatureDigestMethod
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSString
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.AlgorithmFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ExternalMetadataResolver
@@ -21,6 +22,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.SvnMetadataResour
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.opensaml.config.JPAXMLObjectProviderInitializerForTest
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
@@ -29,9 +31,11 @@ import groovy.xml.MarkupBuilder
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet
 import org.opensaml.core.criterion.EntityIdCriterion
+import org.opensaml.saml.common.xml.SAMLConstants
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver
+import org.opensaml.xmlsec.signature.support.SignatureConstants
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
@@ -48,7 +52,7 @@ import java.time.Instant
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
-@ContextConfiguration(classes=[ JPAMRSIConfig, PlaceholderResolverComponentsConfiguration ])
+@ContextConfiguration(classes=[ JPAMRSIConfig, PlaceholderResolverComponentsConfiguration, JPAXMLObjectProviderInitializerForTest ])
 class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
 
     @Autowired
@@ -182,6 +186,47 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
         // line 99 above being added to release all values, not its own thing
         def diff = DiffBuilder.compare(Input.fromString(expectedXML)).withTest(Input.fromString(resultString)).ignoreComments().ignoreWhitespace().build()
         !diff.hasDifferences()
+    }
+
+    def 'test generating AlgorithmFilter shibui-2268 entities'() {
+        given:
+        def filter = TestObjectGenerator.algorithmFilter()
+        ArrayList<String> algs = new ArrayList<>()
+        algs.add("http://www.w3.org/2001/04/xmlenc#aes128-cbc")
+        filter.setAlgorithms(algs)
+
+        AlgorithmFilterTarget target = new AlgorithmFilterTarget()
+        target.setAlgorithmFilterTargetType(AlgorithmFilterTarget.AlgorithmFilterTargetType.ENTITY)
+        ArrayList<String> entities = new ArrayList<>()
+        entities.add("https://broken.example.org/sp")
+        entities.add("https://also-broken.example.org/sp")
+        target.setValue(entities)
+        filter.setAlgorithmFilterTarget(target)
+
+        when:
+        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/2268-entity.xml', domBuilder.parseText(writer.toString()))
+    }
+
+    def 'test generating AlgorithmFilter shibui-2268 script'() {
+        given:
+        def filter = TestObjectGenerator.algorithmFilter()
+        ArrayList<String> algs = new ArrayList<>()
+        algs.add("http://www.w3.org/2001/04/xmlenc#aes128-cbc")
+        filter.setAlgorithms(algs)
+
+        AlgorithmFilterTarget target = new AlgorithmFilterTarget()
+        target.setAlgorithmFilterTargetType(AlgorithmFilterTarget.AlgorithmFilterTargetType.CONDITION_SCRIPT)
+        target.setSingleValue("\"use strict\";\nfalse;")
+        filter.setAlgorithmFilterTarget(target)
+
+        when:
+        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/2268-script.xml', domBuilder.parseText(writer.toString()))
     }
 
     def 'test generating EntityAttributesFilter xml snippet with condition script'() {
@@ -504,6 +549,34 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
 
         then:
         !DiffBuilder.compare(Input.fromStream(this.class.getResourceAsStream('/metadata/984-3-expected.xml'))).withTest(Input.fromString(openSamlObjects.marshalToXmlString(ed))).ignoreComments().ignoreWhitespace().build().hasDifferences()
+    }
+
+    private EncryptionMethod getEncryptionMethod(String algorithm){
+        EncryptionMethod encryptionMethod =  new EncryptionMethod()
+        encryptionMethod.setElementLocalName(EncryptionMethod.DEFAULT_ELEMENT_LOCAL_NAME)
+        encryptionMethod.setNamespacePrefix(SAMLConstants.SAML20MD_PREFIX)
+        encryptionMethod.setNamespaceURI(SAMLConstants.SAML20MD_NS)
+        encryptionMethod.setSchemaLocation(SAMLConstants.SAML20MD_SCHEMA_LOCATION)
+        encryptionMethod.setAlgorithm(algorithm)
+        return encryptionMethod
+    }
+
+    private AlgorithmDigestMethod getDigestMethod(String algorithm) {
+        AlgorithmDigestMethod dm = new AlgorithmDigestMethod()
+        dm.setNamespaceURI(SAMLConstants.SAML20ALG_NS)
+        dm.setElementLocalName(AlgorithmDigestMethod.DEFAULT_ELEMENT_LOCAL_NAME)
+        dm.setNamespacePrefix(SAMLConstants.SAML20ALG_PREFIX)
+        dm.setAlgorithm(algorithm)
+        return dm
+    }
+
+    private SignatureDigestMethod getSignatureDigestMethod(String algorithm) {
+        SignatureDigestMethod dm = new SignatureDigestMethod()
+        dm.setNamespaceURI(SignatureConstants.XMLSIG_NS)
+        dm.setElementLocalName(SignatureDigestMethod.DEFAULT_ELEMENT_LOCAL_NAME)
+        dm.setNamespacePrefix(SignatureConstants.XMLSIG_PREFIX)
+        dm.setAlgorithm(algorithm)
+        return dm
     }
 
     static genXmlSnippet(MarkupBuilder xml, Closure xmlNodeGenerator) {
