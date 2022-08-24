@@ -35,6 +35,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -100,6 +101,22 @@ public class MetadataResolversController {
             transformer.transform(new DOMSource(metadataResolverService.generateConfiguration()), new StreamResult(writer));
             return ResponseEntity.ok(writer.toString());
         }
+    }
+
+    @GetMapping(value = "/MetadataResolvers/{resourceId}", produces = "application/xml")
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getOneXml(@PathVariable String resourceId) throws TransformerException {
+        MetadataResolver resolver = resolverRepository.findByResourceId(resourceId);
+        if (resolver == null) {
+            return ResponseEntity.notFound().build();
+        }
+        StringWriter writer = new StringWriter();
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+        transformer.transform(new DOMSource(metadataResolverService.generateSingleMetadataConfiguration(resolver)), new StreamResult(writer));
+        return ResponseEntity.ok(writer.toString());
     }
 
     @GetMapping(value = "/MetadataResolvers/External", produces = "application/xml")
