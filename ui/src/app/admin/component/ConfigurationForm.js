@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faSave } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faSave, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Highlighter, Menu, MenuItem, Token, Typeahead } from 'react-bootstrap-typeahead';
 import Translate from '../../i18n/components/translate';
 import { ToggleButton } from '../../form/component/ToggleButton';
@@ -150,6 +150,7 @@ export function ConfigurationForm({ configuration = {}, errors = [], schema, onS
                                     <th>Category</th>
                                     <th>Type</th>
                                     <th>Value</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -164,6 +165,12 @@ export function ConfigurationForm({ configuration = {}, errors = [], schema, onS
                                                 label="value">
                                                 <Form.Control type="text" placeholder="Value" />
                                             </FloatingLabel>
+                                        </td>
+                                        <td>
+                                            <Button variant="danger">
+                                                <FontAwesomeIcon icon={faTrash} size="lg" />
+                                                Remove
+                                            </Button>
                                         </td>
                                     </tr>
                                 ))}

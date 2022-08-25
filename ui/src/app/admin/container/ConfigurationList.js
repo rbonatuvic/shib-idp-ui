@@ -49,17 +49,13 @@ export function ConfigurationList({ configurations, onDelete }) {
                                                     <td className="align-middle">{c.name}</td>
                                                     <td className="text-end">
                                                         <React.Fragment>
-                                                            <Link to={`../configurations/${c.resourceId}/edit`} className={`btn btn-link text-primary`}>
+                                                            <Link to={`../configurations/${c.resourceId}/edit`} className={`btn btn-primary`}>
                                                                 <FontAwesomeIcon icon={faDownload} size="lg" />
-                                                                <span className="sr-only">
-                                                                    <Translate value="action.download">Download</Translate>
-                                                                </span>
+                                                                &nbsp; <Translate value="action.download">Download</Translate>
                                                             </Link>
-                                                            <Button variant="link" className="text-danger" onClick={() => block(() => remove(c.resourceId))}>
+                                                            <Button variant="danger" className="ms-2" onClick={() => block(() => remove(c.resourceId))}>
                                                                 <FontAwesomeIcon icon={faTrash} size="lg" />
-                                                                <span className="sr-only">
-                                                                    <Translate value="action.delete">Delete</Translate>
-                                                                </span>
+                                                                &nbsp; <Translate value="action.delete">Delete</Translate>
                                                             </Button>
                                                         </React.Fragment>
                                                     </td>
