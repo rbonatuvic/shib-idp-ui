@@ -29,6 +29,13 @@ export const BaseFilterDefinition = {
                         errors[targetProp].value.addError('message.required-for-scripts');
                     }
                 }
+
+                if (formData[targetProp][typeProp] === 'CONDITION_REF') {
+                    const { [targetProp]: { value } } = formData;
+                    if (!value[0]) {
+                        errors[targetProp].value.addError('message.required-for-condition-ref');
+                    }
+                }
             }
             
             return errors;

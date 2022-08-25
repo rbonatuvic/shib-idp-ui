@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MetadataProvider id="ShibbolethMetadata"
+                  xmlns="urn:mace:shibboleth:2.0:metadata"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd"
+                  xsi:type="ChainingMetadataProvider">
+    <MetadataFilter xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"
+                    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+                    xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+                    xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
+                    xmlns:security="urn:mace:shibboleth:2.0:security"
+                    xmlns:xenc11="http://www.w3.org/2009/xmlenc11#"
+                    xsi:schemaLocation="urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:metadata:algsupport https://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-metadata-algsupport-v1.0.xsd http://www.w3.org/2000/09/xmldsig# https://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd http://www.w3.org/2009/xmlenc11# https://www.w3.org/TR/xmlenc-core1/xenc-schema-11.xsd"
+                    xsi:type="Algorithm">
+
+        <md:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/>
+
+        <Entity>https://broken.example.org/sp</Entity>
+        <Entity>https://also-broken.example.org/sp</Entity>
+
+    </MetadataFilter>
+</MetadataProvider>
