@@ -552,6 +552,9 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
     @Override
     Document generateSingleMetadataConfiguration(edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr) {
+        if (mr instanceof ExternalMetadataResolver) {
+            return generateExternalMetadataFilterConfiguration();
+        }
         new StringWriter().withCloseable { writer ->
             def xml = new MarkupBuilder(writer)
             xml.omitEmptyAttributes = true
