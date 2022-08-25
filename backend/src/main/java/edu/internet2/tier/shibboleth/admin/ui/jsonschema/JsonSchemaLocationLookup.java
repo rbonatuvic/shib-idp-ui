@@ -1,11 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.jsonschema;
 
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ALGORITHM_FILTER;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.DYNAMIC_HTTP_METADATA_RESOLVER;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.EXTERNAL_METADATA_RESOLVER;
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.FILESYSTEM_METADATA_RESOLVER;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.LOCAL_DYNAMIC_METADATA_RESOLVER;
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.DYNAMIC_HTTP_METADATA_RESOLVER;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.NAME_ID_FORMAT_FILTER;
 
 /**
@@ -104,5 +105,17 @@ public abstract class JsonSchemaLocationLookup {
         return resourceLocationRegistry
                 .lookup(NAME_ID_FORMAT_FILTER)
                 .orElseThrow(() -> new IllegalStateException("JSON schema resource location for name id format filter is not registered."));
+    }
+
+    /**
+     * Searches algorithm filter JSON schema resource location object in the given location registry.
+     *
+     * @param resourceLocationRegistry
+     * @return algorithm filter JSON schema resource location object
+     * @throws IllegalStateException if schema is not found in the given registry
+     */
+    public static JsonSchemaResourceLocation algorithmFilterSchema(JsonSchemaResourceLocationRegistry resourceLocationRegistry) {
+        return resourceLocationRegistry.lookup(ALGORITHM_FILTER)
+                        .orElseThrow(() -> new IllegalStateException("JSON schema resource location for algorithm filter is not registered."));
     }
 }
