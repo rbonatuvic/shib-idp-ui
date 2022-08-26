@@ -99,6 +99,7 @@ public class JsonSchemaResourceLocation {
         // filter types
         ENTITY_ATTRIBUTES_FILTERS("EntityAttributesFilters"),
         NAME_ID_FORMAT_FILTER("NameIdFormatFilter"),
+        ALGORITHM_FILTER("AlgorithmFilter"),
 
          // resolver types
         FILE_BACKED_HTTP_METADATA_RESOLVER("FileBackedHttpMetadataResolver"),

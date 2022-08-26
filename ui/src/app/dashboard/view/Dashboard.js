@@ -26,13 +26,13 @@ export function Dashboard () {
 
     const isAdmin = useIsAdmin();
 
-    const loading = useCurrentUserLoading();
+    const loadingUser = useCurrentUserLoading();
 
     const [actions, setActions] = React.useState(0);
     const [users, setUsers] = React.useState([]);
     const [sources, setSources] = React.useState([]);
 
-    const { get, response } = useFetch(`${API_BASE_PATH}`, {
+    const { get, response, loading } = useFetch(`${API_BASE_PATH}`, {
         cachePolicy: 'no-cache'
     });
 
@@ -64,7 +64,7 @@ export function Dashboard () {
 
     return (
         <div className="container-fluid p-3" role="navigation">
-            {loading ?
+            {loadingUser ?
             <div className="d-flex justify-content-center text-primary mt-5">
                 <FontAwesomeIcon icon={faSpinner} spin={true} pulse={true} size="3x" />
             </div>
@@ -109,9 +109,18 @@ export function Dashboard () {
                 } />
                 <Route path={`${path}/admin/actions`} render={() =>
                     <ProtectRoute redirectTo="/dashboard">
-                        <ActionsTab sources={sources} users={users} reloadSources={loadSources} reloadUsers={loadUsers} />
+                        <ActionsTab
+                            sources={sources}
+                            users={users}
+                            reloadSources={loadSources}
+                            reloadUsers={loadUsers}
+                            loadingSources={sourceLoader.loading}
+                            loadingUsers={loading} />
                     </ProtectRoute>
                 } />
+                <Route exact path={`${path}/*`}>
+                    <Redirect to={`${url}/metadata/manager/resolvers`} />
+                </Route>
             </Switch></>
             }
         </div>
