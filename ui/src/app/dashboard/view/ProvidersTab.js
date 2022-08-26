@@ -8,13 +8,14 @@ import { Ordered } from '../component/Ordered';
 import { useIsAdmin } from '../../core/user/UserContext';
 import Alert from 'react-bootstrap/Alert';
 import { MetadataActions } from '../../admin/container/MetadataActions';
+import Spinner from '../../core/components/Spinner';
 const searchProps = ['name', '@type', 'createdBy'];
 
 export function ProvidersTab () {
 
     const [providers, setProviders] = React.useState([]);
 
-    const { get, response } = useMetadataEntities('provider', {
+    const { get, response, loading } = useMetadataEntities('provider', {
         cachePolicy: 'no-cache'
     });
 
@@ -54,7 +55,9 @@ export function ProvidersTab () {
                                             last={last}
                                             onEnable={(p, e) => enable(p, e, loadProviders)}
                                             onOrderUp={onOrderUp}
-                                            onOrderDown={onOrderDown}></ProviderList>
+                                            onOrderDown={onOrderDown}>
+                                                {loading && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
+                                            </ProviderList>
                                     }
                                 </MetadataActions>
                                 }

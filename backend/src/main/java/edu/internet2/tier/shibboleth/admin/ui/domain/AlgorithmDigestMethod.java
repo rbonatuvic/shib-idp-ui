@@ -5,14 +5,14 @@ import lombok.EqualsAndHashCode;
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
 
-@Entity
+@Entity(name = "DigestMethod") // for backwards compatibility instead of dealing with renaming the table
 @EqualsAndHashCode(callSuper = true)
-public class DigestMethod extends AbstractElementExtensibleXMLObject implements org.opensaml.saml.ext.saml2alg.DigestMethod {
+public class AlgorithmDigestMethod extends AbstractElementExtensibleXMLObject implements org.opensaml.saml.ext.saml2alg.DigestMethod {
     private String algorithm;
 
-    public DigestMethod() {}
+    public AlgorithmDigestMethod() {}
 
-    public DigestMethod(String algorithm) {
+    public AlgorithmDigestMethod(String algorithm) {
         this.algorithm = algorithm;
     }
 

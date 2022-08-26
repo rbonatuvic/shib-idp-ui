@@ -3,7 +3,7 @@ import { InfoIcon } from "../InfoIcon";
 
 const DescriptionField = ({ description }) => {
     if (description) {
-        return <InfoIcon value={description} />;
+        return <InfoIcon value={description} placement="auto" />;
     }
 
     return null;
