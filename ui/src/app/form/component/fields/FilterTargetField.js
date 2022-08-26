@@ -128,7 +128,8 @@ const FilterTargetField = ({
     };
 
     const selectType = (option) => {
-        setSelectedTarget([]);
+        const t = option.value === 'REGEX' || option.value === 'CONDITION_REF' ? [''] : [];
+        setSelectedTarget(t);
         setSelectedType(option);
     };
 
@@ -145,7 +146,7 @@ const FilterTargetField = ({
                         <label htmlFor={id} className="d-flex justify-content-start align-items-center control-label">
                             <Translate value="action.search-by">Search By</Translate>
                             <FontAwesomeIcon icon={faAsterisk} className="text-danger ms-1 me-2" />
-                            <InfoIcon value={translate('action.search-by')}></InfoIcon>
+                            <InfoIcon value={translate('tooltip.search-by')}></InfoIcon>
                         </label>
                         <Dropdown>
                             <Dropdown.Toggle variant="outline-secondary" id={`dropdown-${type.title}`}>
@@ -170,7 +171,7 @@ const FilterTargetField = ({
                                 <i className="fa fa-asterisk text-danger" aria-hidden="true"></i>
                             </span>
                             <span>
-                                <InfoIcon value={translate('label.search-criteria-by')} params={{ displayType: translate(displayType) }}></InfoIcon>
+                                <InfoIcon value={translate('tooltip.search-criteria-by', { displayType: translate(displayType) })}></InfoIcon>
                             </span>
                         </label>
                         <div className="d-flex justify-content-between">
@@ -240,7 +241,6 @@ const FilterTargetField = ({
                                         {errorSchema?.value?.__errors ?
                                             <small className="form-text text-danger">
                                                 {errors}
-                                                
                                             </small> :
                                             <small id="regex-help" className="form-text text-secondary">
                                                 <Translate value="message.required-for-regex">Required for Regex</Translate>
@@ -249,14 +249,33 @@ const FilterTargetField = ({
                                         }
                                     </>
                                 }
-                                
+                                {targetType === 'CONDITION_REF' &&
+                                    <>
+                                        <input id="targetInput"
+                                            className="form-control"
+                                            type="text"
+                                            name="script"
+                                            value={selectedTarget[0]}
+                                            onChange={ ({target: { value }}) => handleTextChange(value) } />
+                                        {errorSchema?.value?.__errors ?
+                                            <small className="form-text text-danger">
+                                                {errors}
+                                            </small> :
+                                            <small id="regex-help" className="form-text text-secondary">
+                                                <Translate value="message.required-for-condition-ref">Required for Condition Ref</Translate>
+                                                &nbsp;
+                                            </small>
+                                        }
+                                    </>
+                                }
                             </div>
                             {targetType === 'ENTITY' &&
                                 <div className="ms-2">
                                     <Button variant="success"
                                         type="button"
                                         disabled={!term || !match}
-                                        onClick={() => onSelectValue(term)}>
+                                        onClick={() => onSelectValue(term)}
+                                        style={{minWidth: '160px'}}>
                                         <Translate value="action.add-entity-id">Add Entity ID</Translate>&nbsp;&nbsp;
                                         <FontAwesomeIcon icon={faPlus} />
                                     </Button>

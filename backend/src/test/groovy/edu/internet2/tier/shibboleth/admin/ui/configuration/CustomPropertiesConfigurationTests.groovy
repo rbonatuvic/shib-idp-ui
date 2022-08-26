@@ -25,7 +25,7 @@ class CustomPropertiesConfigurationTests extends AbstractBaseDataJpaTest {
 
         expect:
         ceadService.getAllDefinitions().size() == 0
-        configUnderTest.getOverrides().size() == 10
+        configUnderTest.getOverrides().size() == 11
         
         def ca = new CustomEntityAttributeDefinition().with {
             it.name = "newDefName"
@@ -38,7 +38,7 @@ class CustomPropertiesConfigurationTests extends AbstractBaseDataJpaTest {
         entityManager.flush()
         
         ceadService.getAllDefinitions().size() == 1
-        configUnderTest.getOverrides().size() == 11
+        configUnderTest.getOverrides().size() == 12
         
         def ca2 = new CustomEntityAttributeDefinition().with {
             it.name = "newDefName2"
@@ -51,12 +51,12 @@ class CustomPropertiesConfigurationTests extends AbstractBaseDataJpaTest {
         entityManager.flush()
         
         ceadService.getAllDefinitions().size() == 2
-        configUnderTest.getOverrides().size() == 12
+        configUnderTest.getOverrides().size() == 13
         
         ceadService.deleteDefinition(ca)
         entityManager.flush()
         
         ceadService.getAllDefinitions().size() == 1
-        configUnderTest.getOverrides().size() == 11
+        configUnderTest.getOverrides().size() == 12
     }
 }

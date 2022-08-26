@@ -93,6 +93,7 @@
                 },
                 "x509Certificates": {
                     "title": "label.x509-certificates",
+                    "description": "tooltip.x509-certificates",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/Certificate"
@@ -102,7 +103,7 @@
         },
         "assertionConsumerServices": {
             "title": "label.assertion-consumer-service-endpoints",
-            "description": "",
+            "description": "tooltip.assertion-consumer-service-endpoints",
             "type": "array",
             "items": {
                 "$ref": "#/definitions/AssertionConsumerService"

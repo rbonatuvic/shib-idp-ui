@@ -9,18 +9,9 @@ import { Translate } from '../../i18n/components/translate';
 import { EntityTypeahead } from './EntityTypeahead';
 import kebabCase from 'lodash/kebabCase';
 import { useMetadataSources } from '../hooks/api';
+import { useMetadataSourceSections } from '../domain/source/definition/SourceDefinition';
 
-const sections = [
-    { i18nKey: 'organizationInformation', property: 'organization' },
-    { i18nKey: 'contacts', property: 'contacts' },
-    { i18nKey: 'uiMduiInfo', property: 'mdui' },
-    { i18nKey: 'spSsoDescriptorInfo', property: 'serviceProviderSsoDescriptor' },
-    { i18nKey: 'logoutEndpoints', property: 'logoutEndpoints' },
-    { i18nKey: 'securityDescriptorInfo', property: 'securityInfo' },
-    { i18nKey: 'assertionConsumerServices', property: 'assertionConsumerServices' },
-    { i18nKey: 'relyingPartyOverrides', property: 'relyingPartyOverrides' },
-    { i18nKey: 'attributeRelease', property: 'attributeRelease' }
-];
+
 
 export function CopySource({ copy, onNext }) {
 
@@ -63,6 +54,8 @@ export function CopySource({ copy, onNext }) {
     }, [selected, setValue]);
 
     const sourceIds = data.map(p => p.entityId);
+
+    const sections = useMetadataSourceSections();
 
     return (
         <>
@@ -162,7 +155,7 @@ export function CopySource({ copy, onNext }) {
                                     <td><span className="mb-0" id={`property-checkbox-${i}`}><Translate value={`label.${kebabCase(item.i18nKey)}`} /></span></td>
                                     <td>
                                         <Form.Check
-                                            custom
+                                            custom={'true'}
                                             type={'checkbox'}
                                             id={`property-checkbox-${i}-check`}
                                             onChange={({ target: { checked } }) => onSelect(item, checked)}
