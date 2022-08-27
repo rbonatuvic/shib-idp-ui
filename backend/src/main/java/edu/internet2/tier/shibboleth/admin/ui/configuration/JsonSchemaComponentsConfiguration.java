@@ -2,23 +2,22 @@ package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.JsonSchemaBuilderService;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.*;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.JsonSchemaLocationBuilder;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ALGORITHM_FILTER;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.DYNAMIC_HTTP_METADATA_RESOLVER;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.EXTERNAL_METADATA_RESOLVER;
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.FILESYSTEM_METADATA_RESOLVER;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.LOCAL_DYNAMIC_METADATA_RESOLVER;
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.DYNAMIC_HTTP_METADATA_RESOLVER;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.NAME_ID_FORMAT_FILTER;
 
 /**
@@ -58,7 +57,15 @@ public class JsonSchemaComponentsConfiguration {
     @Setter
     private String nameIdFormatFilterUiSchemaLocation = "classpath:nameid-filter.schema.json";
 
+    //Configured via @ConfigurationProperties (using setter method) with 'shibui.external-metadata-resolver-ui-schema-location' property and
+    // default value set here if that property is not explicitly set in application.properties
+    @Setter
     private String externalMetadataResolverUiSchemaLocation = "classpath:external.schema.json";
+
+    //Configured via @ConfigurationProperties (using setter method) with 'shibui.algorithm-filter-ui-schema-location' property and
+    // default value set here if that property is not explicitly set in application.properties
+    @Setter
+    private String algorithmFilterUiSchemaLocation = "classpath:algorithm-filter.schema.json";
 
     @Bean
     public JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry(ResourceLoader resourceLoader, ObjectMapper jacksonMapper) {
@@ -101,6 +108,12 @@ public class JsonSchemaComponentsConfiguration {
                         .build())
                 .register(NAME_ID_FORMAT_FILTER, JsonSchemaLocationBuilder.with()
                         .jsonSchemaLocation(nameIdFormatFilterUiSchemaLocation)
+                        .resourceLoader(resourceLoader)
+                        .jacksonMapper(jacksonMapper)
+                        .detectMalformedJson(true)
+                        .build())
+                .register(ALGORITHM_FILTER, JsonSchemaLocationBuilder.with()
+                        .jsonSchemaLocation(algorithmFilterUiSchemaLocation)
                         .resourceLoader(resourceLoader)
                         .jacksonMapper(jacksonMapper)
                         .detectMalformedJson(true)
