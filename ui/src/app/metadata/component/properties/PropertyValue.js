@@ -14,7 +14,7 @@ export function PropertyValue ({ name, value, columns, className }) {
         { name && value !== null && value !== undefined  ? 
                 <OverlayTrigger trigger={['hover', 'focus']} placement="left" overlay={(
                     <Popover variant="info">
-                        <Popover.Body>{value.toString()}</Popover.Body>
+                        <Popover.Body><Translate value={value.toString()}>{value.toString()}</Translate></Popover.Body>
                     </Popover>
                 )}>
                 <span

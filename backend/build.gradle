@@ -331,6 +331,12 @@ task generateSources {
                 processLine(it['@className'].toString(), 'src/main/templates/AlgorithmBuilderTemplate.java')
             }
         }
+
+        new XmlSlurper().parse(file('src/main/resources/jpa-signature-config.xml')).with { builders ->
+            builders.ObjectProviders.ObjectProvider.BuilderClass.each {
+                processLine(it['@className'].toString(), 'src/main/templates/SignatureBuilderTemplate.java')
+            }
+        }
     }
 }
 

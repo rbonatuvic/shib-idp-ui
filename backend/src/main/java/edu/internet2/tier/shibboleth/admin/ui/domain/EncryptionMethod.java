@@ -2,12 +2,14 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
 import org.hibernate.envers.Audited;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.KeySize;
 import org.opensaml.xmlsec.encryption.OAEPparams;
 
 import javax.annotation.Nullable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import java.util.List;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
@@ -16,12 +18,9 @@ public class EncryptionMethod extends AbstractElementExtensibleXMLObject impleme
 
     private String algorithm;
 
-    @Embedded
-    private KeySize keySize;
+    @Embedded private KeySize keySize;
 
-    @Embedded
-    private OAEPparams oaePparams;
-
+    @Embedded private OAEPparams oaePparams;
 
     @Nullable
     @Override
@@ -54,5 +53,10 @@ public class EncryptionMethod extends AbstractElementExtensibleXMLObject impleme
     @Override
     public void setOAEPparams(@Nullable org.opensaml.xmlsec.encryption.OAEPparams oaePparams) {
         this.oaePparams = oaePparams;
+    }
+
+    @Override
+    public List<XMLObject> getOrderedChildren() {
+        return this.getUnknownXMLObjects();
     }
 }

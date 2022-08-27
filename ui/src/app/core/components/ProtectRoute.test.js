@@ -6,7 +6,8 @@ import { ProtectRoute } from './ProtectRoute';
 const mockIsAdmin = jest.fn();
 
 jest.mock('../user/UserContext', () => ({
-    useIsAdmin: () => mockIsAdmin()
+    useIsAdmin: () => mockIsAdmin(),
+    useCurrentUser: () => ({role: 'ROLE_ADMIN'}),
 }));
 
 const renderWithRouter = (ui, { route = '/' } = {}) => {
