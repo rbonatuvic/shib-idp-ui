@@ -163,4 +163,3 @@ custom:
       helpText: tooltip.ignore-request-signatures
       attributeName: http://shibboleth.net/ns/profiles/ignoreRequestSignatures
       attributeFriendlyName: ignoreRequestSignatures
-

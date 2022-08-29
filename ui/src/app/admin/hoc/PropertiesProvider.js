@@ -2,7 +2,6 @@ import React from 'react';
 import useFetch from 'use-http';
 import API_BASE_PATH from '../../App.constant';
 
-
 const PropertiesContext = React.createContext();
 
 const { Provider, Consumer } = PropertiesContext;
