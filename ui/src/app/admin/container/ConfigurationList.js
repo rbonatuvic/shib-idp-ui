@@ -1,5 +1,5 @@
 import React from 'react';
-import { faDownload, faEdit, faPlusCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faPlusCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Button from 'react-bootstrap/Button';
@@ -46,13 +46,17 @@ export function ConfigurationList({ configurations, onDelete }) {
                                         <tbody>
                                             {(configurations?.length > 0) ? configurations.map((c, i) =>
                                                 <tr key={i}>
-                                                    <td className="align-middle">{c.name}</td>
+                                                    <td className="align-middle">
+                                                        <Link to={`../configurations/${c.resourceId}/edit`}>
+                                                            {c.name}
+                                                        </Link>
+                                                    </td>
                                                     <td className="text-end">
                                                         <React.Fragment>
-                                                            <Link to={`../configurations/${c.resourceId}/edit`} className={`btn btn-primary`}>
+                                                            <Button onClick={() => console.log('clicked')} className={`btn btn-primary`}>
                                                                 <FontAwesomeIcon icon={faDownload} size="lg" />
                                                                 &nbsp; <Translate value="action.download">Download</Translate>
-                                                            </Link>
+                                                            </Button>
                                                             <Button variant="danger" className="ms-2" onClick={() => block(() => remove(c.resourceId))}>
                                                                 <FontAwesomeIcon icon={faTrash} size="lg" />
                                                                 &nbsp; <Translate value="action.delete">Delete</Translate>

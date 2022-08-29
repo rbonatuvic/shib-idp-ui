@@ -1,74 +1,34 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faSave, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { Highlighter, Menu, MenuItem, Token, Typeahead } from 'react-bootstrap-typeahead';
+
 import Translate from '../../i18n/components/translate';
-import { ToggleButton } from '../../form/component/ToggleButton';
+import PropertySelector from './PropertySelector';
 
 import { useProperties, usePropertiesLoading } from '../hoc/PropertiesProvider';
-import { groupBy } from 'lodash';
-import { useCallback } from 'react';
+
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
-export function ConfigurationForm({ configuration = {}, errors = [], schema, onSave, onCancel }) {
+export function ConfigurationForm({ configuration = {}, schema, onSave, onCancel }) {
+
+    const { control, register, getValues, watch, formState: { errors } } = useForm({
+        defaultValues: {
+            ...configuration
+        }
+    });
+
+    const { fields, prepend, remove } = useFieldArray({
+        control,
+        name: "properties",
+    });
 
     const properties = useProperties();
     const loading = usePropertiesLoading();
 
-    const select = (data) => {
-        console.log(data);
-        setSelected(data);
-    };
-
-    const [selected, setSelected] = React.useState([]);
-
-    const [config, setConfig] = React.useState({ name: '', properties: [] });
-
-    // config.properties.filter(p => p.category === item.category).length === properties.filter(p => p.category === item.category).length
-
-    const menu = useCallback((results, menuProps, state) => {
-        let index = 0;
-        const mapped = results.map(p => !p.category || p.category === '?' ? { ...p, category: 'Misc' } : p);
-        const grouped = groupBy(mapped, 'category');
-        const items = Object.keys(grouped).sort().map((item) => (
-            <Fragment key={item}>
-                {index !== 0 && <Menu.Divider />}
-                <Menu.Header className="p-0">
-                    <MenuItem key={index}
-                        option={{category: item, propertyName: item, isCategory: true}}
-                        position={index}>
-                            {item} - Add all
-                    </MenuItem>
-                </Menu.Header>
-                {grouped[item].map((i) => {
-                    const item =
-                        <MenuItem key={index} option={i} position={index} disabled={ config.properties.some((p) => p.propertyName === i.propertyName) }>
-                            <Highlighter search={state.text}>
-                                {`- ${i.propertyName}`}
-                            </Highlighter>
-                        </MenuItem>;
-                    index += 1;
-                    return item;
-                })}
-            </Fragment>
-        ));
-
-        return <Menu {...menuProps}>{items}</Menu>;
-    }, [config.properties]);
-
-    const token = (option, { onRemove }, index) => (
-        <Token
-            key={index}
-            onRemove={onRemove}
-            option={option}>
-            {`${option.propertyName}`}
-        </Token>
-      );
-
     const addProperties = (props) => {
-
         const parsed = props.reduce((coll, prop, idx) => {
             if (prop.isCategory) {
                 return [...coll, ...properties.filter(p => p.category === prop.category)];
@@ -77,17 +37,20 @@ export function ConfigurationForm({ configuration = {}, errors = [], schema, onS
             }
         }, []);
 
-        setConfig({
-            ...config,
-            properties: [
-                ...config.properties,
-                ...parsed,
-            ]
-        });
-        setSelected([]);
+        prepend(parsed);
     };
 
-    React.useEffect(() => console.log(selected), [selected]);
+    const saveConfig = (formValues) => {
+        const parsed = formValues.properties.map(p => ({
+            propertyName: p.propertyName,
+            propertyValue: p.propertyValue,
+            configFile: p.configFile,
+        }));
+        onSave({
+            ...formValues,
+            properties: parsed
+        });
+    };
 
     return (<>
         <div className="container-fluid">
@@ -95,7 +58,7 @@ export function ConfigurationForm({ configuration = {}, errors = [], schema, onS
                 <React.Fragment>
                     <Button variant="info" className="me-2"
                         type="button"
-                        onClick={() => onSave(configuration)}
+                        onClick={() => saveConfig(getValues())}
                         disabled={errors.length > 0 || loading}
                         aria-label="Save changes to the metadata source. You will return to the dashboard">
                         <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading} />&nbsp;
@@ -109,40 +72,25 @@ export function ConfigurationForm({ configuration = {}, errors = [], schema, onS
                 </React.Fragment>
             </div>
             <hr />
-            <div className="row">
-                <div className="col-12 col-lg-6 order-2">
-                    <div className="d-flex align-items-end">
-                        <div className="flex-grow w-75">
-                            <label htmlFor="property-selector">Add properties</label>
-                            <Typeahead
-                                id='property-selector'
-                                onChange={selected => select(selected)}
-                                options={[...properties]}
-                                selected={selected}
-                                labelKey={option => `${option.propertyName}`}
-                                filterBy={['propertyName', 'category', 'displayType']}
-                                renderMenu={ menu }
-                                multiple={ true }
-                                renderToken={ token }
-                                >
-                                    {({ isMenuShown, toggleMenu }) => (
-                                        <ToggleButton isOpen={isMenuShown} onClick={e => toggleMenu()}>
-                                            <span className="sr-only">Options</span>
-                                        </ToggleButton>
-                                    )}
-                            </Typeahead>
-                        </div>
-                        <Button type="button"
-                            variant="outline-secondary"
-                            className="ms-2"
-                            onClick={() => addProperties(selected)}>Add</Button>
+            <Form>
+                <div className="row">
+                    <div className="col-12 col-lg-5">
+                        <Form.Group className="mb-3" controlId="formName">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control type="text" placeholder="Enter name" required {...register(`name`)} />
+                        </Form.Group>
                     </div>
                 </div>
-            </div>
-            <div className="my-4"></div>
-            <div className='row'>
-                <div className='col-12'>
-                    <Form>
+                <div className="row">
+                    <div className="col-12 col-lg-6 order-2">
+                        <div className="d-flex align-items-end">
+                            <PropertySelector options={properties} properties={fields} onAddProperties={ addProperties } />
+                        </div>
+                    </div>
+                </div>
+                <div className="my-4"></div>
+                <div className='row'>
+                    <div className='col-12'>
                         <table className='w-100 table align-middle'>
                             <thead>
                                 <tr>
@@ -154,20 +102,27 @@ export function ConfigurationForm({ configuration = {}, errors = [], schema, onS
                                 </tr>
                             </thead>
                             <tbody>
-                                {config.properties.map((p, idx) => (
-                                    <tr key={idx}>
+                                {fields.map((p, idx) => (
+                                    <tr key={p.id}>
                                         <td>{ p.propertyName }</td>
                                         <td>{ p.category }</td>
                                         <td>{ p.displayType }</td>
                                         <td>
-                                            <FloatingLabel
-                                                controlId={`valueInput-${p.propertyName}`}
-                                                label="value">
-                                                <Form.Control type="text" placeholder="Value" />
-                                            </FloatingLabel>
+                                            {p.displayType !== 'boolean' ?
+                                                <FloatingLabel
+                                                    controlId={`valueInput-${p.propertyName}`}
+                                                    label="property value">
+                                                    <Form.Control type={p.displayType === 'number' ? 'number' : 'text'} placeholder="Value" {...register(`properties.${idx}.propertyValue`)} />
+                                                </FloatingLabel>
+                                            :
+                                                <Form.Check type="switch"
+                                                    label={ watch(`properties.${idx}.propertyValue`) === true ? 'True' : 'False' }
+                                                    reverse={'true'} {...register(`properties.${idx}.propertyValue`)}
+                                                    className="my-3" />
+                                            }
                                         </td>
                                         <td>
-                                            <Button variant="danger">
+                                            <Button variant="danger" onClick={() => remove(idx)}>
                                                 <FontAwesomeIcon icon={faTrash} size="lg" />
                                                 Remove
                                             </Button>
@@ -176,10 +131,9 @@ export function ConfigurationForm({ configuration = {}, errors = [], schema, onS
                                 ))}
                             </tbody>
                         </table>
-                    </Form>
+                    </div>
                 </div>
-            </div>
+            </Form>
         </div>
     </>)
 }
-/**/
