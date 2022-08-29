@@ -4,7 +4,6 @@ import { Prompt, useHistory } from 'react-router-dom';
 import Translate from '../../i18n/components/translate';
 import { useConfiguration } from '../hooks';
 import { Schema } from '../../form/Schema';
-import { FormManager } from '../../form/FormManager';
 import { ConfigurationForm } from '../component/ConfigurationForm';
 
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
