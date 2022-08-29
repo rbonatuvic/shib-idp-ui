@@ -21,11 +21,11 @@ export function NewConfiguration() {
 
     const [blocking, setBlocking] = React.useState(false);
 
-    async function save(property) {
+    async function save(config) {
         let toast;
-        const resp = await post(``, property);
+        const resp = await post(``, config);
         if (response.ok) {
-            gotoDetail({ refresh: true });
+            gotoList({ refresh: true });
             toast = createNotificationAction(`Added property successfully.`, NotificationTypes.SUCCESS);
         } else {
             toast = createNotificationAction(`${resp.errorCode} - ${translator(resp.errorMessage)}`, NotificationTypes.ERROR);
@@ -36,13 +36,15 @@ export function NewConfiguration() {
     };
 
     const cancel = () => {
-        gotoDetail();
+        gotoList();
     };
 
-    const gotoDetail = (state = null) => {
+    const gotoList = (state = null) => {
         setBlocking(false);
-        history.push(`/properties`, state);
+        history.push(`/configurations`, state);
     };
+
+    const [configuration] = React.useState({});
 
     return (
         <div className="container-fluid p-3">
@@ -64,16 +66,12 @@ export function NewConfiguration() {
                     <PropertiesProvider>
                         <Schema path={`/${BASE_PATH}assets/schema/configuration/configuration.json`}>
                             {(schema) =>
-                                <FormManager initial={{}}>
-                                    {(data, errors) =>
-                                        <ConfigurationForm
-                                            configuration={data}
-                                            errors={errors}
-                                            schema={schema}
-                                            loading={loading}
-                                            onSave={(data) => save(data)}
-                                            onCancel={() => cancel()} />}
-                                </FormManager>}
+                                <ConfigurationForm
+                                    configuration={configuration}
+                                    schema={schema}
+                                    loading={loading}
+                                    onSave={(data) => save(data)}
+                                    onCancel={() => cancel()} />}
                         </Schema>
                     </PropertiesProvider>
                 </div>

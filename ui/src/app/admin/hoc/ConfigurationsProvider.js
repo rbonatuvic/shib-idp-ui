@@ -15,7 +15,7 @@ export function ConfigurationsProvider({ children, cache = 'no-cache' }) {
     });
 
     async function loadConfigurations() {
-        const list = await get(`assets/data/configurations.json`);
+        const list = await get(`shib/property/set`);
         if (response.ok) {
             setConfigurations(list);
         }

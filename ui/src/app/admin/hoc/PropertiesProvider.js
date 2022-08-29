@@ -1,8 +1,6 @@
 import React from 'react';
 import useFetch from 'use-http';
-import API_BASE_PATH, { BASE_PATH } from '../../App.constant';
-import has from 'lodash/has';
-import { groupBy } from 'lodash';
+import API_BASE_PATH from '../../App.constant';
 
 
 const PropertiesContext = React.createContext();

@@ -1,7 +1,7 @@
 import useFetch from 'use-http';
 import isNil from 'lodash/isNil';
 import {isValidRegex} from '../core/utility/is_valid_regex';
-import API_BASE_PATH, { BASE_PATH } from '../App.constant';
+import API_BASE_PATH from '../App.constant';
 
 export function useGroups (opts = { cachePolicy: 'no-cache' }) {
     return useFetch(`${API_BASE_PATH}/admin/groups`, opts);
@@ -48,11 +48,11 @@ export function useRoleUiSchema() {
 }
 
 export function useConfigurations (opts = { cachePolicy: 'no-cache' }) {
-    return useFetch(`${BASE_PATH}/`, opts);
+    return useFetch(`${API_BASE_PATH}/`, opts);
 }
 
-export function useConfiguration(id, opts = { cachePolicy: 'no-cache' }) {
-    return useFetch(`${API_BASE_PATH}/admin/configuration/${id}`, opts);
+export function useConfiguration(opts = { cachePolicy: 'no-cache' }) {
+    return useFetch(`${API_BASE_PATH}/shib/property/set`, opts);
 }
 
 export function useConfigurationUiSchema () {
