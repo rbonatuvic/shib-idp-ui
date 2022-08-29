@@ -58,7 +58,7 @@ public class ShibPropertiesController {
         return ResponseEntity.ok(service.getAllPropertySets());
     }
 
-    @GetMapping(value="/property/set/{resourceId}", produces="applcation/json")
+    @GetMapping(value="/property/set/{resourceId}", produces="application/json")
     @Transactional(readOnly = true)
     @Operation(description = "Return the property set with the given resourceId",
                summary = "Return the property set with the given resourceId", method = "GET")
