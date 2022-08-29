@@ -61,6 +61,7 @@ const SelectWidget = ({
     onFocus,
     placeholder,
     rawErrors = [],
+    uiSchema,
 }) => {
     const { enumOptions, enumDisabled } = options;
 
@@ -120,6 +121,9 @@ const SelectWidget = ({
                 onChange={(event) => {
                     const newValue = getValue(event, multiple);
                     onChange(processValue(schema, newValue));
+                    if (uiSchema.checkOnChange) {
+                        setTouched(true);
+                    }
                 }}>
                 {!multiple && schema.default === undefined && (
                     <option value="">{translator(placeholder)}</option>
