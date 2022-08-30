@@ -1,15 +1,16 @@
 import React from 'react';
-import { faDownload, faPlusCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faEdit, faPlusCircle, faSpinner, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { Link } from 'react-router-dom';
 
 import { Translate } from '../../i18n/components/translate';
 
 import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
 
-export function ConfigurationList({ configurations, onDelete }) {
+export function ConfigurationList({ configurations, onDelete, loading }) {
 
     const remove = (id) => {
         onDelete(id);
@@ -19,6 +20,11 @@ export function ConfigurationList({ configurations, onDelete }) {
         <DeleteConfirmation title={`message.delete-property-title`} body={`message.delete-property-body`}>
             {(block) =>
                 <div className="container-fluid p-3">
+                    {loading ? 
+                        <div className="d-flex justify-content-end flex-fill">
+                            <FontAwesomeIcon icon={faSpinner} spin={true} pulse={true} size="lg" />
+                        </div>
+                    :
                     <section className="section">
                         <div className="section-body border border-top-0 border-primary">
                             <div className="section-header bg-primary p-2 text-light">
@@ -52,16 +58,20 @@ export function ConfigurationList({ configurations, onDelete }) {
                                                         </Link>
                                                     </td>
                                                     <td className="text-end">
-                                                        <React.Fragment>
-                                                            <Button onClick={() => console.log('clicked')} className={`btn btn-primary`}>
-                                                                <FontAwesomeIcon icon={faDownload} size="lg" />
-                                                                &nbsp; <Translate value="action.download">Download</Translate>
-                                                            </Button>
-                                                            <Button variant="danger" className="ms-2" onClick={() => block(() => remove(c.resourceId))}>
+                                                        <Button onClick={() => console.log('clicked')} className={`btn btn-success`}>
+                                                            <FontAwesomeIcon icon={faDownload} size="lg" />
+                                                            &nbsp; <Translate value="action.download">Download single file</Translate>
+                                                        </Button>
+                                                        <ButtonGroup aria-label="Actions" className="ms-4" >
+                                                            <Link className="btn btn-primary" to={`../configurations/${c.resourceId}/edit`}>
+                                                                <FontAwesomeIcon icon={faEdit} size="lg" />
+                                                                &nbsp; Edit
+                                                            </Link>
+                                                            <Button variant="danger"onClick={() => block(() => remove(c.resourceId))}>
                                                                 <FontAwesomeIcon icon={faTrash} size="lg" />
                                                                 &nbsp; <Translate value="action.delete">Delete</Translate>
                                                             </Button>
-                                                        </React.Fragment>
+                                                        </ButtonGroup>
                                                     </td>
                                                 </tr>
                                             ) : <tr>
@@ -73,6 +83,7 @@ export function ConfigurationList({ configurations, onDelete }) {
                             </div>
                         </div>
                     </section>
+                    }
                 </div>
             }
         </DeleteConfirmation>

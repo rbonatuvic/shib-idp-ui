@@ -7,12 +7,12 @@ import { faSpinner, faSave, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Translate from '../../i18n/components/translate';
 import PropertySelector from './PropertySelector';
 
-import { useProperties, usePropertiesLoading } from '../hoc/PropertiesProvider';
+import { useProperties } from '../hoc/PropertiesProvider';
 
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
-export function ConfigurationForm({ configuration = {}, schema, onSave, onCancel }) {
+export function ConfigurationForm({ configuration = {}, loading, onSave, onCancel }) {
 
     const { control, register, getValues, watch, formState: { errors } } = useForm({
         defaultValues: {
@@ -26,7 +26,6 @@ export function ConfigurationForm({ configuration = {}, schema, onSave, onCancel
     });
 
     const properties = useProperties();
-    const loading = usePropertiesLoading();
 
     const addProperties = (props) => {
         const parsed = props.reduce((coll, prop, idx) => {
@@ -52,6 +51,8 @@ export function ConfigurationForm({ configuration = {}, schema, onSave, onCancel
         });
     };
 
+    React.useEffect(() => console.log(configuration), [configuration]);
+
     return (<>
         <div className="container-fluid">
             <div className="d-flex justify-content-end align-items-center">
@@ -66,7 +67,9 @@ export function ConfigurationForm({ configuration = {}, schema, onSave, onCancel
                     </Button>
                     <Button variant="secondary"
                         type="button"
-                        onClick={() => onCancel()} aria-label="Cancel changes, go back to dashboard">
+                        onClick={() => onCancel()}
+                        disabled={loading}
+                        aria-label="Cancel changes, go back to dashboard">
                         <Translate value="action.cancel">Cancel</Translate>
                     </Button>
                 </React.Fragment>
