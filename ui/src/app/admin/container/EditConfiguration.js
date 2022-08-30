@@ -70,7 +70,7 @@ export function EditConfiguration() {
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
-                            <span className="lead"><Translate value="label.new-configuration">Create new configuration set</Translate></span>
+                            <span className="lead"><Translate value="label.edit-configuration">Edit configuration set</Translate></span>
                         </div>
                     </div>
                 </div>
