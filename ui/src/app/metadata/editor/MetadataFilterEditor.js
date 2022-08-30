@@ -25,6 +25,13 @@ export function MetadataFilterEditor({children, onNavigate, block}) {
     const schema = React.useContext(MetadataSchemaContext);
     const current = React.useContext(MetadataFilterContext);
 
+    React.useEffect(() => {
+        const step = definition.steps.find(step => step.id === section);
+        if (!step) {
+            onNavigate(definition.steps[0].id);
+        }
+    }, [section, current, onNavigate, definition]);
+
     const { state, dispatch } = React.useContext(MetadataFormContext);
     const { metadata, errors } = state;
 
@@ -37,6 +44,7 @@ export function MetadataFilterEditor({children, onNavigate, block}) {
     const validator = useMetadataDefinitionValidator(data, current, group);
 
     const warnings = definition.warnings && definition.warnings(metadata);
+
 
     return (
         <div className="">
