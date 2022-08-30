@@ -29,6 +29,7 @@ public class Pac4jConfigurationProperties {
     private String serviceProviderEntityId = "https://unicon.net/shibui";
     private String serviceProviderMetadataPath = "/tmp/sp-metadata.xml";
     private String typeOfAuth = "SAML2";
+    private String postLogoutURL;
 
     private boolean wantAssertionsSigned = true;
     
