@@ -10,6 +10,8 @@ import { createNotificationAction, NotificationTypes, useNotificationDispatcher 
 import { useTranslator } from '../../i18n/hooks';
 import { BASE_PATH } from '../../App.constant';
 import { PropertiesProvider } from '../hoc/PropertiesProvider';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 export function EditConfiguration() {
     const history = useHistory();
@@ -68,22 +70,24 @@ export function EditConfiguration() {
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
-                            <span className="lead"><Translate value="label.new-configuration">Create new configuration set</Translate></span>
+                            <span className="lead"><Translate value="label.edit-configuration">Edit configuration set</Translate></span>
                         </div>
                     </div>
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
+                    {loading ? 
+                    <div className="d-flex justify-content-end flex-fill">
+                        <FontAwesomeIcon icon={faSpinner} spin={true} pulse={true} size="lg" />
+                    </div>
+                    :
                     <PropertiesProvider>
-                        <Schema path={`/${BASE_PATH}assets/schema/configuration/configuration.json`}>
-                            {(schema) =>
-                                <ConfigurationForm
-                                    configuration={configuration}
-                                    schema={schema}
-                                    loading={loading}
-                                    onSave={(data) => save(data)}
-                                    onCancel={() => cancel()} />}
-                        </Schema>
+                        {configuration && <ConfigurationForm
+                            configuration={configuration}
+                            loading={loading}
+                            onSave={(data) => save(data)}
+                            onCancel={() => cancel()} /> }
                     </PropertiesProvider>
+                    }
                 </div>
             </section>
         </div>
