@@ -8,6 +8,7 @@ import net.unicon.shibui.pac4j.authenticator.ShibuiPac4JHeaderClientAuthenticato
 import net.unicon.shibui.pac4j.authenticator.ShibuiSAML2Authenticator;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
+import org.pac4j.core.engine.LogoutLogic;
 import org.pac4j.core.matching.matcher.PathMatcher;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
 import org.pac4j.http.client.direct.HeaderClient;
@@ -69,32 +70,39 @@ public class Pac4jConfiguration {
         case "SAML2":
         default:
             log.info("**** Configuring PAC4J SAML2");
-            final SAML2Configuration saml2Config = new SAML2Configuration();
-            saml2Config.setKeystorePath(pac4jConfigProps.getKeystorePath());
-            saml2Config.setKeystorePassword(pac4jConfigProps.getKeystorePassword());
-            saml2Config.setPrivateKeyPassword(pac4jConfigProps.getPrivateKeyPassword());
-            saml2Config.setIdentityProviderMetadataPath(pac4jConfigProps.getIdentityProviderMetadataPath());
-            saml2Config.setMaximumAuthenticationLifetime(pac4jConfigProps.getMaximumAuthenticationLifetime());
-            saml2Config.setServiceProviderEntityId(pac4jConfigProps.getServiceProviderEntityId());
-            saml2Config.setServiceProviderMetadataPath(pac4jConfigProps.getServiceProviderMetadataPath());
-            saml2Config.setForceServiceProviderMetadataGeneration(pac4jConfigProps.isForceServiceProviderMetadataGeneration());
-            saml2Config.setWantsAssertionsSigned(pac4jConfigProps.isWantAssertionsSigned());
-            saml2Config.setAttributeAsId(pac4jConfigProps.getSimpleProfileMapping().getUsername());
+            final SAML2Configuration saml2Config = buildSaml2ConfigFromPac4JConfiguration(pac4jConfigProps);
+
 
             final SAML2Client saml2Client = new SAML2Client(saml2Config);
+            saml2Client.setName(PAC4J_CLIENT_NAME);
             saml2Client.addAuthorizationGenerator(saml2ModelAuthorizationGenerator);
             SAML2Authenticator saml2Authenticator = new ShibuiSAML2Authenticator(saml2Config.getAttributeAsId(), saml2Config.getMappedAttributes(), userService);
             saml2Authenticator.setProfileDefinition(new CommonProfileDefinition(p -> new BetterSAML2Profile(pac4jConfigProps.getSimpleProfileMapping())));
             saml2Client.setAuthenticator(saml2Authenticator);
 
-            saml2Client.setName(PAC4J_CLIENT_NAME);
             clients.setClients(saml2Client);
             break;
         }
         config.setClients(clients);
         return config;
     }
-    
+
+    private SAML2Configuration buildSaml2ConfigFromPac4JConfiguration(Pac4jConfigurationProperties pac4jConfigProps) {
+        SAML2Configuration saml2Config = new SAML2Configuration();
+        saml2Config.setKeystorePath(pac4jConfigProps.getKeystorePath());
+        saml2Config.setKeystorePassword(pac4jConfigProps.getKeystorePassword());
+        saml2Config.setPrivateKeyPassword(pac4jConfigProps.getPrivateKeyPassword());
+        saml2Config.setIdentityProviderMetadataPath(pac4jConfigProps.getIdentityProviderMetadataPath());
+        saml2Config.setMaximumAuthenticationLifetime(pac4jConfigProps.getMaximumAuthenticationLifetime());
+        saml2Config.setServiceProviderEntityId(pac4jConfigProps.getServiceProviderEntityId());
+        saml2Config.setServiceProviderMetadataPath(pac4jConfigProps.getServiceProviderMetadataPath());
+        saml2Config.setForceServiceProviderMetadataGeneration(pac4jConfigProps.isForceServiceProviderMetadataGeneration());
+        saml2Config.setWantsAssertionsSigned(pac4jConfigProps.isWantAssertionsSigned());
+        saml2Config.setAttributeAsId(pac4jConfigProps.getSimpleProfileMapping().getUsername());
+        saml2Config.setPostLogoutURL(pac4jConfigProps.getPostLogoutURL());
+        return saml2Config;
+    }
+
     @Bean
     public ErrorPageRegistrar errorPageRegistrar() {
         return this::registerErrorPages;
