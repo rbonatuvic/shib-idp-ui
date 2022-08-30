@@ -76,6 +76,16 @@ public class ShibPropertiesController {
         return ResponseEntity.ok().header("Content-Disposition", sb.toString()).body(prepDownloadAsZip(convertPropertiesToMaps(set.getProperties())));
     }
 
+    @GetMapping(value="/property/set/{resourceId}/onefile", produces="application/zip")
+    @Transactional(readOnly = true)
+    @Operation(description = "Return the property set with the given resourceId as a zip file of a single properties files",
+               summary = "Return the property set with the given resourceId as a zip file of a single properties files", method = "GET")
+    public ResponseEntity<?> getPropertySetOneFileAsZip(@PathVariable Integer resourceId) throws EntityNotFoundException, IOException {
+        ShibPropertySet set = service.getSet(resourceId);
+        StringBuilder sb = new StringBuilder("attachment; filename=\"").append(set.getName()).append(".zip\"");
+        return ResponseEntity.ok().header("Content-Disposition", sb.toString()).body(prepDownloadAsZipWithSingleFile(convertPropertiesToMaps(set.getProperties())));
+    }
+
     private Map<String, Map<String,String>> convertPropertiesToMaps(List<ShibPropertySetting> properties) {
         HashMap<String, Map<String,String>> result = new HashMap<>();
         for (ShibPropertySetting setting:properties){
@@ -88,6 +98,25 @@ public class ShibPropertiesController {
             props.put(setting.getPropertyName(), setting.getPropertyValue());
         }
         return result;
+    }
+
+    private byte[] prepDownloadAsZipWithSingleFile(Map<String, Map<String,String>> propertiesFiles) throws IOException {
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+        ZipOutputStream zipOutputStream = new ZipOutputStream(byteOutputStream);
+        zipOutputStream.putNextEntry(new ZipEntry("shibboleth.properties"));
+
+        for (String filename : propertiesFiles.keySet()) {
+            Map<String, String> properties = propertiesFiles.get(filename);
+            StringBuilder props = new StringBuilder();
+            for (String key : properties.keySet()) {
+                props.append(key).append("=").append(properties.get(key)).append("\n");
+            }
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(props.toString().getBytes());
+            IOUtils.copy(inputStream, zipOutputStream);
+        }
+        zipOutputStream.closeEntry();
+        zipOutputStream.close();
+        return byteOutputStream.toByteArray();
     }
 
     private byte[] prepDownloadAsZip(Map<String, Map<String,String>> propertiesFiles) throws IOException {
