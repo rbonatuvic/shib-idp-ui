@@ -10,6 +10,8 @@ import { createNotificationAction, NotificationTypes, useNotificationDispatcher 
 import { useTranslator } from '../../i18n/hooks';
 import { BASE_PATH } from '../../App.constant';
 import { PropertiesProvider } from '../hoc/PropertiesProvider';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 export function EditConfiguration() {
     const history = useHistory();
@@ -73,17 +75,19 @@ export function EditConfiguration() {
                     </div>
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
+                    {loading ? 
+                    <div className="d-flex justify-content-end flex-fill">
+                        <FontAwesomeIcon icon={faSpinner} spin={true} pulse={true} size="lg" />
+                    </div>
+                    :
                     <PropertiesProvider>
-                        <Schema path={`/${BASE_PATH}assets/schema/configuration/configuration.json`}>
-                            {(schema) =>
-                                <ConfigurationForm
-                                    configuration={configuration}
-                                    schema={schema}
-                                    loading={loading}
-                                    onSave={(data) => save(data)}
-                                    onCancel={() => cancel()} />}
-                        </Schema>
+                        {configuration && <ConfigurationForm
+                            configuration={configuration}
+                            loading={loading}
+                            onSave={(data) => save(data)}
+                            onCancel={() => cancel()} /> }
                     </PropertiesProvider>
+                    }
                 </div>
             </section>
         </div>
