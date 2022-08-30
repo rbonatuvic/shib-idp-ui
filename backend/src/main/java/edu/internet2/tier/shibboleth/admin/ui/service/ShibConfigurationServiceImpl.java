@@ -118,8 +118,11 @@ public class ShibConfigurationServiceImpl implements ShibConfigurationService {
                 } else {
                     // get the entity from the map, update it, save to update list
                     ShibPropertySetting updatedEntity = existingPropMap.get(prop.getPropertyName());
+                    // the value is really the only thing that should change...
                     updatedEntity.setConfigFile(prop.getConfigFile());
                     updatedEntity.setPropertyValue(prop.getPropertyValue());
+                    updatedEntity.setCategory(prop.getCategory());
+                    updatedEntity.setDisplayType(prop.getDisplayType());
                     propertiesToUpdate.add(shibPropertySettingRepository.save(updatedEntity));
                 }
             });
