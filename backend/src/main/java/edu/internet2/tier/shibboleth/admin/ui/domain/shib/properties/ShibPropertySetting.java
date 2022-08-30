@@ -26,4 +26,10 @@ public class ShibPropertySetting {
     @Column
     private String propertyValue;
 
+    @Column
+    private String category;
+
+    @Column
+    private String displayType;
+
 }
