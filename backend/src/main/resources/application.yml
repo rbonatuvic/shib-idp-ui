@@ -22,6 +22,7 @@
 #    identityProviderMetadataPath: "/etc/shibui/idp-metadata.xml"
 #    forceServiceProviderMetadataGeneration: false
 #    callbackUrl: "https://localhost:8443/callback"
+#    postLogoutURL: "https://idp.example.com/idp/profile/Logout"  # Must set this to get IDP logout
 #    maximumAuthenticationLifetime: 3600000
 #    requireAssertedRoleForNewUsers: false
 #    saml2ProfileMapping:
