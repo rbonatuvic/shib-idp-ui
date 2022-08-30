@@ -2,31 +2,17 @@ import React, { useRef } from "react";
 
 import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
-import Button from 'react-bootstrap/Button';
+
 
 import Translate from "../../../i18n/components/translate";
 import { InfoIcon } from "../InfoIcon";
 
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAsterisk, faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { faAsterisk } from "@fortawesome/free-solid-svg-icons";
 import { useTranslator } from "../../../i18n/hooks";
+import { ToggleButton } from '../ToggleButton';
 
-const ToggleButton = ({ isOpen, onClick, disabled, children }) => (
-    <Button
-        type="button"
-        variant="outline-secondary"
-        className="toggle-button"
-        onClick={onClick}
-        disabled={disabled}
-        onMouseDown={e => {
-            // Prevent input from losing focus.
-            e.preventDefault();
-        }}>
-            {children}
-        <FontAwesomeIcon icon={isOpen ? faCaretUp : faCaretDown} />
-    </Button>
-);
 
 const OptionWidget = ({
     id,

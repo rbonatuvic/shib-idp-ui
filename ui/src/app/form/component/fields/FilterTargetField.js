@@ -324,7 +324,4 @@ const FilterTargetField = ({
     );
 };
 
-/*
-*/
-
 export default FilterTargetField;
