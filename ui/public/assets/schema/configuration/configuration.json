@@ -1,0 +1,37 @@
+{
+    "type": "object",
+    "properties": {
+        "properties": {
+            "title": "label.configuration-properties",
+            "description": "label.configuration-properties",
+            "type": "array",
+            "required": ["property", "value"],
+            "items": {
+                "type": "object",
+                "properties": {
+                    "property": {
+                        "title": "label.property-key",
+                        "description": "tooltip.property-key",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 255
+                    },
+                    "description": {
+                        "title": "label.property-descr",
+                        "description": "tooltip.property-descr",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 255
+                    },
+                    "value": {
+                        "title": "label.property-value",
+                        "description": "tooltip.property-value",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 255
+                    }
+                }
+            }
+        }
+    }
+}
