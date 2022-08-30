@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    include:
+  datasource:
+    platform: sqlserver
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://database:1433
+    username: sa
+    password: Password1
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
