@@ -6,6 +6,7 @@ import org.hibernate.envers.Audited;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
@@ -16,6 +17,7 @@ public class Description extends AbstractXMLObject implements org.opensaml.saml.
     private String xmlLang;
 
     @Column(name = "descriptionValue")
+    @Lob
     private String value;
 
     @Nullable
