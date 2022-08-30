@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    include:
+  datasource:
+    platform: postgres
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://database:5432/shibui
+    username: shibui
+    password: shibui
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect

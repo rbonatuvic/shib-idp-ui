@@ -1,0 +1,19 @@
+services:
+  database:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: shibui
+      MYSQL_USER: shibui
+      MYSQL_PASSWORD: shibui
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: mysql -u shibui --password=shibui shibui -e "select 1"
+      interval: 5s
+      retries: 5
+      start_period: 5s
+      timeout: 10s
+  shib-idp-ui:
+    depends_on:
+      database:
+        condition: service_healthy
+        
