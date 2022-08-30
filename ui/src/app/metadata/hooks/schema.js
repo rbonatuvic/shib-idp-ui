@@ -11,7 +11,11 @@ export function useUiSchema(definition, schema, current, locked = true) {
 
     const ui = React.useMemo(() => definition ? { ...definition.uiSchema } : {}, [definition]);
     const schemaKeys = React.useMemo(() => schema ? Object.keys(schema.properties) : [], [schema]);
-    const step = React.useMemo(() => definition ? definition.steps.find(step => step.id === current) : {fields: []}, [definition, current]);
+    let step = React.useMemo(() => definition ? definition.steps.find(step => step.id === current) : {fields: []}, [definition, current]);
+
+    if (!step) {
+        step = definition.steps[0];
+    }
 
     const filled = React.useMemo(() => fillInRootProperties(schemaKeys, ui), [schemaKeys, ui]);
     const mapped = React.useMemo(() => Object.keys(filled).reduce((sch, key) => {
