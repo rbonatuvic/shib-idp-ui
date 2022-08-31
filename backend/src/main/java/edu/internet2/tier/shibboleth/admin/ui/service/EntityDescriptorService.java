@@ -114,4 +114,6 @@ public interface EntityDescriptorService {
     void updateDescriptorFromRepresentation(final org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor, final EntityDescriptorRepresentation representation);
 
     EntityDescriptorRepresentation updateEntityDescriptorEnabledStatus(String resourceId, boolean status) throws EntityNotFoundException, ForbiddenException;
+
+    EntityDescriptorRepresentation createNewEntityDescriptorFromXMLOrigin(EntityDescriptor ed);
 }
