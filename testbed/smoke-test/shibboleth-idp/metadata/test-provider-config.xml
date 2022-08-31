@@ -1,0 +1,38 @@
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" entityID="test-provider-config">
+  <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:1.1:protocol">
+    <md:KeyDescriptor>
+      <ds:KeyInfo>
+        <ds:X509Data>
+          <ds:X509Certificate>
+MIIECDCCAnCgAwIBAgIUXOD+38b0Cpaynm5Wrclnzigz9rcwDQYJKoZIhvcNAQEL
+BQAwHTEbMBkGA1UEAxMSdW5pY29uLXNwb3J0aC0yNjU4MB4XDTIyMDgwNTE3MDE1
+NloXDTMyMDgwMjE3MDE1NlowHTEbMBkGA1UEAxMSdW5pY29uLXNwb3J0aC0yNjU4
+MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAynP0dUXXr0yb4oAYT5OG
+/ik+24jor0W0Z/0T0g3C4IXqDMHMdHlfPSrp6rf+PDlS+0L+GCZQC2IpntmGNEdf
+miCs9UcssZ3aBHoch0R0Og4rxu74Vk488NVXHsX75RTom5B0atPGxdmHRNIPUPNp
+F4AqAMMV18y35+ElJj5UuPZe9QEgJVzGqdH0dGvaNFPZfB7HCD7lGJiO0Remhufn
+umwrRqfQETmefCD4Wrv60I4LgUrUSqlZTpD4TaR3o1N6uSKaJPy7iANqQXoEqc3p
+jbiM+Tkv6t+q6FbEIF3zKwODzHcycaVYzqOxzVMGWtyPADBm3P/8wvDZnHWEqAcy
+9cHY7THHq8s6bdR8aIO+T0uvIqXJAO0orGVJ4b1X2OBRRneUVtxFbzbAXWN+wwKW
+Xn8M1sP9hteV9CAkp4nbyPnfwWlZYaN48QytMZhu3oQywlcc/VuDEst04IeAt/1f
+YTWmSliJwAduFXpRtQjgB/ejfLUkJHugNJe2N23dNb8ZAgMBAAGjQDA+MB0GA1Ud
+EQQWMBSCEnVuaWNvbi1zcG9ydGgtMjY1ODAdBgNVHQ4EFgQUuAUQzGLs2Psbx5aw
+ec5sz66h4TIwDQYJKoZIhvcNAQELBQADggGBAEqDt2lXrAEJ80yWLYZKM2qdif5j
+DbFI4oGMJ+6Wicfjh9iSm6CG2pSdZllypNLd7KmUJbGFS5wmP7qPAiPLOiHn6hBC
+L5ke3y8bJsaEazOmZt0IgKv2w6naEAfvR5dKbEbXsipf/k+WHyk6uLFoz9iGxZ0g
+f8MA+nWa1tJcPcGVOReN3wNNeBaRZ5y0r6oWSpwYtoBJH+wp2EoLPYhOXFjUoAZ0
+d4b+G2x9FyHU4yfnN9sTLocl/BVDiVdazMQqSvZDSWbccRsD8sz4BaLnXkLOtulv
+0qOYuVTdCivgU0lBMhvXjiEpn0ZwU+UlSgtfEgaVP8pZVgHxKrMhoOxAe85dNHun
+RyYCrByqg4lyFGzRKSTAUlx0YittvEyYOEqbSsXExViSIl+elg4PtghsYAaUphm4
++FHJo8B1rNNQp4vqikGF2WOr3D2usIS9ZbiGvTC0M8TSG39jGCqgQZaclV2yshEC
+cXQllPfIyCtMzlaGVjpXPEqahwkug4ywml9yAw==
+          </ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://test.provider.config/Shibboleth.sso/SAML2/POST" index="1"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://test.provider.config/Shibboleth.sso/SAML2/POST-SimpleSign" index="2"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="https://test.provider.config/Shibboleth.sso/SAML2/ECP" index="3"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:browser-post" Location="https://test.provider.config/Shibboleth.sso/SAML/POST" index="4"/>
+  </md:SPSSODescriptor>
+</md:EntityDescriptor>
