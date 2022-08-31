@@ -29,8 +29,11 @@ export function ConfigurationForm({ configuration = {}, loading, onSave, onCance
     const properties = useProperties();
 
     const addProperties = (props) => {
+
         const parsed = props.reduce((coll, prop, idx) => {
             if (prop.isCategory) {
+                console.log(properties.filter(p => p.category === prop.category))
+
                 return [...coll, ...properties.filter(p => p.category === prop.category)];
             } else {
                 return [...coll, prop];
