@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { Translate } from '../../i18n/components/translate';
 
 import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
-import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { useTranslator } from '../../i18n/hooks';
 import useFetch from 'use-http';
 import API_BASE_PATH from '../../App.constant';
