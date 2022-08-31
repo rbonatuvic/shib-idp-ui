@@ -11,8 +11,6 @@ export function Filter() {
 
     const { path, url } = useRouteMatch();
 
-    console.log(path, url)
-
     return (
         <Switch>
             <Route path={`${path}/list`} render={() =>

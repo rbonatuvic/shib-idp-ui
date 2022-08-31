@@ -1,0 +1,110 @@
+version: "3.8"
+
+services:
+  reverse-proxy:
+    image: library/traefik:v2.5.2
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web-secure.address=:443"
+      - "--providers.file.directory=/configuration/"
+      - "--providers.file.watch=true"
+      #- "--log.level=DEBUG"
+    networks:
+      reverse-proxy:
+        aliases:
+          - idp.unicon.local
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+      - "8443:8443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ../reverse-proxy/:/configuration/
+      - ../reverse-proxy/certs/:/certs/
+  directory:
+    build: ../directory
+    networks:
+      - idp
+    volumes:
+      - directory_data:/var/lib/ldap
+      - directory_config:/etc/ldap/slapd.d
+      - ../directory/certs:/container/service/slapd/assets/certs
+    environment:
+      LDAP_BASE_DN: "dc=unicon,dc=local"
+      LDAP_DOMAIN: "unicon.local"
+      HOSTNAME: "directory"
+      LDAP_TLS_VERIFY_CLIENT: "try"
+  database:
+    image: postgres:14-alpine
+    networks:
+      - backend
+    environment:
+      POSTGRES_PASSWORD: shibui
+      POSTGRES_USER: shibui
+      POSTGRES_DB: shibui
+  idp:
+    build: ../integration/shibboleth-idp
+    labels:
+      - "traefik.http.routers.idp.rule=Host(`idp.unicon.local`)"
+      - "traefik.http.services.idp.loadbalancer.server.port=8080"
+      - "traefik.http.routers.idp.tls=true"
+      - "traefik.docker.network=smoke-test_reverse-proxy"
+      - "traefik.enable=true"
+    depends_on:
+      - directory
+      - reverse-proxy
+    networks:
+      - reverse-proxy
+      - idp
+    volumes:
+      - dynamic_metadata:/opt/shibboleth-idp/metadata/dynamic
+      - dynamic_config:/opt/shibboleth-idp/conf/dynamic
+      - ../directory/certs/ca.crt:/opt/shibboleth-idp/credentials/ldap-server.crt
+      - ../authentication/shibboleth-idp/config/shib-idp/conf/attribute-filter.xml:/opt/shibboleth-idp/conf/attribute-filter.xml
+      - ./shibboleth-idp/conf/metadata-providers.xml:/opt/shibboleth-idp/conf/metadata-providers.xml
+      - ./shibboleth-idp/conf/access-control.xml:/opt/shibboleth-idp/conf/access-control.xml
+      - ./shibboleth-idp/metadata/test-provider-config.xml:/opt/shibboleth-idp/metadata/test-provider-config.xml
+      - ../integration/shibboleth-idp/metadata/dynamic/700bfe6fa4495100f5c193fa5b7ca4192c150923.xml:/opt/shibboleth-idp/metadata/700bfe6fa4495100f5c193fa5b7ca4192c150923.xml
+    healthcheck:
+      disable: true
+  shib-idp-ui:
+    image: unicon/shibui:latest
+    labels:
+      - "traefik.http.routers.shibui.rule=Host(`shibui.unicon.local`)"
+      - "traefik.http.services.shibui.loadbalancer.server.port=8080"
+      - "traefik.http.routers.shibui.tls=true"
+      - "traefik.docker.network=smoke-test_reverse-proxy"
+      - "traefik.enable=true"
+    depends_on:
+      database:
+        condition: service_started
+    networks:
+      - reverse-proxy
+      - backend
+    volumes:
+      - dynamic_metadata:/var/shibboleth/dynamic_metadata
+      - dynamic_config:/var/shibboleth/dynamic_config
+      - ../authentication/shibui:/conf
+      - ./shibui/application.yml:/application.yml
+      - ../integration/shibboleth-idp/credentials/shib-idp/inc-md-cert-mdq.pem:/opt/shibboleth-idp/credentials/inc-md-cert-mdq.pem
+    environment:
+      - "IDP_HOME=/opt/shibboleth-idp"
+      
+networks:
+  reverse-proxy:
+  idp:
+  backend:
+volumes:
+  directory_data:
+    driver: local
+  directory_config:
+    driver: local
+  dynamic_metadata:
+    driver: local
+  dynamic_config:
+    driver: local
+  database_data:
+    driver: local
