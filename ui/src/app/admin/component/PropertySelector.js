@@ -82,7 +82,7 @@ export function PropertySelector ({ properties, options, onAddProperties }) {
                 </Typeahead>
             </div>
             <Button type="button"
-                variant="outline-secondary"
+                variant="success"
                 className="ms-2"
                 onClick={() => add(selected)}>Add</Button>
         </Fragment>

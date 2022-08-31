@@ -11,6 +11,7 @@ import { useProperties } from '../hoc/PropertiesProvider';
 
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import { useTranslator } from '../../i18n/hooks';
 
 export function ConfigurationForm({ configuration = {}, loading, onSave, onCancel }) {
 
@@ -20,7 +21,7 @@ export function ConfigurationForm({ configuration = {}, loading, onSave, onCance
         }
     });
 
-    const { fields, prepend, remove } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control,
         name: "properties",
     });
@@ -36,7 +37,7 @@ export function ConfigurationForm({ configuration = {}, loading, onSave, onCance
             }
         }, []);
 
-        prepend(parsed);
+        append(parsed);
     };
 
     const saveConfig = (formValues) => {
@@ -44,6 +45,8 @@ export function ConfigurationForm({ configuration = {}, loading, onSave, onCance
             propertyName: p.propertyName,
             propertyValue: p.propertyValue,
             configFile: p.configFile,
+            category: p.category,
+            displayType: p.displayType
         }));
         onSave({
             ...formValues,
@@ -51,7 +54,7 @@ export function ConfigurationForm({ configuration = {}, loading, onSave, onCance
         });
     };
 
-    React.useEffect(() => console.log(configuration), [configuration]);
+    const translator = useTranslator();
 
     return (<>
         <div className="container-fluid">
@@ -79,8 +82,8 @@ export function ConfigurationForm({ configuration = {}, loading, onSave, onCance
                 <div className="row">
                     <div className="col-12 col-lg-5">
                         <Form.Group className="mb-3" controlId="formName">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control type="text" placeholder="Enter name" required {...register(`name`)} />
+                            <Form.Label><Translate value="label.configuration-name">Name</Translate></Form.Label>
+                            <Form.Control type="text" placeholder={translator('label.configuration-name-placeholder')} required {...register(`name`)} />
                         </Form.Group>
                     </div>
                 </div>
@@ -97,11 +100,11 @@ export function ConfigurationForm({ configuration = {}, loading, onSave, onCance
                         <table className='w-100 table align-middle'>
                             <thead>
                                 <tr>
-                                    <th>Property</th>
-                                    <th>Category</th>
-                                    <th>Type</th>
-                                    <th>Value</th>
-                                    <th>Action</th>
+                                    <th><Translate value="label.configuration-property">Property</Translate></th>
+                                    <th><Translate value="label.configuration-category">Category</Translate></th>
+                                    <th><Translate value="label.configuration-type">Type</Translate></th>
+                                    <th><Translate value="label.configuration-value">Value</Translate></th>
+                                    <th className="text-end"><Translate value="label.configuration-action">Action</Translate></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -114,20 +117,23 @@ export function ConfigurationForm({ configuration = {}, loading, onSave, onCance
                                             {p.displayType !== 'boolean' ?
                                                 <FloatingLabel
                                                     controlId={`valueInput-${p.propertyName}`}
-                                                    label="property value">
-                                                    <Form.Control type={p.displayType === 'number' ? 'number' : 'text'} placeholder="Value" {...register(`properties.${idx}.propertyValue`)} />
+                                                    label={translator('label.configuration-value')}>
+                                                    <Form.Control
+                                                        type={p.displayType === 'number' ? 'number' : 'text'}
+                                                        placeholder="value"
+                                                        {...register(`properties.${idx}.propertyValue`)} />
                                                 </FloatingLabel>
                                             :
                                                 <Form.Check type="switch"
-                                                    label={ watch(`properties.${idx}.propertyValue`) === true ? 'True' : 'False' }
+                                                    label={ watch(`properties.${idx}.propertyValue`) === true ? translator('value.true') : translator('value.false') }
                                                     reverse={'true'} {...register(`properties.${idx}.propertyValue`)}
                                                     className="my-3" />
                                             }
                                         </td>
-                                        <td>
+                                        <td className="text-end">
                                             <Button variant="danger" onClick={() => remove(idx)}>
                                                 <FontAwesomeIcon icon={faTrash} size="lg" />
-                                                Remove
+                                                &nbsp; <Translate value="action.remove">Remove</Translate>
                                             </Button>
                                         </td>
                                     </tr>

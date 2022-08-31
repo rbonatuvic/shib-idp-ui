@@ -9,7 +9,7 @@ import { MetadataObjectContext } from '../hoc/MetadataSelector';
 
 import { MetadataXmlContext } from '../hoc/MetadataXmlLoader';
 import { MetadataViewToggle } from '../component/MetadataViewToggle';
-import { downloadAsXml } from '../../core/utility/download_as_xml';
+import { downloadAsXml } from '../../core/utility/download_as';
 
 export function MetadataXml () {
     const { xml, reload } = React.useContext(MetadataXmlContext);

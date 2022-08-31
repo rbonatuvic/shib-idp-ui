@@ -4,17 +4,42 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Popover from 'react-bootstrap/Popover';
 import { Link } from 'react-router-dom';
 
 import { Translate } from '../../i18n/components/translate';
 
 import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
+import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
+import { useTranslator } from '../../i18n/hooks';
+import useFetch from 'use-http';
+import API_BASE_PATH from '../../App.constant';
+import { downloadAsZip } from '../../core/utility/download_as';
 
 export function ConfigurationList({ configurations, onDelete, loading }) {
 
     const remove = (id) => {
         onDelete(id);
     }
+
+    const translate = useTranslator();
+
+    const downloader = useFetch(`${API_BASE_PATH}/shib/property/set`, {
+        cachePolicy: 'no-cache',
+        headers: {
+            'Content-Type': 'application/zip',
+            'Accept': 'application/zip'
+        }
+    });
+
+    const download = async (id, type) => {
+        await downloader.get(`/${id}${ type === 'single' ? '/onefile' : '' }`);
+        const file = await downloader.response.blob();
+        if (downloader.response.ok) {
+            downloadAsZip('configuration', file);
+            console.log(file);
+        }
+    };
 
     return (
         <DeleteConfirmation title={`message.delete-property-title`} body={`message.delete-property-body`}>
@@ -46,7 +71,12 @@ export function ConfigurationList({ configurations, onDelete, loading }) {
                                                 <th>
                                                     <Translate value="label.configuration-name">Configuration Name (label)</Translate>
                                                 </th>
-                                                <th><span className="sr-only"><Translate value="label.actions">Actions</Translate></span></th>
+                                                <th className="text-center">
+                                                    <Translate value="label.download-config">Download</Translate>
+                                                </th>
+                                                <th className="text-end">
+                                                    <Translate value="label.actions">Actions</Translate>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -57,17 +87,42 @@ export function ConfigurationList({ configurations, onDelete, loading }) {
                                                             {c.name}
                                                         </Link>
                                                     </td>
+                                                    <td className="text-center">
+                                                        <div className="d-flex justify-content-center">
+
+                                                            <OverlayTrigger trigger={['hover', 'focus']} overlay={(
+                                                                <Popover variant="info">
+                                                                    <Popover.Body><Translate value={'tooltip.download-single-config'} /></Popover.Body>
+                                                                </Popover>
+                                                            )}
+                                                            aria-label={translate('')}>
+                                                                <Button onClick={() => download(c.resourceId, 'single')} variant="link" disabled={downloader.loading}>
+                                                                    <FontAwesomeIcon icon={faDownload} />
+                                                                    &nbsp; <Translate value="action.download-single-config">Single file</Translate>
+                                                                </Button>
+                                                            </OverlayTrigger>
+                                                            <div className="vr"></div>
+                                                            <OverlayTrigger trigger={['hover', 'focus']} overlay={(
+                                                                <Popover variant="info">
+                                                                    <Popover.Body><Translate value={'tooltip.download-multi-config'} /></Popover.Body>
+                                                                </Popover>
+                                                            )}
+                                                            aria-label={translate('')}>
+                                                                <Button onClick={() => download(c.resourceId, 'multi')} variant="link" disabled={downloader.loading}>
+                                                                    <FontAwesomeIcon icon={faDownload} />
+                                                                    &nbsp; <Translate value="action.download-multi-config">Multi file</Translate>
+                                                                </Button>
+                                                            </OverlayTrigger>
+                                                            {downloader.loading && <FontAwesomeIcon icon={faSpinner} pulse={true} />}
+                                                        </div>
+                                                    </td>
                                                     <td className="text-end">
-                                                        <Button onClick={() => console.log('clicked')} className={`btn btn-success`}>
-                                                            <FontAwesomeIcon icon={faDownload} size="lg" />
-                                                            &nbsp; <Translate value="action.download">Download single file</Translate>
-                                                        </Button>
                                                         <ButtonGroup aria-label="Actions" className="ms-4" >
                                                             <Link className="btn btn-primary" to={`../configurations/${c.resourceId}/edit`}>
                                                                 <FontAwesomeIcon icon={faEdit} size="lg" />
                                                                 &nbsp; Edit
                                                             </Link>
-                                                            <Button variant="danger"onClick={() => block(() => remove(c.resourceId))}>
+                                                            <Button variant="danger" onClick={() => block(() => remove(c.resourceId))}>
                                                                 <FontAwesomeIcon icon={faTrash} size="lg" />
                                                                 &nbsp; <Translate value="action.delete">Delete</Translate>
                                                             </Button>
@@ -75,7 +130,9 @@ export function ConfigurationList({ configurations, onDelete, loading }) {
                                                     </td>
                                                 </tr>
                                             ) : <tr>
-                                                <td colSpan="3">No configurations.</td>
+                                                <td colSpan="3">
+                                                    <Translate value="message.configurations-none">No configurations.</Translate>
+                                                </td>
                                             </tr>}
                                         </tbody>
                                     </table>
