@@ -23,7 +23,7 @@ export function ConfigurationsProvider({ children, cache = 'no-cache' }) {
 
     async function removeConfiguration(id) {
         let toast;
-        const resp = await del(`/${id}`);
+        const resp = await del(`shib/property/set/${id}`);
         if (response.ok) {
             loadConfigurations();
             toast = createNotificationAction(`Deleted property successfully.`, NotificationTypes.SUCCESS);

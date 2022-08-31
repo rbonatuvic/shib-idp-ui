@@ -124,6 +124,10 @@ mark {
     }
 }
 
+.form-floating > label {
+    color:#9299A0;
+}
+
 @media only screen and (max-width: 1200px) {
     .form-section:not(:first-child) {
         border-left: 0px;

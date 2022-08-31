@@ -3,12 +3,10 @@ import React from 'react';
 import { Prompt, useHistory, useParams } from 'react-router-dom';
 import Translate from '../../i18n/components/translate';
 import { useConfiguration } from '../hooks';
-import { Schema } from '../../form/Schema';
 import { ConfigurationForm } from '../component/ConfigurationForm';
 
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useTranslator } from '../../i18n/hooks';
-import { BASE_PATH } from '../../App.constant';
 import { PropertiesProvider } from '../hoc/PropertiesProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';

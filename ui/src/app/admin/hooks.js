@@ -62,3 +62,9 @@ export function useConfigurationUiSchema () {
         }
     };
 }
+
+export function useConfigDownload () {
+    return useFetch(`${API_BASE_PATH}/shib/property/set`, {
+        cachePolicy: 'no-cache'
+    });
+}
