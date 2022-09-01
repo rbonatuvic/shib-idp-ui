@@ -12,6 +12,7 @@ import { useProperties } from '../hoc/PropertiesProvider';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { useTranslator } from '../../i18n/hooks';
+import { includes } from 'lodash';
 
 export function ConfigurationForm({ configuration = {}, loading, onSave, onCancel }) {
 
@@ -27,20 +28,23 @@ export function ConfigurationForm({ configuration = {}, loading, onSave, onCance
     });
 
     const properties = useProperties();
+    const selected = watch('properties');
 
     const addProperties = (props) => {
 
         const parsed = props.reduce((coll, prop, idx) => {
             if (prop.isCategory) {
-                console.log(properties.filter(p => p.category === prop.category))
-
                 return [...coll, ...properties.filter(p => p.category === prop.category)];
             } else {
                 return [...coll, prop];
             }
         }, []);
 
-        append(parsed);
+        const names = selected.map(p => p.propertyName);
+
+        const filtered = parsed.filter(p => includes(names, p.propertyName) ? false : true);
+
+        append(filtered);
     };
 
     const saveConfig = (formValues) => {
