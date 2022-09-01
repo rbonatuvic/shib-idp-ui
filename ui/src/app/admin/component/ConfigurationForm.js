@@ -71,11 +71,7 @@ export function ConfigurationForm({ configurations, configuration = {}, loading,
         setNames(configurations.map(p => p.name));
     }, [configurations]);
 
-    React.useEffect(() => console.log(errors, names), [errors, names]);
-
-    const onNext = (data) => {
-        console.log(data);
-    };
+    const onNext = (data) => {};
 
     return (<>
         <div className="container-fluid">
