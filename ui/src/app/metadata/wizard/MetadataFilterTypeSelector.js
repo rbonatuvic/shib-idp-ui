@@ -5,7 +5,7 @@ import Translate from '../../i18n/components/translate';
 import { InfoIcon } from '../../form/component/InfoIcon';
 import { useTranslator } from '../../i18n/hooks';
 
-export function MetadataFilterTypeSelector({ types = [], children, actions}) {
+export function MetadataFilterTypeSelector({ types = [], children}) {
 
     const translator = useTranslator();
 
@@ -29,7 +29,7 @@ export function MetadataFilterTypeSelector({ types = [], children, actions}) {
     React.useEffect(() => {
         setBase({
             '@type': type
-        })
+        });
     }, [type])
 
     return (

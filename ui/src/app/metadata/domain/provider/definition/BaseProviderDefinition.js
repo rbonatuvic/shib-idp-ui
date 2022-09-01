@@ -1,5 +1,6 @@
 import { metadataFilterProcessor } from '../utility/providerFilterProcessor';
 import { MetadataFilterTypes } from '../../filter';
+import { has } from 'lodash';
 
 export const BaseProviderDefinition = {
     schemaPreprocessor: metadataFilterProcessor,
@@ -16,6 +17,18 @@ export const BaseProviderDefinition = {
 
             if (ids.indexOf(formData.xmlId) > -1) {
                 errors.xmlId.addError('message.id-unique');
+            }
+
+            if (has(formData, 'reloadableMetadataResolverAttributes.minRefreshDelay')) {
+                if (formData.reloadableMetadataResolverAttributes.minRefreshDelay === 'PT0S') {
+                    errors.reloadableMetadataResolverAttributes.minRefreshDelay.addError('message.invalid-duration');
+                }
+            }
+
+            if (has(formData, 'reloadableMetadataResolverAttributes.maxRefreshDelay')) {
+                if (formData.reloadableMetadataResolverAttributes.maxRefreshDelay === 'PT0S') {
+                    errors.reloadableMetadataResolverAttributes.maxRefreshDelay.addError('message.invalid-duration');
+                }
             }
 
             return errors;
