@@ -29,6 +29,9 @@ export function ConfigurationForm({ configurations, configuration = {}, loading,
     const { fields, append, remove } = useFieldArray({
         control,
         name: "properties",
+        rules: {
+            minLength: 1
+        }
     });
 
     const properties = useProperties();
@@ -80,7 +83,7 @@ export function ConfigurationForm({ configurations, configuration = {}, loading,
                     <Button variant="info" className="me-2"
                         type="button"
                         onClick={() => saveConfig(getValues())}
-                        disabled={ !isValid || loading}
+                        disabled={ !isValid || fields.length < 1 || loading}
                         aria-label="Save changes to the metadata source. You will return to the dashboard">
                         <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading} />&nbsp;
                         <Translate value="action.save">Save</Translate>
@@ -169,6 +172,13 @@ export function ConfigurationForm({ configurations, configuration = {}, loading,
                                         </td>
                                     </tr>
                                 ))}
+                                {fields.length === 0 &&
+                                <tr>
+                                    <td colSpan="5">
+                                        <Translate value="message.properties-none">At least one property is required.</Translate>
+                                    </td>
+                                </tr>
+                                }
                             </tbody>
                         </table>
                     </div>

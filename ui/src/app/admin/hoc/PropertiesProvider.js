@@ -30,7 +30,7 @@ function PropertiesProvider({ children, cache = 'no-cache' }) {
 
 function useProperties() {
     const { properties } = React.useContext(PropertiesContext);
-    return properties;
+    return properties.map((p, idx) => !p.category || p.category === '?' ? { ...p, category: 'Misc' } : p);;
 }
 
 function usePropertiesLoading() {
