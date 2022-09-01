@@ -9,8 +9,7 @@ export function PropertySelector ({ properties, options, onAddProperties }) {
 
     const menu = useCallback((results, menuProps, state) => {
         let index = 0;
-        const mapped = results.map((p, idx) => !p.category || p.category === '?' ? { ...p, category: 'Misc' } : p);
-        const ordered = orderBy(mapped, 'category');
+        const ordered = orderBy(results, 'category');
         const grouped = groupBy(ordered, 'category');
         const items = Object.keys(grouped).sort().map((item) => {
             index = index + 1;
