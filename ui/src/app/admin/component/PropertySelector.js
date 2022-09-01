@@ -11,11 +11,11 @@ export function PropertySelector ({ properties, options, onAddProperties }) {
         let index = 0;
         const ordered = orderBy(results, 'category');
         const grouped = groupBy(ordered, 'category');
-        const items = Object.keys(grouped).sort().map((item) => {
+        const items = Object.keys(grouped).sort().map((item, idx) => {
             index = index + 1;
             const used = grouped[item].filter((i) => properties.some((p) => p.propertyName === i.propertyName));
             if (used.length >= grouped[item].length) {
-                return <Fragment></Fragment>
+                return <Fragment key={item}></Fragment>
             }
             return (
                 <Fragment key={item}>

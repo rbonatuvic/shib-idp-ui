@@ -25,7 +25,7 @@ export function NewConfiguration({ configurations }) {
         const resp = await post(``, config);
         if (response.ok) {
             gotoList({ refresh: true });
-            toast = createNotificationAction(`Added property successfully.`, NotificationTypes.SUCCESS);
+            toast = createNotificationAction(`Added configuration successfully.`, NotificationTypes.SUCCESS);
         } else {
             toast = createNotificationAction(`${resp.errorCode} - ${translator(resp.errorMessage)}`, NotificationTypes.ERROR);
         }

@@ -28,7 +28,7 @@ export function EditConfiguration({ configurations }) {
         const resp = await put(`${config.resourceId}`, config);
         if (response.ok) {
             gotoList({ refresh: true });
-            toast = createNotificationAction(`Added property successfully.`, NotificationTypes.SUCCESS);
+            toast = createNotificationAction(`Updated configuration successfully.`, NotificationTypes.SUCCESS);
         } else {
             toast = createNotificationAction(`${resp.errorCode} - ${translator(resp.errorMessage)}`, NotificationTypes.ERROR);
         }
