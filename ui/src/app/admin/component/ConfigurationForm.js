@@ -14,12 +14,16 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { useTranslator } from '../../i18n/hooks';
 import { includes } from 'lodash';
 
-export function ConfigurationForm({ configuration = {}, loading, onSave, onCancel }) {
+export function ConfigurationForm({ configurations, configuration = {}, loading, onSave, onCancel }) {
 
-    const { control, register, getValues, watch, formState: { errors } } = useForm({
+    const [names, setNames] = React.useState([]);
+
+    const { control, register, getValues, watch, formState: { errors, isValid }, handleSubmit } = useForm({
         defaultValues: {
             ...configuration
-        }
+        },
+        reValidateMode: 'onChange',
+        mode: 'onChange',
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -63,6 +67,16 @@ export function ConfigurationForm({ configuration = {}, loading, onSave, onCance
 
     const translator = useTranslator();
 
+    React.useEffect(() => {
+        setNames(configurations.map(p => p.name));
+    }, [configurations]);
+
+    React.useEffect(() => console.log(errors, names), [errors, names]);
+
+    const onNext = (data) => {
+        console.log(data);
+    };
+
     return (<>
         <div className="container-fluid">
             <div className="d-flex justify-content-end align-items-center">
@@ -70,7 +84,7 @@ export function ConfigurationForm({ configuration = {}, loading, onSave, onCance
                     <Button variant="info" className="me-2"
                         type="button"
                         onClick={() => saveConfig(getValues())}
-                        disabled={errors.length > 0 || loading}
+                        disabled={ !isValid || loading}
                         aria-label="Save changes to the metadata source. You will return to the dashboard">
                         <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading} />&nbsp;
                         <Translate value="action.save">Save</Translate>
@@ -85,12 +99,26 @@ export function ConfigurationForm({ configuration = {}, loading, onSave, onCance
                 </React.Fragment>
             </div>
             <hr />
-            <Form>
+            <Form onSubmit={handleSubmit(onNext)}>
                 <div className="row">
                     <div className="col-12 col-lg-5">
                         <Form.Group className="mb-3" controlId="formName">
                             <Form.Label><Translate value="label.configuration-name">Name</Translate></Form.Label>
-                            <Form.Control type="text" placeholder={translator('label.configuration-name-placeholder')} required {...register(`name`)} />
+                            <Form.Control
+                                type="text"
+                                required
+                                isInvalid={errors.name}
+                                placeholder={translator('label.configuration-name-placeholder')}
+                                {...register(`name`, {
+                                    required: true,
+                                    validate: {
+                                        unique: v => !includes(names, v)
+                                    }
+                                })} />
+                            <Form.Text className={errors.name ? 'text-danger' : 'text-muted'}>
+                                {errors?.name?.type === 'unique' && <Translate value={`message.must-be-unique`} />}
+                                {errors?.name?.type === 'required' && <Translate value={`message.name-required`} />}
+                            </Form.Text>
                         </Form.Group>
                     </div>
                 </div>

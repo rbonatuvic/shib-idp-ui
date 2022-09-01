@@ -20,10 +20,19 @@ export function IdpConfiguration() {
                     </ConfigurationsProvider>
                 } />
                 <Route path={`${path}/new`} render={() =>
-                    <NewConfiguration />
+                    <ConfigurationsProvider>
+                        {(configurations) =>
+                            <NewConfiguration configurations={configurations} />
+                        }
+                    </ConfigurationsProvider>
+                    
                 } />
                 <Route path={`${path}/:id/edit`} render={() =>
-                    <EditConfiguration />
+                    <ConfigurationsProvider>
+                        {(configurations) =>
+                            <EditConfiguration configurations={configurations} />
+                        }
+                    </ConfigurationsProvider>
                 } />
                 <Route path={`${path}`} exact render={() => 
                     <Redirect to={`${url}/list`} />

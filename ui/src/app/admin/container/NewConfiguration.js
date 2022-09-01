@@ -11,7 +11,7 @@ import { useTranslator } from '../../i18n/hooks';
 import { BASE_PATH } from '../../App.constant';
 import { PropertiesProvider } from '../hoc/PropertiesProvider';
 
-export function NewConfiguration() {
+export function NewConfiguration({ configurations }) {
     const history = useHistory();
     const notifier = useNotificationDispatcher();
     const translator = useTranslator();
@@ -67,6 +67,7 @@ export function NewConfiguration() {
                             {(schema) =>
                                 <ConfigurationForm
                                     configuration={configuration}
+                                    configurations={configurations}
                                     schema={schema}
                                     loading={loading}
                                     onSave={(data) => save(data)}

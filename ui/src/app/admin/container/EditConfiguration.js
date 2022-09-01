@@ -11,7 +11,7 @@ import { PropertiesProvider } from '../hoc/PropertiesProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-export function EditConfiguration() {
+export function EditConfiguration({ configurations }) {
     const history = useHistory();
     const notifier = useNotificationDispatcher();
     const translator = useTranslator();
@@ -81,6 +81,7 @@ export function EditConfiguration() {
                     <PropertiesProvider>
                         {configuration && <ConfigurationForm
                             configuration={configuration}
+                            configurations={configurations}
                             loading={loading}
                             onSave={(data) => save(data)}
                             onCancel={() => cancel()} /> }
