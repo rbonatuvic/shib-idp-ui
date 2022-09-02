@@ -530,6 +530,11 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
   <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
     <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
     <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://test.scaldingspoon.org/test1/acs" index="1"/>
+    <md:AttributeConsumingService index="1">
+         <md:ServiceName xml:lang="en">Shrink Space</md:ServiceName>
+         <md:ServiceDescription xml:lang="en">Shrink Space Authenticator</md:ServiceDescription>
+         <md:RequestedAttribute FriendlyName="givenName" Name="urn:oid:2.5.4.42" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" isRequired="true"/>
+   </md:AttributeConsumingService>
   </md:SPSSODescriptor>
 </md:EntityDescriptor>
 '''
@@ -552,6 +557,12 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
               .andExpect(jsonPath("\$.assertionConsumerServices[0].makeDefault").value(false))
               .andExpect(jsonPath("\$.assertionConsumerServices[0].locationUrl").value("https://test.scaldingspoon.org/test1/acs"))
 
+        try {
+            mockMvc.perform(post("/api/EntityDescriptor").contentType(APPLICATION_XML).content(postedBody).param("spName", spName))
+        }
+        catch (Exception e) {
+            e instanceof ObjectIdExistsException
+        }
     }
 
     @WithMockAdmin

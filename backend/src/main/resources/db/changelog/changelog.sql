@@ -176,3 +176,23 @@ update resource_backed_metadata_resolver set min_refresh_delay ='PT5M';
 update resource_backed_metadata_resolver_aud set min_refresh_delay ='PT5M';
 update resource_backed_metadata_resolver set max_refresh_delay ='PT4H';
 update resource_backed_metadata_resolver_aud set max_refresh_delay ='PT4H';
+
+-- changeset liquibase:1.13.0.1 dbms:mariadb,mysql
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- comment: /* we don't need to run this if the system is new */
+
+ALTER TABLE description ALTER COLUMN descriptionValue LONGTEXT;
+GO
+ALTER TABLE description)aud ALTER COLUMN descriptionValue LONGTEXT;
+GO
+
+-- changeset liquibase:1.13.0.2 dbms:postgresql,mssql
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- comment: /* we don't need to run this if the system is new */
+
+ALTER TABLE description ALTER COLUMN descriptionValue TEXT;
+GO
+ALTER TABLE description_aud ALTER COLUMN descriptionValue TEXT;
+GO

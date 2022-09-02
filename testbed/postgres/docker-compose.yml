@@ -18,9 +18,11 @@ services:
       - 8080:8080
       - 5005:5005
       - 8443:8443
+      - 8000:8000
     volumes:
       - ./conf:/conf
       - ./conf/application.yml:/application.yml
+    entrypoint: ["/usr/bin/java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000", "-jar", "app.war"]
     networks:
       - front
     depends_on:
