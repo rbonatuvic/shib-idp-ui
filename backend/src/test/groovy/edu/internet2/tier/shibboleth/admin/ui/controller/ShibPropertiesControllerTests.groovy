@@ -63,6 +63,7 @@ class ShibPropertiesControllerTests  extends AbstractBaseDataJpaTest {
             it.propertyName = 'foo'
             it.configFile = 'defaults.properties'
             it.propertyValue = 'bar'
+            it.displayType = 'string'
 
             it
         }
@@ -71,6 +72,7 @@ class ShibPropertiesControllerTests  extends AbstractBaseDataJpaTest {
             it.propertyName = 'foo2'
             it.configFile = 'defaults.properties'
             it.propertyValue = 'bar2'
+            it.displayType = 'string'
 
             it
         }
@@ -151,6 +153,7 @@ class ShibPropertiesControllerTests  extends AbstractBaseDataJpaTest {
             it.propertyName = 'food.for.thought'
             it.configFile = 'defaults.properties'
             it.propertyValue = 'true'
+            it.displayType = 'boolean'
 
             it
         }
@@ -158,6 +161,7 @@ class ShibPropertiesControllerTests  extends AbstractBaseDataJpaTest {
             it.propertyName = 'food2.for2.thought'
             it.configFile = 'defaults.properties'
             it.propertyValue = 'true'
+            it.displayType = 'boolean'
 
             it
         }
@@ -206,5 +210,61 @@ class ShibPropertiesControllerTests  extends AbstractBaseDataJpaTest {
         then:
         result.andExpect(status().isOk()).andExpect(jsonPath("\$.name").value("newName"))
         propertySetRepo.findByResourceId(defaultSetResourceId).name.equals("newName")
+    }
+
+    @WithMockAdmin
+    def "Validate that JSON data is correct for UI"() {
+        given:
+        ShibPropertySetting prop = new ShibPropertySetting().with { it ->
+            it.propertyName = 'asBoolean'
+            it.configFile = 'defaults.properties'
+            it.propertyValue = 'true'
+            it.displayType = 'boolean'
+
+            it
+        }
+        propertySettingRepo.save(prop)
+        ShibPropertySetting prop2 = new ShibPropertySetting().with { it ->
+            it.propertyName = 'asNumber'
+            it.configFile = 'defaults.properties'
+            it.propertyValue = '33'
+            it.displayType = 'number'
+
+            it
+        }
+        propertySettingRepo.save(prop2)
+        ShibPropertySetting prop3 = new ShibPropertySetting().with { it ->
+            it.propertyName = 'anythingElse'
+            it.configFile = 'defaults.properties'
+            it.propertyValue = '33'
+            it.displayType = 'string'
+
+            it
+        }
+        propertySettingRepo.save(prop3)
+        ShibPropertySet set = new ShibPropertySet().with {it ->
+            it.properties.add(prop)
+            it.properties.add(prop2)
+            it.properties.add(prop3)
+            it.name = 'somerandom'
+
+            it
+        }
+        def savedSet = propertySetRepo.save(set)
+        entityManager.flush()
+        entityManager.clear()
+
+        when:
+        def result = mockMvc.perform(get("/api/shib/property/set/" + savedSet.getResourceId()))
+        System.println(result.andReturn().getResponse().getContentAsString())
+        then:
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("\$.resourceId").value(savedSet.getResourceId()))
+                .andExpect(jsonPath("\$.properties[0].propertyName").value("asBoolean"))
+                .andExpect(jsonPath("\$.properties[0].propertyValue").value(Boolean.TRUE))
+                .andExpect(jsonPath("\$.properties[1].propertyName").value("asNumber"))
+                .andExpect(jsonPath("\$.properties[1].propertyValue").value(33))
+                .andExpect(jsonPath("\$.properties[2].propertyName").value("anythingElse"))
+                .andExpect(jsonPath("\$.properties[2].propertyValue").value("33"))
     }
 }

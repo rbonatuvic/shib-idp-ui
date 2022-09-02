@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import org.hibernate.envers.Audited;
 
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 @Entity(name = "shib_property_setting")
 @Audited
 @Data
+@JsonSerialize(using = ShibPropertySettingJacksonSerializer.class)
 public class ShibPropertySetting {
     @Id
     @GeneratedValue
