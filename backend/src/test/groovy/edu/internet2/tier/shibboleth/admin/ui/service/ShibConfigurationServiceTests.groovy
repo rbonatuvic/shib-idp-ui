@@ -30,7 +30,7 @@ class ShibConfigurationServiceTests extends AbstractBaseDataJpaTest {
      * We use the object mapper to transform to json and then back to new objects so that what we send to the service is never
      * the actual hibernate entity from the db, but an unattached copy (ie what the service would be getting as input in reality)
      */
-    def ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper = new ObjectMapper()
 
     @Transactional
     def setup() {
@@ -38,6 +38,7 @@ class ShibConfigurationServiceTests extends AbstractBaseDataJpaTest {
             it.propertyName = 'foo'
             it.configFile = 'defaults.properties'
             it.propertyValue = 'bar'
+            it.displayType = 'string'
 
             it
         }
@@ -46,6 +47,7 @@ class ShibConfigurationServiceTests extends AbstractBaseDataJpaTest {
             it.propertyName = 'foo2'
             it.configFile = 'defaults.properties'
             it.propertyValue = 'bar2'
+            it.displayType = 'string'
 
             it
         }
@@ -68,8 +70,8 @@ class ShibConfigurationServiceTests extends AbstractBaseDataJpaTest {
 
     def "check delete"() {
         given:
-        def long setCount = propertySetRepo.count()
-        def long propsCount = propertySettingRepo.count()
+        long setCount = propertySetRepo.count()
+        long propsCount = propertySettingRepo.count()
 
         expect:
         setCount == 1
@@ -120,6 +122,7 @@ class ShibConfigurationServiceTests extends AbstractBaseDataJpaTest {
             it.propertyName = 'food.for.thought'
             it.configFile = 'defaults.properties'
             it.propertyValue = 'true'
+            it.displayType = 'boolean'
 
             it
         }
