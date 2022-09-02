@@ -102,9 +102,20 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public EntityDescriptorRepresentation createNew(EntityDescriptor ed)
-                    throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
+    public EntityDescriptorRepresentation createNew(EntityDescriptor ed) throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
         return createNew(createRepresentationFromDescriptor(ed));
+    }
+
+    @Override
+    public EntityDescriptorRepresentation createNewEntityDescriptorFromXMLOrigin(EntityDescriptor ed) {
+        ed.setIdOfOwner(userService.getCurrentUserGroup().getOwnerId());
+        EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
+        return createRepresentationFromDescriptor(savedEntity);
+    }
+
+    @Override
+    public boolean entityExists(String entityID) {
+        return entityDescriptorRepository.findByEntityID(entityID) != null ;
     }
 
     @Override

@@ -9,6 +9,7 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.ConcurrentModificationException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -126,9 +128,13 @@ public class EntityDescriptorController {
   
     private ResponseEntity<?> handleUploadingEntityDescriptorXml(byte[] rawXmlBytes, String spName) throws Exception {
         final EntityDescriptor ed = EntityDescriptor.class.cast(openSamlObjects.unmarshalFromXml(rawXmlBytes));
+        if (entityDescriptorService.entityExists(ed.getEntityID())) {
+            throw new ObjectIdExistsException("Entity with ID: " + ed.getEntityID() + "exists");
+        }
+
         ed.setServiceProviderName(spName);
-        
-        EntityDescriptorRepresentation persistedEd = entityDescriptorService.createNew(ed);            
+
+        EntityDescriptorRepresentation persistedEd = entityDescriptorService.createNewEntityDescriptorFromXMLOrigin(ed);
         return ResponseEntity.created(getResourceUriFor(persistedEd.getId())).body(persistedEd);
     }
 
