@@ -1,11 +1,12 @@
 import React, { Fragment, useCallback } from 'react';
-import { groupBy, orderBy } from 'lodash';
+import { groupBy, includes, orderBy } from 'lodash';
 import { Highlighter, Menu, MenuItem, Token, Typeahead } from 'react-bootstrap-typeahead';
 import Button from 'react-bootstrap/Button';
 
 import { ToggleButton } from '../../form/component/ToggleButton';
 
 export function PropertySelector ({ properties, options, onAddProperties }) {
+    const [selected, setSelected] = React.useState([]);
 
     const menu = useCallback((results, menuProps, state) => {
         let index = 0;
@@ -14,17 +15,20 @@ export function PropertySelector ({ properties, options, onAddProperties }) {
         const items = Object.keys(grouped).sort().map((item, idx) => {
             index = index + 1;
             const used = grouped[item].filter((i) => properties.some((p) => p.propertyName === i.propertyName));
-            if (used.length >= grouped[item].length) {
+            if (used.length >= grouped[item].length || includes(selected, item)) {
                 return <Fragment key={item}></Fragment>
             }
+            const cat = {category: item, propertyName: item, isCategory: true};
+            const catSelected = selected.some(s => s.propertyName === item);
             return (
                 <Fragment key={item}>
                     {index !== 0 && <Menu.Divider />}
                     <Menu.Header>
                         <MenuItem key={index}
-                            option={{category: item, propertyName: item, isCategory: true}}
+                            option={cat}
                             position={index}
-                            className="fw-bold">
+                            className="fw-bold"
+                            disabled={catSelected}>
                                 {item} - Add all
                         </MenuItem>
                     </Menu.Header>
@@ -32,7 +36,7 @@ export function PropertySelector ({ properties, options, onAddProperties }) {
                         if (!properties.some((p) => p.propertyName === i.propertyName)) {
                             index = index + 1;
                             const item =
-                                <MenuItem key={index} option={i} position={index}>
+                                <MenuItem key={index} option={i} position={index} disabled={catSelected || selected.some(s => s.propertyName === i.propertyName)}>
                                     <Highlighter search={state.text}>
                                         {`- ${i.propertyName}`}
                                     </Highlighter>
@@ -46,7 +50,7 @@ export function PropertySelector ({ properties, options, onAddProperties }) {
         });
 
         return <Menu {...menuProps}>{items}</Menu>;
-    }, [properties]);
+    }, [properties, selected]);
 
     const token = (option, { onRemove }, index) => (
         <Token
@@ -61,12 +65,10 @@ export function PropertySelector ({ properties, options, onAddProperties }) {
         setSelected(data);
     };
 
-    const [selected, setSelected] = React.useState([]);
-
     const add = (s) => {
         onAddProperties(s);
         setSelected([]);
-    }
+    };
 
     return (
         <Fragment>
