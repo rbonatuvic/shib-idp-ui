@@ -556,6 +556,13 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
               .andExpect(jsonPath("\$.assertionConsumerServices[0].binding").value("urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"))
               .andExpect(jsonPath("\$.assertionConsumerServices[0].makeDefault").value(false))
               .andExpect(jsonPath("\$.assertionConsumerServices[0].locationUrl").value("https://test.scaldingspoon.org/test1/acs"))
+
+        try {
+            mockMvc.perform(post("/api/EntityDescriptor").contentType(APPLICATION_XML).content(postedBody).param("spName", spName))
+        }
+        catch (Exception e) {
+            e instanceof ObjectIdExistsException
+        }
     }
 
     @WithMockAdmin

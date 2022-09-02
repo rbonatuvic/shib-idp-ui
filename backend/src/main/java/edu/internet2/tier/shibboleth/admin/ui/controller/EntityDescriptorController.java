@@ -128,6 +128,10 @@ public class EntityDescriptorController {
   
     private ResponseEntity<?> handleUploadingEntityDescriptorXml(byte[] rawXmlBytes, String spName) throws Exception {
         final EntityDescriptor ed = EntityDescriptor.class.cast(openSamlObjects.unmarshalFromXml(rawXmlBytes));
+        if (entityDescriptorService.entityExists(ed.getEntityID())) {
+            throw new ObjectIdExistsException("Entity with ID: " + ed.getEntityID() + "exists");
+        }
+
         ed.setServiceProviderName(spName);
 
         EntityDescriptorRepresentation persistedEd = entityDescriptorService.createNewEntityDescriptorFromXMLOrigin(ed);

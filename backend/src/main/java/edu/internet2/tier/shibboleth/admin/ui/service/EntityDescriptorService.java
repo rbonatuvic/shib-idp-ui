@@ -116,4 +116,6 @@ public interface EntityDescriptorService {
     EntityDescriptorRepresentation updateEntityDescriptorEnabledStatus(String resourceId, boolean status) throws EntityNotFoundException, ForbiddenException;
 
     EntityDescriptorRepresentation createNewEntityDescriptorFromXMLOrigin(EntityDescriptor ed);
+
+    boolean entityExists(String entityID);
 }
