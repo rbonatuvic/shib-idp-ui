@@ -95,7 +95,7 @@ public class SPSSODescriptor extends SSODescriptor implements org.opensaml.saml.
 
     @Override
     public List<org.opensaml.saml.saml2.metadata.AttributeConsumingService> getAttributeConsumingServices() {
-        return Lists.newArrayList(attributeConsumingServices);
+        return (List<org.opensaml.saml.saml2.metadata.AttributeConsumingService>)(List<? extends org.opensaml.saml.saml2.metadata.AttributeConsumingService>) attributeConsumingServices;
     }
 
     public void setAttributeConsumingServices(List<AttributeConsumingService> attributeConsumingServices) {
