@@ -110,8 +110,9 @@ export function ConfigurationForm({ configurations, configuration = {}, loading,
                                 placeholder={translator('label.configuration-name-placeholder')}
                                 {...register(`name`, {
                                     required: true,
+                                    value: configuration.value || null,
                                     validate: {
-                                        unique: v => !includes(names, v)
+                                        unique: v => v.trim() === configuration.name || !includes(names, v)
                                     }
                                 })} />
                             <Form.Text className={errors.name ? 'text-danger' : 'text-muted'}>
