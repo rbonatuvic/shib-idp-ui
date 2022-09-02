@@ -114,6 +114,11 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
+    public boolean entityExists(String entityID) {
+        return entityDescriptorRepository.findByEntityID(entityID) != null ;
+    }
+
+    @Override
     public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep)
                     throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
         if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
