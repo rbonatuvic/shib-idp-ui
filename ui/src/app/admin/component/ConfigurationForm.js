@@ -12,7 +12,7 @@ import { useProperties } from '../hoc/PropertiesProvider';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { useTranslator } from '../../i18n/hooks';
-import { includes } from 'lodash';
+import { includes, uniqBy } from 'lodash';
 
 export function ConfigurationForm({ configurations, configuration = {}, loading, onSave, onCancel }) {
 
@@ -51,7 +51,9 @@ export function ConfigurationForm({ configurations, configuration = {}, loading,
 
         const filtered = parsed.filter(p => includes(names, p.propertyName) ? false : true);
 
-        append(filtered);
+        const deduped = uniqBy(filtered, (i) => i.propertyName);
+
+        append(deduped);
     };
 
     const saveConfig = (formValues) => {
