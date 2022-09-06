@@ -18,6 +18,6 @@ public class SurName extends AbstractXMLObject implements org.opensaml.saml.saml
 
     @Override
     public void setValue(String name) {
-        this.value = value;
+        this.value = name;
     }
 }

@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
 import org.hibernate.envers.Audited;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 
 import javax.persistence.CascadeType;
@@ -17,7 +18,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Audited
 public class AttributeConsumingService extends AbstractXMLObject implements org.opensaml.saml.saml2.metadata.AttributeConsumingService {
-
     private int acsIndex;
 
     private boolean isDefault;
@@ -92,5 +92,14 @@ public class AttributeConsumingService extends AbstractXMLObject implements org.
 
     public void setRequestedAttributes(List<RequestedAttribute> requestedAttributes) {
         this.requestedAttributes = requestedAttributes;
+    }
+
+    @Override
+    public  List<XMLObject> getOrderedChildren() {
+        List<XMLObject> childXMLObjects = new ArrayList<>();
+        childXMLObjects.addAll(serviceNames);
+        childXMLObjects.addAll(serviceDescriptions);
+        childXMLObjects.addAll(requestedAttributes);
+        return childXMLObjects;
     }
 }
