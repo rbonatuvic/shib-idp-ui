@@ -134,56 +134,58 @@ export function ConfigurationForm({ configurations, configuration = {}, loading,
                 <div className="my-4"></div>
                 <div className='row'>
                     <div className='col-12'>
-                        <table className='w-100 table align-middle'>
-                            <thead>
-                                <tr>
-                                    <th><Translate value="label.configuration-property">Property</Translate></th>
-                                    <th><Translate value="label.configuration-category">Category</Translate></th>
-                                    <th><Translate value="label.configuration-type">Type</Translate></th>
-                                    <th><Translate value="label.configuration-value">Value</Translate></th>
-                                    <th className="text-end"><Translate value="label.configuration-action">Action</Translate></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {fields.map((p, idx) => (
-                                    <tr key={p.id}>
-                                        <td>{ p.propertyName }</td>
-                                        <td>{ p.category }</td>
-                                        <td>{ p.displayType }</td>
-                                        <td>
-                                            {p.displayType !== 'boolean' ?
-                                                <FloatingLabel
-                                                    controlId={`valueInput-${p.propertyName}`}
-                                                    label={translator('label.configuration-value')}>
-                                                    <Form.Control
-                                                        type={p.displayType === 'number' ? 'number' : 'text'}
-                                                        placeholder="value"
-                                                        {...register(`properties.${idx}.propertyValue`)} />
-                                                </FloatingLabel>
-                                            :
-                                                <Form.Check type="switch"
-                                                    label={ watch(`properties.${idx}.propertyValue`) === true ? translator('value.true') : translator('value.false') }
-                                                    reverse={'true'} {...register(`properties.${idx}.propertyValue`)}
-                                                    className="my-3" />
-                                            }
-                                        </td>
-                                        <td className="text-end">
-                                            <Button variant="danger" onClick={() => remove(idx)}>
-                                                <FontAwesomeIcon icon={faTrash} size="lg" />
-                                                &nbsp; <Translate value="action.remove">Remove</Translate>
-                                            </Button>
+                        <div className="table-responsive">
+                            <table className='w-100 table align-middle'>
+                                <thead>
+                                    <tr>
+                                        <th><Translate value="label.configuration-property">Property</Translate></th>
+                                        <th><Translate value="label.configuration-category">Category</Translate></th>
+                                        <th><Translate value="label.configuration-type">Type</Translate></th>
+                                        <th><Translate value="label.configuration-value">Value</Translate></th>
+                                        <th className="text-end"><Translate value="label.configuration-action">Action</Translate></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {fields.map((p, idx) => (
+                                        <tr key={p.id}>
+                                            <td>{ p.propertyName }</td>
+                                            <td>{ p.category }</td>
+                                            <td>{ p.displayType }</td>
+                                            <td>
+                                                {p.displayType !== 'boolean' ?
+                                                    <FloatingLabel
+                                                        controlId={`valueInput-${p.propertyName}`}
+                                                        label={translator('label.configuration-value')}>
+                                                        <Form.Control
+                                                            type={p.displayType === 'number' ? 'number' : 'text'}
+                                                            placeholder="value"
+                                                            {...register(`properties.${idx}.propertyValue`)} />
+                                                    </FloatingLabel>
+                                                :
+                                                    <Form.Check type="switch"
+                                                        label={ watch(`properties.${idx}.propertyValue`) === true ? translator('value.true') : translator('value.false') }
+                                                        reverse={'true'} {...register(`properties.${idx}.propertyValue`)}
+                                                        className="my-3" />
+                                                }
+                                            </td>
+                                            <td className="text-end">
+                                                <Button variant="danger" onClick={() => remove(idx)}>
+                                                    <FontAwesomeIcon icon={faTrash} size="lg" />
+                                                    &nbsp; <Translate value="action.remove">Remove</Translate>
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    {fields.length === 0 &&
+                                    <tr>
+                                        <td colSpan="5">
+                                            <Translate value="message.properties-none">At least one property is required.</Translate>
                                         </td>
                                     </tr>
-                                ))}
-                                {fields.length === 0 &&
-                                <tr>
-                                    <td colSpan="5">
-                                        <Translate value="message.properties-none">At least one property is required.</Translate>
-                                    </td>
-                                </tr>
-                                }
-                            </tbody>
-                        </table>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </Form>
