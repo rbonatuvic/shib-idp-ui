@@ -160,7 +160,7 @@ export function ConfigurationForm({ configurations, configuration = {}, loading,
                                                             type={p.displayType === 'number' ? 'number' : 'text'}
                                                             placeholder="value"
                                                             {...register(`properties.${idx}.propertyValue`, {
-                                                                valueAsNumber: p.displayType === 'number'
+                                                                setValueAs: v => (p.displayType === 'number' ? parseInt(v) : v),
                                                             })} />
                                                     </FloatingLabel>
                                                 :
