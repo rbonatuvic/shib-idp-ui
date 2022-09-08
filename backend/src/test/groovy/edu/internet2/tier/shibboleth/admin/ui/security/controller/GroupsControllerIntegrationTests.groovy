@@ -1,14 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller
 
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
@@ -117,7 +116,7 @@ class GroupsControllerIntegrationTests extends AbstractBaseDataJpaTest {
                                              .accept(MediaType.APPLICATION_JSON))
             false
         } catch (Throwable expected) {
-            expected instanceof EntityNotFoundException
+            expected instanceof PersistentEntityNotFound
         }
     }
 
@@ -158,7 +157,7 @@ class GroupsControllerIntegrationTests extends AbstractBaseDataJpaTest {
             mockMvc.perform(get("$RESOURCE_URI/CCC"))
             false
         } catch (Throwable expected) {
-            expected instanceof EntityNotFoundException
+            expected instanceof PersistentEntityNotFound
         }        
     }
       

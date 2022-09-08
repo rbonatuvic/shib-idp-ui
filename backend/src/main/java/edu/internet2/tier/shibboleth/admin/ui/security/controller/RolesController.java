@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleDeleteException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
@@ -42,7 +42,7 @@ public class RolesController {
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/{resourceId}")
     @Transactional
-    public ResponseEntity<?> delete(@PathVariable String resourceId) throws EntityNotFoundException, RoleDeleteException {
+    public ResponseEntity<?> delete(@PathVariable String resourceId) throws PersistentEntityNotFound, RoleDeleteException {
         rolesService.deleteDefinition(resourceId);
         return ResponseEntity.noContent().build();
     }
@@ -55,7 +55,7 @@ public class RolesController {
 
     @GetMapping("/{resourceId}")
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getOne(@PathVariable String resourceId) throws EntityNotFoundException {
+    public ResponseEntity<?> getOne(@PathVariable String resourceId) throws PersistentEntityNotFound {
         Role role = rolesService.findByResourceId(resourceId);
         return ResponseEntity.ok(role);
     }
@@ -63,7 +63,8 @@ public class RolesController {
     @Secured("ROLE_ADMIN")
     @PutMapping(path = {"/", "/{resourceId}" })
     @Transactional
-    public ResponseEntity<?> update(@RequestBody Role incomingRoleDetail, @PathVariable Optional<String> resourceId) throws EntityNotFoundException {
+    public ResponseEntity<?> update(@RequestBody Role incomingRoleDetail, @PathVariable Optional<String> resourceId) throws
+                    PersistentEntityNotFound {
         Role updateRole;
         if (resourceId.isPresent()) {
             updateRole = rolesService.findByResourceId(resourceId.get());

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
 import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.OwnershipConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
@@ -56,7 +56,7 @@ public class UsersController {
         try {
             userService.delete(username);
         }
-        catch (EntityNotFoundException e) { 
+        catch (PersistentEntityNotFound e) {
             throw new HttpClientErrorException(NOT_FOUND, String.format("User with username [%s] not found", username));
         }
         catch (OwnershipConflictException e) {

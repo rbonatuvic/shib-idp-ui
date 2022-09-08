@@ -7,6 +7,8 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorReposit
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
+import edu.internet2.tier.shibboleth.admin.ui.repository.ShibPropertySetRepository;
+import edu.internet2.tier.shibboleth.admin.ui.repository.ShibPropertySettingRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
@@ -60,6 +62,12 @@ public class DangerController {
     private OwnershipRepository ownershipRepository;
 
     @Autowired
+    private ShibPropertySetRepository shibPropertySetRepository;
+
+    @Autowired
+    private ShibPropertySettingRepository shibPropertySettingRepository;
+
+    @Autowired
     UserRepository userRepository;
 
     @Transactional
@@ -84,7 +92,16 @@ public class DangerController {
 
         clearUsersAndGroups();
 
+        clearShibSettings();
+
         return ResponseEntity.ok("yes, you did it");
+    }
+
+    private void clearShibSettings() {
+        shibPropertySetRepository.findAll().forEach(shibPropSet -> {
+            shibPropertySettingRepository.deleteAll(shibPropSet.getProperties());
+            shibPropertySetRepository.delete(shibPropSet);
+        });
     }
 
     private void clearUsersAndGroups() {

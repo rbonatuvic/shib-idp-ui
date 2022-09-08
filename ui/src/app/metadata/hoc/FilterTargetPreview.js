@@ -4,7 +4,7 @@ import { useFetch } from 'use-http';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Translate from '../../i18n/components/translate';
-import { downloadAsXml } from '../../core/utility/download_as_xml';
+import { downloadAsXml } from '../../core/utility/download_as';
 
 export function FilterTargetPreview ({ entityId, children }) {
 
