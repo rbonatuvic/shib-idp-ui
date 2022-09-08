@@ -150,7 +150,7 @@ export function ConfigurationForm({ configurations, configuration = {}, loading,
                                         <tr key={p.id}>
                                             <td>{ p.propertyName }</td>
                                             <td>{ p.category }</td>
-                                            <td>{ p.displayType }</td>
+                                            <td>{ p.displayType === 'number' ? 'integer' : p.displayType }</td>
                                             <td>
                                                 {p.displayType !== 'boolean' ?
                                                     <FloatingLabel
