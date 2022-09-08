@@ -159,7 +159,9 @@ export function ConfigurationForm({ configurations, configuration = {}, loading,
                                                         <Form.Control
                                                             type={p.displayType === 'number' ? 'number' : 'text'}
                                                             placeholder="value"
-                                                            {...register(`properties.${idx}.propertyValue`)} />
+                                                            {...register(`properties.${idx}.propertyValue`, {
+                                                                valueAsNumber: p.displayType === 'number'
+                                                            })} />
                                                     </FloatingLabel>
                                                 :
                                                     <Form.Check type="switch"
