@@ -31,7 +31,11 @@ public class ShibPropertySettingJacksonSerializer extends StdSerializer<ShibProp
             generator.writeBooleanField("propertyValue", Boolean.valueOf(sps.getPropertyValue()));
             break;
         case "number":
-            generator.writeNumberField("propertyValue", Long.parseLong(sps.getPropertyValue()));
+            try {
+                generator.writeNumberField("propertyValue", Long.parseLong(sps.getPropertyValue()));
+            } catch (NumberFormatException notANumber) {
+                generator.writeStringField("propertyValue", sps.getPropertyValue());
+            }
             break;
         default:
             generator.writeStringField("propertyValue", sps.getPropertyValue());
