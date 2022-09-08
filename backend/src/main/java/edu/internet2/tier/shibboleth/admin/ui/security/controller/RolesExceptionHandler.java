@@ -10,15 +10,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleDeleteException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleExistsConflictException;
 
 @ControllerAdvice(assignableTypes = {RolesController.class})
 public class RolesExceptionHandler extends ResponseEntityExceptionHandler {
     
-    @ExceptionHandler({ EntityNotFoundException.class })
-    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e, WebRequest request) {
+    @ExceptionHandler({ PersistentEntityNotFound.class })
+    public ResponseEntity<?> handleEntityNotFoundException(PersistentEntityNotFound e, WebRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND, e.getMessage()));
     }
     

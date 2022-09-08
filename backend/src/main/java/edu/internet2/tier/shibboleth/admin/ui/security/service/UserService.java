@@ -2,7 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.OwnershipConflictException;
@@ -82,9 +82,9 @@ public class UserService {
     }
 
     @Transactional
-    public void delete(String username) throws EntityNotFoundException, OwnershipConflictException {
+    public void delete(String username) throws PersistentEntityNotFound, OwnershipConflictException {
         Optional<User> userToRemove = userRepository.findByUsername(username);
-        if (userToRemove.isEmpty()) throw new EntityNotFoundException("User does not exist");
+        if (userToRemove.isEmpty()) throw new PersistentEntityNotFound("User does not exist");
         if (!ownershipRepository.findOwnedByUser(username).isEmpty()) throw new OwnershipConflictException("User ["+username+"] has ownership of entities in the system. Please remove all items before attempting to delete the user.");
 
         // ok, user exists and doesn't own anything in the system, so delete them

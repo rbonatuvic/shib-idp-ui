@@ -3,7 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
@@ -55,9 +55,9 @@ public interface EntityDescriptorService {
     /**
      * @param resourceId - id of the JPA EntityDescriptor
      * @throws ForbiddenException If user is unauthorized to perform this operation
-     * @throws EntityNotFoundException If the db entity is not found
+     * @throws PersistentEntityNotFound If the db entity is not found
      */
-    void delete(String resourceId) throws ForbiddenException, EntityNotFoundException;
+    void delete(String resourceId) throws ForbiddenException, PersistentEntityNotFound;
 
     /**
      * @return - Iterable set of EntityDescriptorRepresentations of those items which are NOT enabled and not owned by
@@ -83,9 +83,9 @@ public interface EntityDescriptorService {
      * @param resourceId - id of the JPA EntityDescriptor
      * @return JPA EntityDescriptor
      * @throws ForbiddenException If user is unauthorized to perform this operation
-     * @throws EntityNotFoundException If the db entity is not found
+     * @throws PersistentEntityNotFound If the db entity is not found
      */
-    EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws EntityNotFoundException, ForbiddenException;
+    EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws PersistentEntityNotFound, ForbiddenException;
 
     /**
      * Given a list of attributes, generate a map of relying party overrides
@@ -97,12 +97,12 @@ public interface EntityDescriptorService {
 
     /**
      * @throws ForbiddenException If the user is not permitted to perform the action
-     * @throws EntityNotFoundException If the entity doesn't already exist in the database
+     * @throws PersistentEntityNotFound If the entity doesn't already exist in the database
      * @throws ConcurrentModificationException IF the entity is being modified in another session
      * @throws InvalidPatternMatchException If the entity id or the ACS location urls don't match the supplied regex
      */
     EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRepresentation)
-                    throws ForbiddenException, EntityNotFoundException, ConcurrentModificationException,
+                    throws ForbiddenException, PersistentEntityNotFound, ConcurrentModificationException,
                     InvalidPatternMatchException;
 
     /**
@@ -113,7 +113,8 @@ public interface EntityDescriptorService {
      */
     void updateDescriptorFromRepresentation(final org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor, final EntityDescriptorRepresentation representation);
 
-    EntityDescriptorRepresentation updateEntityDescriptorEnabledStatus(String resourceId, boolean status) throws EntityNotFoundException, ForbiddenException;
+    EntityDescriptorRepresentation updateEntityDescriptorEnabledStatus(String resourceId, boolean status) throws
+                    PersistentEntityNotFound, ForbiddenException;
 
     EntityDescriptorRepresentation createNewEntityDescriptorFromXMLOrigin(EntityDescriptor ed);
 

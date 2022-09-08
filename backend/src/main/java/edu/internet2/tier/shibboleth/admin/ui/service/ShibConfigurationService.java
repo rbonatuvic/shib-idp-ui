@@ -2,7 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibConfigurationProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibPropertySet;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.repository.ProjectionIdAndName;
 
@@ -14,7 +14,7 @@ public interface ShibConfigurationService {
 
     ShibPropertySet create(ShibPropertySet set) throws ObjectIdExistsException;
 
-    void delete(int resourceId) throws EntityNotFoundException;
+    void delete(int resourceId) throws PersistentEntityNotFound;
 
     List<ShibConfigurationProperty> getAllConfigurationProperties();
 
@@ -22,9 +22,9 @@ public interface ShibConfigurationService {
 
     List<String> getExistingPropertyNames();
 
-    ShibPropertySet getSet(int resourceId) throws EntityNotFoundException;
+    ShibPropertySet getSet(int resourceId) throws PersistentEntityNotFound;
 
     ShibConfigurationProperty save(ShibConfigurationProperty prop);
 
-    ShibPropertySet update(ShibPropertySet setToUpdate) throws EntityNotFoundException;
+    ShibPropertySet update(ShibPropertySet setToUpdate) throws PersistentEntityNotFound;
 }

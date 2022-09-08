@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibPropertySet
 import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibPropertySetting
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException
 import edu.internet2.tier.shibboleth.admin.ui.repository.ShibPropertySetRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.ShibPropertySettingRepository
@@ -18,15 +18,11 @@ import spock.lang.Subject
 import javax.persistence.EntityManager
 import javax.transaction.Transactional
 
-import static org.hamcrest.CoreMatchers.containsString
 import static org.springframework.http.MediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -107,7 +103,7 @@ class ShibPropertiesControllerTests  extends AbstractBaseDataJpaTest {
             mockMvc.perform(delete("/api/shib/property/set/010"))
         }
         catch (Exception e) {
-            e instanceof EntityNotFoundException
+            e instanceof PersistentEntityNotFound
         }
 
         when:
@@ -128,7 +124,7 @@ class ShibPropertiesControllerTests  extends AbstractBaseDataJpaTest {
             mockMvc.perform(get("/api/shib/property/set/0101"))
         }
         catch (Exception e) {
-            e instanceof EntityNotFoundException
+            e instanceof PersistentEntityNotFound
         }
     }
 
@@ -194,7 +190,7 @@ class ShibPropertiesControllerTests  extends AbstractBaseDataJpaTest {
             mockMvc.perform(put('/api/shib/property/set/1234').contentType(APPLICATION_JSON).content(jsonBody))
         }
         catch (Exception e) {
-            e instanceof EntityNotFoundException
+            e instanceof PersistentEntityNotFound
         }
     }
 

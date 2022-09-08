@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException;
@@ -52,7 +52,7 @@ public class GroupServiceImpl implements IGroupService {
 
     @Override
     @Transactional
-    public void deleteDefinition(String resourceId) throws EntityNotFoundException, GroupDeleteException {
+    public void deleteDefinition(String resourceId) throws PersistentEntityNotFound, GroupDeleteException {
         Group group = find(resourceId);
         if (!ownershipRepository.findAllByOwner(group).isEmpty()) {
             throw new GroupDeleteException(String.format(
@@ -116,10 +116,10 @@ public class GroupServiceImpl implements IGroupService {
     }
 
     @Override
-    public Group updateGroup(Group group) throws EntityNotFoundException, InvalidGroupRegexException {
+    public Group updateGroup(Group group) throws PersistentEntityNotFound, InvalidGroupRegexException {
         Group g = find(group.getResourceId());
         if (g == null) {
-            throw new EntityNotFoundException(String.format("Unable to find group with resource id: [%s] and name: [%s]",
+            throw new PersistentEntityNotFound(String.format("Unable to find group with resource id: [%s] and name: [%s]",
                             group.getResourceId(), group.getName()));
         }
         validateGroupRegex(group);
