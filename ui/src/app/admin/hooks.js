@@ -46,3 +46,25 @@ export function useGroupUiValidator() {
 export function useRoleUiSchema() {
     return {};
 }
+
+export function useConfigurations (opts = { cachePolicy: 'no-cache' }) {
+    return useFetch(`${API_BASE_PATH}/`, opts);
+}
+
+export function useConfiguration(opts = { cachePolicy: 'no-cache' }) {
+    return useFetch(`${API_BASE_PATH}/shib/property/set`, opts);
+}
+
+export function useConfigurationUiSchema () {
+    return {
+        description: {
+            'ui:widget': 'textarea'
+        }
+    };
+}
+
+export function useConfigDownload () {
+    return useFetch(`${API_BASE_PATH}/shib/property/set`, {
+        cachePolicy: 'no-cache'
+    });
+}

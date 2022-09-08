@@ -21,7 +21,7 @@
         "react-bootstrap": "^2.3.0",
         "react-bootstrap-typeahead": "^5.1.4",
         "react-dom": "^18.0.0",
-        "react-hook-form": "^7.30.0",
+        "react-hook-form": "^7.34.0",
         "react-infinite-scroll-component": "^6.1.0",
         "react-router": "^5.1.0",
         "react-router-dom": "^5.1.0",

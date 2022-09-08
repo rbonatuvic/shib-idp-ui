@@ -6,7 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
@@ -121,7 +121,7 @@ class EnversEntityDescriptorVersionServiceTests extends Specification {
             def edRepresentation = entityDescriptorVersionService.findSpecificVersionOfEntityDescriptor(ed.resourceId, '1000')
             false
         }
-        catch (EntityNotFoundException expected) {
+        catch (PersistentEntityNotFound expected) {
             true
         }
     }

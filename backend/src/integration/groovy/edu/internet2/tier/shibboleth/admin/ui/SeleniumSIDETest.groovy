@@ -157,6 +157,8 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1674: Verify metadata source tooltips'                      | '/SHIBUI-1674-1.side'
         'SHIBUI-1674: Verify metadata provider tooltips'                    | '/SHIBUI-1674-2.side'
         'SHIBUI-1674: Verify advanced menu tooltips'                        | '/SHIBUI-1674-3.side'
+        'SHIBUI-2270: Verify property set CRUD'                             | '/SHIBUI-2270-1.side'
+        'SHIBUI-2270: Verify full property set'                             | '/SHIBUI-2270-2.side'
         'SHIBUI-2268: Verify Algorithm Filter'                              | '/SHIBUI-2268.side'
         'SHIBUI-2269: Verify XML generation of external filters'            | '/SHIBUI-2269.side'
     }

@@ -12,15 +12,15 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InitializationException;
 
 @ControllerAdvice(assignableTypes = {ActivateController.class})
 public class ActivateExceptionHandler extends ResponseEntityExceptionHandler {
     
-    @ExceptionHandler({ EntityNotFoundException.class })
-    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e, WebRequest request) {
+    @ExceptionHandler({ PersistentEntityNotFound.class })
+    public ResponseEntity<?> handleEntityNotFoundException(PersistentEntityNotFound e, WebRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND, e.getMessage()));
     }
     

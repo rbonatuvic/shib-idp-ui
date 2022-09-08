@@ -1,5 +1,5 @@
 import * as FileSaver from 'file-saver';
-import { downloadAsXml } from './download_as_xml';
+import { downloadAsXml } from './download_as';
 jest.mock('file-saver');
 
 it('attempts to save the provided content', () => {
