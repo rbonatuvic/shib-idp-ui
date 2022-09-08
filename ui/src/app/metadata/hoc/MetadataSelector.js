@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation, useParams } from 'react-router';
+import Spinner from '../../core/components/Spinner';
 import { useMetadataEntity } from '../hooks/api';
 
 export const MetadataTypeContext = React.createContext();
@@ -10,6 +11,7 @@ export const MetadataLoaderContext = React.createContext();
 export function MetadataSelector({ children, ...props }) {
 
     let { type, id } = useParams();
+    const [loading, setLoading] = React.useState(false);
     const location = useLocation();
 
     if (!type) {
@@ -30,25 +32,35 @@ export function MetadataSelector({ children, ...props }) {
         const source = await get(`/${id}`);
         if (response.ok) {
             setMetadata(source);
+            setLoading(false);
         }
     }
 
     function reload() {
+        setLoading(true);
         loadMetadata(id);
+        
     }
 
     React.useEffect(() => reload(), [id]);
 
     return (
-        <MetadataLoaderContext.Provider value={ reload }>
-        {type &&
-            <MetadataTypeContext.Provider value={type}>
-                {metadata && metadata.version &&
-                    <MetadataObjectContext.Provider value={metadata}>{children(metadata, reload)}</MetadataObjectContext.Provider>
+        <React.Fragment>
+            {loading && <div className="d-flex justify-content-center text-primary">
+                <Spinner size="4x" className="m-4" />
+            </div> }
+            <MetadataLoaderContext.Provider value={ reload }>
+                {type &&
+                    <MetadataTypeContext.Provider value={type}>
+                        {metadata && metadata.version &&
+                            <MetadataObjectContext.Provider value={metadata}>
+                                {children(metadata, reload)}
+                            </MetadataObjectContext.Provider>
+                        }
+                    </MetadataTypeContext.Provider>
                 }
-            </MetadataTypeContext.Provider>
-        }
-        </MetadataLoaderContext.Provider>
+            </MetadataLoaderContext.Provider>
+        </React.Fragment>
     );
 }
 
