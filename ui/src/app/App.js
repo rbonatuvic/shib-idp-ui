@@ -34,6 +34,7 @@ import { Roles } from './admin/Roles';
 import { Groups } from './admin/Groups';
 import { BASE_PATH } from './App.constant';
 import { ProtectRoute } from './core/components/ProtectRoute';
+import { IdpConfiguration } from './admin/IdpConfiguration';
 
 
 function App() {
@@ -106,6 +107,11 @@ function App() {
                                                     <Route path="/groups" render={() =>
                                                         <ProtectRoute redirectTo="/dashboard">
                                                             <Groups />
+                                                        </ProtectRoute>
+                                                    } />
+                                                    <Route path="/configurations" render={() =>
+                                                        <ProtectRoute redirectTo="/dashboard">
+                                                            <IdpConfiguration />
                                                         </ProtectRoute>
                                                     } />
                                                     <Route path="*">

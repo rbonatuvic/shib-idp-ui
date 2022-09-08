@@ -8,7 +8,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleDeleteException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
@@ -31,7 +31,7 @@ public class RolesServiceImpl implements IRolesService {
     }
 
     @Override
-    public void deleteDefinition(String resourceId) throws EntityNotFoundException, RoleDeleteException {
+    public void deleteDefinition(String resourceId) throws PersistentEntityNotFound, RoleDeleteException {
         Optional<Role> found = roleRepository.findByResourceId(resourceId);
         if (found.isPresent() && !found.get().getUsers().isEmpty()) {
             throw new RoleDeleteException(String.format("Unable to delete role with resource id: [%s] - remove role from all users first", resourceId));
@@ -50,10 +50,10 @@ public class RolesServiceImpl implements IRolesService {
     }
 
     @Override
-    public Role findByResourceId(String resourceId) throws EntityNotFoundException {
+    public Role findByResourceId(String resourceId) throws PersistentEntityNotFound {
         Optional<Role> found = roleRepository.findByResourceId(resourceId);
         if (found.isEmpty()) {
-            throw new EntityNotFoundException(String.format("Unable to find role with resource id: [%s]", resourceId));
+            throw new PersistentEntityNotFound(String.format("Unable to find role with resource id: [%s]", resourceId));
         }
         return found.get();
     }
@@ -83,10 +83,10 @@ public class RolesServiceImpl implements IRolesService {
     }
 
     @Override
-    public Role updateRole(Role role) throws EntityNotFoundException {
+    public Role updateRole(Role role) throws PersistentEntityNotFound {
         Optional<Role> found = roleRepository.findByName(role.getName());
         if (found.isEmpty()) {
-            throw new EntityNotFoundException(String.format("Unable to find role with name: [%s]", role.getName()));
+            throw new PersistentEntityNotFound(String.format("Unable to find role with name: [%s]", role.getName()));
         }
         return roleRepository.save(role);
     }

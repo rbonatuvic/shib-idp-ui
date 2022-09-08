@@ -1,7 +1,6 @@
-import { isUndefined } from 'lodash';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-
+import { isUndefined } from 'lodash';
 import { useCurrentUser, useIsAdmin } from '../user/UserContext';
 
 export function ProtectRoute({ children, redirectTo, ...rest }) {

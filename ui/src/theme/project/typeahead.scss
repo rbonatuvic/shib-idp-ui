@@ -1,0 +1,43 @@
+@import '~react-bootstrap-typeahead/css/Typeahead';
+
+.rbt-token-removeable {
+    cursor: pointer;
+    padding-right: 21px;
+}
+
+.rbt-token {
+    background-color: #e7f4ff;
+    border: 0;
+    border-radius: .25rem;
+    color: #007bff;
+    display: inline-block;
+    line-height: 1em;
+    margin: 1px 3px 2px 0;
+    padding: 4px 7px;
+    padding-right: 1.8em;
+    position: relative;
+
+    .rbt-token-remove-button {
+        bottom: 0;
+        color: inherit;
+        font-size: inherit;
+        font-weight: normal;
+        opacity: 1;
+        outline: none;
+        padding: 3px 7px;
+        position: absolute;
+        right: 0;
+        text-shadow: none;
+        top: 0px;
+
+        box-sizing: content-box;
+        width: 1em;
+        height: 1em;
+        padding: .25em .25em;
+        color: inherit;
+        background: transparent center/1em auto no-repeat;
+        border: 0;
+        border-radius: .375rem;
+    }
+}
+

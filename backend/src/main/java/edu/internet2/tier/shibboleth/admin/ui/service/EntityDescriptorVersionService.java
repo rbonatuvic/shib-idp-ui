@@ -3,7 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 
 import java.util.List;
 
@@ -12,7 +12,8 @@ import java.util.List;
  */
 public interface EntityDescriptorVersionService {
 
-    List<Version> findVersionsForEntityDescriptor(String resourceId) throws EntityNotFoundException;
+    List<Version> findVersionsForEntityDescriptor(String resourceId) throws PersistentEntityNotFound;
 
-    EntityDescriptorRepresentation findSpecificVersionOfEntityDescriptor(String resourceId, String versionId) throws EntityNotFoundException;
+    EntityDescriptorRepresentation findSpecificVersionOfEntityDescriptor(String resourceId, String versionId) throws
+                    PersistentEntityNotFound;
 }
