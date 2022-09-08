@@ -377,12 +377,12 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     public List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsBasedOnUserAccess() throws ForbiddenException {
         switch (userService.getCurrentUserAccess()) {
         case ADMIN:
-            List<EntityDescriptorProjection> o = entityDescriptorRepository.findAllBy();//.map(edProjection -> createRepresentationFromDescriptor(edProjection)).collect(Collectors.toList());
+            List<EntityDescriptorProjection> o = entityDescriptorRepository.findAllBy();
             return o;
         case GROUP:
             User user = userService.getCurrentUser();
             Group group = user.getGroup();
-            List<EntityDescriptorProjection> ed =  entityDescriptorRepository.findAllByIdOfOwner(group.getOwnerId());//.map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
+            List<EntityDescriptorProjection> ed =  entityDescriptorRepository.findAllByIdOfOwner(group.getOwnerId());
             return ed;
         default:
             throw new ForbiddenException();
