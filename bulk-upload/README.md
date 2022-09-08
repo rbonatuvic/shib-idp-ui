@@ -1,8 +1,12 @@
 This script can be used to bulk upload metadata files into the Shibboleth IdP UI
 
 ### requirements ###
-The shibui must be configured without SAML authentication enabled. The API is currently only accessible using Basic auth.  
-If shibui is using SAML auth, you can temporarily disable it by setting pac4j-enabled: false in application.yml and restarting shibui.  
+Docker engine - the run script will launch a Docker container which will handle the process.
+OR
+Bash shell with Perl (and additional Perl libraries - see below).
+
+The Shib-UI must be configured *without* SAML authentication enabled. The needed API is currently only accessible using Basic auth. If you are using SAML auth, you can return to using it after the bulk upload process is run. 
+If Shib-UI is using SAML auth, you can temporarily disable it by setting pac4j-enabled: false in application.yml and restarting shibui.  
 After uploading you can re-enable SAML auth by setting pac4j-enabled: true in application.yml and restarting shibui.  
 
 ### usage ###
@@ -34,7 +38,7 @@ attr[0][Value] = false
 
 ### docker image ###
 run.sh will pull the shibui-bulk-upload image from dockerhub and run the script within  
-If you need to build the image yourself, `cd docker-build;docker build -t unicon/shibui-bulk-upload .`    
+If you prefer to build the image yourself, `cd docker-build;docker build -t unicon/shibui-bulk-upload .`    
 
 ### running without docker ###
 The docker-build/shibui-md-upload.pl script can be run manually.  
