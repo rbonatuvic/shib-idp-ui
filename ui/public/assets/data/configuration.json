@@ -1,0 +1,29 @@
+{
+    "resourceId": 11,
+    "name": "setname1",
+    "properties": [
+        {
+            "resourceId":"577",
+            "category":"OPSubClaim",
+            "configFile":"oidc.properties",
+            "description":"The source attribute used in generating the sub claim",
+            "idpVersion":"4.1",
+            "module":"idp.oidc.OP",
+            "moduleVersion":"3",
+            "propertyName":"idp.oidc.subject.sourceAttribute",
+            "displayType":"string",
+            "propertyValue": "foo"
+        },
+        {
+            "resourceId": "393",
+            "category": "ReloadableServices",
+            "configFile": "services.properties",
+            "defaultValue": "false",
+            "description": "Fail at startup if MetadataConfiguration is invalid",
+            "idpVersion": "all",
+            "propertyName": "idp.service.metadata.failFast",
+            "displayType": "boolean",
+            "propertyValue": "true"
+        }
+    ]
+}

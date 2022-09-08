@@ -1,10 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
-import com.fasterxml.jackson.databind.MapperFeature
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBundle
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException
 import edu.internet2.tier.shibboleth.admin.ui.repository.AttributeBundleRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.AttributeBundleService
@@ -148,7 +148,7 @@ class AttributeBundleControllerTests extends Specification {
             mockMvc.perform(delete("/api/custom/entity/bundles/randomIDValdoesntexist"))
             false
         } catch (NestedServletException expected) {
-            expected instanceof EntityNotFoundException
+            expected instanceof PersistentEntityNotFound
         }
 
         when: "Delete what does exist"
@@ -180,7 +180,7 @@ class AttributeBundleControllerTests extends Specification {
             mockMvc.perform(put('/api/custom/entity/bundles').contentType(APPLICATION_JSON).content(objectMapper.writeValueAsString(bundle)))
             false
         } catch (NestedServletException expected) {
-            expected.getCause() instanceof EntityNotFoundException
+            expected.getCause() instanceof PersistentEntityNotFound
         }
 
         when: "update bundle"

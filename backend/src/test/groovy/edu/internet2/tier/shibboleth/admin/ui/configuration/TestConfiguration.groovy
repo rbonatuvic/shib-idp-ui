@@ -61,7 +61,6 @@ class TestConfiguration {
     @Bean
     CustomEntityAttributesDefinitionServiceImpl customEntityAttributesDefinitionServiceImpl() {
         new CustomEntityAttributesDefinitionServiceImpl().with {
-           it.entityManager = entityManager
            it.repository = repository
            return it
         }

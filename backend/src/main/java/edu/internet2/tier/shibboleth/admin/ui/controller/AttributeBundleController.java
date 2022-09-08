@@ -1,11 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBundle;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
-import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException;
-import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.service.AttributeBundleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
@@ -42,7 +39,7 @@ public class AttributeBundleController {
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/{resourceId}")
     @Transactional
-    public ResponseEntity<?> delete(@PathVariable String resourceId) throws EntityNotFoundException {
+    public ResponseEntity<?> delete(@PathVariable String resourceId) throws PersistentEntityNotFound {
         attributeBundleService.deleteDefinition(resourceId);
         return ResponseEntity.noContent().build();
     }
@@ -55,14 +52,14 @@ public class AttributeBundleController {
 
     @GetMapping("/{resourceId}")
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getOne(@PathVariable String resourceId) throws EntityNotFoundException {
+    public ResponseEntity<?> getOne(@PathVariable String resourceId) throws PersistentEntityNotFound {
         return ResponseEntity.ok(attributeBundleService.findByResourceId(resourceId));
     }
 
     @Secured("ROLE_ADMIN")
     @PutMapping
     @Transactional
-    public ResponseEntity<?> update(@RequestBody AttributeBundle bundle) throws EntityNotFoundException {
+    public ResponseEntity<?> update(@RequestBody AttributeBundle bundle) throws PersistentEntityNotFound {
         AttributeBundle result = attributeBundleService.updateBundle(bundle);
         return ResponseEntity.ok(result);
     }

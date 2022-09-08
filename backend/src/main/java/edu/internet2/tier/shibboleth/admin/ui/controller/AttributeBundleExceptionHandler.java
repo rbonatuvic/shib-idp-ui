@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,8 +12,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice(assignableTypes = {AttributeBundleController.class})
 public class AttributeBundleExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler({ EntityNotFoundException.class })
-    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e, WebRequest request) {
+    @ExceptionHandler({ PersistentEntityNotFound.class })
+    public ResponseEntity<?> handleEntityNotFoundException(PersistentEntityNotFound e, WebRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND, e.getMessage()));
     }
 

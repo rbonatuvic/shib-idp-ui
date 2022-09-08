@@ -5,7 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException
@@ -376,7 +376,7 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
             mockMvc.perform(get("/api/EntityDescriptor/uuid-1"))
         }
         catch (Exception e) {
-            e instanceof EntityNotFoundException
+            e instanceof PersistentEntityNotFound
         }
     }
 

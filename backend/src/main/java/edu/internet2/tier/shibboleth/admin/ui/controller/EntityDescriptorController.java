@@ -2,14 +2,13 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +33,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.ConcurrentModificationException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -77,7 +75,7 @@ public class EntityDescriptorController {
     @Secured("ROLE_ADMIN")
     @DeleteMapping(value = "/EntityDescriptor/{resourceId}")
     @Transactional
-    public ResponseEntity<?> deleteOne(@PathVariable String resourceId) throws ForbiddenException, EntityNotFoundException {
+    public ResponseEntity<?> deleteOne(@PathVariable String resourceId) throws ForbiddenException, PersistentEntityNotFound {
         entityDescriptorService.delete(resourceId);
         return ResponseEntity.noContent().build();
     }
@@ -90,7 +88,7 @@ public class EntityDescriptorController {
 
     @GetMapping("/EntityDescriptor/{resourceId}/Versions")
     @Transactional
-    public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) throws EntityNotFoundException, ForbiddenException {
+    public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) throws PersistentEntityNotFound, ForbiddenException {
         // this "get by resource id" verifies that both the ED exists and the user has proper access, so needs to remain
         EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);
         return ResponseEntity.ok(versionService.findVersionsForEntityDescriptor(ed.getResourceId()));
@@ -105,21 +103,22 @@ public class EntityDescriptorController {
 
     @GetMapping("/EntityDescriptor/{resourceId}")
     @Transactional
-    public ResponseEntity<?> getOne(@PathVariable String resourceId) throws EntityNotFoundException, ForbiddenException {
+    public ResponseEntity<?> getOne(@PathVariable String resourceId) throws PersistentEntityNotFound, ForbiddenException {
         return ResponseEntity.ok(entityDescriptorService
                         .createRepresentationFromDescriptor(entityDescriptorService.getEntityDescriptorByResourceId(resourceId)));
     }
 
     @GetMapping(value = "/EntityDescriptor/{resourceId}", produces = "application/xml")
     @Transactional
-    public ResponseEntity<?> getOneXml(@PathVariable String resourceId) throws MarshallingException, EntityNotFoundException, ForbiddenException {
+    public ResponseEntity<?> getOneXml(@PathVariable String resourceId) throws MarshallingException, PersistentEntityNotFound, ForbiddenException {
         EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);
         final String xml = this.openSamlObjects.marshalToXmlString(ed);
         return ResponseEntity.ok(xml);
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}/Versions/{versionId}")
-    public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) throws EntityNotFoundException, ForbiddenException {
+    public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) throws
+                    PersistentEntityNotFound, ForbiddenException {
         // this "get by resource id" verifies that both the ED exists and the user has proper access, so needs to remain
         EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);
         EntityDescriptorRepresentation result = versionService.findSpecificVersionOfEntityDescriptor(ed.getResourceId(), versionId);
@@ -146,7 +145,7 @@ public class EntityDescriptorController {
     @PutMapping("/EntityDescriptor/{resourceId}")
     @Transactional
     public ResponseEntity<?> update(@RequestBody EntityDescriptorRepresentation edRepresentation, @PathVariable String resourceId)
-                    throws ForbiddenException, ConcurrentModificationException, EntityNotFoundException,
+                    throws ForbiddenException, ConcurrentModificationException, PersistentEntityNotFound,
                     InvalidPatternMatchException {
         edRepresentation.setId(resourceId); // This should be the same already, but just to be safe...
         EntityDescriptorRepresentation result = entityDescriptorService.update(edRepresentation);

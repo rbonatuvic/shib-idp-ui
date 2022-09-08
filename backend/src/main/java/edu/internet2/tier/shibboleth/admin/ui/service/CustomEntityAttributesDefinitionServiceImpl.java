@@ -17,10 +17,7 @@ import edu.internet2.tier.shibboleth.admin.ui.service.events.CustomEntityAttribu
 public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntityAttributesDefinitionService {    
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
-    
-    @Autowired
-    EntityManager entityManager;
-    
+
     @Autowired
     private CustomEntityAttributeDefinitionRepository repository;
        

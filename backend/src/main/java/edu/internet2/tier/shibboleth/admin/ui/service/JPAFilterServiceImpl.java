@@ -1,11 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -108,7 +106,7 @@ public class JPAFilterServiceImpl implements FilterService {
      */
     @Override
     public MetadataFilter updateFilterEnabledStatus(String metadataResolverId, String resourceId, boolean status)
-                    throws EntityNotFoundException, ForbiddenException, ScriptException {
+                    throws PersistentEntityNotFound, ForbiddenException, ScriptException {
         
         MetadataResolver metadataResolver = metadataResolverRepository.findByResourceId(metadataResolverId);
         // Now we operate directly on the filter attached to MetadataResolver,
@@ -116,7 +114,7 @@ public class JPAFilterServiceImpl implements FilterService {
         Optional<MetadataFilter> filterTobeUpdatedOptional = metadataResolver.getMetadataFilters().stream()
                         .filter(it -> it.getResourceId().equals(resourceId)).findFirst();
         if (filterTobeUpdatedOptional.isEmpty()) {
-            throw new EntityNotFoundException("Filter with resource id[" + resourceId + "] not found");
+            throw new PersistentEntityNotFound("Filter with resource id[" + resourceId + "] not found");
         }
 
         MetadataFilter filterTobeUpdated = filterTobeUpdatedOptional.get();

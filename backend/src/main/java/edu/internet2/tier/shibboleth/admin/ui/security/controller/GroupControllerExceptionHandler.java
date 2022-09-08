@@ -11,15 +11,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 
 @ControllerAdvice(assignableTypes = {GroupController.class})
 public class GroupControllerExceptionHandler extends ResponseEntityExceptionHandler {
     
-    @ExceptionHandler({ EntityNotFoundException.class })
-    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e, WebRequest request) {
+    @ExceptionHandler({ PersistentEntityNotFound.class })
+    public ResponseEntity<?> handleEntityNotFoundException(PersistentEntityNotFound e, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/admin/groups").build().toUri());
 
