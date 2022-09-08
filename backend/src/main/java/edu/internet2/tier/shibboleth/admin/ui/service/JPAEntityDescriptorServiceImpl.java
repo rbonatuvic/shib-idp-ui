@@ -16,7 +16,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
@@ -354,7 +354,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public void delete(String resourceId) throws ForbiddenException, EntityNotFoundException {
+    public void delete(String resourceId) throws ForbiddenException, PersistentEntityNotFound {
         EntityDescriptor ed = getEntityDescriptorByResourceId(resourceId);
         if (ed.isServiceEnabled()) {
             throw new ForbiddenException("Deleting an enabled Metadata Source is not allowed. Disable the source and try again.");
@@ -398,10 +398,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws EntityNotFoundException, ForbiddenException {
+    public EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws PersistentEntityNotFound, ForbiddenException {
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
         if (ed == null) {
-            throw new EntityNotFoundException(String.format("The entity descriptor with entity id [%s] was not found.", resourceId));
+            throw new PersistentEntityNotFound(String.format("The entity descriptor with entity id [%s] was not found.", resourceId));
         }
         if (!userService.isAuthorizedFor(ed)) {
             throw new ForbiddenException();
@@ -416,10 +416,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
     @Override
     public EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRep)
-                    throws ForbiddenException, EntityNotFoundException, InvalidPatternMatchException {
+                    throws ForbiddenException, PersistentEntityNotFound, InvalidPatternMatchException {
         EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(edRep.getId());
         if (existingEd == null) {
-            throw new EntityNotFoundException(String.format("The entity descriptor with entity id [%s] was not found for update.", edRep.getId()));
+            throw new PersistentEntityNotFound(String.format("The entity descriptor with entity id [%s] was not found for update.", edRep.getId()));
         }
         if (edRep.isServiceEnabled() && !userService.currentUserCanEnable(existingEd)) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
@@ -456,10 +456,11 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public EntityDescriptorRepresentation updateEntityDescriptorEnabledStatus(String resourceId, boolean status) throws EntityNotFoundException, ForbiddenException {
+    public EntityDescriptorRepresentation updateEntityDescriptorEnabledStatus(String resourceId, boolean status) throws
+                    PersistentEntityNotFound, ForbiddenException {
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
         if (ed == null) {
-            throw new EntityNotFoundException("Entity with resourceid[" + resourceId + "] was not found for update");
+            throw new PersistentEntityNotFound("Entity with resourceid[" + resourceId + "] was not found for update");
         }
         if (!userService.currentUserCanEnable(ed)) {
             throw new ForbiddenException("You do not have the permissions necessary to change the enable status of this entity descriptor.");

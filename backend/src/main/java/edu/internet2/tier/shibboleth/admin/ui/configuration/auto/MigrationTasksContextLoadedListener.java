@@ -1,7 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration.auto;
 
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
-import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -15,8 +13,6 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepos
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
-
-import java.util.List;
 
 /**
  * After the context loads, do any needed migration tasks

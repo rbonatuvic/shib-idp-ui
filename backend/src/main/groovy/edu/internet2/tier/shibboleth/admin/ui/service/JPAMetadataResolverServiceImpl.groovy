@@ -26,7 +26,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMet
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.Refilterable
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
 import edu.internet2.tier.shibboleth.admin.ui.exception.InitializationException
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
@@ -498,10 +498,10 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
-    public edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver findByResourceId(String resourceId) throws EntityNotFoundException {
+    public edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver findByResourceId(String resourceId) throws PersistentEntityNotFound {
         edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver result = metadataResolverRepository.findByResourceId(resourceId)
         if (result == null ) {
-            throw new EntityNotFoundException("No Provider with resourceId[" + resourceId + "] was found")
+            throw new PersistentEntityNotFound("No Provider with resourceId[" + resourceId + "] was found")
         }
         return result
     }

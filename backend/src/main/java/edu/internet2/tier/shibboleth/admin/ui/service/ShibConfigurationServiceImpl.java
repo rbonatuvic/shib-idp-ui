@@ -3,7 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibConfigurationProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibPropertySet;
 import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibPropertySetting;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.repository.ProjectionIdAndName;
 import edu.internet2.tier.shibboleth.admin.ui.repository.ShibConfigurationRepository;
@@ -39,17 +39,17 @@ public class ShibConfigurationServiceImpl implements ShibConfigurationService {
             getSet(set.getResourceId());
             throw new ObjectIdExistsException(Integer.toString(set.getResourceId()));
         }
-        catch (EntityNotFoundException e) {
+        catch (PersistentEntityNotFound e) {
             // we don't want to find the object
         }
         return save(set);
     }
 
     @Override
-    public void delete(int resourceId) throws EntityNotFoundException {
+    public void delete(int resourceId) throws PersistentEntityNotFound {
         ShibPropertySet set = shibPropertySetRepository.findByResourceId(resourceId);
         if (set == null) {
-            throw new EntityNotFoundException(String.format("The property set with id [%s] was not found for update.", resourceId));
+            throw new PersistentEntityNotFound(String.format("The property set with id [%s] was not found for update.", resourceId));
         }
         shibPropertySettingRepository.deleteAll(set.getProperties());
         shibPropertySetRepository.delete(set);
@@ -71,10 +71,10 @@ public class ShibConfigurationServiceImpl implements ShibConfigurationService {
     }
 
     @Override
-    public ShibPropertySet getSet(int resourceId) throws EntityNotFoundException {
+    public ShibPropertySet getSet(int resourceId) throws PersistentEntityNotFound {
         ShibPropertySet result = shibPropertySetRepository.findByResourceId(resourceId);
         if (result == null) {
-            throw new EntityNotFoundException((String.format("The property set with id [%s] was not found.", resourceId)));
+            throw new PersistentEntityNotFound((String.format("The property set with id [%s] was not found.", resourceId)));
         }
         return result;
     }
@@ -85,7 +85,7 @@ public class ShibConfigurationServiceImpl implements ShibConfigurationService {
     }
 
     @Override
-    public ShibPropertySet update(ShibPropertySet setToUpdate) throws EntityNotFoundException {
+    public ShibPropertySet update(ShibPropertySet setToUpdate) throws PersistentEntityNotFound {
         getSet(setToUpdate.getResourceId()); // check that it exists, if not it'll throw an exception
         return save(setToUpdate);
     }

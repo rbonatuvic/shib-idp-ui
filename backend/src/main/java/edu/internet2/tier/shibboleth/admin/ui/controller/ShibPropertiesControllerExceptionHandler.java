@@ -1,7 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +14,13 @@ import java.io.IOException;
 
 @ControllerAdvice(assignableTypes = {ShibPropertiesController.class})
 public class ShibPropertiesControllerExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler({ EntityNotFoundException.class })
-    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e, WebRequest request) {
+    @ExceptionHandler({ PersistentEntityNotFound.class })
+    public ResponseEntity<?> handleEntityNotFoundException(PersistentEntityNotFound e, WebRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND, e.getMessage()));
     }
 
     @ExceptionHandler({ IOException.class })
-    public ResponseEntity<?> handleIOException(EntityNotFoundException e, WebRequest request) {
+    public ResponseEntity<?> handleIOException(IOException e, WebRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating file");
     }
 

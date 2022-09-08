@@ -2,7 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibPropertySet;
 import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibPropertySetting;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.service.ShibConfigurationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,8 +41,8 @@ public class ShibPropertiesController {
 
     @GetMapping("/properties")
     @Transactional(readOnly = true)
-    @Operation(description = "Return all the configuration properties - used to populate the UI with the know configuration properties",
-               summary = "Return all the configuration properties - used to populate the UI with the know configuration properties", method = "GET")
+    @Operation(description = "Return all the configuration properties - used to populate the UI with the known configuration properties",
+               summary = "Return all the configuration properties - used to populate the UI with the known configuration properties", method = "GET")
     public ResponseEntity<?> getAllConfigurationProperties() {
         return ResponseEntity.ok(service.getAllConfigurationProperties());
     }
@@ -62,7 +62,7 @@ public class ShibPropertiesController {
     @Transactional(readOnly = true)
     @Operation(description = "Return the property set with the given resourceId",
                summary = "Return the property set with the given resourceId", method = "GET")
-    public ResponseEntity<?> getPropertySet(@PathVariable Integer resourceId) throws EntityNotFoundException {
+    public ResponseEntity<?> getPropertySet(@PathVariable Integer resourceId) throws PersistentEntityNotFound {
         return ResponseEntity.ok(service.getSet(resourceId));
     }
 
@@ -70,7 +70,7 @@ public class ShibPropertiesController {
     @Transactional(readOnly = true)
     @Operation(description = "Return the property set with the given resourceId as a zip file of the properties files",
                summary = "Return the property set with the given resourceId as a zip file of the properties files", method = "GET")
-    public ResponseEntity<?> getPropertySetAsZip(@PathVariable Integer resourceId) throws EntityNotFoundException, IOException {
+    public ResponseEntity<?> getPropertySetAsZip(@PathVariable Integer resourceId) throws PersistentEntityNotFound, IOException {
         ShibPropertySet set = service.getSet(resourceId);
         StringBuilder sb = new StringBuilder("attachment; filename=\"").append(set.getName()).append(".zip\"");
         return ResponseEntity.ok().header("Content-Disposition", sb.toString()).body(prepDownloadAsZip(convertPropertiesToMaps(set.getProperties())));
@@ -80,7 +80,7 @@ public class ShibPropertiesController {
     @Transactional(readOnly = true)
     @Operation(description = "Return the property set with the given resourceId as a zip file of a single properties files",
                summary = "Return the property set with the given resourceId as a zip file of a single properties files", method = "GET")
-    public ResponseEntity<?> getPropertySetOneFileAsZip(@PathVariable Integer resourceId) throws EntityNotFoundException, IOException {
+    public ResponseEntity<?> getPropertySetOneFileAsZip(@PathVariable Integer resourceId) throws PersistentEntityNotFound, IOException {
         ShibPropertySet set = service.getSet(resourceId);
         StringBuilder sb = new StringBuilder("attachment; filename=\"").append(set.getName()).append(".zip\"");
         return ResponseEntity.ok().header("Content-Disposition", sb.toString()).body(prepDownloadAsZipWithSingleFile(convertPropertiesToMaps(set.getProperties())));
@@ -141,7 +141,7 @@ public class ShibPropertiesController {
     @DeleteMapping("/property/set/{resourceId}")
     @Secured("ROLE_ADMIN")
     @Transactional
-    public ResponseEntity<?> deletePropertySet(@PathVariable Integer resourceId) throws EntityNotFoundException {
+    public ResponseEntity<?> deletePropertySet(@PathVariable Integer resourceId) throws PersistentEntityNotFound {
         service.delete(resourceId);
         return ResponseEntity.noContent().build();
     }
@@ -161,7 +161,8 @@ public class ShibPropertiesController {
     @Transactional
     @Operation(description = "Update a property set with with the matching resourceId - must exist",
                summary = "Update an existing property set with the matching resourceId - must exist", method = "PUT")
-    public ResponseEntity<?> updatePropertySet(@RequestBody ShibPropertySet setToUpdate, @PathVariable int resourceId) throws EntityNotFoundException {
+    public ResponseEntity<?> updatePropertySet(@RequestBody ShibPropertySet setToUpdate, @PathVariable int resourceId) throws
+                    PersistentEntityNotFound {
         ShibPropertySet result = service.update(setToUpdate);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

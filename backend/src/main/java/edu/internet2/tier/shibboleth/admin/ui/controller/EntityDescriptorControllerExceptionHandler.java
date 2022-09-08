@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
@@ -22,8 +22,8 @@ public class EntityDescriptorControllerExceptionHandler extends ResponseEntityEx
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(HttpStatus.CONFLICT, e.getMessage()));
     }
 
-    @ExceptionHandler({ EntityNotFoundException.class })
-    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e, WebRequest request) {
+    @ExceptionHandler({ PersistentEntityNotFound.class })
+    public ResponseEntity<?> handleEntityNotFoundException(PersistentEntityNotFound e, WebRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND, e.getMessage()));
     }
     

@@ -5,7 +5,7 @@ import javax.script.ScriptException;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 
 /**
@@ -31,5 +31,6 @@ public interface FilterService {
      */
     FilterRepresentation createRepresentationFromFilter(final EntityAttributesFilter entityAttributesFilter);
 
-    MetadataFilter updateFilterEnabledStatus(String metadataResolverId, String resourceId, boolean status) throws EntityNotFoundException, ForbiddenException, ScriptException;
+    MetadataFilter updateFilterEnabledStatus(String metadataResolverId, String resourceId, boolean status) throws
+                    PersistentEntityNotFound, ForbiddenException, ScriptException;
 }

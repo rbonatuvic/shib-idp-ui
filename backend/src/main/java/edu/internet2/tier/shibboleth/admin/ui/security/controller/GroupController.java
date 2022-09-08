@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException;
@@ -40,7 +40,7 @@ public class GroupController {
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/{resourceId}")
     @Transactional
-    public ResponseEntity<?> delete(@PathVariable String resourceId) throws EntityNotFoundException, GroupDeleteException {
+    public ResponseEntity<?> delete(@PathVariable String resourceId) throws PersistentEntityNotFound, GroupDeleteException {
         groupService.deleteDefinition(resourceId);
         return ResponseEntity.noContent().build();
     }
@@ -53,10 +53,10 @@ public class GroupController {
 
     @GetMapping("/{resourceId}")
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getOne(@PathVariable String resourceId) throws EntityNotFoundException {
+    public ResponseEntity<?> getOne(@PathVariable String resourceId) throws PersistentEntityNotFound {
         Group g = groupService.find(resourceId);
         if (g == null) {
-            throw new EntityNotFoundException(String.format("Unable to find group with resource id: [%s]", resourceId));
+            throw new PersistentEntityNotFound(String.format("Unable to find group with resource id: [%s]", resourceId));
         }
         return ResponseEntity.ok(g);
     }
@@ -64,7 +64,7 @@ public class GroupController {
     @Secured("ROLE_ADMIN")
     @PutMapping
     @Transactional
-    public ResponseEntity<?> update(@RequestBody Group group) throws EntityNotFoundException, InvalidGroupRegexException {
+    public ResponseEntity<?> update(@RequestBody Group group) throws PersistentEntityNotFound, InvalidGroupRegexException {
         Group result = groupService.updateGroup(group);
         return ResponseEntity.ok(result);
     }

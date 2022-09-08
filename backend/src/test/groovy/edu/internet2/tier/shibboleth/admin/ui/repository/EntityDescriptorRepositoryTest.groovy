@@ -122,7 +122,6 @@ class EntityDescriptorRepositoryTest extends AbstractBaseDataJpaTest {
         @Bean
         CustomEntityAttributesDefinitionServiceImpl customEntityAttributesDefinitionServiceImpl(EntityManager entityManager, CustomEntityAttributeDefinitionRepository customEntityAttributeDefinitionRepository) {
             new CustomEntityAttributesDefinitionServiceImpl().with {
-                it.entityManager = entityManager
                 it.repository = customEntityAttributeDefinitionRepository
                 return it
             }
