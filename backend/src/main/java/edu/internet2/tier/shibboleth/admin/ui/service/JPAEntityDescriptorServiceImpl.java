@@ -21,6 +21,7 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Owner;
@@ -373,16 +374,16 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public List<EntityDescriptorRepresentation> getAllRepresentationsBasedOnUserAccess() throws ForbiddenException {
+    public List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsBasedOnUserAccess() throws ForbiddenException {
         switch (userService.getCurrentUserAccess()) {
         case ADMIN:
-            return entityDescriptorRepository.findAllStreamByCustomQuery().map(ed -> createRepresentationFromDescriptor(ed))
-                            .collect(Collectors.toList());
+            List<EntityDescriptorProjection> o = entityDescriptorRepository.findAllBy();//.map(edProjection -> createRepresentationFromDescriptor(edProjection)).collect(Collectors.toList());
+            return o;
         case GROUP:
             User user = userService.getCurrentUser();
             Group group = user.getGroup();
-            return entityDescriptorRepository.findAllStreamByIdOfOwner(group.getOwnerId())
-                            .map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
+            List<EntityDescriptorProjection> ed =  entityDescriptorRepository.findAllByIdOfOwner(group.getOwnerId());//.map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
+            return ed;
         default:
             throw new ForbiddenException();
         }
