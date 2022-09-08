@@ -83,7 +83,7 @@ public class EntityDescriptorController {
     @GetMapping("/EntityDescriptors")
     @Transactional
     public ResponseEntity<?> getAll() throws ForbiddenException {
-        return ResponseEntity.ok(entityDescriptorService.getAllRepresentationsBasedOnUserAccess());
+        return ResponseEntity.ok(entityDescriptorService.getAllEntityDescriptorProjectionsBasedOnUserAccess());
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}/Versions")
