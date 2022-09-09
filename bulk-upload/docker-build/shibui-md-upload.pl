@@ -41,6 +41,11 @@ $client->setHost($conf->{api_host});
 
 #create auth token
 $client->HEAD('/');
+
+my $code = $client->responseCode();
+my $res = $client->responseContent();
+die "$res\n" if ($code != 302 && $code != 200);
+
 my $token = &get_cookie_value($cookies, 'XSRF-TOKEN');
 $client->addHeader('X-XSRF-TOKEN', $token);
 ##
