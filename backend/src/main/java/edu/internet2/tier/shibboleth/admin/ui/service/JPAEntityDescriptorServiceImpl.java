@@ -120,6 +120,14 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
+    public EntityDescriptorRepresentation updateGroupForEntityDescriptor(String resourceId, String groupId) {
+        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
+        ed.setIdOfOwner(groupId);
+        EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
+        return createRepresentationFromDescriptor(savedEntity);
+    }
+
+    @Override
     public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep)
                     throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
         if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
