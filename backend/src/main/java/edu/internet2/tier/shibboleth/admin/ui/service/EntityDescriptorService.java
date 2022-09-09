@@ -120,4 +120,6 @@ public interface EntityDescriptorService {
     EntityDescriptorRepresentation createNewEntityDescriptorFromXMLOrigin(EntityDescriptor ed);
 
     boolean entityExists(String entityID);
+
+    EntityDescriptorRepresentation updateGroupForEntityDescriptor(String resourceId, String groupId);
 }
