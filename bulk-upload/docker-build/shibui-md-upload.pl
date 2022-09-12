@@ -12,6 +12,7 @@ use XML::LibXML;
 use XML::LibXML::XPathContext;
 use Encode;
 use JSON;
+use URI::Encode;
 
 ##process arguments
 our ($opt_e,$opt_m,$opt_c);
@@ -201,10 +202,13 @@ sub call_api {
   my $xml = shift;
   my $enable = shift;
   my ($params,$code,$result);
+  my $encoder = URI::Encode->new({encode_reserved => 1});
   
   my $utf8 = encode_utf8($xml);
+  my $utf8_name = encode_utf8($name);
+  my $ename = $encoder->encode($name);
   
-  $params = "?spName=$name";
+  $params = "?spName=$ename";
   $params .= "&enableService=true" if ($enable);
   
   $client->addHeader('Content-Type', "application/xml; charset='utf8'");
@@ -226,18 +230,18 @@ sub call_api {
       my $eresult = $client->responseContent();     
             
       if ($ecode == 200 || $ecode == 201) {
-        print "$ecode: entity $name uploaded sucessfully and enabled\n";
+        print "$ecode: entity $utf8_name uploaded sucessfully and enabled\n";
       } else {
-        print "$ecode: entity $name uploaded sucessfully but enabling failed:\n";
+        print "$ecode: entity $utf8_name uploaded sucessfully but enabling failed:\n";
         open(my $pipe, '|-', "jq .");
         print $pipe $eresult;
       } 
             
     } else {
-      print "$code: entity $name uploaded sucessfully\n";
+      print "$code: entity $utf8_name uploaded sucessfully\n";
     }
   } elsif ($code == 409) {
-    print "$code: entity $name already exists\n";
+    print "$code: entity $utf8_name already exists\n";
   } elsif ($code == 500) {
     print "$code: $result\n";
   } else {          

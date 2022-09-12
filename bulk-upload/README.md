@@ -42,6 +42,6 @@ If you prefer to build the image yourself, `cd docker-build;docker build -t unic
 
 ### running without docker ###
 The docker-build/shibui-md-upload.pl script can be run manually.  
-Depending on OS you may need to install some additional non dist Perl modules. REST::Client , XML::LibXML , JSON , Config::File  
+Depending on OS you may need to install some additional non dist Perl modules. REST::Client , XML::LibXML , JSON , Config::File , URI::Encode 
 `perl shibui-md-upload.pl -c <path to upload.conf> -m <path to metadata location> -e (enable metadata source after upload)`  
 
