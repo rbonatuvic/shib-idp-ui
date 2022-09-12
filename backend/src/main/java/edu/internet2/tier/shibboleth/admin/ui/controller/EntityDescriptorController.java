@@ -83,7 +83,7 @@ public class EntityDescriptorController {
     @GetMapping("/EntityDescriptors")
     @Transactional
     public ResponseEntity<?> getAll() throws ForbiddenException {
-        return ResponseEntity.ok(entityDescriptorService.getAllRepresentationsBasedOnUserAccess());
+        return ResponseEntity.ok(entityDescriptorService.getAllEntityDescriptorProjectionsBasedOnUserAccess());
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}/Versions")
@@ -145,10 +145,17 @@ public class EntityDescriptorController {
     @PutMapping("/EntityDescriptor/{resourceId}")
     @Transactional
     public ResponseEntity<?> update(@RequestBody EntityDescriptorRepresentation edRepresentation, @PathVariable String resourceId)
-                    throws ForbiddenException, ConcurrentModificationException, PersistentEntityNotFound,
-                    InvalidPatternMatchException {
+                    throws ForbiddenException, ConcurrentModificationException, PersistentEntityNotFound, InvalidPatternMatchException {
         edRepresentation.setId(resourceId); // This should be the same already, but just to be safe...
         EntityDescriptorRepresentation result = entityDescriptorService.update(edRepresentation);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PutMapping("/EntityDescriptor/{resourceId}/changeGroup/{groupId}")
+    @Transactional
+    public ResponseEntity<?> updateGroupForEntityDescriptor(@PathVariable String resourceId, @PathVariable String groupId)
+                    throws ForbiddenException, ConcurrentModificationException, PersistentEntityNotFound, InvalidPatternMatchException {
+        EntityDescriptorRepresentation result = entityDescriptorService.updateGroupForEntityDescriptor(resourceId, groupId);
         return ResponseEntity.ok().body(result);
     }
 

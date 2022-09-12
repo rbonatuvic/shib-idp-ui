@@ -34,7 +34,7 @@ export function CopySource({ copy, onNext }) {
         setSelected([]);
     };
 
-    const { register, handleSubmit, control, formState, setValue, getValues } = useForm({
+    const { register, handleSubmit, control, formState, setValue, getValues, watch } = useForm({
         mode: 'onChange',
         reValidateMode: 'onBlur',
         defaultValues: {
@@ -46,6 +46,8 @@ export function CopySource({ copy, onNext }) {
         shouldFocusError: true,
         shouldUnregister: false,
     });
+
+    const target = watch('target');
 
     const { errors, isValid } = formState;
 
@@ -92,25 +94,28 @@ export function CopySource({ copy, onNext }) {
                 <div className="col col-xs-12 col-xl-6">
                     <form onSubmit={handleSubmit(onNext)}>
                         <fieldset className="bg-light border rounded p-4">
-                            <Form.Group className={`${errors.target ? 'is-invalid text-danger' : ''}`}>
-                                <Form.Label htmlFor="target">
-                                    <Translate value="label.select-entity-id-to-copy">Select the Entity ID to copy</Translate>
-                                    <FontAwesomeIcon icon={faAsterisk} className="text-danger" />
-                                </Form.Label>
-                                <EntityTypeahead id="target" name="target" control={control} />
+                            <Form.Group className={`mb-3 ${errors.target ? 'is-invalid text-danger' : ''}`}>
+                                <EntityTypeahead id="target" name="target" control={control}>
+                                    <span>
+                                        <Translate value="label.select-entity-id-to-copy">Select the Entity ID to copy</Translate>
+                                        <FontAwesomeIcon icon={faAsterisk} className="text-danger ms-2" />
+                                    </span>
+                                </EntityTypeahead>
                                 <Form.Text id="target-help"
                                         className={`text-danger ${errors?.target?.type === 'required' ? '' : 'sr-only'}`}>
                                     <Translate value="message.target-required">Entity ID to copy is Required</Translate>
                                 </Form.Text>
                             </Form.Group>
-                            <Form.Group className={`${errors.serviceProviderName ? 'text-danger is-invalid' : ''}`}>
+                            <Form.Group className={`mb-3 ${errors.serviceProviderName ? 'text-danger is-invalid' : ''}`}>
                                 <Form.Label htmlFor="serviceProviderName">
+                                    <span>
                                     <Translate value="label.metadata-source-name-dashboard-display-only">Metadata Source Name (Dashboard Display Only)</Translate>
-                                    <FontAwesomeIcon icon={faAsterisk} className="text-danger" />
+                                    <FontAwesomeIcon icon={faAsterisk} className="text-danger ms-2" />
+                                    </span>
                                 </Form.Label>
                                 <Form.Control id="serviceProviderName" type="text" className="form-control"
                                     {...register('serviceProviderName', {required: true})}
-                                    aria-describedby="serviceProviderName-help" />
+                                    aria-describedby="serviceProviderName-help" disabled={!target} />
                                 <Form.Text className={`form-text text-danger ${errors?.serviceProviderName?.type === 'required' ? '' : 'sr-only'}`}
                                     id="serviceProviderName-help">
                                     <Translate value="message.service-resolver-name-required">Service Resolver Name is required</Translate>
@@ -118,12 +123,15 @@ export function CopySource({ copy, onNext }) {
                             </Form.Group>
                             <Form.Group className={`${errors.entityId ? 'is-invalid text-danger' : ''}`}>
                                 <Form.Label htmlFor="entityId">
+                                    <span>
                                     <Translate value="label.service-resolver-entity-id">New Entity ID</Translate>
-                                    <FontAwesomeIcon icon={faAsterisk} className="text-danger" />
+                                    <FontAwesomeIcon icon={faAsterisk} className="text-danger ms-2" />
+                                    </span>
                                 </Form.Label>
                                 <Form.Control id="entityId" type="text"
                                     isInvalid={errors.entityId}
                                     aria-describedby="entityId-help" 
+                                    disabled={!target}
                                     {...register('entityId', {
                                         required: true, validate: {
                                             unique: v => !(sourceIds.indexOf(v) > -1)
