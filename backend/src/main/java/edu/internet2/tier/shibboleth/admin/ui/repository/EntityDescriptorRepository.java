@@ -12,6 +12,9 @@ import java.util.stream.Stream;
  * Repository to manage {@link EntityDescriptor} instances.
  */
 public interface EntityDescriptorRepository extends JpaRepository<EntityDescriptor, Long> {
+    List<EntityDescriptorProjection> findAllBy();
+
+    List<EntityDescriptorProjection> findAllByIdOfOwner(String ownerId);
 
     EntityDescriptor findByEntityID(String entityId);
 

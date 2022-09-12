@@ -3,10 +3,11 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -67,9 +68,9 @@ public interface EntityDescriptorService {
     Iterable<EntityDescriptorRepresentation> getAllDisabledAndNotOwnedByAdmin() throws ForbiddenException;
 
     /**
-     * @return a list of EntityDescriptorRepresentations that a user has the rights to access
+     * @return a list of EntityDescriptorProjections that a user has the rights to access
      */
-    List<EntityDescriptorRepresentation> getAllRepresentationsBasedOnUserAccess() throws ForbiddenException;
+    List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsBasedOnUserAccess() throws ForbiddenException;
 
     /**
      * Given a list of attributes, generate an AttributeReleaseList
@@ -119,4 +120,6 @@ public interface EntityDescriptorService {
     EntityDescriptorRepresentation createNewEntityDescriptorFromXMLOrigin(EntityDescriptor ed);
 
     boolean entityExists(String entityID);
+
+    EntityDescriptorRepresentation updateGroupForEntityDescriptor(String resourceId, String groupId);
 }
