@@ -37,7 +37,7 @@ export function SourcesTab () {
     React.useEffect(() => { loadSources() }, []);
 
     async function changeSourceGroup(source, group) {
-        await updater.put(`/${source.id}`, {
+        await updater.put(`/${source.id}/changeGroup/${group}`, {
             ...source,
             idOfOwner: group
         });
