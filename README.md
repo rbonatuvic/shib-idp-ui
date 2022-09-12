@@ -6,10 +6,11 @@
 
 ## Running
 
-There are currently 2 ways to run the application:
+There are currently 3 ways to run the application:
 
 1. As an executable WAR using Java
-1. deployed in a Java Servlet 3.0 container such as Tomcat or Jetty
+1. Deployed in a Java Servlet 3.0 container such as Tomcat or Jetty
+1. Via Docker container - see instructions at https://spaces.at.internet2.edu/display/SMMU/Shibboleth+IdP+UI+Deployment+Instructions
 
 Note that some features require encoded slashes in the URL. In tomcat (which is embedded in the war), this can be
 allowed with:
