@@ -184,7 +184,7 @@ update resource_backed_metadata_resolver_aud set max_refresh_delay ='PT4H';
 
 ALTER TABLE description ALTER COLUMN descriptionValue LONGTEXT;
 GO
-ALTER TABLE description)aud ALTER COLUMN descriptionValue LONGTEXT;
+ALTER TABLE description_aud ALTER COLUMN descriptionValue LONGTEXT;
 GO
 
 -- changeset liquibase:1.13.0.2 dbms:postgresql,mssql
@@ -192,7 +192,7 @@ GO
 -- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
 -- comment: /* we don't need to run this if the system is new */
 
-ALTER TABLE description ALTER COLUMN descriptionValue TEXT;
+ALTER TABLE description ALTER COLUMN descriptionValue TYPE TEXT;
 GO
-ALTER TABLE description_aud ALTER COLUMN descriptionValue TEXT;
+ALTER TABLE description_aud ALTER COLUMN descriptionValue TYPE TEXT;
 GO
