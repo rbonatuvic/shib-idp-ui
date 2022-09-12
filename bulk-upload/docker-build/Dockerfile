@@ -3,7 +3,7 @@ MAINTAINER sporth@unicon.net
 
 RUN  apt-get clean \
      && apt-get -y update \
-     && apt-get install -y librest-client-perl libconfig-file-perl jq libxml-libxml-perl libjson-perl
+     && apt-get install -y librest-client-perl libconfig-file-perl jq libxml-libxml-perl libjson-perl liburi-encode-perl
 
 WORKDIR /opt
 COPY shibui-md-upload.pl /opt/shibui-md-upload.pl
