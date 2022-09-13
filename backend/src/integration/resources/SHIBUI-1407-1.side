@@ -2416,6 +2416,13 @@
       ],
       "value": ""
     }, {
+      "id": "4dbf4b6f-7de9-49e1-a23f-ff748f5a986b",
+      "comment": "",
+      "command": "pause",
+      "target": "3000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "978829e9-fa70-4548-9a55-0e2ffa0df9a4",
       "comment": "",
       "command": "waitForElementVisible",
