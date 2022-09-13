@@ -674,7 +674,7 @@
       "id": "3aedee37-3445-4679-afe8-62e53b348e52",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down > path",
+      "target": "css=.fa-caret-down",
       "targets": [
         ["css=.fa-caret-down > path", "css:finder"]
       ],
@@ -1186,30 +1186,6 @@
       ],
       "value": ""
     }, {
-      "id": "185cd9b2-0f1b-4f64-a4a5-b62f5a881d45",
-      "comment": "",
-      "command": "click",
-      "target": "css=.p-3",
-      "targets": [
-        ["css=.p-3", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div", "xpath:idRelative"],
-        ["xpath=//main/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "2a295dc3-422a-436e-8450-03dbcc88a1b0",
-      "comment": "",
-      "command": "click",
-      "target": "css=.toggle-button",
-      "targets": [
-        ["css=.toggle-button", "css:finder"],
-        ["xpath=(//button[@type='button'])[44]", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/form/div[2]/div/div/div/div/button", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div/div/div/button", "xpath:position"],
-        ["xpath=//button[contains(.,'Options')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "6fdf6ef4-52e8-44a9-8dc5-8126e2ba11b0",
       "comment": "",
       "command": "click",
@@ -1665,7 +1641,7 @@
       "id": "5bf0b70b-e413-49eb-bfcb-f97a4265c70b",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down > path",
+      "target": "css=.fa-caret-down",
       "targets": [
         ["css=.fa-caret-down > path", "css:finder"]
       ],
@@ -1700,26 +1676,6 @@
       ],
       "value": ""
     }, {
-      "id": "cd98777e-1800-417f-af35-9f6d531decfa",
-      "comment": "",
-      "command": "click",
-      "target": "css=form",
-      "targets": [
-        ["css=form", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/form", "xpath:idRelative"],
-        ["xpath=//form", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "2ac41455-f406-4e71-88c0-8c30b7c23eab",
-      "comment": "",
-      "command": "click",
-      "target": "css=.fa-caret-down",
-      "targets": [
-        ["css=.fa-caret-down", "css:finder"]
-      ],
-      "value": ""
-    }, {
       "id": "a729126e-0c39-4db6-882c-b506db087119",
       "comment": "",
       "command": "click",
@@ -1733,18 +1689,6 @@
         ["xpath=(//a[contains(@href, '#')])[643]", "xpath:href"],
         ["xpath=//div[112]/a", "xpath:position"],
         ["xpath=//a[contains(.,'Status - Add all')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
-      "id": "602156fa-9fed-4a42-9182-4aa66338dd24",
-      "comment": "",
-      "command": "click",
-      "target": "css=td",
-      "targets": [
-        ["css=td", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/form/div[4]/div/table/tbody/tr/td", "xpath:idRelative"],
-        ["xpath=//td", "xpath:position"],
-        ["xpath=//td[contains(.,'At least one property is required.')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -1885,30 +1829,6 @@
       ],
       "value": ""
     }, {
-      "id": "2a8c3086-a40d-4e9c-857a-7fda2bd2e8f5",
-      "comment": "",
-      "command": "click",
-      "target": "css=.toggle-button",
-      "targets": [
-        ["css=.toggle-button", "css:finder"],
-        ["xpath=(//button[@type='button'])[68]", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/form/div[2]/div/div/div/div/button", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div/div/div/button", "xpath:position"],
-        ["xpath=//button[contains(.,'Options')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
-      "id": "93a9c033-0fcc-4af9-85b5-7e18d882bf68",
-      "comment": "",
-      "command": "click",
-      "target": "css=.col-12 > .d-flex",
-      "targets": [
-        ["css=.col-12 > .d-flex", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/form/div[2]/div/div", "xpath:idRelative"],
-        ["xpath=//form/div[2]/div/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "d06a3e9a-849f-4b8d-83a1-797f8abf6794",
       "comment": "",
       "command": "click",
@@ -1920,6 +1840,13 @@
         ["xpath=//form/div[2]/div/div/button", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "546b2382-08c5-4360-baaa-1adb84522a76",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=tr:nth-child(653) > td:nth-child(1)",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "1e726b4f-8ae7-40eb-ba52-747c88ae2e89",
       "comment": "",
@@ -1961,20 +1888,6 @@
       ],
       "value": ""
     }, {
-      "id": "caeb6c0b-c99d-4e4f-87b1-874ac54f30a8",
-      "comment": "",
-      "command": "click",
-      "target": "id=valueInput-idp.resolvertest.accessPolicy",
-      "targets": [
-        ["id=valueInput-idp.resolvertest.accessPolicy", "id"],
-        ["name=properties.0.propertyValue", "name"],
-        ["css=#valueInput-idp\\.resolvertest\\.accessPolicy", "css:finder"],
-        ["xpath=//input[@id='valueInput-idp.resolvertest.accessPolicy']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/form/div[4]/div/table/tbody/tr/td[4]/div/input", "xpath:idRelative"],
-        ["xpath=//td[4]/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "812d8a90-f462-470a-9a4d-efd2cca679c2",
       "comment": "",
       "command": "type",
@@ -1988,20 +1901,6 @@
         ["xpath=//td[4]/div/input", "xpath:position"]
       ],
       "value": "foo"
-    }, {
-      "id": "8c98218b-9d71-42ac-8682-36d2aeb0f39e",
-      "comment": "",
-      "command": "click",
-      "target": "id=valueInput-idp.resolvertest.logging",
-      "targets": [
-        ["id=valueInput-idp.resolvertest.logging", "id"],
-        ["name=properties.1.propertyValue", "name"],
-        ["css=#valueInput-idp\\.resolvertest\\.logging", "css:finder"],
-        ["xpath=//input[@id='valueInput-idp.resolvertest.logging']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/form/div[4]/div/table/tbody/tr[2]/td[4]/div/input", "xpath:idRelative"],
-        ["xpath=//tr[2]/td[4]/div/input", "xpath:position"]
-      ],
-      "value": ""
     }, {
       "id": "948ac5c1-aa09-44af-a024-c0dc898616d1",
       "comment": "",
