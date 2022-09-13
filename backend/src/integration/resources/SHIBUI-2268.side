@@ -949,23 +949,17 @@
       ],
       "value": ""
     }, {
-      "id": "6cd2789b-4ec1-4153-8d4e-fb896a1b0e5e",
-      "comment": "",
-      "command": "click",
-      "target": "css=.align-items-end",
-      "targets": [
-        ["css=.align-items-end", "css:finder"],
-        ["xpath=//div[@id='root']/div/footer/div/div[2]/div", "xpath:idRelative"],
-        ["xpath=//footer/div/div[2]/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "b9432398-233d-4872-8b56-9aa8fd48ca85",
       "comment": "",
       "command": "assertText",
-      "target": "css=.alert",
-      "targets": [],
-      "value": "No FiltersNo filters have been added to this Metadata Provider"
+      "target": "css=.alert > p",
+      "targets": [
+        ["css=.alert > p", "css:finder"],
+        ["xpath=//div[@id='filters']/div[2]/p", "xpath:idRelative"],
+        ["xpath=//section/div/div/div[3]/div[2]/p", "xpath:position"],
+        ["xpath=//p[contains(.,'No filters have been added to this Metadata Provider')]", "xpath:innerText"]
+      ],
+      "value": "No filters have been added to this Metadata Provider"
     }, {
       "id": "3543733a-3e14-4f07-9aaa-e29a26fe36b1",
       "comment": "",
