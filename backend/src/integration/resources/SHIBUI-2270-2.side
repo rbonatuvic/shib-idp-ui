@@ -140,7 +140,7 @@
       "id": "3fae037d-0e59-4b9d-adf2-dbd624b72613",
       "comment": "",
       "command": "click",
-      "target": "css=.rbt-input-main",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.rbt-input-main", "css:finder"],
         ["xpath=//input[@value='']", "xpath:attributes"],
@@ -168,7 +168,7 @@
       "id": "be761931-fb77-4030-bc2c-2577d3a99580",
       "comment": "",
       "command": "click",
-      "target": "css=.rbt-input-main",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.rbt-input-main", "css:finder"],
         ["xpath=//input[@value='']", "xpath:attributes"],
@@ -225,7 +225,7 @@
       "id": "b1cb5ac9-027c-45f2-b7c2-d1a661378928",
       "comment": "",
       "command": "click",
-      "target": "css=.rbt-input-main",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.rbt-input-main", "css:finder"],
         ["xpath=//input[@value='']", "xpath:attributes"],
@@ -253,7 +253,7 @@
       "id": "ff91bfaf-f6ce-42c2-9dd4-1c52268d140d",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down", "css:finder"]
       ],
@@ -307,7 +307,7 @@
       "id": "384ea0fc-0bc1-4f63-b736-7e1d67277662",
       "comment": "",
       "command": "click",
-      "target": "css=.rbt-input-main",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.rbt-input-main", "css:finder"],
         ["xpath=//input[@value='']", "xpath:attributes"],
@@ -451,7 +451,7 @@
       "id": "9f2f0c50-7465-4879-bb68-822bca1f0fa3",
       "comment": "",
       "command": "click",
-      "target": "css=.rbt-input-main",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.rbt-input-main", "css:finder"],
         ["xpath=//input[@value='']", "xpath:attributes"],
@@ -479,7 +479,7 @@
       "id": "3b326c6f-96d3-4f6c-ba82-e9ffd95517f1",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down", "css:finder"]
       ],
@@ -562,7 +562,7 @@
       "id": "c6bfe838-9027-4c25-990e-e451e9d04a4d",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down", "css:finder"]
       ],
@@ -674,7 +674,7 @@
       "id": "3aedee37-3445-4679-afe8-62e53b348e52",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down > path", "css:finder"]
       ],
@@ -815,7 +815,7 @@
       "id": "6d5dcd3a-0d08-4140-9634-196e2e2fdb90",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down", "css:finder"]
       ],
@@ -898,7 +898,7 @@
       "id": "c06b4caf-e093-49b4-8cac-f71bda476995",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down", "css:finder"]
       ],
@@ -1097,7 +1097,7 @@
       "id": "e8d736c8-be22-4411-87d4-0a1eefcc821e",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down", "css:finder"]
       ],
@@ -1122,7 +1122,7 @@
       "id": "ed236cf8-e185-4b41-a47f-2a9219eab773",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down", "css:finder"]
       ],
@@ -1205,7 +1205,7 @@
       "id": "614f715d-8fcc-4e84-8d0d-dd947fc7c99f",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down", "css:finder"]
       ],
@@ -1259,7 +1259,7 @@
       "id": "b93aed8b-bd95-496a-ad07-b9bfe23f8522",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down > path",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down > path", "css:finder"]
       ],
@@ -1400,7 +1400,7 @@
       "id": "f7c7f42d-b4cb-4f92-997f-d9677a00758f",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down", "css:finder"]
       ],
@@ -1425,7 +1425,7 @@
       "id": "5a3ad5c4-37e2-4060-88bd-ed96b94d037e",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down", "css:finder"]
       ],
@@ -1533,7 +1533,7 @@
       "id": "10926b24-5952-4685-be81-802f5fc7ca4a",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down", "css:finder"]
       ],
@@ -1558,7 +1558,7 @@
       "id": "5558c433-213a-49de-b68d-e6d9ac396b86",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down", "css:finder"]
       ],
@@ -1641,7 +1641,7 @@
       "id": "5bf0b70b-e413-49eb-bfcb-f97a4265c70b",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down > path", "css:finder"]
       ],
@@ -1724,7 +1724,7 @@
       "id": "eca7bf2d-db81-4cad-873b-eba9440bd0e5",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down", "css:finder"]
       ],
@@ -1807,7 +1807,7 @@
       "id": "a11e93fd-5a1b-4456-a875-f0b8a8582058",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-caret-down > path",
+      "target": "css=.toggle-button",
       "targets": [
         ["css=.fa-caret-down > path", "css:finder"]
       ],
@@ -2013,6 +2013,30 @@
         ["xpath=//div[4]/div/div/div[3]/button", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "f92982ba-8145-490b-999c-ff52ae1ce146",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=td",
+      "targets": [
+        ["css=td", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div[2]/table/tbody/tr/td", "xpath:idRelative"],
+        ["xpath=//td", "xpath:position"],
+        ["xpath=//td[contains(.,'No configurations defined.')]", "xpath:innerText"]
+      ],
+      "value": "30000"
+    }, {
+      "id": "9bc43f09-b4e4-4f98-94d3-d7a9f3fa05c1",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=td",
+      "targets": [
+        ["css=td", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div[2]/table/tbody/tr/td", "xpath:idRelative"],
+        ["xpath=//td", "xpath:position"],
+        ["xpath=//td[contains(.,'No configurations defined.')]", "xpath:innerText"]
+      ],
+      "value": "No configurations defined."
     }, {
       "id": "d7643f3c-f387-4404-8f8b-e73ebfeb0754",
       "comment": "",
