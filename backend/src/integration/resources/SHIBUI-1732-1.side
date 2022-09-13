@@ -631,6 +631,13 @@
       ],
       "value": ""
     }, {
+      "id": "97d81369-bb35-4f59-b838-ef69e253fc21",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "id=root_xmlId",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "14f9bdcf-a54a-4f3b-9c4a-e4e9e94647ba",
       "comment": "",
       "command": "type",
