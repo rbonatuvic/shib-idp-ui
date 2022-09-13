@@ -1888,6 +1888,13 @@
       ],
       "value": ""
     }, {
+      "id": "10357b31-6f98-4d85-8d42-1ec5fc4906ca",
+      "comment": "",
+      "command": "click",
+      "target": "id=valueInput-idp.resolvertest.accessPolicy",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "812d8a90-f462-470a-9a4d-efd2cca679c2",
       "comment": "",
       "command": "type",
@@ -1902,7 +1909,7 @@
       ],
       "value": "foo"
     }, {
-      "id": "948ac5c1-aa09-44af-a024-c0dc898616d1",
+      "id": "2b3f457c-5eb6-4df4-a7f5-3f4856a71cc2",
       "comment": "",
       "command": "type",
       "target": "id=valueInput-idp.resolvertest.logging",
@@ -1915,6 +1922,13 @@
         ["xpath=//tr[2]/td[4]/div/input", "xpath:position"]
       ],
       "value": "bar"
+    }, {
+      "id": "948ac5c1-aa09-44af-a024-c0dc898616d1",
+      "comment": "",
+      "command": "click",
+      "target": "id=valueInput-idp.resolvertest.logging",
+      "targets": [],
+      "value": ""
     }, {
       "id": "46d0e1ac-4706-47cf-9336-683b7b6519f2",
       "comment": "",
@@ -2012,6 +2026,13 @@
         ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
         ["xpath=//div[4]/div/div/div[3]/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "129a0a85-e23e-447c-b1f0-12587ccd7978",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
       "value": ""
     }, {
       "id": "f92982ba-8145-490b-999c-ff52ae1ce146",
