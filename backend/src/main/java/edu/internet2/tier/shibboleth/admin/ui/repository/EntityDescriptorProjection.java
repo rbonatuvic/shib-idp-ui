@@ -1,5 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol;
+
 import java.time.LocalDateTime;
 
 public interface EntityDescriptorProjection {
@@ -16,4 +18,5 @@ public interface EntityDescriptorProjection {
     LocalDateTime getCreatedDate();
     boolean getServiceEnabled();
     String getIdOfOwner();
+    EntityDescriptorProtocol getProtocol();
 }

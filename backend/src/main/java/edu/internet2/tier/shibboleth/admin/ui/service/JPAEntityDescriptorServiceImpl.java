@@ -3,8 +3,8 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributes;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
-import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.X509Data;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
@@ -48,6 +48,7 @@ import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConver
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyName;
 import org.opensaml.xmlsec.signature.KeyValue;
@@ -117,8 +118,26 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Override
     public EntityDescriptorRepresentation createNewEntityDescriptorFromXMLOrigin(EntityDescriptor ed) {
         ed.setIdOfOwner(userService.getCurrentUserGroup().getOwnerId());
+        ed.setProtocol(determineEntityDescriptorProtocol(ed));
         EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
         return createRepresentationFromDescriptor(savedEntity);
+    }
+
+    // Change to check for OAuthRPExtensions in the extensions?
+    private EntityDescriptorProtocol determineEntityDescriptorProtocol(EntityDescriptor ed) {
+        boolean oidcType = false;
+        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getKeyDescriptors().size() > 0) {
+            for (KeyDescriptor keyDescriptor : ed.getSPSSODescriptor("").getKeyDescriptors()) {
+                KeyInfo keyInfo = keyDescriptor.getKeyInfo();
+                KeyDescriptorRepresentation.ElementType keyInfoType = determineKeyInfoType(keyInfo);
+                if (keyInfoType == KeyDescriptorRepresentation.ElementType.clientSecret || keyInfoType == KeyDescriptorRepresentation.ElementType.clientSecretKeyReference ||
+                    keyInfoType == KeyDescriptorRepresentation.ElementType.jwksData || keyInfoType == KeyDescriptorRepresentation.ElementType.jwksUri) {
+                    oidcType = true;
+                    break;
+                }
+            }
+        }
+        return oidcType ? EntityDescriptorProtocol.OIDC : EntityDescriptorProtocol.SAML;
     }
 
     @Override
@@ -174,6 +193,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         representation.setCreatedBy(ed.getCreatedBy());
         representation.setCurrent(ed.isCurrent());
         representation.setIdOfOwner(ed.getIdOfOwner());
+        representation.setProtocol(ed.getProtocol());
 
         if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getSupportedProtocols().size() > 0) {
             ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);

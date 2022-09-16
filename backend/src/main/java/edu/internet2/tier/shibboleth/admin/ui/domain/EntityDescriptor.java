@@ -89,6 +89,9 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     @EqualsAndHashCode.Exclude
     private Long versionModifiedTimestamp;
 
+    @Setter
+    private EntityDescriptorProtocol protocol = EntityDescriptorProtocol.SAML;
+
     public EntityDescriptor() {
         super();
         this.resourceId = UUID.randomUUID().toString();
@@ -174,6 +177,10 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     @Override
     public org.opensaml.saml.saml2.metadata.Organization getOrganization() {
         return organization;
+    }
+
+    public EntityDescriptorProtocol getProtocol() {
+        return protocol == null ? EntityDescriptorProtocol.SAML : protocol;
     }
 
     @Override
