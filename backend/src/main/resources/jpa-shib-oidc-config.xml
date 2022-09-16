@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLTooling xmlns="http://www.opensaml.org/xmltooling-config"
+            xmlns:oidcmd="urn:mace:shibboleth:metadata:oidc:1.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.opensaml.org/xmltooling-config ../../src/schema/xmltooling-config.xsd">
+
+    <!-- Shibboleth v4.x Metadata Profiles for custom OIDC types -->
+    <ObjectProviders>
+
+        <ObjectProvider qualifiedName="oidcmd:JwksUri">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.oidc.JwksUriBuilder"/>
+            <MarshallingClass className="edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLMarshaller"/>
+            <UnmarshallingClass className="edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLUnmarshaller"/>
+        </ObjectProvider>
+
+        <ObjectProvider qualifiedName="oidcmd:JwksData">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.oidc.JwksDataBuilder"/>
+            <MarshallingClass className="edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLMarshaller"/>
+            <UnmarshallingClass className="edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLUnmarshaller"/>
+        </ObjectProvider>
+
+        <ObjectProvider qualifiedName="oidcmd:ClientSecret">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ClientSecretBuilder"/>
+            <MarshallingClass className="edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLMarshaller"/>
+            <UnmarshallingClass className="edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLUnmarshaller"/>
+        </ObjectProvider>
+
+        <ObjectProvider qualifiedName="oidcmd:ClientSecretKeyReference">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ClientSecretKeyReferenceBuilder"/>
+            <MarshallingClass className="edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLMarshaller"/>
+            <UnmarshallingClass className="edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLUnmarshaller"/>
+        </ObjectProvider>
+
+    </ObjectProviders>
+</XMLTooling>

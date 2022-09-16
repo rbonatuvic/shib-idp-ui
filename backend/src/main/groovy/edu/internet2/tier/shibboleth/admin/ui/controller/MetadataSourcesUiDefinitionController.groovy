@@ -45,6 +45,7 @@ class MetadataSourcesUiDefinitionController {
     JsonSchemaBuilderService jsonSchemaBuilderService
 
     @GetMapping
+    // TODO - CHARLES add type ( SAML|OIDC ) variable to return the correct one - default to saml...
     ResponseEntity<?> getUiDefinitionJsonSchema() {
         try {
             def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaLocation.url, Map)

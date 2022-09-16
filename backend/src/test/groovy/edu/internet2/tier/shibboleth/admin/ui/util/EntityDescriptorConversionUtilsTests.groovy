@@ -592,7 +592,6 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                     description: 'add signing certificate',
                     representation: new EntityDescriptorRepresentation().with {
                         it.securityInfo = new SecurityInfoRepresentation().with {
-                            it.x509CertificateAvailable = true
                             it.x509Certificates = [
                                     new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'test', type: 'signing', value: 'test')
                             ]
@@ -617,7 +616,6 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                     description: 'add another certificate',
                     representation: new EntityDescriptorRepresentation().with {
                         it.securityInfo = new SecurityInfoRepresentation().with {
-                            it.x509CertificateAvailable = true
                             it.x509Certificates = [
                                     new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'test', type: 'signing', value: 'test'),
                                     new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'test2', type: 'encryption', value: 'test2')
@@ -651,7 +649,6 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                     description: 'remove a certificate',
                     representation: new EntityDescriptorRepresentation().with {
                         it.securityInfo = new SecurityInfoRepresentation().with {
-                            it.x509CertificateAvailable = true
                             it.x509Certificates = [
                                     new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'test2', type: 'encryption', value: 'test2')
                             ]
@@ -684,7 +681,6 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                     description: 'remove all certificates',
                     representation: new EntityDescriptorRepresentation().with {
                         it.securityInfo = new SecurityInfoRepresentation().with {
-                            it.x509CertificateAvailable = false
                             it
                         }
                         it

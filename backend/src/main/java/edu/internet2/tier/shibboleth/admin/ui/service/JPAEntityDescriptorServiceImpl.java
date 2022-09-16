@@ -6,16 +6,19 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
+import edu.internet2.tier.shibboleth.admin.ui.domain.X509Data;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSInteger;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.KeyDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLObject;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
@@ -44,6 +47,10 @@ import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyName;
+import org.opensaml.xmlsec.signature.KeyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -236,42 +243,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             }
         }
 
-        // set up security
-        // TODO: cleanup, probably use a lazy initializer
-        SecurityInfoRepresentation securityInfoRepresentation = representation.getSecurityInfo();
-        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getWantAssertionsSigned() != null && ed.getSPSSODescriptor("").getWantAssertionsSigned()) {
-            if (securityInfoRepresentation == null) {
-                securityInfoRepresentation = new SecurityInfoRepresentation();
-                representation.setSecurityInfo(securityInfoRepresentation);
-            }
-            securityInfoRepresentation.setWantAssertionsSigned(true);
-        }
-        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").isAuthnRequestsSigned() != null && ed.getSPSSODescriptor("").isAuthnRequestsSigned()) {
-            if (securityInfoRepresentation == null) {
-                securityInfoRepresentation = new SecurityInfoRepresentation();
-                representation.setSecurityInfo(securityInfoRepresentation);
-            }
-            securityInfoRepresentation.setAuthenticationRequestsSigned(true);
-        }
-        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getKeyDescriptors().size() > 0) {
-            if (securityInfoRepresentation == null) {
-                securityInfoRepresentation = new SecurityInfoRepresentation();
-                representation.setSecurityInfo(securityInfoRepresentation);
-            }
-            securityInfoRepresentation.setX509CertificateAvailable(true);
-            for (org.opensaml.saml.saml2.metadata.KeyDescriptor keyDescriptor : ed.getSPSSODescriptor("").getKeyDescriptors()) {
-                SecurityInfoRepresentation.X509CertificateRepresentation x509CertificateRepresentation = new SecurityInfoRepresentation.X509CertificateRepresentation();
-                x509CertificateRepresentation.setName(((KeyDescriptor) keyDescriptor).getName());
-                //TODO: check this. assume that if no value is set, it's used for both
-                if (keyDescriptor.getUse() != null) {
-                    x509CertificateRepresentation.setType(keyDescriptor.getUse().toString().toLowerCase());
-                } else {
-                    x509CertificateRepresentation.setType("both");
-                }
-                x509CertificateRepresentation.setValue(keyDescriptor.getKeyInfo().getX509Datas().get(0).getX509Certificates().get(0).getValue());
-                securityInfoRepresentation.getX509Certificates().add(x509CertificateRepresentation);
-            }
-        }
+        // set up security - this block assumes too much like there will be a cert. With OIDC could not be some...
+        setupSecurityRepresentationFromEntityDescriptor(ed, representation);
 
         // set up ACSs
         if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getAssertionConsumerServices().size() > 0) {
@@ -423,9 +396,94 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return ModelRepresentationConversions.getRelyingPartyOverridesRepresentationFromAttributeList(attributeList);
     }
 
+    private void setupSecurityRepresentationFromEntityDescriptor(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
+        SecurityInfoRepresentation securityInfoRepresentation = representation.getSecurityInfo();
+        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getWantAssertionsSigned() != null && ed.getSPSSODescriptor("").getWantAssertionsSigned()) {
+            if (securityInfoRepresentation == null) {
+                securityInfoRepresentation = new SecurityInfoRepresentation();
+                representation.setSecurityInfo(securityInfoRepresentation);
+            }
+            securityInfoRepresentation.setWantAssertionsSigned(true);
+        }
+        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").isAuthnRequestsSigned() != null && ed.getSPSSODescriptor("").isAuthnRequestsSigned()) {
+            if (securityInfoRepresentation == null) {
+                securityInfoRepresentation = new SecurityInfoRepresentation();
+                representation.setSecurityInfo(securityInfoRepresentation);
+            }
+            securityInfoRepresentation.setAuthenticationRequestsSigned(true);
+        }
+
+        // If the EntityDescriptor has key descriptors - parse them out.
+        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getKeyDescriptors().size() > 0) {
+            if (securityInfoRepresentation == null) {
+                securityInfoRepresentation = new SecurityInfoRepresentation();
+                representation.setSecurityInfo(securityInfoRepresentation);
+            }
+
+            for (org.opensaml.saml.saml2.metadata.KeyDescriptor keyDescriptor : ed.getSPSSODescriptor("").getKeyDescriptors()) {
+                KeyDescriptorRepresentation keyDescriptorRep = new KeyDescriptorRepresentation();
+                String name = keyDescriptor.getKeyInfo().getKeyNames().size() > 0 ? keyDescriptor.getKeyInfo().getKeyNames().get(0).getValue() : null;
+                keyDescriptorRep.setName(name);
+
+                //TODO: check this. assume that if no value is set, it's used for both
+                String useType = keyDescriptor.getUse() != null ? keyDescriptor.getUse().toString().toLowerCase() : "both";
+                keyDescriptorRep.setType(useType);
+
+                KeyInfo keyInfo = keyDescriptor.getKeyInfo();
+                KeyDescriptorRepresentation.ElementType keyInfoType = determineKeyInfoType(keyInfo);
+                keyDescriptorRep.setElementType(keyInfoType);
+                if (keyInfoType != KeyDescriptorRepresentation.ElementType.unsupported) {
+                    List<XMLObject> children = keyInfo.getOrderedChildren().stream().filter(xmlObj -> {
+                        boolean xmlWeDoNotWant = xmlObj instanceof KeyName || xmlObj instanceof KeyValue;
+                        return !xmlWeDoNotWant;
+                    }).collect(Collectors.toList());
+                    XMLObject obj = children.get(0);
+                    if (keyInfoType == KeyDescriptorRepresentation.ElementType.X509Data) {
+                        obj = ((X509Data) obj).getX509Certificates().get(0);
+                    }
+                    keyDescriptorRep.setValue(((ValueXMLObject) obj).getValue());
+                    securityInfoRepresentation.addKeyDescriptor(keyDescriptorRep);
+                }
+
+                // TODO remove this when done.
+                if (keyInfoType == KeyDescriptorRepresentation.ElementType.X509Data) {
+                    SecurityInfoRepresentation.X509CertificateRepresentation x509CertificateRepresentation = new SecurityInfoRepresentation.X509CertificateRepresentation();
+                    x509CertificateRepresentation.setName(name);
+                    x509CertificateRepresentation.setType(useType);
+                    x509CertificateRepresentation.setValue(keyDescriptorRep.getValue());
+                    securityInfoRepresentation.getX509Certificates().add(x509CertificateRepresentation);
+                }
+            }
+        }
+    }
+
+    private KeyDescriptorRepresentation.ElementType determineKeyInfoType(KeyInfo keyInfo) {
+        List<XMLObject> children = keyInfo.getOrderedChildren().stream().filter(xmlObj -> {
+            boolean xmlWeDoNotWant = xmlObj instanceof KeyName || xmlObj instanceof KeyValue;
+            return !xmlWeDoNotWant;
+        }).collect(Collectors.toList());
+        if (children.size() < 1) {
+            return KeyDescriptorRepresentation.ElementType.unsupported;
+        }
+        XMLObject xmlObject = children.get(0);
+        switch (xmlObject.getElementQName().getLocalPart()) {
+        case "X509Data":
+            return KeyDescriptorRepresentation.ElementType.X509Data;
+        case "ClientSecret":
+            return KeyDescriptorRepresentation.ElementType.clientSecret;
+        case "ClientSecretKeyReference":
+            return KeyDescriptorRepresentation.ElementType.clientSecretKeyReference;
+        case "JwksData":
+            return KeyDescriptorRepresentation.ElementType.jwksData;
+        case "JwksUri":
+            return KeyDescriptorRepresentation.ElementType.jwksUri;
+        default:
+            return KeyDescriptorRepresentation.ElementType.unsupported;
+        }
+    }
+
     @Override
-    public EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRep)
-                    throws ForbiddenException, PersistentEntityNotFound, InvalidPatternMatchException {
+    public EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRep) throws ForbiddenException, PersistentEntityNotFound, InvalidPatternMatchException {
         EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(edRep.getId());
         if (existingEd == null) {
             throw new PersistentEntityNotFound(String.format("The entity descriptor with entity id [%s] was not found for update.", edRep.getId()));

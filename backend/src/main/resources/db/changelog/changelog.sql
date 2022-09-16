@@ -196,3 +196,31 @@ ALTER TABLE description ALTER COLUMN descriptionValue TYPE TEXT;
 GO
 ALTER TABLE description_aud ALTER COLUMN descriptionValue TYPE TEXT;
 GO
+
+-- changeset liquibase:1.14.0.1 dbms:mariadb,mysql
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- comment: /* we don't need to run this if the system is new */
+
+ALTER TABLE description ALTER COLUMN description_value LONGTEXT;
+GO
+ALTER TABLE description_aud ALTER COLUMN description_value LONGTEXT;
+GO
+ALTER TABLE description ALTER COLUMN text_context LONGTEXT;
+GO
+ALTER TABLE description_aud ALTER COLUMN text_context LONGTEXT;
+GO
+
+-- changeset liquibase:1.14.0.2 dbms:postgresql,mssql
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- comment: /* we don't need to run this if the system is new */
+
+ALTER TABLE xsany ALTER COLUMN text_context TYPE TEXT;
+GO
+ALTER TABLE xsany_aud ALTER COLUMN text_context TYPE TEXT;
+GO
+ALTER TABLE description ALTER COLUMN description_value TYPE TEXT;
+GO
+ALTER TABLE description_aud ALTER COLUMN description_value TYPE TEXT;
+GO

@@ -18,7 +18,6 @@
     "logoWidth": 100
   },
   "securityInfo": {
-    "x509CertificateAvailable": false,
     "authenticationRequestsSigned": false,
     "wantAssertionsSigned": false,
     "x509Certificates": []

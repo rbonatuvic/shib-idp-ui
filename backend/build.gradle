@@ -135,6 +135,14 @@ dependencies {
         compile "net.shibboleth.idp:${it}:${project.'shibbolethVersion'}"
     }
 
+    // Shib OIDC
+    ['metadata', 'profile', 'crypto'].each {
+        testCompile "net.shibboleth.oidc:oidc-common-${it}-api:2.1.0"
+        testCompile "net.shibboleth.oidc:oidc-common-${it}-impl:2.1.0"
+    }
+
+    implementation "net.shibboleth.oidc:oidc-common-saml-api:2.1.0"
+
     // hibernate deps
     ['hibernate-core'].each {
         compile "org.hibernate:${it}:${project.'hibernateVersion'}"
@@ -335,6 +343,12 @@ task generateSources {
         new XmlSlurper().parse(file('src/main/resources/jpa-signature-config.xml')).with { builders ->
             builders.ObjectProviders.ObjectProvider.BuilderClass.each {
                 processLine(it['@className'].toString(), 'src/main/templates/SignatureBuilderTemplate.java')
+            }
+        }
+
+        new XmlSlurper().parse(file('src/main/resources/jpa-shib-oidc-config.xml')).with { builders ->
+            builders.ObjectProviders.ObjectProvider.BuilderClass.each {
+                processLine(it['@className'].toString(), 'src/main/templates/OIDCBuilderTemplate.java')
             }
         }
     }

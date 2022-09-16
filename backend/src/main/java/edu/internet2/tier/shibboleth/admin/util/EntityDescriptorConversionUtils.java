@@ -241,7 +241,8 @@ public class EntityDescriptorConversionUtils {
             ed.setOrganization(null);
         }
     }
-    
+
+    // Building the EntityDescriptor from the representation
     public static void setupSecurity(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
         if (representation.getSecurityInfo() != null) {
             SecurityInfoRepresentation securityInfoRepresentation = representation.getSecurityInfo();
@@ -263,13 +264,11 @@ public class EntityDescriptorConversionUtils {
                     descriptor.setWantAssertionsSigned((Boolean)null);
                 }
             }
-            // TODO: review if we need more than a naive implementation
             ed.getOptionalSPSSODescriptor().ifPresent( i -> i.getKeyDescriptors().clear());
-            if (securityInfoRepresentation.isX509CertificateAvailable()) {
-                for (SecurityInfoRepresentation.X509CertificateRepresentation x509CertificateRepresentation : securityInfoRepresentation.getX509Certificates()) {
-                    KeyDescriptor keyDescriptor = createKeyDescriptor(x509CertificateRepresentation.getName(), x509CertificateRepresentation.getType(), x509CertificateRepresentation.getValue());
-                    getSPSSODescriptorFromEntityDescriptor(ed).addKeyDescriptor(keyDescriptor);
-                }
+            // TODO will need to fill in keydescriptors from generic list not the x509 list
+            for (SecurityInfoRepresentation.X509CertificateRepresentation x509CertificateRepresentation : securityInfoRepresentation.getX509Certificates()) {
+                KeyDescriptor keyDescriptor = createKeyDescriptor(x509CertificateRepresentation.getName(), x509CertificateRepresentation.getType(), x509CertificateRepresentation.getValue());
+                getSPSSODescriptorFromEntityDescriptor(ed).addKeyDescriptor(keyDescriptor);
             }
         } else {
             ed.getOptionalSPSSODescriptor().ifPresent( spssoDescriptor -> {

@@ -302,7 +302,6 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         def test = openSamlObjects.marshalToXmlString(service.createDescriptorFromRepresentation(new EntityDescriptorRepresentation().with {
             it.entityId = 'http://test.example.org/test1'
             it.securityInfo = new SecurityInfoRepresentation().with {
-                it.x509CertificateAvailable = true
                 it.x509Certificates = [new SecurityInfoRepresentation.X509CertificateRepresentation().with {
                     it.type = 'signing'
                     it.value = 'certificate'
@@ -342,7 +341,6 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         def test = openSamlObjects.marshalToXmlString(service.createDescriptorFromRepresentation(new EntityDescriptorRepresentation().with {
             it.entityId = 'http://test.example.org/test1'
             it.securityInfo = new SecurityInfoRepresentation().with {
-                it.x509CertificateAvailable = true
                 it.x509Certificates = [new SecurityInfoRepresentation.X509CertificateRepresentation().with {
                     it.type = 'encryption'
                     it.value = 'certificate'
@@ -382,7 +380,6 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         def test = openSamlObjects.marshalToXmlString(service.createDescriptorFromRepresentation(new EntityDescriptorRepresentation().with {
             it.entityId = 'http://test.example.org/test1'
             it.securityInfo = new SecurityInfoRepresentation().with {
-                it.x509CertificateAvailable = true
                 it.x509Certificates = [new SecurityInfoRepresentation.X509CertificateRepresentation().with {
                     it.type = 'both'
                     it.value = 'certificate'
