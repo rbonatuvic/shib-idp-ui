@@ -135,13 +135,13 @@ dependencies {
         compile "net.shibboleth.idp:${it}:${project.'shibbolethVersion'}"
     }
 
-    // Shib OIDC
-    ['metadata', 'profile', 'crypto'].each {
-        testCompile "net.shibboleth.oidc:oidc-common-${it}-api:2.1.0"
-        testCompile "net.shibboleth.oidc:oidc-common-${it}-impl:2.1.0"
-    }
+//    // Shib OIDC
+//    ['metadata', 'profile', 'crypto'].each {
+//        testCompile "net.shibboleth.oidc:oidc-common-${it}-api:${project.'shibOIDCVersion'}"
+//        testCompile "net.shibboleth.oidc:oidc-common-${it}-impl:${project.'shibOIDCVersion'}"
+//    }
 
-    implementation "net.shibboleth.oidc:oidc-common-saml-api:2.1.0"
+    implementation "net.shibboleth.oidc:oidc-common-saml-api:${project.'shibOIDCVersion'}"
 
     // hibernate deps
     ['hibernate-core'].each {
