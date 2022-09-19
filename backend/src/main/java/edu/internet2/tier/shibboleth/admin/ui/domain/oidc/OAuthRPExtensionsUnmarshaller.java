@@ -1,9 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.oidc;
 
-import net.shibboleth.oidc.saml.xmlobject.DefaultAcrValue;
-import net.shibboleth.oidc.saml.xmlobject.OAuthRPExtensions;
-import net.shibboleth.oidc.saml.xmlobject.PostLogoutRedirectUri;
-import net.shibboleth.oidc.saml.xmlobject.RequestUri;
 import org.apache.commons.lang3.StringUtils;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -38,11 +34,11 @@ public class OAuthRPExtensionsUnmarshaller extends AbstractSAMLObjectUnmarshalle
         final OAuthRPExtensions extensions = (OAuthRPExtensions) parentSAMLObject;
 
         if (childSAMLObject instanceof DefaultAcrValue) {
-            extensions.getDefaultAcrValues().add((DefaultAcrValue) childSAMLObject);
+            extensions.addDefaultAcrValue((DefaultAcrValue) childSAMLObject);
         } else if (childSAMLObject instanceof RequestUri) {
-            extensions.getRequestUris().add((RequestUri) childSAMLObject);
+            extensions.addRequestUri((RequestUri) childSAMLObject);
         } else if (childSAMLObject instanceof PostLogoutRedirectUri) {
-            extensions.getPostLogoutRedirectUris().add((PostLogoutRedirectUri) childSAMLObject);
+            extensions.addPostLogoutRedirectUri((PostLogoutRedirectUri) childSAMLObject);
         } else {
             extensions.getUnknownXMLObjects().add(childSAMLObject);
         }

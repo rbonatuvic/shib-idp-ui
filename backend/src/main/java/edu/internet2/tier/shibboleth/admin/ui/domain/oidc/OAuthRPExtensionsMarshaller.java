@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.oidc;
 
-import net.shibboleth.oidc.saml.xmlobject.OAuthRPExtensions;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -120,6 +119,10 @@ public class OAuthRPExtensionsMarshaller extends AbstractSAMLObjectMarshaller {
 
         if (extensions.isRequireAuthTime()) {
             domElement.setAttributeNS(null, REQUIRE_AUTH_TIME_ATTRIB_NAME, Boolean.toString(extensions.isRequireAuthTime()));
+        }
+
+        for (XMLObject xmlObject: extensions.getOrderedChildren()) {
+            marshallChildElements(xmlObject, domElement);
         }
 
         marshallUnknownAttributes(extensions, domElement);

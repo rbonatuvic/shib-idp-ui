@@ -18,6 +18,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.OAuthRPExtensions;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLObject;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
@@ -48,7 +49,6 @@ import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConver
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyName;
 import org.opensaml.xmlsec.signature.KeyValue;
@@ -104,6 +104,59 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return ed;
     }
 
+    /**
+     * Currently only supporting oidcmd:OAuthRPExtensions in the extensions block
+     */
+    private Map<String, Object> buildOAuthRPExtensionsMap(EntityDescriptor ed) {
+        HashMap<String, Object> result = new HashMap<>();
+        for(XMLObject extension : ed.getSPSSODescriptor("").getExtensions().getOrderedChildren()) {
+            if (extension.getElementQName().getLocalPart().equals(OAuthRPExtensions.TYPE_LOCAL_NAME)){
+                OAuthRPExtensions oAuthRPExtensions = (OAuthRPExtensions) extension;
+                HashMap<String, Object> attributeMap = new HashMap();
+                attributeMap.put("applicationType", oAuthRPExtensions.getApplicationType());
+                attributeMap.put("clientUri", oAuthRPExtensions.getClientUri());
+                attributeMap.put("defaultMaxAge", oAuthRPExtensions.getDefaultMaxAge());
+                attributeMap.put("grantTypes", oAuthRPExtensions.getGrantTypes());
+                attributeMap.put("idTokenEncryptedResponseAlg", oAuthRPExtensions.getIdTokenEncryptedResponseAlg());
+                attributeMap.put("idTokenEncryptedResponseEnc", oAuthRPExtensions.getIdTokenEncryptedResponseEnc());
+                attributeMap.put("idTokenSignedResponseAlg", oAuthRPExtensions.getIdTokenSignedResponseAlg());
+                attributeMap.put("initiateLoginUri", oAuthRPExtensions.getInitiateLoginUri());
+                attributeMap.put("requestObjectEncryptionAlg", oAuthRPExtensions.getRequestObjectEncryptionAlg());
+                attributeMap.put("requestObjectEncryptionEnc", oAuthRPExtensions.getRequestObjectEncryptionEnc());
+                attributeMap.put("requestObjectSigningAlg", oAuthRPExtensions.getRequestObjectSigningAlg());
+                attributeMap.put("requireAuthTime", oAuthRPExtensions.isRequireAuthTime());
+                attributeMap.put("responseTypes", oAuthRPExtensions.getResponseTypes());
+                attributeMap.put("scopes", oAuthRPExtensions.getScopes());
+                attributeMap.put("sectorIdentifierUri", oAuthRPExtensions.getSectorIdentifierUri());
+                attributeMap.put("softwareId", oAuthRPExtensions.getSoftwareId());
+                attributeMap.put("softwareVersion", oAuthRPExtensions.getSoftwareVersion());
+                attributeMap.put("tokenEndpointAuthMethod", oAuthRPExtensions.getTokenEndpointAuthMethod());
+                attributeMap.put("tokenEndpointAuthSigningAlg", oAuthRPExtensions.getTokenEndpointAuthSigningAlg());
+                attributeMap.put("userInfoSignedResponseAlg", oAuthRPExtensions.getUserInfoSignedResponseAlg());
+                attributeMap.put("userInfoEncryptedResponseAlg", oAuthRPExtensions.getUserInfoEncryptedResponseAlg());
+                attributeMap.put("userInfoEncryptedResponseEnc", oAuthRPExtensions.getUserInfoEncryptedResponseEnc());
+                result.put("attributes", attributeMap);
+                // spit out the children
+                if (oAuthRPExtensions.getRequestUris().size() > 0){
+                    List<String> requestUris = new ArrayList<>();
+                    oAuthRPExtensions.getRequestUris().forEach(requestUri -> requestUris.add(requestUri.getValue()));
+                    result.put("requestUris", requestUris);
+                }
+                if (oAuthRPExtensions.getPostLogoutRedirectUris().size() > 0){
+                    List<String> postLogoutRedirectUris = new ArrayList<>();
+                    oAuthRPExtensions.getPostLogoutRedirectUris().forEach(redirectUri -> postLogoutRedirectUris.add(redirectUri.getValue()));
+                    result.put("postLogoutRedirectUris", postLogoutRedirectUris);
+                }
+                if (oAuthRPExtensions.getDefaultAcrValues().size() > 0){
+                    List<String> defaultAcrValues = new ArrayList<>();
+                    oAuthRPExtensions.getDefaultAcrValues().forEach(acrValue -> defaultAcrValues.add(acrValue.getValue()));
+                    result.put("defaultAcrValues", defaultAcrValues);
+                }
+            }
+        }
+        return result;
+    }
+
     @Override
     public EntityDescriptor createDescriptorFromRepresentation(final EntityDescriptorRepresentation representation) {
         EntityDescriptor ed = openSamlObjects.buildDefaultInstanceOfType(EntityDescriptor.class);
@@ -123,17 +176,12 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return createRepresentationFromDescriptor(savedEntity);
     }
 
-    // Change to check for OAuthRPExtensions in the extensions?
     private EntityDescriptorProtocol determineEntityDescriptorProtocol(EntityDescriptor ed) {
         boolean oidcType = false;
-        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getKeyDescriptors().size() > 0) {
-            for (KeyDescriptor keyDescriptor : ed.getSPSSODescriptor("").getKeyDescriptors()) {
-                KeyInfo keyInfo = keyDescriptor.getKeyInfo();
-                KeyDescriptorRepresentation.ElementType keyInfoType = determineKeyInfoType(keyInfo);
-                if (keyInfoType == KeyDescriptorRepresentation.ElementType.clientSecret || keyInfoType == KeyDescriptorRepresentation.ElementType.clientSecretKeyReference ||
-                    keyInfoType == KeyDescriptorRepresentation.ElementType.jwksData || keyInfoType == KeyDescriptorRepresentation.ElementType.jwksUri) {
+        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getExtensions().getOrderedChildren().size() > 0) {
+            for (XMLObject e : ed.getSPSSODescriptor("").getExtensions().getOrderedChildren()) {
+                if (e.getElementQName().getLocalPart().equals(OAuthRPExtensions.TYPE_LOCAL_NAME)) {
                     oidcType = true;
-                    break;
                 }
             }
         }
@@ -195,6 +243,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         representation.setIdOfOwner(ed.getIdOfOwner());
         representation.setProtocol(ed.getProtocol());
 
+        // Set up SPSSODescriptor
         if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getSupportedProtocols().size() > 0) {
             ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);
             serviceProviderSsoDescriptorRepresentation.setProtocolSupportEnum(String.join(",", ed.getSPSSODescriptor("").getSupportedProtocols().stream().map(p -> MDDCConstants.PROTOCOL_BINDINGS.get(p)).collect(Collectors.toList())));
@@ -205,6 +254,11 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             serviceProviderSsoDescriptorRepresentation.setNameIdFormats(
                     ed.getSPSSODescriptor("").getNameIDFormats().stream().map(p -> p.getURI()).collect(Collectors.toList())
             );
+        }
+
+        if (ed.getSPSSODescriptor("") != null && ed.getProtocol() == EntityDescriptorProtocol.OIDC) {
+            ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);
+            serviceProviderSsoDescriptorRepresentation.addExtensions("OAuthRPExtensions", buildOAuthRPExtensionsMap(ed));
         }
 
         if (ed.getOrganization() != null) {
