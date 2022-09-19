@@ -182,19 +182,35 @@ update resource_backed_metadata_resolver_aud set max_refresh_delay ='PT4H';
 -- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
 -- comment: /* we don't need to run this if the system is new */
 
-ALTER TABLE description ALTER COLUMN descriptionValue LONGTEXT;
+ALTER TABLE description MODIFY COLUMN description_value LONGTEXT;
 GO
-ALTER TABLE description_aud ALTER COLUMN descriptionValue LONGTEXT;
+ALTER TABLE description_aud MODIFY COLUMN description_value LONGTEXT;
 GO
 
--- changeset liquibase:1.13.0.2 dbms:postgresql,mssql
+-- changeset liquibase:1.13.0.2 dbms:postgresql
 -- preconditions onFail:MARK_RAN
 -- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
 -- comment: /* we don't need to run this if the system is new */
 
-ALTER TABLE description ALTER COLUMN descriptionValue TYPE TEXT;
+ALTER TABLE description ALTER COLUMN description_value TYPE TEXT;
 GO
-ALTER TABLE description_aud ALTER COLUMN descriptionValue TYPE TEXT;
+ALTER TABLE description_aud ALTER COLUMN description_value TYPE TEXT;
+GO
+
+-- changeset liquibase:1.13.0.2 dbms:mssql
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- comment: /* we don't need to run this if the system is new */
+
+ALTER TABLE description ALTER COLUMN description_value TEXT;
+GO
+
+-- changeset liquibase:1.13.0.3 dbms:mssql
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- comment: /* we don't need to run this if the system is new */
+
+ALTER TABLE description_aud ALTER COLUMN description_value TEXT;
 GO
 
 -- changeset liquibase:1.14.0.1 dbms:mariadb,mysql
@@ -202,16 +218,12 @@ GO
 -- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
 -- comment: /* we don't need to run this if the system is new */
 
-ALTER TABLE description ALTER COLUMN description_value LONGTEXT;
+ALTER TABLE xsany ALTER COLUMN text_context LONGTEXT;
 GO
-ALTER TABLE description_aud ALTER COLUMN description_value LONGTEXT;
-GO
-ALTER TABLE description ALTER COLUMN text_context LONGTEXT;
-GO
-ALTER TABLE description_aud ALTER COLUMN text_context LONGTEXT;
+ALTER TABLE xsany_aud ALTER COLUMN text_context LONGTEXT;
 GO
 
--- changeset liquibase:1.14.0.2 dbms:postgresql,mssql
+-- changeset liquibase:1.14.0.1 dbms:postgresql,mssql
 -- preconditions onFail:MARK_RAN
 -- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
 -- comment: /* we don't need to run this if the system is new */
@@ -219,8 +231,4 @@ GO
 ALTER TABLE xsany ALTER COLUMN text_context TYPE TEXT;
 GO
 ALTER TABLE xsany_aud ALTER COLUMN text_context TYPE TEXT;
-GO
-ALTER TABLE description ALTER COLUMN description_value TYPE TEXT;
-GO
-ALTER TABLE description_aud ALTER COLUMN description_value TYPE TEXT;
 GO
