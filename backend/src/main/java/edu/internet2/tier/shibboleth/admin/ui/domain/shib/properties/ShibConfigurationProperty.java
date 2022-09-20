@@ -31,10 +31,9 @@ public class ShibConfigurationProperty {
     @Convert(converter = EmptyStringToNullConverter.class)
     String defaultValue;
 
-    @Column(name = "description")
     @Lob
     @Type(type = "org.hibernate.type.TextType")
-    @Convert(converter = EmptyStringToNullConverter.class)
+    @Convert(converter = EmptyStringToNullConverter.class, disableConversion = true)
     String description;
 
     @Column(name = "idp_version", nullable = false)
