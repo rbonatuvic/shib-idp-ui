@@ -329,6 +329,12 @@
                                 "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"
                             ],
                             "description": "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"
+                        },
+                        {
+                            "enum": [
+                                "https://tools.ietf.org/html/rfc6749#section-3.1.2"
+                            ],
+                            "description": "OIDC / OAUTH Binding"
                         }
                     ]
                 },

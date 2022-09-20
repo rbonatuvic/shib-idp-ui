@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.OAuthRPExtensions;
 import lombok.EqualsAndHashCode;
 import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.XMLObject;
@@ -76,6 +77,10 @@ public class RoleDescriptor extends AbstractDescriptor implements org.opensaml.s
 
     @Override
     public List<String> getSupportedProtocols() {
+        // This protocol must be included if this is OIDC data
+        if (isOidcType() && !supportedProtocols.contains("http://openid.net/specs/openid-connect-core-1_0.html")) {
+            supportedProtocols.add("http://openid.net/specs/openid-connect-core-1_0.html");
+        }
         return supportedProtocols;
     }
 
@@ -194,5 +199,17 @@ public class RoleDescriptor extends AbstractDescriptor implements org.opensaml.s
         children.addAll(getContactPersons());
 
         return Collections.unmodifiableList(children);
+    }
+
+    @Transient
+    public boolean isOidcType() {
+        if (getExtensions().getOrderedChildren().size() > 0) {
+            for (XMLObject e : getExtensions().getOrderedChildren()) {
+                if (e.getElementQName().getLocalPart().equals(OAuthRPExtensions.TYPE_LOCAL_NAME)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

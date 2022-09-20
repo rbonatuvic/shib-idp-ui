@@ -177,14 +177,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     private EntityDescriptorProtocol determineEntityDescriptorProtocol(EntityDescriptor ed) {
-        boolean oidcType = false;
-        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getExtensions().getOrderedChildren().size() > 0) {
-            for (XMLObject e : ed.getSPSSODescriptor("").getExtensions().getOrderedChildren()) {
-                if (e.getElementQName().getLocalPart().equals(OAuthRPExtensions.TYPE_LOCAL_NAME)) {
-                    oidcType = true;
-                }
-            }
-        }
+        boolean oidcType = ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").isOidcType();
         return oidcType ? EntityDescriptorProtocol.OIDC : EntityDescriptorProtocol.SAML;
     }
 
@@ -462,6 +455,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (!userService.isAuthorizedFor(ed)) {
             throw new ForbiddenException();
         }
+
         return ed;
     }
 
