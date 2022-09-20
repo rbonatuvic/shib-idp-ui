@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.util;
 
 import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.getEntityAttributes;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.getOptionalEntityAttributes;
 import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.getSPSSODescriptorFromEntityDescriptor;
 
 import java.util.Arrays;
@@ -9,6 +8,9 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
+import lombok.NonNull;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.X509Certificate;
 import org.opensaml.xmlsec.signature.X509Data;
@@ -280,7 +282,7 @@ public class EntityDescriptorConversionUtils {
     }
     
     public static void setupSPSSODescriptor(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        if (representation.getServiceProviderSsoDescriptor() != null) {
+        if (representation.getServiceProviderSsoDescriptor() != null || representation.getProtocol() == EntityDescriptorProtocol.OIDC) {
             SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed);
 
             spssoDescriptor.setSupportedProtocols(Collections.EMPTY_LIST);
@@ -300,11 +302,21 @@ public class EntityDescriptorConversionUtils {
                     spssoDescriptor.getNameIDFormats().add(nameIDFormat);
                 }
             }
+
+            if (representation.getProtocol() == EntityDescriptorProtocol.OIDC) {
+                spssoDescriptor.setExtensions(buildOidcExtensionsFromRepresentation(representation.getServiceProviderSsoDescriptor(false)));
+            }
         } else {
             ed.setRoleDescriptors(null);
         }
     }
-    
+
+    private static Extensions buildOidcExtensionsFromRepresentation(@NonNull ServiceProviderSsoDescriptorRepresentation representation) {
+        Extensions result = new Extensions();
+
+        return result;
+    }
+
     public static void setupUIInfo(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
         if (representation.getMdui() != null) {
             // TODO: check if we need more than a naive implementation

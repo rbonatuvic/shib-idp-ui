@@ -85,6 +85,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     private EntityDescriptor buildDescriptorFromRepresentation(final EntityDescriptor ed, final EntityDescriptorRepresentation representation) {
         ed.setEntityID(representation.getEntityId());
         ed.setIdOfOwner(representation.getIdOfOwner());
+        ed.setProtocol(representation.getProtocol()); // SAML vs OIDC
 
         setupSPSSODescriptor(ed, representation);
         ed.setServiceProviderName(representation.getServiceProviderName());
