@@ -18,6 +18,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.KeyDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
@@ -59,7 +60,7 @@ class EntityDescriptorConversionUtilsTests extends Specification {
         expected.name = 'testName'
 
         when:
-        def keyDescriptor = EntityDescriptorConversionUtils.createKeyDescriptor('testName', 'signing', 'testValue')
+        def keyDescriptor = EntityDescriptorConversionUtils.createKeyDescriptor('testName', 'signing', 'testValue', KeyDescriptorRepresentation.ElementType.X509Data)
 
         then:
         assert keyDescriptor == expected
@@ -78,15 +79,15 @@ class EntityDescriptorConversionUtilsTests extends Specification {
         expected.name = 'testName'
 
         when:
-        def keyDescriptor = EntityDescriptorConversionUtils.createKeyDescriptor('testName', 'both', 'testValue')
+        def keyDescriptor = EntityDescriptorConversionUtils.createKeyDescriptor('testName', 'both', 'testValue', KeyDescriptorRepresentation.ElementType.X509Data)
         then:
         assert keyDescriptor == expected
     }
 
     def 'test createKeyDescriptor equality'() {
         when:
-        def key1 = EntityDescriptorConversionUtils.createKeyDescriptor('test', 'signing', 'test')
-        def key2 = EntityDescriptorConversionUtils.createKeyDescriptor('test', 'signing', 'test')
+        def key1 = EntityDescriptorConversionUtils.createKeyDescriptor('test', 'signing', 'test', KeyDescriptorRepresentation.ElementType.X509Data)
+        def key2 = EntityDescriptorConversionUtils.createKeyDescriptor('test', 'signing', 'test', KeyDescriptorRepresentation.ElementType.X509Data)
 
         then:
         assert key1 == key2
@@ -592,8 +593,8 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                     description: 'add signing certificate',
                     representation: new EntityDescriptorRepresentation().with {
                         it.securityInfo = new SecurityInfoRepresentation().with {
-                            it.x509Certificates = [
-                                    new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'test', type: 'signing', value: 'test')
+                            it.keyDescriptors = [
+                                    new KeyDescriptorRepresentation(name: 'test', type: 'signing', value: 'test', elementType: KeyDescriptorRepresentation.ElementType.X509Data)
                             ]
                             it
                         }
@@ -604,7 +605,7 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
                                     it.addKeyDescriptor(
-                                        utilsUnderTest.createKeyDescriptor('test', 'signing', 'test'))
+                                        utilsUnderTest.createKeyDescriptor('test', 'signing', 'test', KeyDescriptorRepresentation.ElementType.X509Data))
                                     it
                                 }
                         )
@@ -616,9 +617,9 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                     description: 'add another certificate',
                     representation: new EntityDescriptorRepresentation().with {
                         it.securityInfo = new SecurityInfoRepresentation().with {
-                            it.x509Certificates = [
-                                    new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'test', type: 'signing', value: 'test'),
-                                    new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'test2', type: 'encryption', value: 'test2')
+                            it.keyDescriptors = [
+                                    new KeyDescriptorRepresentation(name: 'test', type: 'signing', value: 'test', elementType: KeyDescriptorRepresentation.ElementType.X509Data),
+                                    new KeyDescriptorRepresentation(name: 'test2', type: 'encryption', value: 'test2', elementType: KeyDescriptorRepresentation.ElementType.X509Data)
                             ]
                             it
                         }
@@ -627,7 +628,7 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                     starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
-                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'signing', 'test'))
+                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'signing', 'test', KeyDescriptorRepresentation.ElementType.X509Data))
                                     it
                                 }
                         )
@@ -636,8 +637,8 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                     expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
-                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'signing', 'test'))
-                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test2', 'encryption', 'test2'))
+                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'signing', 'test', KeyDescriptorRepresentation.ElementType.X509Data))
+                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test2', 'encryption', 'test2', KeyDescriptorRepresentation.ElementType.X509Data))
                                     it
                                 }
                         )
@@ -649,8 +650,8 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                     description: 'remove a certificate',
                     representation: new EntityDescriptorRepresentation().with {
                         it.securityInfo = new SecurityInfoRepresentation().with {
-                            it.x509Certificates = [
-                                    new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'test2', type: 'encryption', value: 'test2')
+                            it.keyDescriptors = [
+                                    new KeyDescriptorRepresentation(name: 'test2', type: 'encryption', value: 'test2', elementType: KeyDescriptorRepresentation.ElementType.X509Data)
                             ]
                             it
                         }
@@ -659,8 +660,8 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                     starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
-                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'signing', 'test'))
-                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test2', 'encryption', 'test2'))
+                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'signing', 'test', KeyDescriptorRepresentation.ElementType.X509Data))
+                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test2', 'encryption', 'test2', KeyDescriptorRepresentation.ElementType.X509Data))
                                     it
                                 }
                         )
@@ -669,7 +670,7 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                     expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
-                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test2', 'encryption', 'test2'))
+                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test2', 'encryption', 'test2', KeyDescriptorRepresentation.ElementType.X509Data))
                                     it
                                 }
                         )
@@ -688,8 +689,8 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                     starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
-                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'signing', 'test'))
-                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'encryption', 'test'))
+                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'signing', 'test', KeyDescriptorRepresentation.ElementType.X509Data))
+                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'encryption', 'test', KeyDescriptorRepresentation.ElementType.X509Data))
                                     it
                                 }
                         )
@@ -709,8 +710,8 @@ class EntityDescriptorConversionUtilsTests extends Specification {
                     starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
-                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'signing', 'test'))
-                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'encryption', 'test'))
+                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'signing', 'test', KeyDescriptorRepresentation.ElementType.X509Data))
+                                    it.addKeyDescriptor(utilsUnderTest.createKeyDescriptor('test', 'encryption', 'test', KeyDescriptorRepresentation.ElementType.X509Data))
                                     it
                                 }
                         )

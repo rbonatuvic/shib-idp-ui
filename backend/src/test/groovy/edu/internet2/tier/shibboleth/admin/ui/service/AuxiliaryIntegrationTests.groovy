@@ -41,7 +41,7 @@ class AuxiliaryIntegrationTests extends Specification {
         def entityDescriptorRepresentation = entityDescriptorService.createRepresentationFromDescriptor(entityDescriptor).with {
             it.serviceProviderName = 'testme'
             it.contacts = []
-            it.securityInfo.x509Certificates[0].name = 'testcert'
+            it.securityInfo.keyDescriptors[0].name = 'testcert'
             it.createdBy = 'root'
             it.setCreatedDate(LocalDateTime.now())
             it.setModifiedDate(LocalDateTime.now())

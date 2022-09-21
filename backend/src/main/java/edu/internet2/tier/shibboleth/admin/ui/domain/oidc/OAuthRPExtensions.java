@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractXMLObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import net.shibboleth.oidc.saml.xmlobject.MetadataValueSAMLObject;
 import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
@@ -22,7 +23,6 @@ import java.util.stream.Collectors;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper=false)
-@NoArgsConstructor
 @Audited
 public class OAuthRPExtensions extends AbstractXMLObject implements net.shibboleth.oidc.saml.xmlobject.OAuthRPExtensions {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = TYPE_LOCAL_NAME;
@@ -87,6 +87,12 @@ public class OAuthRPExtensions extends AbstractXMLObject implements net.shibbole
     private String userInfoEncryptedResponseAlg;
 
     private String userInfoEncryptedResponseEnc;
+
+    public OAuthRPExtensions() {
+        setNamespacePrefix(MetadataValueSAMLObject.SAML20MDOIDCMD_PREFIX);
+        setNamespaceURI(MetadataValueSAMLObject.SAML20MDOIDCMD_NS);
+        setElementLocalName(TYPE_LOCAL_NAME);
+    }
 
     @Override
     public List<XMLObject> getOrderedChildren() {

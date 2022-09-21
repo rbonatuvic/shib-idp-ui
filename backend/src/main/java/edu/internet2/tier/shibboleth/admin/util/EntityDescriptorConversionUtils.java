@@ -1,24 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.util;
 
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.getEntityAttributes;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.getSPSSODescriptorFromEntityDescriptor;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
-import lombok.NonNull;
-import org.opensaml.xmlsec.signature.KeyInfo;
-import org.opensaml.xmlsec.signature.X509Certificate;
-import org.opensaml.xmlsec.signature.X509Data;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-
 import edu.internet2.tier.shibboleth.admin.ui.domain.AssertionConsumerService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson;
 import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPersonBuilder;
@@ -28,6 +11,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.EmailAddress;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributes;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Extensions;
 import edu.internet2.tier.shibboleth.admin.ui.domain.GivenName;
 import edu.internet2.tier.shibboleth.admin.ui.domain.InformationURL;
@@ -45,13 +29,38 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.KeyDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.AbstractValueXMLObject;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.DefaultAcrValue;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.JwksData;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.OAuthRPExtensions;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.PostLogoutRedirectUri;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.RequestUri;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLObject;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService;
+import lombok.NonNull;
 import lombok.Setter;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.X509Certificate;
+import org.opensaml.xmlsec.signature.X509Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EntityDescriptorConversionUtils {
@@ -62,31 +71,58 @@ public class EntityDescriptorConversionUtils {
     @Autowired
     @Setter
     private static EntityService entityService;
-    
-    public static KeyDescriptor createKeyDescriptor(String name, String type, String value) {
+
+    public static KeyDescriptor createKeyDescriptor(String name, String usageType, String value, KeyDescriptorRepresentation.ElementType elementType) {
         KeyDescriptor keyDescriptor = openSamlObjects.buildDefaultInstanceOfType(KeyDescriptor.class);
 
         if (!Strings.isNullOrEmpty(name)) {
             keyDescriptor.setName(name);
         }
 
-        if (!"both".equals(type)) {
-            keyDescriptor.setUsageType(type);
+        if (!"both".equals(usageType)) {
+            keyDescriptor.setUsageType(usageType);
         }
 
         KeyInfo keyInfo = openSamlObjects.buildDefaultInstanceOfType(KeyInfo.class);
+        AbstractValueXMLObject xmlObject;
+        switch (elementType) {
+        case X509Data:
+            X509Data x509Data = openSamlObjects.buildDefaultInstanceOfType(X509Data.class);
+            X509Certificate x509Certificate = openSamlObjects.buildDefaultInstanceOfType(X509Certificate.class);
+            x509Data.getXMLObjects().add(x509Certificate);
+            x509Certificate.setValue(value);
+            keyInfo.getXMLObjects().add(x509Data);
+            break;
+        case jwksData:
+            xmlObject = openSamlObjects.buildDefaultInstanceOfType(JwksData.class);
+            xmlObject.setValue(value);
+            keyInfo.getXMLObjects().add(xmlObject);
+            break;
+        case jwksUri:
+            xmlObject = openSamlObjects.buildDefaultInstanceOfType(JwksData.class);
+            xmlObject.setValue(value);
+            keyInfo.getXMLObjects().add(xmlObject);
+            break;
+        case clientSecret:
+            xmlObject = openSamlObjects.buildDefaultInstanceOfType(JwksData.class);
+            xmlObject.setValue(value);
+            keyInfo.getXMLObjects().add(xmlObject);
+            break;
+        case clientSecretKeyReference:
+            xmlObject = openSamlObjects.buildDefaultInstanceOfType(JwksData.class);
+            xmlObject.setValue(value);
+            keyInfo.getXMLObjects().add(xmlObject);
+            break;
+        }
+
         keyDescriptor.setKeyInfo(keyInfo);
-
-        X509Data x509Data = openSamlObjects.buildDefaultInstanceOfType(X509Data.class);
-        keyInfo.getXMLObjects().add(x509Data);
-
-        X509Certificate x509Certificate = openSamlObjects.buildDefaultInstanceOfType(X509Certificate.class);
-        x509Data.getXMLObjects().add(x509Certificate);
-        x509Certificate.setValue(value);
-
         return keyDescriptor;
     }
-    
+
+    private static KeyDescriptor createKeyDescriptor(KeyDescriptorRepresentation keyDescRep) {
+        return createKeyDescriptor(keyDescRep.getName(), keyDescRep.getType(), keyDescRep.getValue(), keyDescRep.getElementType());
+    }
+
     public static EntityAttributes getEntityAttributes(EntityDescriptor ed) {
         return getEntityAttributes(ed, true);
     }
@@ -267,10 +303,11 @@ public class EntityDescriptorConversionUtils {
                 }
             }
             ed.getOptionalSPSSODescriptor().ifPresent( i -> i.getKeyDescriptors().clear());
-            // TODO will need to fill in keydescriptors from generic list not the x509 list
-            for (SecurityInfoRepresentation.X509CertificateRepresentation x509CertificateRepresentation : securityInfoRepresentation.getX509Certificates()) {
-                KeyDescriptor keyDescriptor = createKeyDescriptor(x509CertificateRepresentation.getName(), x509CertificateRepresentation.getType(), x509CertificateRepresentation.getValue());
-                getSPSSODescriptorFromEntityDescriptor(ed).addKeyDescriptor(keyDescriptor);
+            if (securityInfoRepresentation.getKeyDescriptors().size() > 0) {
+                SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed);
+                securityInfoRepresentation.getKeyDescriptors().forEach(keyDescRep -> {
+                    spssoDescriptor.addKeyDescriptor(createKeyDescriptor(keyDescRep));
+                });
             }
         } else {
             ed.getOptionalSPSSODescriptor().ifPresent( spssoDescriptor -> {
@@ -280,12 +317,12 @@ public class EntityDescriptorConversionUtils {
             });
         }
     }
-    
+
     public static void setupSPSSODescriptor(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
         if (representation.getServiceProviderSsoDescriptor() != null || representation.getProtocol() == EntityDescriptorProtocol.OIDC) {
             SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed);
 
-            spssoDescriptor.setSupportedProtocols(Collections.EMPTY_LIST);
+            spssoDescriptor.setSupportedProtocols(new ArrayList<>());
             if (!Strings.isNullOrEmpty(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum())) {
                 spssoDescriptor.setSupportedProtocols(
                         Arrays.stream(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum().split(",")).map(p -> MDDCConstants.PROTOCOL_BINDINGS.get(p.trim())).collect(Collectors.toList())
@@ -303,17 +340,65 @@ public class EntityDescriptorConversionUtils {
                 }
             }
 
+            // Setup Extensions
             if (representation.getProtocol() == EntityDescriptorProtocol.OIDC) {
-                spssoDescriptor.setExtensions(buildOidcExtensionsFromRepresentation(representation.getServiceProviderSsoDescriptor(false)));
+                spssoDescriptor.setExtensions(buildOAuthRPExtensionsFromRepresentation(representation.getServiceProviderSsoDescriptor(false)));
             }
         } else {
             ed.setRoleDescriptors(null);
         }
     }
 
-    private static Extensions buildOidcExtensionsFromRepresentation(@NonNull ServiceProviderSsoDescriptorRepresentation representation) {
+    private static Extensions buildOAuthRPExtensionsFromRepresentation(@NonNull ServiceProviderSsoDescriptorRepresentation representation) {
         Extensions result = new Extensions();
-
+        HashMap<String, Object> oauthrpextMap = (HashMap<String, Object>) representation.getExtensions().get("OAuthRPExtensions");
+        OAuthRPExtensions oAuthRPExtensions = new OAuthRPExtensions();
+        oauthrpextMap.keySet().forEach(key -> {
+            try {
+                if ("requestUris".equals(key) || "defaultAcrValues".equals(key) || "postLogoutRedirectUris".equals(key)){
+                    Field field = oAuthRPExtensions.getClass().getDeclaredField(key);
+                    field.setAccessible(true);
+                    ((List<String>) oauthrpextMap.get(key)).forEach(value -> {
+                        switch (key) {
+                        case "requestUris":
+                            oAuthRPExtensions.addRequestUri(new RequestUri((value)));
+                            break;
+                        case "defaultAcrValues":
+                            oAuthRPExtensions.addDefaultAcrValue(new DefaultAcrValue((value)));
+                            break;
+                        case "postLogoutRedirectUris":
+                            oAuthRPExtensions.addPostLogoutRedirectUri(new PostLogoutRedirectUri((value)));
+                            break;
+                        }
+                    });
+                }
+                else if ("attributes".equals(key)) {
+                    HashMap<String, Object> attributes = (HashMap<String, Object>) oauthrpextMap.get(key);
+                    attributes.keySet().forEach(attKey -> {
+                        try {
+                            Field attField = oAuthRPExtensions.getClass().getDeclaredField(attKey);
+                            attField.setAccessible(true);
+                            if ("requireAuthTime".equals(attKey)) {
+                                Boolean value = Boolean.valueOf(attributes.get(attKey).toString());
+                                attField.set(oAuthRPExtensions, value);
+                            } else if ("defaultMaxAge".equals(attKey)) {
+                                Integer value = Integer.valueOf(attributes.get(attKey).toString());
+                                attField.setInt(oAuthRPExtensions, value);
+                            } else {
+                                attField.set(oAuthRPExtensions, attributes.get(attKey).toString());
+                            }
+                        }
+                        catch (IllegalAccessException | NoSuchFieldException e) {
+                            // skip it
+                        }
+                    });
+                }
+            }
+            catch (NoSuchFieldException e) {
+                // skip it
+            }
+        });
+        result.addUnknownXMLObject(oAuthRPExtensions);
         return result;
     }
 

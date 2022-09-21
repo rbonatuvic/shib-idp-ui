@@ -20,7 +20,7 @@
   "securityInfo": {
     "authenticationRequestsSigned": false,
     "wantAssertionsSigned": false,
-    "x509Certificates": []
+    "keyDescriptors": []
   },
   "assertionConsumerServices": [],
   "serviceProviderSsoDescriptor": {

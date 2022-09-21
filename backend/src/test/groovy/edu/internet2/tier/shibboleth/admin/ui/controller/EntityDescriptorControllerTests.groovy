@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
@@ -22,7 +23,10 @@ import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
+import groovy.json.JsonSlurper
+import lombok.SneakyThrows
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.ClassPathResource
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
@@ -701,5 +705,24 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
         catch (Exception e) {
             e instanceof ConcurrentModificationException
         }
+    }
+
+    @WithMockAdmin
+    def "POST /EntityDescriptor OIDC descriptor"() {
+        when:
+        def result = mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(fromFile("/json/SHIBUI-2380-1.json")))
+
+        then:
+        result.andExpect(status().isCreated())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("\$.entityId").value("mockSamlClientId2"))
+                .andExpect(jsonPath("\$.serviceEnabled").value(false))
+                .andExpect(jsonPath("\$.idOfOwner").value("admingroup"))
+                .andExpect(jsonPath("\$.serviceProviderSsoDescriptor.protocolSupportEnum").value("http://openid.net/specs/openid-connect-core-1_0.html"))
+    }
+
+    @SneakyThrows
+    private byte[] fromFile(String path) {
+        return new ClassPathResource(path).getInputStream().readAllBytes()
     }
 }

@@ -98,6 +98,9 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         setupLogout(ed, representation);
         setupRelyingPartyOverrides(ed, representation);
 
+        if (ed.getProtocol() == EntityDescriptorProtocol.OIDC) {
+            ed.getSPSSODescriptor("").addSupportedProtocol("http://openid.net/specs/openid-connect-core-1_0.html");
+        }
         //Let envers recognize update revision type for EntityDescriptor type
         //when modifying Attributes and SPSSODescriptor inside RoleDescriptors collection
         ed.setVersionModifiedTimestamp(System.currentTimeMillis());
@@ -311,7 +314,6 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             }
         }
 
-        // set up security - this block assumes too much like there will be a cert. With OIDC could not be some...
         setupSecurityRepresentationFromEntityDescriptor(ed, representation);
 
         // set up ACSs
@@ -512,15 +514,6 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                     }
                     keyDescriptorRep.setValue(((ValueXMLObject) obj).getValue());
                     securityInfoRepresentation.addKeyDescriptor(keyDescriptorRep);
-                }
-
-                // TODO remove this when done.
-                if (keyInfoType == KeyDescriptorRepresentation.ElementType.X509Data) {
-                    SecurityInfoRepresentation.X509CertificateRepresentation x509CertificateRepresentation = new SecurityInfoRepresentation.X509CertificateRepresentation();
-                    x509CertificateRepresentation.setName(name);
-                    x509CertificateRepresentation.setType(useType);
-                    x509CertificateRepresentation.setValue(keyDescriptorRep.getValue());
-                    securityInfoRepresentation.getX509Certificates().add(x509CertificateRepresentation);
                 }
             }
         }

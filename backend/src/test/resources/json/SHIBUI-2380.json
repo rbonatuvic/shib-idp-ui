@@ -1,0 +1,96 @@
+{
+  "assertionConsumerServices": [
+    {
+      "locationUrl": "https://example.org/cb",
+      "binding": "https://tools.ietf.org/html/rfc6749#section-3.1.2",
+      "makeDefault": false
+    },
+    {
+      "locationUrl": "https://example.org/cb2",
+      "binding": "https://tools.ietf.org/html/rfc6749#section-3.1.2",
+      "makeDefault": false
+    },
+    {
+      "locationUrl": "https://example.org/cb3",
+      "binding": "http://example.org/not/supported/profile/id",
+      "makeDefault": false
+    }
+  ],
+  "entityId": "mockSamlClientId",
+  "idOfOwner": "admingroup",
+  "organization": {},
+  "securityInfo": {
+    "authenticationRequestsSigned": false,
+    "wantAssertionsSigned": false,
+    "keyDescriptors": [
+      {
+        "value": "MIIEQDCCAqigAwIBAgIVAIarXvdvyS47KJR7U40FlTufyD8vMA0GCSqGSIb3DQEB",
+        "type": "signing",
+        "elementType": "X509Data"
+      },
+      {
+        "value": "MIIBKDCBzgIJAOYlspXlaqguMAoGCCqGSM49BAMCMBwxCzAJBgNVBAYTAkZJMQ0w",
+        "type": "signing",
+        "elementType": "X509Data"
+      },
+      {
+        "value": "https://example.org/jwks",
+        "type": "both",
+        "elementType": "jwksUri"
+      },
+      {
+        "value": "mockClientSecretValue",
+        "type": "both",
+        "elementType": "clientSecret"
+      }
+    ]
+  },
+  "serviceEnabled": false,
+  "serviceProviderName": "charlesTest3",
+  "serviceProviderSsoDescriptor": {
+    "protocolSupportEnum": "http://openid.net/specs/openid-connect-core-1_0.html",
+    "nameIdFormats": [
+      "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+      "urn:mace:shibboleth:metadata:oidc:1.0:nameid-format:pairwise"
+    ],
+    "extensions": {
+      "OAuthRPExtensions": {
+        "postLogoutRedirectUris": [
+          "https://example.org/postLogout"
+        ],
+        "defaultAcrValues": [
+          "password",
+          "mfa"
+        ],
+        "attributes": {
+          "clientUri": "https://example.org/clientUri",
+          "responseTypes": "code id_token",
+          "sectorIdentifierUri": "https://example.org/sectorIdentifier",
+          "idTokenEncryptedResponseAlg": "A256KW",
+          "applicationType": "web",
+          "tokenEndpointAuthSigningAlg": "RS512",
+          "idTokenEncryptedResponseEnc": "A256GCM",
+          "requireAuthTime": false,
+          "userInfoEncryptedResponseEnc": "A192GCM",
+          "userInfoSignedResponseAlg": "RS384",
+          "userInfoEncryptedResponseAlg": "A192KW",
+          "grantTypes": "authorization_code",
+          "softwareId": "mockSoftwareId",
+          "requestObjectEncryptionEnc": "A128GCM",
+          "initiateLoginUri": "https://example.org/initiateLogin",
+          "requestObjectEncryptionAlg": "A128KW",
+          "tokenEndpointAuthMethod": "client_secret_basic",
+          "requestObjectSigningAlg": "RS256",
+          "scopes": "openid profile",
+          "idTokenSignedResponseAlg": "RS512",
+          "softwareVersion": "mockSoftwareVersion",
+          "defaultMaxAge": 0
+        },
+        "requestUris": [
+          "https://example.org/request"
+        ]
+      }
+    }
+  },
+  "protocol": "OIDC"
+}

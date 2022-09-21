@@ -3,9 +3,11 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.KeyDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
@@ -302,9 +304,10 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         def test = openSamlObjects.marshalToXmlString(service.createDescriptorFromRepresentation(new EntityDescriptorRepresentation().with {
             it.entityId = 'http://test.example.org/test1'
             it.securityInfo = new SecurityInfoRepresentation().with {
-                it.x509Certificates = [new SecurityInfoRepresentation.X509CertificateRepresentation().with {
+                it.keyDescriptors = [new KeyDescriptorRepresentation().with {
                     it.type = 'signing'
                     it.value = 'certificate'
+                    it.elementType = KeyDescriptorRepresentation.ElementType.X509Data
                     it
                 }]
                 it
@@ -341,9 +344,10 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         def test = openSamlObjects.marshalToXmlString(service.createDescriptorFromRepresentation(new EntityDescriptorRepresentation().with {
             it.entityId = 'http://test.example.org/test1'
             it.securityInfo = new SecurityInfoRepresentation().with {
-                it.x509Certificates = [new SecurityInfoRepresentation.X509CertificateRepresentation().with {
+                it.keyDescriptors = [new KeyDescriptorRepresentation().with {
                     it.type = 'encryption'
                     it.value = 'certificate'
+                    it.elementType = KeyDescriptorRepresentation.ElementType.X509Data
                     it
                 }]
                 it
@@ -380,9 +384,10 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         def test = openSamlObjects.marshalToXmlString(service.createDescriptorFromRepresentation(new EntityDescriptorRepresentation().with {
             it.entityId = 'http://test.example.org/test1'
             it.securityInfo = new SecurityInfoRepresentation().with {
-                it.x509Certificates = [new SecurityInfoRepresentation.X509CertificateRepresentation().with {
+                it.keyDescriptors = [new KeyDescriptorRepresentation().with {
                     it.type = 'both'
                     it.value = 'certificate'
+                    it.elementType = KeyDescriptorRepresentation.ElementType.X509Data
                     it
                 }]
                 it
@@ -648,9 +653,6 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         def output = service.createRepresentationFromDescriptor(descriptor)
 
         then:
-        assert output.securityInfo.x509Certificates.size() == 1
-        assert output.securityInfo.x509Certificates[0].type == 'both'
-
         assert descriptor.getSPSSODescriptor('').getKeyDescriptors().size() == 1
         assert descriptor.getSPSSODescriptor('').getKeyDescriptors()[0].getUse() == null
     }
@@ -759,5 +761,14 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         //TODO: Finish fleshing out this thing
 
         return ed
+    }
+
+    def "SHIBUI-2830 OIDC"() {
+        when:
+        def representation = new ObjectMapper().readValue(this.class.getResource('/json/SHIBUI-2380.json').bytes, EntityDescriptorRepresentation)
+        def ed = service.createDescriptorFromRepresentation(representation)
+
+        then:
+        assert ed.getProtocol() == EntityDescriptorProtocol.OIDC
     }
 }

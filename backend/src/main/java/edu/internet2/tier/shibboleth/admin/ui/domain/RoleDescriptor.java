@@ -77,10 +77,6 @@ public class RoleDescriptor extends AbstractDescriptor implements org.opensaml.s
 
     @Override
     public List<String> getSupportedProtocols() {
-        // This protocol must be included if this is OIDC data
-        if (isOidcType() && !supportedProtocols.contains("http://openid.net/specs/openid-connect-core-1_0.html")) {
-            supportedProtocols.add("http://openid.net/specs/openid-connect-core-1_0.html");
-        }
         return supportedProtocols;
     }
 
@@ -203,7 +199,10 @@ public class RoleDescriptor extends AbstractDescriptor implements org.opensaml.s
 
     @Transient
     public boolean isOidcType() {
-        if (getExtensions().getOrderedChildren().size() > 0) {
+        if (getExtensions() == null || getExtensions().getOrderedChildren() == null || getExtensions().getOrderedChildren().isEmpty()){
+            return false;
+        }
+        else {
             for (XMLObject e : getExtensions().getOrderedChildren()) {
                 if (e.getElementQName().getLocalPart().equals(OAuthRPExtensions.TYPE_LOCAL_NAME)) {
                     return true;
