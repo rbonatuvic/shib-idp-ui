@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AssertionConsumerService;
+import edu.internet2.tier.shibboleth.admin.ui.domain.Audience;
 import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson;
 import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPersonBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Description;
@@ -333,9 +334,7 @@ public class EntityDescriptorConversionUtils {
             if (representation.getServiceProviderSsoDescriptor() != null && representation.getServiceProviderSsoDescriptor().getNameIdFormats() != null && representation.getServiceProviderSsoDescriptor().getNameIdFormats().size() > 0) {
                 for (String nameidFormat : representation.getServiceProviderSsoDescriptor().getNameIdFormats()) {
                     NameIDFormat nameIDFormat = openSamlObjects.buildDefaultInstanceOfType(NameIDFormat.class);
-
                     nameIDFormat.setURI(nameidFormat);
-
                     spssoDescriptor.getNameIDFormats().add(nameIDFormat);
                 }
             }
@@ -355,7 +354,7 @@ public class EntityDescriptorConversionUtils {
         OAuthRPExtensions oAuthRPExtensions = new OAuthRPExtensions();
         oauthrpextMap.keySet().forEach(key -> {
             try {
-                if ("requestUris".equals(key) || "defaultAcrValues".equals(key) || "postLogoutRedirectUris".equals(key)){
+                if ("requestUris".equals(key) || "defaultAcrValues".equals(key) || "postLogoutRedirectUris".equals(key) || "audience".equals(key)){
                     Field field = oAuthRPExtensions.getClass().getDeclaredField(key);
                     field.setAccessible(true);
                     ((List<String>) oauthrpextMap.get(key)).forEach(value -> {
@@ -368,6 +367,9 @@ public class EntityDescriptorConversionUtils {
                             break;
                         case "postLogoutRedirectUris":
                             oAuthRPExtensions.addPostLogoutRedirectUri(new PostLogoutRedirectUri((value)));
+                            break;
+                        case "audience":
+                            oAuthRPExtensions.addAudience(new Audience(value));
                             break;
                         }
                     });

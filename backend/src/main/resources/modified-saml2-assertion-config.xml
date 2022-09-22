@@ -70,13 +70,13 @@
             <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.AttributeStatementUnmarshaller"/>
         </ObjectProvider>
         
-        <!-- Audience -->
+        <!-- Audience
         <ObjectProvider qualifiedName="saml2:Audience">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.AudienceBuilder"/>
             <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
             <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
-        
+        -->
         <!-- AudienceRestriction -->
         <ObjectProvider qualifiedName="saml2:AudienceRestriction">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.AudienceRestrictionBuilder"/>

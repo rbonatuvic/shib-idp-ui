@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.oidc;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.Audience;
 import org.apache.commons.lang3.StringUtils;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -39,7 +40,9 @@ public class OAuthRPExtensionsUnmarshaller extends AbstractSAMLObjectUnmarshalle
             extensions.addRequestUri((RequestUri) childSAMLObject);
         } else if (childSAMLObject instanceof PostLogoutRedirectUri) {
             extensions.addPostLogoutRedirectUri((PostLogoutRedirectUri) childSAMLObject);
-        } else {
+        } else if (childSAMLObject instanceof Audience) {
+            extensions.addAudience((Audience) childSAMLObject);
+        }else {
             extensions.getUnknownXMLObjects().add(childSAMLObject);
         }
     }

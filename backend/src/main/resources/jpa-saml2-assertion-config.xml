@@ -16,6 +16,12 @@
             <MarshallingClass className="org.opensaml.saml.saml2.core.impl.AttributeMarshaller"/>
             <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.AttributeUnmarshaller"/>
         </ObjectProvider>
-        
+
+        <ObjectProvider qualifiedName="saml2:Audience">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.AudienceBuilder"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
+        </ObjectProvider>
+
     </ObjectProviders>
  </XMLTooling>

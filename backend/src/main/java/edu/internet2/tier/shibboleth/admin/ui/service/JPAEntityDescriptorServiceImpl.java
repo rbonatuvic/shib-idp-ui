@@ -156,6 +156,11 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                     oAuthRPExtensions.getDefaultAcrValues().forEach(acrValue -> defaultAcrValues.add(acrValue.getValue()));
                     result.put("defaultAcrValues", defaultAcrValues);
                 }
+                if (oAuthRPExtensions.getAudiences().size() > 0){
+                    List<String> audiences = new ArrayList<>();
+                    oAuthRPExtensions.getAudiences().forEach(aud -> audiences.add(aud.getURI()));
+                    result.put("audience", audiences);
+                }
             }
         }
         return result;

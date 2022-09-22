@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.oidc;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractXMLObject;
+import edu.internet2.tier.shibboleth.admin.ui.domain.Audience;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,9 @@ public class OAuthRPExtensions extends AbstractXMLObject implements net.shibbole
     private final AttributeMap unknownAttributes = new AttributeMap(this);
 
     private String applicationType;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Audience> audiences = new ArrayList<>();
 
     private String clientUri;
 
@@ -100,6 +104,7 @@ public class OAuthRPExtensions extends AbstractXMLObject implements net.shibbole
         result.addAll(defaultAcrValues);
         result.addAll(requestUris);
         result.addAll(postLogoutRedirectUris);
+        result.addAll(audiences);
         result.addAll(unknownXMLObjects);
         return result;
     }
@@ -134,6 +139,10 @@ public class OAuthRPExtensions extends AbstractXMLObject implements net.shibbole
         List<net.shibboleth.oidc.saml.xmlobject.RequestUri> result = new ArrayList<>();
         result.addAll(requestUris);
         return result;
+    }
+
+    public void addAudience(Audience aud) {
+        this.audiences.add(aud);
     }
 
     public void addDefaultAcrValue(DefaultAcrValue childSAMLObject) {
