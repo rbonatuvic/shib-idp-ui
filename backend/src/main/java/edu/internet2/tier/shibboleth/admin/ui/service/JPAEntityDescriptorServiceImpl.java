@@ -159,7 +159,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 if (oAuthRPExtensions.getAudiences().size() > 0){
                     List<String> audiences = new ArrayList<>();
                     oAuthRPExtensions.getAudiences().forEach(aud -> audiences.add(aud.getURI()));
-                    result.put("audience", audiences);
+                    result.put("audiences", audiences);
                 }
             }
         }
