@@ -65,7 +65,7 @@ const CustomToggle = ({children, eventKey, type, callback}) => {
     const isCurrentEventKey = activeEventKey === eventKey;
 
     return (
-        <Button variant="icon" eventKey="0" className="px-0" onClick={decoratedOnClick}>
+        <Button variant="icon" className="px-0" onClick={decoratedOnClick}>
             <FontAwesomeIcon icon={ isCurrentEventKey ? faCaretDown : faCaretRight } />&nbsp;
             {children}
         </Button>
@@ -74,7 +74,7 @@ const CustomToggle = ({children, eventKey, type, callback}) => {
 
 
 const ObjectArrayItem = ({type, ...props}) => {
-    const btnStyle = {
+    const btnStyle = {  
         flex: 1,
         paddingLeft: 6,
         paddingRight: 6,
@@ -82,10 +82,10 @@ const ObjectArrayItem = ({type, ...props}) => {
     };
     return (
         <div key={props.key} className={`mt-2 mb-3 bg-light border rounded p-2 list-group`}>
-            <Accordion defaultActiveKey="0">
+            <Accordion>
             <div className={`list-group-item`}>
                 <div className="mb-4 pb-2 d-flex justify-content-between align-items-center border-bottom">
-                    <CustomToggle eventKey={'0'} type={type}>
+                    <CustomToggle type={type}>
                         <Translate value={'label.new-of-type'} params={{type}} />
                     </CustomToggle>
                     {props.hasToolbar && (
@@ -135,7 +135,7 @@ const ObjectArrayItem = ({type, ...props}) => {
                         </div>
                     )}
                 </div>
-                <Accordion.Collapse eventKey="0">
+                <Accordion.Collapse>
                     <div className="me-2 flex-grow-1">{props.children}</div>
                 </Accordion.Collapse>
             </div>

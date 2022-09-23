@@ -1,6 +1,4 @@
 import React from 'react';
-import { MetadataSchema } from '../hoc/MetadataSchema';
-
 import { CopySource } from '../copy/CopySource';
 import { SaveCopy } from '../copy/SaveCopy';
 import { useMetadataEntity } from '../hooks/api';
@@ -52,9 +50,7 @@ export function MetadataCopy ({ onShowNav }) {
             <CopySource copy={copy} onNext={next} />
             }
             {confirm && copy &&
-                <MetadataSchema type="source">
-                    <SaveCopy copy={copy} onBack={back} onSave={save} saving={loading} />
-                </MetadataSchema>
+                <SaveCopy copy={copy} onBack={back} onSave={save} saving={loading} />
             }
         </React.Fragment>
     );

@@ -11,8 +11,6 @@ import kebabCase from 'lodash/kebabCase';
 import { useMetadataSources } from '../hooks/api';
 import { useMetadataSourceSections } from '../domain/source/definition/SourceDefinition';
 
-
-
 export function CopySource({ copy, onNext }) {
 
     const { data = [] } = useMetadataSources({ cachePolicy: 'no-cache' }, []);

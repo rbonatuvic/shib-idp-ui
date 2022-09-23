@@ -140,9 +140,6 @@ const schema = {
                 }
             ]
         },
-        "x509CertificateAvailable": {
-            "ui:widget": "hidden"
-        },
         "authenticationRequestsSigned": {
             "ui:widget": "radio",
             "ui:options": {

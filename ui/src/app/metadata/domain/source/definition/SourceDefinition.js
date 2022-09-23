@@ -9,11 +9,6 @@ import isNil from 'lodash/isNil';
 import { useMetadataSchemaContext } from '../../../hoc/MetadataSchema';
 
 export const SourceBase = {
-    label: 'Metadata Source',
-    type: '@MetadataProvider',
-    steps: [],
-    schema: `${API_BASE_PATH}/ui/MetadataSources`,
-    // schema: `/assets/schema/source/metadata-source.json`,
 
     parser: (data) => removeNull(data, true),
 
@@ -91,14 +86,6 @@ export const SourceBase = {
             }
         }
 
-        if (formData?.securityInfo?.x509Certificates) {
-            if (formData.securityInfo.x509Certificates?.length > 0) {
-                d.securityInfo.x509CertificateAvailable = true;
-            } else {
-                d.securityInfo.x509CertificateAvailable = false;
-            }
-        }
-
         return d;
     },
 
@@ -109,6 +96,7 @@ export const SourceBase = {
                 {
                     size: 6,
                     fields: [
+                        'protocol',
                         'serviceProviderName',
                         'entityId',
                         'organization'
@@ -127,7 +115,7 @@ export const SourceBase = {
                     ],
                 },
                 {
-                    size: 6,
+                    size: 12,
                     fields: [
                         'serviceProviderSsoDescriptor'
                     ],
@@ -230,13 +218,10 @@ export const SourceBase = {
                         fields: [
                             'authenticationRequestsSigned',
                             'wantAssertionsSigned',
-                            'x509Certificates'
+                            'keyDescriptors'
                         ],
                     }
                 ]
-            },
-            x509CertificateAvailable: {
-                'ui:widget': 'hidden'
             },
             authenticationRequestsSigned: {
                 'ui:widget': 'radio',
@@ -250,11 +235,12 @@ export const SourceBase = {
                     inline: true
                 }
             },
-            x509Certificates: {
+            keyDescriptors: {
                 type: 'certificate',
                 "ui:options": {
                     orderable: false
                 },
+                'ui:order': ['name', 'elementType', 'type', 'value'],
                 items: {
                     type: {
                         'ui:widget': 'radio',
@@ -306,13 +292,18 @@ export const SourceBase = {
 
 export const SourceEditor = {
     ...SourceBase,
-    uiSchema: defaultsDeep({}, SourceBase.uiSchema),
+    uiSchema: defaultsDeep({
+        protocol: {
+            'ui:readonly': true
+        }
+    }, SourceBase.uiSchema),
     steps: [
         {
             index: 1,
-            id: 'common',
+            id: 'org-info',
             label: 'label.sp-org-info',
             fields: [
+                'protocol',
                 'serviceProviderName',
                 'entityId',
                 'organization',
@@ -388,13 +379,6 @@ export const SourceWizard = {
                     size: 6,
                     classNames: 'bg-light border rounded px-4 pt-4 pb-3',
                     fields: [
-                        'serviceProviderName',
-                        'entityId'
-                    ]
-                },
-                {
-                    size: 6,
-                    fields: [
                         'organization',
                     ],
                 },
@@ -459,6 +443,7 @@ export const SourceWizard = {
             id: 'common',
             label: 'label.name-and-entity-id',
             fields: [
+                'protocol',
                 'serviceProviderName',
                 'entityId'
             ]
