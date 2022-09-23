@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AssertionConsumerService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Audience;
+import edu.internet2.tier.shibboleth.admin.ui.domain.AudienceBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson;
 import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPersonBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Description;
@@ -14,9 +15,11 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Extensions;
+import edu.internet2.tier.shibboleth.admin.ui.domain.ExtensionsBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.GivenName;
 import edu.internet2.tier.shibboleth.admin.ui.domain.InformationURL;
 import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor;
+import edu.internet2.tier.shibboleth.admin.ui.domain.KeyName;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Logo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.NameIDFormat;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Organization;
@@ -37,11 +40,17 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepres
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.AbstractValueXMLObject;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ClientSecret;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ClientSecretKeyReference;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.DefaultAcrValue;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.DefaultAcrValueBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.JwksData;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.JwksUri;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.OAuthRPExtensions;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.PostLogoutRedirectUri;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.PostLogoutRedirectUriBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.RequestUri;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.RequestUriBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLObject;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService;
@@ -75,16 +84,18 @@ public class EntityDescriptorConversionUtils {
 
     public static KeyDescriptor createKeyDescriptor(String name, String usageType, String value, KeyDescriptorRepresentation.ElementType elementType) {
         KeyDescriptor keyDescriptor = openSamlObjects.buildDefaultInstanceOfType(KeyDescriptor.class);
-
+        KeyInfo keyInfo = openSamlObjects.buildDefaultInstanceOfType(KeyInfo.class);
         if (!Strings.isNullOrEmpty(name)) {
             keyDescriptor.setName(name);
+            KeyName keyName = openSamlObjects.buildDefaultInstanceOfType(KeyName.class);
+            keyName.setValue(name);
+            keyInfo.getXMLObjects().add(keyName);
         }
 
         if (!"both".equals(usageType)) {
             keyDescriptor.setUsageType(usageType);
         }
 
-        KeyInfo keyInfo = openSamlObjects.buildDefaultInstanceOfType(KeyInfo.class);
         AbstractValueXMLObject xmlObject;
         switch (elementType) {
         case X509Data:
@@ -100,17 +111,17 @@ public class EntityDescriptorConversionUtils {
             keyInfo.getXMLObjects().add(xmlObject);
             break;
         case jwksUri:
-            xmlObject = openSamlObjects.buildDefaultInstanceOfType(JwksData.class);
+            xmlObject = openSamlObjects.buildDefaultInstanceOfType(JwksUri.class);
             xmlObject.setValue(value);
             keyInfo.getXMLObjects().add(xmlObject);
             break;
         case clientSecret:
-            xmlObject = openSamlObjects.buildDefaultInstanceOfType(JwksData.class);
+            xmlObject = openSamlObjects.buildDefaultInstanceOfType(ClientSecret.class);
             xmlObject.setValue(value);
             keyInfo.getXMLObjects().add(xmlObject);
             break;
         case clientSecretKeyReference:
-            xmlObject = openSamlObjects.buildDefaultInstanceOfType(JwksData.class);
+            xmlObject = openSamlObjects.buildDefaultInstanceOfType(ClientSecretKeyReference.class);
             xmlObject.setValue(value);
             keyInfo.getXMLObjects().add(xmlObject);
             break;
@@ -349,55 +360,55 @@ public class EntityDescriptorConversionUtils {
     }
 
     private static Extensions buildOAuthRPExtensionsFromRepresentation(@NonNull ServiceProviderSsoDescriptorRepresentation representation) {
-        Extensions result = new Extensions();
+        Extensions result = new ExtensionsBuilder().buildObject();
         HashMap<String, Object> oauthrpextMap = (HashMap<String, Object>) representation.getExtensions().get("OAuthRPExtensions");
         OAuthRPExtensions oAuthRPExtensions = new OAuthRPExtensions();
         oauthrpextMap.keySet().forEach(key -> {
-            try {
-                if ("requestUris".equals(key) || "defaultAcrValues".equals(key) || "postLogoutRedirectUris".equals(key) || "audience".equals(key)){
-                    Field field = oAuthRPExtensions.getClass().getDeclaredField(key);
-                    field.setAccessible(true);
-                    ((List<String>) oauthrpextMap.get(key)).forEach(value -> {
-                        switch (key) {
-                        case "requestUris":
-                            oAuthRPExtensions.addRequestUri(new RequestUri((value)));
-                            break;
-                        case "defaultAcrValues":
-                            oAuthRPExtensions.addDefaultAcrValue(new DefaultAcrValue((value)));
-                            break;
-                        case "postLogoutRedirectUris":
-                            oAuthRPExtensions.addPostLogoutRedirectUri(new PostLogoutRedirectUri((value)));
-                            break;
-                        case "audience":
-                            oAuthRPExtensions.addAudience(new Audience(value));
-                            break;
+            if ("requestUris".equals(key) || "defaultAcrValues".equals(key) || "postLogoutRedirectUris".equals(key) || "audiences".equals(key)) {
+                ((List<String>) oauthrpextMap.get(key)).forEach(value -> {
+                    switch (key) {
+                    case "requestUris":
+                        RequestUri ru = new RequestUriBuilder().buildObject();
+                        ru.setValue(value);
+                        oAuthRPExtensions.addRequestUri(ru);
+                        break;
+                    case "defaultAcrValues":
+                        DefaultAcrValue dav = new DefaultAcrValueBuilder().buildObject();
+                        dav.setValue(value);
+                        oAuthRPExtensions.addDefaultAcrValue(dav);
+                        break;
+                    case "postLogoutRedirectUris":
+                        PostLogoutRedirectUri plru = new PostLogoutRedirectUriBuilder().buildObject();
+                        plru.setValue(value);
+                        oAuthRPExtensions.addPostLogoutRedirectUri(plru);
+                        break;
+                    case "audiences":
+                        Audience audience = new AudienceBuilder().buildObject();
+                        audience.setURI(value);
+                        oAuthRPExtensions.addAudience(audience);
+                        break;
+                    }
+                });
+            } else if ("attributes".equals(key)) {
+                HashMap<String, Object> attributes = (HashMap<String, Object>) oauthrpextMap.get(key);
+                attributes.keySet().forEach(attKey -> {
+                    try {
+                        Field attField = oAuthRPExtensions.getClass().getDeclaredField(attKey);
+                        attField.setAccessible(true);
+                        if ("requireAuthTime".equals(attKey)) {
+                            Boolean value = Boolean.valueOf(attributes.get(attKey).toString());
+                            attField.set(oAuthRPExtensions, value);
+                        } else if ("defaultMaxAge".equals(attKey)) {
+                            Integer value = Integer.valueOf(attributes.get(attKey).toString());
+                            attField.setInt(oAuthRPExtensions, value);
+                        } else {
+                            attField.set(oAuthRPExtensions, attributes.get(attKey).toString());
                         }
-                    });
-                }
-                else if ("attributes".equals(key)) {
-                    HashMap<String, Object> attributes = (HashMap<String, Object>) oauthrpextMap.get(key);
-                    attributes.keySet().forEach(attKey -> {
-                        try {
-                            Field attField = oAuthRPExtensions.getClass().getDeclaredField(attKey);
-                            attField.setAccessible(true);
-                            if ("requireAuthTime".equals(attKey)) {
-                                Boolean value = Boolean.valueOf(attributes.get(attKey).toString());
-                                attField.set(oAuthRPExtensions, value);
-                            } else if ("defaultMaxAge".equals(attKey)) {
-                                Integer value = Integer.valueOf(attributes.get(attKey).toString());
-                                attField.setInt(oAuthRPExtensions, value);
-                            } else {
-                                attField.set(oAuthRPExtensions, attributes.get(attKey).toString());
-                            }
-                        }
-                        catch (IllegalAccessException | NoSuchFieldException e) {
-                            // skip it
-                        }
-                    });
-                }
-            }
-            catch (NoSuchFieldException e) {
-                // skip it
+                    }
+                    catch (IllegalAccessException | NoSuchFieldException e) {
+                        // skip it
+                    }
+                });
             }
         });
         result.addUnknownXMLObject(oAuthRPExtensions);

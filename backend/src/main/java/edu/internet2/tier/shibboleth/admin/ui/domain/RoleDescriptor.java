@@ -91,7 +91,9 @@ public class RoleDescriptor extends AbstractDescriptor implements org.opensaml.s
 
     @Override
     public void addSupportedProtocol(String supportedProtocol) {
-        supportedProtocols.add(supportedProtocol);
+        if (!supportedProtocols.contains(supportedProtocol)) {
+            supportedProtocols.add(supportedProtocol);
+        }
     }
 
     @Override

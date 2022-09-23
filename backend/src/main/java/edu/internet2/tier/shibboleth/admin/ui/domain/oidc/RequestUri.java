@@ -11,7 +11,4 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Audited
 public class RequestUri extends AbstractValueXMLObject implements net.shibboleth.oidc.saml.xmlobject.RequestUri {
-    public RequestUri(String value) {
-        this.setValue(value);
-    }
 }

@@ -3,13 +3,12 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
@@ -20,10 +19,10 @@ import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionSer
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
+import edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
-import groovy.json.JsonSlurper
 import lombok.SneakyThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
@@ -35,6 +34,7 @@ import org.springframework.web.util.NestedServletException
 import spock.lang.Subject
 
 import javax.persistence.EntityManager
+import java.nio.charset.StandardCharsets
 
 import static org.hamcrest.CoreMatchers.containsString
 import static org.springframework.http.MediaType.APPLICATION_JSON
@@ -47,6 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath
 
 class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
     @Autowired
@@ -78,7 +79,9 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
     def controller
 
     EntityDescriptorVersionService versionService = Mock()
-    
+
+    def shortNameToOAuth = "\$.serviceProviderSsoDescriptor.extensions.OAuthRPExtensions."
+
     @Transactional
     def setup() {
         openSamlObjects.init()
@@ -708,7 +711,7 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
     }
 
     @WithMockAdmin
-    def "POST /EntityDescriptor OIDC descriptor"() {
+    def "POST /EntityDescriptor OIDC descriptor - incoming JSON"() {
         when:
         def result = mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(fromFile("/json/SHIBUI-2380-1.json")))
 
@@ -719,6 +722,84 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
                 .andExpect(jsonPath("\$.serviceEnabled").value(false))
                 .andExpect(jsonPath("\$.idOfOwner").value("admingroup"))
                 .andExpect(jsonPath("\$.serviceProviderSsoDescriptor.protocolSupportEnum").value("http://openid.net/specs/openid-connect-core-1_0.html"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.clientUri").value("https://example.org/clientUri"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.responseTypes").value("code id_token"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.sectorIdentifierUri").value("https://example.org/sectorIdentifier"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.idTokenEncryptedResponseEnc").value("A256GCM"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.applicationType").value("web"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.tokenEndpointAuthMethod").value("client_secret_basic"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.userInfoEncryptedResponseEnc").value("A192GCM"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.userInfoSignedResponseAlg").value("RS384"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.userInfoEncryptedResponseAlg").value("A192KW"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.grantTypes").value("authorization_code"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.softwareId").value("mockSoftwareId"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.requestObjectEncryptionEnc").value("A128GCM"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.initiateLoginUri").value("https://example.org/initiateLogin"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.tokenEndpointAuthMethod").value("client_secret_basic"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.requestObjectSigningAlg").value("RS256"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.scopes").value("openid profile"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.idTokenEncryptedResponseAlg").value("A256KW"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.softwareVersion").value("mockSoftwareVersion"))
+                .andExpect(jsonPath(shortNameToOAuth + "postLogoutRedirectUris[0]").value("https://example.org/postLogout"))
+                .andExpect(jsonPath(shortNameToOAuth + "requestUris[0]").value("https://example.org/request"))
+                .andExpect(jsonPath(shortNameToOAuth + "defaultAcrValues").isArray())
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.requireAuthTime").value(Boolean.FALSE))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.defaultMaxAge").value(Integer.valueOf(0)))
+    }
+
+    @WithMockAdmin
+    def 'GET /EntityDescriptor/{resourceId} existing as oidc xml'() {
+        given:
+        def representation = new ObjectMapper().readValue(this.class.getResource('/json/SHIBUI-2380.json').bytes, EntityDescriptorRepresentation)
+        jpaEntityDescriptorService.createNew(representation)
+        def edResourceId = jpaEntityDescriptorService.getAllEntityDescriptorProjectionsBasedOnUserAccess().get(0).getResourceId()
+
+        when:
+        def result = mockMvc.perform(get("/api/EntityDescriptor/" + edResourceId).accept(APPLICATION_XML))
+
+        then:
+        String xmlContent = result.andReturn().getResponse().getContentAsString();
+        result.andExpect(status().isOk())
+        TestHelpers.generatedXmlIsTheSameAsExpectedXml(new String(fromFile("/metadata/SHIBUI-2380.xml"), StandardCharsets.UTF_8), xmlContent)
+    }
+
+    @WithMockAdmin
+    def "POST /EntityDescriptor OIDC descriptor - incoming XML"() {
+        when:
+        def result = mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_XML).content(fromFile("/metadata/SHIBUI-2380.xml")).param("spName", "testing"))
+        
+        then:
+        result.andExpect(status().isCreated())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("\$.entityId").value("mockSamlClientId"))
+                .andExpect(jsonPath("\$.serviceProviderSsoDescriptor.protocolSupportEnum").value("http://openid.net/specs/openid-connect-core-1_0.html"))
+                .andExpect(jsonPath("\$.protocol").value("OIDC"))
+                .andExpect(jsonPath("\$.serviceEnabled").value(false))
+                .andExpect(jsonPath("\$.idOfOwner").value("admingroup"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.clientUri").value("https://example.org/clientUri"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.responseTypes").value("code id_token"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.sectorIdentifierUri").value("https://example.org/sectorIdentifier"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.idTokenEncryptedResponseEnc").value("A256GCM"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.applicationType").value("web"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.tokenEndpointAuthMethod").value("client_secret_basic"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.userInfoEncryptedResponseEnc").value("A192GCM"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.userInfoSignedResponseAlg").value("RS384"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.userInfoEncryptedResponseAlg").value("A192KW"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.grantTypes").value("authorization_code"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.softwareId").value("mockSoftwareId"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.requestObjectEncryptionEnc").value("A128GCM"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.initiateLoginUri").value("https://example.org/initiateLogin"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.tokenEndpointAuthMethod").value("client_secret_basic"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.requestObjectSigningAlg").value("RS256"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.scopes").value("openid profile"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.idTokenEncryptedResponseAlg").value("A256KW"))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.softwareVersion").value("mockSoftwareVersion"))
+                .andExpect(jsonPath(shortNameToOAuth + "postLogoutRedirectUris[0]").value("https://example.org/postLogout"))
+                .andExpect(jsonPath(shortNameToOAuth + "requestUris[0]").value("https://example.org/request"))
+                .andExpect(jsonPath(shortNameToOAuth + "audiences[0]").value("http://mypeeps"))
+                .andExpect(jsonPath(shortNameToOAuth + "defaultAcrValues").isArray())
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.requireAuthTime").value(Boolean.FALSE))
+                .andExpect(jsonPath(shortNameToOAuth + "attributes.defaultMaxAge").value(Integer.valueOf(0)))
     }
 
     @SneakyThrows

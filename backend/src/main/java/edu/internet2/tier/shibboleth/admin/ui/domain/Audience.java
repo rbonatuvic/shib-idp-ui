@@ -16,8 +16,4 @@ public class Audience extends AbstractXMLObject implements org.opensaml.saml.sam
     @Getter
     @Setter
     private String URI;
-
-    public Audience(String value) {
-        this.setURI(value);
-    }
 }

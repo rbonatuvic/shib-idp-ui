@@ -181,6 +181,9 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     public EntityDescriptorRepresentation createNewEntityDescriptorFromXMLOrigin(EntityDescriptor ed) {
         ed.setIdOfOwner(userService.getCurrentUserGroup().getOwnerId());
         ed.setProtocol(determineEntityDescriptorProtocol(ed));
+        if (ed.getProtocol() == EntityDescriptorProtocol.OIDC) {
+            ed.getSPSSODescriptor("").addSupportedProtocol("http://openid.net/specs/openid-connect-core-1_0.html");
+        }
         EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
         return createRepresentationFromDescriptor(savedEntity);
     }
@@ -204,8 +207,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep)
-                    throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
+    public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep) throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
         if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
         }

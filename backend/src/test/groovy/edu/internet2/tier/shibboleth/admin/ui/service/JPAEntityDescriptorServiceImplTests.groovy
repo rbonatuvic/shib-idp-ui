@@ -13,6 +13,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.OAuthRPExtensions
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
@@ -767,8 +768,35 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         when:
         def representation = new ObjectMapper().readValue(this.class.getResource('/json/SHIBUI-2380.json').bytes, EntityDescriptorRepresentation)
         def ed = service.createDescriptorFromRepresentation(representation)
+        def oauthRpExt = (OAuthRPExtensions) ed.getSPSSODescriptor("").getExtensions().getOrderedChildren().get(0)
 
         then:
         assert ed.getProtocol() == EntityDescriptorProtocol.OIDC
+        assert oauthRpExt.getDefaultAcrValues().size() == 2
+        assert oauthRpExt.getPostLogoutRedirectUris().size() == 1
+        assert oauthRpExt.getRequestUris().size() == 1
+        assert oauthRpExt.getAudiences().size() == 1
+        assert oauthRpExt.getClientUri().equals("https://example.org/clientUri")
+        assert oauthRpExt.getResponseTypes().equals("code id_token")
+        assert oauthRpExt.getSectorIdentifierUri().equals("https://example.org/sectorIdentifier")
+        assert oauthRpExt.getIdTokenEncryptedResponseEnc().equals("A256GCM")
+        assert oauthRpExt.getApplicationType().equals("web")
+        assert oauthRpExt.getTokenEndpointAuthMethod().equals("client_secret_basic")
+        assert oauthRpExt.isRequireAuthTime() == false
+
+        assert oauthRpExt.getUserInfoEncryptedResponseEnc().equals("A192GCM")
+        assert oauthRpExt.getUserInfoSignedResponseAlg().equals("RS384")
+        assert oauthRpExt.getUserInfoEncryptedResponseAlg().equals("A192KW")
+        assert oauthRpExt.getGrantTypes().equals("authorization_code")
+        assert oauthRpExt.getSoftwareId().equals("mockSoftwareId")
+        assert oauthRpExt.getRequestObjectEncryptionEnc().equals("A128GCM")
+        assert oauthRpExt.getInitiateLoginUri().equals("https://example.org/initiateLogin")
+        assert oauthRpExt.getTokenEndpointAuthMethod().equals("client_secret_basic")
+        assert oauthRpExt.getRequestObjectSigningAlg().equals("RS256")
+        assert oauthRpExt.getScopes().equals("openid profile")
+        assert oauthRpExt.getIdTokenEncryptedResponseAlg().equals("A256KW")
+        assert oauthRpExt.getSoftwareVersion().equals("mockSoftwareVersion")
+
+        assert oauthRpExt.getDefaultMaxAge() == 0
     }
 }

@@ -11,7 +11,4 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Audited
 public class PostLogoutRedirectUri extends AbstractValueXMLObject implements net.shibboleth.oidc.saml.xmlobject.PostLogoutRedirectUri {
-    public PostLogoutRedirectUri(String value) {
-        this.setValue(value);
-    }
 }

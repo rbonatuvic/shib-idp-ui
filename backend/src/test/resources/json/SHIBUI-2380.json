@@ -17,7 +17,6 @@
     }
   ],
   "entityId": "mockSamlClientId",
-  "idOfOwner": "admingroup",
   "organization": {},
   "securityInfo": {
     "authenticationRequestsSigned": false,
@@ -35,26 +34,30 @@
       },
       {
         "value": "https://example.org/jwks",
+        "name": "mockJwksUri",
         "type": "both",
         "elementType": "jwksUri"
       },
       {
         "value": "mockClientSecretValue",
+        "name": "mockClientSecret",
         "type": "both",
         "elementType": "clientSecret"
       }
     ]
   },
   "serviceEnabled": false,
-  "serviceProviderName": "charlesTest3",
+  "serviceProviderName": "charlesTest",
   "serviceProviderSsoDescriptor": {
-    "protocolSupportEnum": "http://openid.net/specs/openid-connect-core-1_0.html",
     "nameIdFormats": [
       "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
       "urn:mace:shibboleth:metadata:oidc:1.0:nameid-format:pairwise"
     ],
     "extensions": {
       "OAuthRPExtensions": {
+        "audiences": [
+          "http://mypeeps"
+        ],
         "postLogoutRedirectUris": [
           "https://example.org/postLogout"
         ],

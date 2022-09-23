@@ -11,7 +11,4 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Audited
 public class DefaultAcrValue extends AbstractValueXMLObject implements net.shibboleth.oidc.saml.xmlobject.DefaultAcrValue {
-    public DefaultAcrValue(String value) {
-        this.setValue(value);
-    }
 }
