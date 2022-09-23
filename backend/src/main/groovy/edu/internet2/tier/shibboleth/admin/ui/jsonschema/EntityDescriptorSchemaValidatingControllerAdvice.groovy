@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAd
 import javax.annotation.PostConstruct
 import java.lang.reflect.Type
 
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSAMLSchema
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator.validatePayloadAgainstSchema
 
 /**
@@ -44,6 +44,6 @@ class EntityDescriptorSchemaValidatingControllerAdvice extends RequestBodyAdvice
 
     @PostConstruct
     void init() {
-        this.jsonSchemaLocation = metadataSourcesSchema(this.jsonSchemaResourceLocationRegistry)
+        this.jsonSchemaLocation = metadataSourcesSAMLSchema(this.jsonSchemaResourceLocationRegistry)
     }
 }

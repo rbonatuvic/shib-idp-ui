@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 import javax.annotation.PostConstruct
 
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesOIDCSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSAMLSchema
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 
 /**
@@ -30,13 +32,13 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 @RequestMapping('/api/ui/MetadataSources')
 @Tags(value = [@Tag(name = "ui")])
 class MetadataSourcesUiDefinitionController {
-
-    private static final Logger logger = LoggerFactory.getLogger(MetadataSourcesUiDefinitionController.class);
+    private static final Logger log = LoggerFactory.getLogger(MetadataSourcesUiDefinitionController.class);
 
     @Autowired
     JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry
 
-    JsonSchemaResourceLocation jsonSchemaLocation
+    private JsonSchemaResourceLocation oidcJsonSchemaLocation
+    private JsonSchemaResourceLocation samlJsonSchemaLocation
 
     @Autowired
     ObjectMapper jacksonObjectMapper
@@ -45,10 +47,10 @@ class MetadataSourcesUiDefinitionController {
     JsonSchemaBuilderService jsonSchemaBuilderService
 
     @GetMapping
-    // TODO - CHARLES add type ( SAML|OIDC ) variable to return the correct one - default to saml...
-    ResponseEntity<?> getUiDefinitionJsonSchema() {
+    ResponseEntity<?> getUiDefinitionJsonSchema(@RequestParam(defaultValue = "saml") String protocol) {
+        URL url = protocol.equals("oidc") ? oidcJsonSchemaLocation.url : samlJsonSchemaLocation.url
         try {
-            def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaLocation.url, Map)
+            def parsedJson = jacksonObjectMapper.readValue(url, Map)
             jsonSchemaBuilderService.hideServiceEnabledFromNonAdmins(parsedJson)
             jsonSchemaBuilderService.addReleaseAttributesToJson(parsedJson['properties']['attributeRelease']['items'])
             jsonSchemaBuilderService.addRelyingPartyOverridesToJson(parsedJson['properties']['relyingPartyOverrides'])
@@ -56,15 +58,14 @@ class MetadataSourcesUiDefinitionController {
             return ResponseEntity.ok(parsedJson)
         }
         catch (IOException e) {
-            logger.error("An error occurred while attempting to get json schema for metadata sources!", e)
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR)
-                    .body([jsonParseError              : e.getMessage(),
-                           sourceUiSchemaDefinitionFile: this.jsonSchemaLocation.url])
+            log.error("An error occurred while attempting to get json schema for metadata sources!", e)
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body([jsonParseError : e.getMessage(), sourceUiSchemaDefinitionFile: this.samlJsonSchemaLocation.url])
         }
     }
 
     @PostConstruct
     void init() {
-        this.jsonSchemaLocation = metadataSourcesSchema(this.jsonSchemaResourceLocationRegistry);
+        this.samlJsonSchemaLocation = metadataSourcesSAMLSchema(this.jsonSchemaResourceLocationRegistry);
+        this.oidcJsonSchemaLocation = metadataSourcesOIDCSchema(this.jsonSchemaResourceLocationRegistry);
     }
 }
