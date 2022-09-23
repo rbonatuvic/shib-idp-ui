@@ -51,37 +51,38 @@ class EntityDescriptorConversionUtilsTests extends Specification {
         given:
         def expectedXml = '''<md:KeyDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" use="signing">
   <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <ds:KeyName>testName</ds:KeyName>
     <ds:X509Data>
       <ds:X509Certificate>testValue</ds:X509Certificate>
     </ds:X509Data>
   </ds:KeyInfo>
 </md:KeyDescriptor>'''
-        def expected = openSAMLObjects.unmarshallFromXml(expectedXml.bytes, KeyDescriptor)
-        expected.name = 'testName'
 
         when:
         def keyDescriptor = EntityDescriptorConversionUtils.createKeyDescriptor('testName', 'signing', 'testValue', KeyDescriptorRepresentation.ElementType.X509Data)
+        def generated = openSAMLObjects.marshalToXmlString(keyDescriptor)
 
         then:
-        assert keyDescriptor == expected
+        TestHelpers.generatedXmlIsTheSameAsExpectedXml(expectedXml, generated)
     }
     
     def "test createKeyDescriptor, both type"() {
         given:
         def expectedXml = '''<md:KeyDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
   <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <ds:KeyName>testName</ds:KeyName>
     <ds:X509Data>
       <ds:X509Certificate>testValue</ds:X509Certificate>
     </ds:X509Data>
   </ds:KeyInfo>
 </md:KeyDescriptor>'''
-        def expected = openSAMLObjects.unmarshallFromXml(expectedXml.bytes, KeyDescriptor)
-        expected.name = 'testName'
 
         when:
         def keyDescriptor = EntityDescriptorConversionUtils.createKeyDescriptor('testName', 'both', 'testValue', KeyDescriptorRepresentation.ElementType.X509Data)
+        def generated = openSAMLObjects.marshalToXmlString(keyDescriptor)
+
         then:
-        assert keyDescriptor == expected
+        TestHelpers.generatedXmlIsTheSameAsExpectedXml(expectedXml, generated)
     }
 
     def 'test createKeyDescriptor equality'() {
