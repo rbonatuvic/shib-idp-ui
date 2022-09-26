@@ -209,7 +209,7 @@ GO
 
 -- changeset liquibase:1.13.2.1 dbms:mariadb,mysql
 -- preconditions onFail:MARK_RAN
--- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'shib_configuration_prop'
 -- comment: /* we don't need to run this if the system is new */
 
 ALTER TABLE shib_configuration_prop MODIFY COLUMN description LONGTEXT;
@@ -219,7 +219,7 @@ GO
 
 -- changeset liquibase:1.13.2.1 dbms:postgresql
 -- preconditions onFail:MARK_RAN
--- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'shib_configuration_prop'
 -- comment: /* we don't need to run this if the system is new */
 
 ALTER TABLE shib_configuration_prop ALTER COLUMN description TYPE TEXT;
@@ -229,7 +229,7 @@ GO
 
 -- changeset liquibase:1.13.2.1 dbms:mssql
 -- preconditions onFail:MARK_RAN
--- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'shib_configuration_prop'
 -- comment: /* we don't need to run this if the system is new */
 
 ALTER TABLE shib_configuration_prop ALTER COLUMN description TEXT;
