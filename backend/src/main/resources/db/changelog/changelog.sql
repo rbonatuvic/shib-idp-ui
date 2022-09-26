@@ -236,3 +236,23 @@ ALTER TABLE shib_configuration_prop ALTER COLUMN description TEXT;
 GO
 ALTER TABLE shib_configuration_prop_aud ALTER COLUMN description TEXT;
 GO
+
+-- changeset liquibase:1.13.3.1 dbms:postgresql
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- comment: /* we don't need to run this if the system is new */
+
+ALTER TABLE description ALTER COLUMN description_value TYPE TEXT;
+GO
+ALTER TABLE description_aud ALTER COLUMN description_value TYPE TEXT;
+GO
+
+-- changeset liquibase:1.13.3.1 dbms:mssql
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- comment: /* we don't need to run this if the system is new */
+
+ALTER TABLE description ALTER COLUMN description_value TEXT;
+GO
+ALTER TABLE description_aud ALTER COLUMN description_value TEXT;
+GO

@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
 import javax.annotation.Nullable;
@@ -18,6 +19,7 @@ public class Description extends AbstractXMLObject implements org.opensaml.saml.
 
     @Column(name = "descriptionValue")
     @Lob
+    @Type(type = "org.hibernate.type.TextType")
     private String value;
 
     @Nullable
