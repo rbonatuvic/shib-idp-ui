@@ -5,7 +5,7 @@ import { SourceBase, SourceEditor, SourceWizard } from './SourceDefinition';
 export const SamlSourceBase = defaultsDeep({
     label: 'SAML Metadata Source',
     type: '@MetadataProvider',
-    schema: `assets/schema/source/metadata-source-saml.json`,
+    schema: `${API_BASE_PATH}/ui/MetadataSources?protocol=SAML`,
     uiSchema: defaultsDeep({
         securityInfo: {
             keyDescriptors: {

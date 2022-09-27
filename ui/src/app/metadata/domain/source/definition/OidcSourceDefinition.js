@@ -5,7 +5,11 @@ import { SourceBase, SourceEditor, SourceWizard } from './SourceDefinition';
 export const OidcSourceBase = defaultsDeep({
     label: 'OIDC Metadata Source',
     type: '@MetadataProvider',
-    schema: `assets/schema/source/metadata-source-oidc.json`,
+    schema: `${API_BASE_PATH}/ui/MetadataSources?protocol=OIDC`,
+}, SourceBase);
+
+export const OidcSourceEditor = defaultsDeep({
+    ...SourceEditor,
     uiSchema: defaultsDeep({
         serviceProviderSsoDescriptor: {
             ...SourceBase.uiSchema.serviceProviderSsoDescriptor,
@@ -70,14 +74,76 @@ export const OidcSourceBase = defaultsDeep({
             }
         }
     }, SourceBase.uiSchema)
-}, SourceBase);
-
-export const OidcSourceEditor = defaultsDeep({
-    ...SourceEditor,
 }, OidcSourceBase);
 
 export const OidcSourceWizard = defaultsDeep({
     ...SourceWizard,
+    uiSchema: defaultsDeep({
+        serviceProviderSsoDescriptor: {
+            ...SourceBase.uiSchema.serviceProviderSsoDescriptor,
+            layout: {
+                groups: [
+                    {
+                        classNames: 'bg-light border rounded px-4 pt-4 mb-4',
+                        size: 6,
+                        fields: [
+                            'protocolSupportEnum',
+                            'nameIdFormats'
+                        ],
+                    },
+                    {
+                        size: 12,
+                        fields: [
+                            'extensions'
+                        ],
+                    }
+                ]
+            },
+            extensions: {
+                OAuthRPExtensions: {
+                    layout: {
+                        groups: [
+                            {
+                                classNames: 'col-md-6 col-xs-12',
+                                fields: [
+                                    'postLogoutRedirectUris',
+                                    'defaultAcrValues',
+                                    'requestUris',
+                                    'audience'
+                                ],
+                            },
+                            {
+                                classNames: 'col-md-6 col-xs-12',
+                                fields: [
+                                    'attributes'
+                                ],
+                            }
+                        ]
+                    },
+                    postLogoutRedirectUris: {
+                        "ui:options": {
+                            orderable: false
+                        },
+                    },
+                    defaultAcrValues: {
+                        "ui:options": {
+                            orderable: false
+                        },
+                    },
+                    requestUris: {
+                        "ui:options": {
+                            orderable: false
+                        },
+                    },
+                    audience: {
+                        "ui:options": {
+                            orderable: false
+                        },
+                    }
+                }
+            }
+        }
+    }, SourceBase.uiSchema)
 }, OidcSourceBase);
 
 

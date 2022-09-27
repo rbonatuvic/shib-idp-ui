@@ -44,7 +44,7 @@
                                 "authenticationRequestsSigned": {
                                     "enum": [true]
                                 },
-                                "x509Certificates": { "minItems": 1 }
+                                "keyDescriptors": { "minItems": 1 }
                             }
                         },
                         {
@@ -52,7 +52,7 @@
                                 "authenticationRequestsSigned": {
                                     "enum": [false]
                                 },
-                                "x509Certificates": { "minItems": 0 }
+                                "keyDescriptors": { "minItems": 0 }
                             }
                         }
                     ]

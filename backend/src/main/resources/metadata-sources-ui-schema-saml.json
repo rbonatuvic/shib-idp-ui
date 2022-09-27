@@ -70,34 +70,23 @@
         }
       },
       "properties": {
-        "x509CertificateAvailable": {
-          "type": "boolean"
-        },
         "authenticationRequestsSigned": {
           "title": "label.authentication-requests-signed",
           "description": "tooltip.authentication-requests-signed",
           "type": "boolean",
-          "enumNames": [
-            "value.true",
-            "value.false"
-          ]
+          "enumNames": ["value.true", "value.false"]
         },
         "wantAssertionsSigned": {
           "title": "label.want-assertions-signed",
           "description": "tooltip.want-assertions-signed",
           "type": "boolean",
-          "enumNames": [
-            "value.true",
-            "value.false"
-          ]
+          "enumNames": ["value.true", "value.false"]
         },
-        "x509Certificates": {
-          "title": "label.x509-certificates",
-          "description": "tooltip.x509-certificates",
+        "keyDescriptors": {
+          "title": "label.key-descriptors",
+          "description": "tooltip.key-descriptors",
           "type": "array",
-          "items": {
-            "$ref": "#/definitions/Certificate"
-          }
+          "items": { "$ref": "#/definitions/Certificate" }
         }
       }
     },
@@ -131,12 +120,6 @@
                 "SAML 1.1"
               ],
               "description": "SAML 1.1"
-            },
-            {
-              "enum": [
-                "http://openid.net/specs/openid-connect-core-1_0.html"
-              ],
-              "description": "OIDC"
             }
           ]
         },
@@ -227,55 +210,43 @@
       }
     },
     "Certificate": {
-      "type": "object",
-      "required": [
-        "type",
-        "value"
-      ],
-      "properties": {
-        "name": {
-          "title": "label.certificate-name-display-only",
-          "description": "tooltip.certificate-name",
-          "type": "string",
-          "maxLength": 255
-        },
-        "type": {
-          "title": "label.certificate-type",
-          "type": "string",
-          "widget": {
-            "id": "radio",
-            "class": "form-check-inline"
-          },
-          "oneOf": [
-            {
-              "enum": [
-                "signing"
-              ],
-              "description": "value.signing"
-            },
-            {
-              "enum": [
-                "encryption"
-              ],
-              "description": "value.encryption"
-            },
-            {
-              "enum": [
-                "both"
-              ],
-              "description": "value.both"
-            }
-          ]
-        },
-        "value": {
-          "title": "label.certificate",
-          "description": "tooltip.certificate",
-          "type": "string",
-          "widget": "textarea",
-          "minLength": 1
-        }
-      }
-    },
+          "type": "object",
+          "required": ["type", "value", "elementType"],
+          "properties": {
+              "name": {
+                  "title": "label.certificate-name-display-only",
+                  "description": "tooltip.certificate-name",
+                  "type": "string",
+                  "maxLength": 255
+              },
+              "elementType": {
+                  "title": "label.element-type",
+                  "description": "tooltip.element-type",
+                  "type": "string",
+                  "default": "X509Data"
+              },
+              "type": {
+                  "title": "label.certificate-type",
+                  "type": "string",
+                  "widget": { "id": "radio", "class": "form-check-inline" },
+                  "oneOf": [
+                      { "enum": ["signing"], "description": "value.signing" },
+                      {
+                          "enum": ["encryption"],
+                          "description": "value.encryption"
+                      },
+                      { "enum": ["both"], "description": "value.both" }
+                  ]
+              },
+              "value": {
+                  "title": "label.certificate",
+                  "description": "tooltip.certificate",
+                  "type": "string",
+                  "widget": "textarea",
+                  "minLength": 1
+              }
+          }
+      },
     "AssertionConsumerService": {
       "type": "object",
       "required": [
