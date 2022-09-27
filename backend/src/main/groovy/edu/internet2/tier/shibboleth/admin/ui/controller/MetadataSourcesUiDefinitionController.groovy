@@ -48,7 +48,7 @@ class MetadataSourcesUiDefinitionController {
 
     @GetMapping
     ResponseEntity<?> getUiDefinitionJsonSchema(@RequestParam(defaultValue = "saml") String protocol) {
-        URL url = protocol.equals("oidc") ? oidcJsonSchemaLocation.url : samlJsonSchemaLocation.url
+        URL url = protocol.equalsIgnoreCase("oidc") ? oidcJsonSchemaLocation.url : samlJsonSchemaLocation.url
         try {
             def parsedJson = jacksonObjectMapper.readValue(url, Map)
             jsonSchemaBuilderService.hideServiceEnabledFromNonAdmins(parsedJson)
