@@ -1,6 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -8,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -50,6 +53,9 @@ public class Group implements Owner {
 
     @Column(name = "validation_regex")
     private String validationRegex;
+
+    @OneToMany
+    private List<Approvers> approvalGroups = new ArrayList<>();
 
     /**
      * Define a Group object based on the user
