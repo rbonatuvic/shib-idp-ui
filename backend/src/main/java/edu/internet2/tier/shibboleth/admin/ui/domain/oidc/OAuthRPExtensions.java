@@ -3,9 +3,9 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.oidc;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractXMLObject;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Audience;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import net.shibboleth.oidc.saml.xmlobject.MetadataValueSAMLObject;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
@@ -14,19 +14,21 @@ import javax.annotation.Nonnull;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper=false)
 @Audited
 public class OAuthRPExtensions extends AbstractXMLObject implements net.shibboleth.oidc.saml.xmlobject.OAuthRPExtensions {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = TYPE_LOCAL_NAME;
+    private static final Collection<String> equalsAndHashExcludeList = Arrays.asList(new String[] {"unknownXMLObjects", "requestUris", "postLogoutRedirectUris", "defaultAcrValues", "audiences", "unknownAttributes"});
 
     // Only support the attributes used by Shib 4.x - https://shibboleth.atlassian.net/wiki/spaces/SC/pages/1912406916/OAuthRPMetadataProfile
     @Transient
@@ -83,7 +85,6 @@ public class OAuthRPExtensions extends AbstractXMLObject implements net.shibbole
     private String tokenEndpointAuthSigningAlg;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @OrderColumn
     List<AbstractXMLObject> unknownXMLObjects = new ArrayList<>();
 
     private String userInfoSignedResponseAlg;
@@ -155,5 +156,26 @@ public class OAuthRPExtensions extends AbstractXMLObject implements net.shibbole
 
     public void addPostLogoutRedirectUri(PostLogoutRedirectUri childSAMLObject) {
         postLogoutRedirectUris.add(childSAMLObject);
+    }
+
+    @Override
+    public int hashCode() {
+        AtomicInteger retVal = new AtomicInteger(HashCodeBuilder.reflectionHashCode(this, equalsAndHashExcludeList));
+        getUnknownXMLObjects().forEach(xmlObject -> retVal.addAndGet(xmlObject.hashCode()));
+        return retVal.get();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        boolean retVal = o instanceof OAuthRPExtensions;
+        if (retVal) {
+            retVal = EqualsBuilder.reflectionEquals(this, o, equalsAndHashExcludeList);
+            if (retVal){
+                List<XMLObject> oChildren = ((OAuthRPExtensions) o).getOrderedChildren();
+                List<XMLObject> thisChildren = getOrderedChildren();
+                retVal = thisChildren.size() == oChildren.size() && thisChildren.containsAll(oChildren);
+            }
+        }
+        return retVal;
     }
 }

@@ -12,8 +12,9 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAd
 import javax.annotation.PostConstruct
 import java.lang.reflect.Type
 
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesOIDCSchema
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSAMLSchema
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator.validatePayloadAgainstSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator.validateMetadataSourcePayloadAgainstSchema
 
 /**
  * Controller advice implementation for validating relying party overrides payload coming from UI layer
@@ -27,7 +28,7 @@ class EntityDescriptorSchemaValidatingControllerAdvice extends RequestBodyAdvice
     @Autowired
     JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry
 
-    JsonSchemaResourceLocation jsonSchemaLocation
+    private HashMap<String, JsonSchemaResourceLocation> schemaLocations = new HashMap<>()
 
     @Override
     boolean supports(MethodParameter methodParameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
@@ -35,15 +36,13 @@ class EntityDescriptorSchemaValidatingControllerAdvice extends RequestBodyAdvice
     }
 
     @Override
-    HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter,
-                                           Type targetType, Class<? extends HttpMessageConverter<?>> converterType)
-            throws IOException {
-
-        return validatePayloadAgainstSchema(inputMessage, this.jsonSchemaLocation.uri)
+    HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) throws IOException {
+        return validateMetadataSourcePayloadAgainstSchema(inputMessage, this.schemaLocations)
     }
 
     @PostConstruct
     void init() {
-        this.jsonSchemaLocation = metadataSourcesSAMLSchema(this.jsonSchemaResourceLocationRegistry)
+        this.schemaLocations.put("SAML", metadataSourcesSAMLSchema(this.jsonSchemaResourceLocationRegistry))
+        this.schemaLocations.put("OIDC", metadataSourcesOIDCSchema(this.jsonSchemaResourceLocationRegistry))
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.JsonSchemaComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import org.springframework.core.io.DefaultResourceLoader
@@ -12,6 +13,9 @@ import org.springframework.mock.http.MockHttpInputMessage
 import spock.lang.Specification
 
 import java.time.LocalDateTime
+
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesOIDCSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSAMLSchema
 
 class AuxiliaryIntegrationTests extends Specification {
     OpenSamlObjects openSamlObjects = new OpenSamlObjects().with {
@@ -45,10 +49,13 @@ class AuxiliaryIntegrationTests extends Specification {
             it
         }
         def json = objectMapper.writeValueAsString(entityDescriptorRepresentation)
-        def schemaUri = JsonSchemaLocationLookup.metadataSourcesSAMLSchema(new JsonSchemaComponentsConfiguration().jsonSchemaResourceLocationRegistry(this.resourceLoader, this.objectMapper)).uri
+        HashMap<String, JsonSchemaResourceLocation> schemaLocations = new HashMap<>()
+        def jsonSchemaResourceLocationRegistry = new JsonSchemaComponentsConfiguration().jsonSchemaResourceLocationRegistry(this.resourceLoader, this.objectMapper)
+        schemaLocations.put("SAML", metadataSourcesSAMLSchema(jsonSchemaResourceLocationRegistry))
+        schemaLocations.put("OIDC", metadataSourcesOIDCSchema(jsonSchemaResourceLocationRegistry))
 
         when:
-        LowLevelJsonSchemaValidator.validatePayloadAgainstSchema(new MockHttpInputMessage(json.bytes), schemaUri)
+        LowLevelJsonSchemaValidator.validateMetadataSourcePayloadAgainstSchema(new MockHttpInputMessage(json.bytes), schemaLocations)
 
         then:
         noExceptionThrown()
