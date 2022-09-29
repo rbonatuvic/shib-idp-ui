@@ -85,7 +85,7 @@ class GroupServiceTests extends AbstractBaseDataJpaTest {
     def "CRUD operations - approver groups" () {
         given:
         groupService.clearAllForTesting();
-        HashSet<Group> apprGroups = new HashSet<>()
+        List<Group> apprGroups = new ArrayList<>()
         String[] groupNames = ['AAA', 'BBB', 'CCC', 'DDD']
         groupNames.each {name -> {
             Group group = new Group().with({
@@ -94,24 +94,38 @@ class GroupServiceTests extends AbstractBaseDataJpaTest {
                 it.resourceId = name
                 it
             })
-            group = groupRepository.saveAndFlush(group)
+            group = groupRepository.save(group)
+        }}
+        entityManager.flush()
+        entityManager.clear()
+
+        groupNames.each {name ->{
             if (!name.equals('AAA')) {
-                apprGroups.add(group)
+                apprGroups.add(groupRepository.findByResourceId(name))
             }
         }}
 
         when: "Adding approval list to a group"
         Approvers approvers = new Approvers()
         approvers.setApproverGroups(apprGroups)
+        approvers = approversRepository.save(approvers)
+        entityManager.flush()
+        entityManager.clear()
+
         List<Approvers> apprList = new ArrayList<>()
         apprList.add(approvers)
         Group aaaGroup = groupService.find('AAA')
-        aaaGroup.setApprovalGroups(apprList)
+        aaaGroup.setApproversList(apprList)
         groupService.updateGroup(aaaGroup)
         Group lookupGroup = groupService.find('AAA')
 
         then:
-        lookupGroup.getApprovalGroups().size() == 1
+        lookupGroup.getApproversList().size() == 1
+        List<Group> approvalGroups = lookupGroup.getApproversList().get(0).getApproverGroups()
+        approvalGroups.size() == 3
+        apprGroups.each {group -> {
+            assert approvalGroups.contains(group)}
+        }
     }
 
 }

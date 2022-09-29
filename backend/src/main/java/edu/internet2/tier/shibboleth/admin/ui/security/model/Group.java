@@ -55,7 +55,7 @@ public class Group implements Owner {
     private String validationRegex;
 
     @OneToMany
-    private List<Approvers> approvalGroups = new ArrayList<>();
+    private List<Approvers> approversList = new ArrayList<>();
 
     /**
      * Define a Group object based on the user
@@ -85,5 +85,15 @@ public class Group implements Owner {
             lazyLoaderHelper.loadOwnedItems(this);
         }
         return ownedItems;
+    }
+
+    @Override
+    public int hashCode() {
+        return resourceId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Group && this.resourceId.equals(((Group)o).resourceId);
     }
 }

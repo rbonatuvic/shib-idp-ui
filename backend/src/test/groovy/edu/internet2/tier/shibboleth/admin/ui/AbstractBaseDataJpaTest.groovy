@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.ApproversRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
@@ -33,6 +34,9 @@ import javax.persistence.EntityManager
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 abstract class AbstractBaseDataJpaTest extends Specification implements ResetsDatabaseTrait {
+    @Autowired
+    ApproversRepository approversRepository
+
     @Autowired
     EntityManager entityManager
 
