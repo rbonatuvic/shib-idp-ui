@@ -26,7 +26,7 @@ export function MetadataSourceProtocolSelector({ types = [], loading, children})
         reValidateMode: 'onChange',
         defaultValues: {
             serviceProviderName: null,
-            protocol: null,
+            protocol: 'SAML',
             entityID: null,
         },
         resolver: undefined,

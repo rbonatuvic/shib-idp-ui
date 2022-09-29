@@ -94,13 +94,15 @@ const SelectWidget = ({
                 </span>
                 {schema.description && <InfoIcon value={schema.description} className="ms-2" />}
             </Form.Label>
+            {readonly ?
+                <Form.Control readOnly={readonly} value={value} />
+            :
             <Form.Select
                 id={id}
                 value={typeof value === "undefined" ? emptyValue : value}
                 required={required}
                 multiple={multiple}
                 disabled={disabled}
-                readOnly={readonly}
                 autoFocus={autofocus}
                 className={touched && rawErrors?.length > 0 ? "is-invalid" : ""}
                 onBlur={
@@ -134,6 +136,7 @@ const SelectWidget = ({
                 </option>
                 )}
             </Form.Select>
+            }
             {rawErrors?.length > 0 && touched && (
                 <ListGroup as="ul">
                     {rawErrors.map((error, i) => {

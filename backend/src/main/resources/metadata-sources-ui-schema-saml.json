@@ -5,6 +5,11 @@
     "entityId"
   ],
   "properties": {
+    "protocol": {
+      "title": "label.source-protocol",
+      "description": "tooltip.source-protocol",
+      "type": "string"
+    },
     "serviceProviderName": {
       "title": "label.service-provider-name",
       "description": "tooltip.service-provider-name",
@@ -110,15 +115,11 @@
           },
           "oneOf": [
             {
-              "enum": [
-                "SAML 2"
-              ],
+              "enum": ["SAML 2"],
               "description": "SAML 2"
             },
             {
-              "enum": [
-                "SAML 1.1"
-              ],
+              "enum": ["SAML 1.1"],
               "description": "SAML 1.1"
             }
           ]

@@ -5,6 +5,11 @@
     "entityId"
   ],
   "properties": {
+    "protocol": {
+      "title": "label.source-protocol",
+      "description": "tooltip.source-protocol",
+      "type": "string"
+    },
     "serviceProviderName": {
       "title": "label.service-provider-name",
       "description": "tooltip.service-provider-name",
@@ -111,20 +116,7 @@
           "widget": {
             "id": "select"
           },
-          "oneOf": [
-            {
-              "enum": ["SAML 2"],
-              "description": "SAML 2"
-            },
-            {
-              "enum": ["SAML 1.1"],
-              "description": "SAML 1.1"
-            },
-            {
-              "enum": ["http://openid.net/specs/openid-connect-core-1_0.html"],
-              "description": "OIDC"
-            }
-          ]
+          "default": "http://openid.net/specs/openid-connect-core-1_0.html"
         },
         "nameIdFormats": {
           "$ref": "#/definitions/nameIdFormats"

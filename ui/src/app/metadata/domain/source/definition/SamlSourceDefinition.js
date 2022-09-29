@@ -1,5 +1,5 @@
 import defaultsDeep from 'lodash/defaultsDeep';
-import API_BASE_PATH from '../../../../App.constant';
+import {API_BASE_PATH} from '../../../../App.constant';
 import { SourceBase, SourceEditor, SourceWizard } from './SourceDefinition';
 
 export const SamlSourceBase = defaultsDeep({
@@ -18,8 +18,6 @@ export const SamlSourceBase = defaultsDeep({
         }
     }, SourceBase.uiSchema)
 }, SourceBase);
-
-console.log(SamlSourceBase);
 
 export const SamlSourceEditor = defaultsDeep({
     ...SourceEditor,

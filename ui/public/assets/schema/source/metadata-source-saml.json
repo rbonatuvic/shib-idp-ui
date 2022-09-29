@@ -34,23 +34,9 @@
             "items": { "$ref": "#/definitions/Contact" }
         },
         "mdui": { "$ref": "#/definitions/MDUI" },
-        "dependencies": {
-            "securityInfo": {
-                "oneOf": [
-                    {
-                        "properties": {
-                            "@type": {
-                                "enum": [
-                                    "OIDC"
-                                ]
-                            }
-                        }
-                    }
-                ]
-            }
-        },
         "securityInfo": {
             "type": "object",
+            "widget": { "id": "fieldset" },
             "dependencies": {
                 "authenticationRequestsSigned": {
                     "oneOf": [
@@ -59,7 +45,7 @@
                                 "authenticationRequestsSigned": {
                                     "enum": [true]
                                 },
-                                "keyDescriptors": { "minItems": 1 }
+                                "x509Certificates": { "minItems": 1 }
                             }
                         },
                         {
@@ -67,7 +53,7 @@
                                 "authenticationRequestsSigned": {
                                     "enum": [false]
                                 },
-                                "keyDescriptors": { "minItems": 0 }
+                                "x509Certificates": { "minItems": 0 }
                             }
                         }
                     ]
@@ -265,7 +251,7 @@
         },
         "Certificate": {
             "type": "object",
-            "required": ["type", "value"],
+            "required": ["type", "value", "elementType"],
             "properties": {
                 "name": {
                     "title": "label.certificate-name-display-only",
@@ -354,6 +340,12 @@
                                 "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"
                             ],
                             "description": "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"
+                        },
+                        {
+                            "enum": [
+                                "https://tools.ietf.org/html/rfc6749#section-3.1.2"
+                            ],
+                            "description": "OIDC / OAUTH Binding"
                         }
                     ]
                 },
@@ -487,28 +479,25 @@
                     "title": "label.organization-name",
                     "description": "tooltip.organization-name",
                     "type": "string",
-                    "minLength": 1,
                     "maxLength": 255
                 },
                 "displayName": {
                     "title": "label.organization-display-name",
                     "description": "tooltip.organization-display-name",
                     "type": "string",
-                    "minLength": 1,
                     "maxLength": 255
                 },
                 "url": {
                     "title": "label.organization-url",
                     "description": "tooltip.organization-url",
                     "type": "string",
-                    "minLength": 1,
                     "maxLength": 255
                 }
             },
             "dependencies": {
-                "name": { "required": ["displayName", "url"] },
-                "displayName": { "required": ["name", "url"] },
-                "url": { "required": ["name", "displayName"] }
+                "url": ["name", "displayName"],
+                "name": ["displayName", "url"],
+                "displayName": ["name", "url"]
             }
         },
         "nameIdFormats": {

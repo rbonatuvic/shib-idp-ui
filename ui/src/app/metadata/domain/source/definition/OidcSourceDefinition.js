@@ -31,11 +31,21 @@ export const OidcSourceEditor = defaultsDeep({
                     }
                 ]
             },
+            protocolSupportEnum: {
+                "ui:readonly": true
+            },
             extensions: {
                 OAuthRPExtensions: {
                     layout: {
                         groups: [
                             {
+                                classNames: 'col-md-6 col-xs-12',
+                                fields: [
+                                    'attributes'
+                                ],
+                            },
+                            {
+                                classNames: 'border-start col-md-6 col-xs-12',
                                 fields: [
                                     'postLogoutRedirectUris',
                                     'defaultAcrValues',
@@ -43,11 +53,6 @@ export const OidcSourceEditor = defaultsDeep({
                                     'audience'
                                 ],
                             },
-                            {
-                                fields: [
-                                    'attributes'
-                                ],
-                            }
                         ]
                     },
                     postLogoutRedirectUris: {
@@ -99,6 +104,9 @@ export const OidcSourceWizard = defaultsDeep({
                     }
                 ]
             },
+            protocolSupportEnum: {
+                "ui:readonly": true
+            },
             extensions: {
                 OAuthRPExtensions: {
                     layout: {
@@ -106,18 +114,18 @@ export const OidcSourceWizard = defaultsDeep({
                             {
                                 classNames: 'col-md-6 col-xs-12',
                                 fields: [
+                                    'attributes'
+                                ],
+                            },
+                            {
+                                classNames: 'border-start col-md-6 col-xs-12',
+                                fields: [
                                     'postLogoutRedirectUris',
                                     'defaultAcrValues',
                                     'requestUris',
                                     'audience'
                                 ],
                             },
-                            {
-                                classNames: 'col-md-6 col-xs-12',
-                                fields: [
-                                    'attributes'
-                                ],
-                            }
                         ]
                     },
                     postLogoutRedirectUris: {
