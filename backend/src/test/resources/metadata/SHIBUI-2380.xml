@@ -33,6 +33,7 @@
         </md:Extensions>
         <md:KeyDescriptor use="signing">
             <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:KeyName>test1</ds:KeyName>
                 <ds:X509Data>
                     <ds:X509Certificate>
                         MIIEQDCCAqigAwIBAgIVAIarXvdvyS47KJR7U40FlTufyD8vMA0GCSqGSIb3DQEB
@@ -42,6 +43,7 @@
         </md:KeyDescriptor>
         <md:KeyDescriptor use="signing">
             <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:KeyName>test2</ds:KeyName>
                 <ds:X509Data>
                     <ds:X509Certificate>
                         MIIBKDCBzgIJAOYlspXlaqguMAoGCCqGSM49BAMCMBwxCzAJBgNVBAYTAkZJMQ0w

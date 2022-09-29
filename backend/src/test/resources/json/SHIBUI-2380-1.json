@@ -19,21 +19,25 @@
     "wantAssertionsSigned": false,
     "keyDescriptors": [
       {
+        "name": "test1",
         "value": "MIIEQDCCAqigAwIBAgIVAIarXvdvyS47KJR7U40FlTufyD8vMA0GCSqGSIb3DQEB",
         "type": "signing",
         "elementType": "X509Data"
       },
       {
+        "name": "test2",
         "value": "MIIBKDCBzgIJAOYlspXlaqguMAoGCCqGSM49BAMCMBwxCzAJBgNVBAYTAkZJMQ0w",
         "type": "signing",
         "elementType": "X509Data"
       },
       {
+        "name": "mockJwksData",
         "value": "ewogICJrdHkiOiAiUlNBIiwKICAiZSI6ICJBUUFCIiwKICAia2lkIjogIm1vY2siLAogICJhbGci",
         "type": "signing",
         "elementType": "jwksData"
       },
       {
+        "name": "mockClientSecret",
         "value": "mockClientSecretValue",
         "type": "both",
         "elementType": "clientSecret"

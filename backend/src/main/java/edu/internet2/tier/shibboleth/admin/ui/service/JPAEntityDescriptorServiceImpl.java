@@ -5,6 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributes;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
+import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.X509Data;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
@@ -501,6 +502,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             for (org.opensaml.saml.saml2.metadata.KeyDescriptor keyDescriptor : ed.getSPSSODescriptor("").getKeyDescriptors()) {
                 KeyDescriptorRepresentation keyDescriptorRep = new KeyDescriptorRepresentation();
                 String name = keyDescriptor.getKeyInfo().getKeyNames().size() > 0 ? keyDescriptor.getKeyInfo().getKeyNames().get(0).getValue() : null;
+                name = name == null ? ((KeyDescriptor)keyDescriptor).getName() : name;
                 keyDescriptorRep.setName(name);
 
                 //TODO: check this. assume that if no value is set, it's used for both
