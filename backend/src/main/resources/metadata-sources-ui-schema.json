@@ -1,10 +1,24 @@
 {
     "type": "object",
     "required": [
+        "protocol",
         "serviceProviderName",
         "entityId"
     ],
     "properties": {
+        "protocol": {
+            "title": "label.metadata-source-protocol",
+            "description": "tooltip.metadata-source-protocol",
+            "type": "string",
+            "enum": [
+                "OIDC",
+                "SAML"
+            ],
+            "enumNames": [
+                "value.oidc",
+                "value.saml"
+            ]
+        },
         "serviceProviderName": {
             "title": "label.service-provider-name",
             "description": "tooltip.service-provider-name",
@@ -40,9 +54,6 @@
         },
         "securityInfo": {
             "type": "object",
-            "widget": {
-                "id": "fieldset"
-            },
             "dependencies": {
                 "authenticationRequestsSigned": {
                     "oneOf": [
@@ -131,6 +142,12 @@
                                 "SAML 1.1"
                             ],
                             "description": "SAML 1.1"
+                        },
+                        {
+                            "enum": [
+                                "http://openid.net/specs/openid-connect-core-1_0.html"
+                            ],
+                            "description": "OIDC"
                         }
                     ]
                 },
@@ -329,6 +346,12 @@
                                 "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"
                             ],
                             "description": "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"
+                        },
+                        {
+                            "enum": [
+                                "https://tools.ietf.org/html/rfc6749#section-3.1.2"
+                            ],
+                            "description": "OIDC / OAUTH Binding"
                         }
                     ]
                 },
