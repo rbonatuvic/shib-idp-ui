@@ -7,17 +7,17 @@
     ],
     "properties": {
         "protocol": {
-          "title": "label.metadata-source-protocol",
-          "description": "tooltip.metadata-source-protocol",
-          "type": "string",
-          "enum": [
-            "OIDC",
-            "SAML"
-          ],
-          "enumNames": [
-            "value.oidc",
-            "value.saml"
-          ]
+            "title": "label.metadata-source-protocol",
+            "description": "tooltip.metadata-source-protocol",
+            "type": "string",
+            "enum": [
+                "OIDC",
+                "SAML"
+            ],
+            "enumNames": [
+                "value.oidc",
+                "value.saml"
+            ]
         },
         "serviceProviderName": {
             "title": "label.service-provider-name",

@@ -3,12 +3,14 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.internet2.tier.shibboleth.admin.util.EmptyStringToNullConverter;
 import lombok.Data;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import java.util.UUID;
 
 @Entity(name = "shib_configuration_prop")
@@ -29,8 +31,9 @@ public class ShibConfigurationProperty {
     @Convert(converter = EmptyStringToNullConverter.class)
     String defaultValue;
 
-    @Column(name = "description")
-    @Convert(converter = EmptyStringToNullConverter.class)
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Convert(converter = EmptyStringToNullConverter.class, disableConversion = true)
     String description;
 
     @Column(name = "idp_version", nullable = false)
