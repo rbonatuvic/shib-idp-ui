@@ -8,7 +8,7 @@ import Translate from '../../i18n/components/translate';
 import { InfoIcon } from '../../form/component/InfoIcon';
 import { useTranslator } from '../../i18n/hooks';
 import { useMetadataSources } from '../hooks/api';
-import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/Button';
 
 export function MetadataSourceProtocolSelector({ types = [], loading, children}) {
 

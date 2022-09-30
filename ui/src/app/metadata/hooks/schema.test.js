@@ -15,6 +15,8 @@ jest.mock('../../App.constant', () => ({
     }
 }));
 
+jest.mock('../../metadata/hoc/MetadataSchema');
+
 describe('useUiSchema', () => {
     let realUseMemo;
     let useMemoMock;

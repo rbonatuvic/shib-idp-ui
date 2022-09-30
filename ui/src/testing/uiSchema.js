@@ -9,6 +9,7 @@ const schema = {
             {
                 "size": 6,
                 "fields": [
+                    "protocol",
                     "serviceProviderName",
                     "entityId",
                     "organization"
@@ -27,7 +28,7 @@ const schema = {
                 ]
             },
             {
-                "size": 6,
+                "size": 12,
                 "fields": [
                     "serviceProviderSsoDescriptor"
                 ]
@@ -135,7 +136,7 @@ const schema = {
                     "fields": [
                         "authenticationRequestsSigned",
                         "wantAssertionsSigned",
-                        "x509Certificates"
+                        "keyDescriptors"
                     ]
                 }
             ]
@@ -152,11 +153,17 @@ const schema = {
                 "inline": true
             }
         },
-        "x509Certificates": {
+        "keyDescriptors": {
             "type": "certificate",
             "ui:options": {
                 "orderable": false
             },
+            "ui:order": [
+                "name",
+                "elementType",
+                "type",
+                "value",
+            ],
             "items": {
                 "type": {
                     "ui:widget": "radio",
@@ -208,6 +215,9 @@ const schema = {
     "serviceProviderName": {},
     "entityId": {},
     "organization": {},
+    "protocol": {
+        "ui:readonly": true,
+    },
     "ui:disabled": false
 };
 
