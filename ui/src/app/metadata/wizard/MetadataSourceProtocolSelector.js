@@ -94,14 +94,14 @@ export function MetadataSourceProtocolSelector({ types = [], loading, children})
                                 <Form.Group className="mb-3">
                                     <Form.Label>
                                         <span>
-                                            <Translate value={'label.metadata-source-protocol'} />
+                                            <Translate value={'label.source-protocol'} />
                                             <FontAwesomeIcon icon={faAsterisk} className="ms-2 text-danger" size="sm" />
                                             {loading && <FontAwesomeIcon icon={faSpinner} size="lg" spin={true} pulse={true} className="ms-2" /> }
                                         </span>
-                                        <InfoIcon value="tooltip.metadata-source-protocol" />
+                                        <InfoIcon value="tooltip.source-protocol" />
                                     </Form.Label>
                                     <Form.Select disabled={loading} defaultValue={''} placeholder={translator(`label.select-source-protocol`)} {...register('protocol', {required: true})}>
-                                        <option disabled value="">{translator(`label.select-metadata-source-protocol`)}</option>
+                                        <option disabled value="">{translator(`label.select-source-protocol`)}</option>
                                         {types.map(t => <option key={t.value} value={t.value}><Translate value={t.label} /></option>)}
                                     </Form.Select>
                                 </Form.Group>
@@ -111,7 +111,7 @@ export function MetadataSourceProtocolSelector({ types = [], loading, children})
                                             <Translate value={'label.metadata-source-name-dashboard-display-only'} />
                                             <FontAwesomeIcon icon={faAsterisk} className="ms-2 text-danger" size="sm" /> 
                                         </span>
-                                        <InfoIcon value="tooltip.metadata-source-name" />
+                                        <InfoIcon value="tooltip.service-provider-name-dashboard-display-only" />
                                     </Form.Label>
                                     <Form.Control
                                         isInvalid={errors.serviceProviderName}

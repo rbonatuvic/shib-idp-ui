@@ -11,6 +11,9 @@ export const OidcSourceBase = defaultsDeep({
 export const OidcSourceEditor = defaultsDeep({
     ...SourceEditor,
     uiSchema: defaultsDeep({
+        protocol: {
+            'ui:readonly': true
+        },
         serviceProviderSsoDescriptor: {
             ...SourceBase.uiSchema.serviceProviderSsoDescriptor,
             layout: {
