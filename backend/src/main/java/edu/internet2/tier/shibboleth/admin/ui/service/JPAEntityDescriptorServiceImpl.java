@@ -543,7 +543,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         case "ClientSecret":
             return KeyDescriptorRepresentation.ElementType.clientSecret;
         case "ClientSecretKeyReference":
-            return KeyDescriptorRepresentation.ElementType.clientSecretKeyReference;
+            return KeyDescriptorRepresentation.ElementType.clientSecretRef;
         case "JwksData":
             return KeyDescriptorRepresentation.ElementType.jwksData;
         case "JwksUri":

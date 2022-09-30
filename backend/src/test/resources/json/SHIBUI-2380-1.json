@@ -41,6 +41,12 @@
         "value": "mockClientSecretValue",
         "type": "both",
         "elementType": "clientSecret"
+      },
+      {
+        "value": "mockClientSecretValue",
+        "name": "mockClientSecretKeyReference",
+        "type": "both",
+        "elementType": "clientSecretRef"
       }
     ]
   },
