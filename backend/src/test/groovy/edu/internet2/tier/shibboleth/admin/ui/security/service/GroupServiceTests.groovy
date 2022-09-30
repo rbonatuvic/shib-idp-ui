@@ -84,7 +84,7 @@ class GroupServiceTests extends AbstractBaseDataJpaTest {
 
     def "CRUD operations - approver groups" () {
         given:
-        groupService.clearAllForTesting();
+        groupService.clearAllForTesting()
         List<Group> apprGroups = new ArrayList<>()
         String[] groupNames = ['AAA', 'BBB', 'CCC', 'DDD']
         groupNames.each {name -> {
@@ -94,38 +94,62 @@ class GroupServiceTests extends AbstractBaseDataJpaTest {
                 it.resourceId = name
                 it
             })
-            group = groupRepository.save(group)
+            groupRepository.save(group)
         }}
         entityManager.flush()
         entityManager.clear()
 
+        when: "Adding approval list to a group"
         groupNames.each {name ->{
             if (!name.equals('AAA')) {
                 apprGroups.add(groupRepository.findByResourceId(name))
             }
         }}
-
-        when: "Adding approval list to a group"
         Approvers approvers = new Approvers()
         approvers.setApproverGroups(apprGroups)
-        approvers = approversRepository.save(approvers)
-        entityManager.flush()
-        entityManager.clear()
-
-        List<Approvers> apprList = new ArrayList<>()
+        def apprList = new ArrayList<>()
         apprList.add(approvers)
         Group aaaGroup = groupService.find('AAA')
         aaaGroup.setApproversList(apprList)
         groupService.updateGroup(aaaGroup)
-        Group lookupGroup = groupService.find('AAA')
 
         then:
+        def lookupGroup = groupService.find('AAA')
         lookupGroup.getApproversList().size() == 1
-        List<Group> approvalGroups = lookupGroup.getApproversList().get(0).getApproverGroups()
+        def approvalGroups = lookupGroup.getApproversList().get(0).getApproverGroups()
         approvalGroups.size() == 3
         apprGroups.each {group -> {
             assert approvalGroups.contains(group)}
         }
+
+        when: "removing approver group from existing list"
+        approvers.getApproverGroups().remove(groupService.find('BBB'))
+        apprList = new ArrayList<>()
+        apprList.add(approvers)
+        aaaGroup.setApproversList(apprList)
+        groupService.updateGroup(aaaGroup)
+
+        then:
+        def lookupGroup2 = groupService.find('AAA')
+        lookupGroup2.getApproversList().size() == 1
+        def approvalGroups2 = lookupGroup2.getApproversList().get(0).getApproverGroups()
+        approvalGroups2.size() == 2
+        apprGroups.each { group ->
+            {
+                if (group.getResourceId() != 'BBB') {
+                    assert approvalGroups2.contains(group)
+                }
+            }
+        }
+
+        when: "removing all approver groups"
+        apprList = new ArrayList<>()
+        aaaGroup.setApproversList(apprList)
+        groupService.updateGroup(aaaGroup)
+
+        then:
+        def lookupGroup3 = groupService.find('AAA')
+        lookupGroup3.getApproversList().isEmpty() == true
     }
 
 }

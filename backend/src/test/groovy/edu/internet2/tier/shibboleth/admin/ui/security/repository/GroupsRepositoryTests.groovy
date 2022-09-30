@@ -176,11 +176,11 @@ class GroupsRepositoryTests extends AbstractBaseDataJpaTest {
         def groupFromDb = gList.get(0) as Group
         groupFromDb == group
              
-        // update check
+        // update check - equality for groups should be by id
         groupFromDb.with {
             it.description = "some new text that wasn't there before"
         }
-        groupFromDb.equals(group) == false
+        groupFromDb.equals(group) == true
         
         when:
         groupsRepo.save(groupFromDb)
@@ -189,7 +189,7 @@ class GroupsRepositoryTests extends AbstractBaseDataJpaTest {
         def gList2 = groupsRepo.findAll()
         gList2.size() == 1
         def groupFromDb2 = gList2.get(0) as Group
-        groupFromDb2.equals(group) == false
+        groupFromDb2.equals(group) == true
         groupFromDb2 == groupFromDb
         
         // delete tests

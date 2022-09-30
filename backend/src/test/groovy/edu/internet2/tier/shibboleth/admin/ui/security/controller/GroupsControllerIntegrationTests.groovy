@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Approvers
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
@@ -47,36 +48,65 @@ class GroupsControllerIntegrationTests extends AbstractBaseDataJpaTest {
     @WithMockAdmin
     def 'POST new group persists properly'() {
         given:
-        def newGroup = [name: 'Foo',
-                        description: 'Bar',
-                        resourceId: 'FooBar']
+        def newGroup = [name: 'Foo', description: 'Bar', resourceId: 'FooBar']
 
-        def expectedJson = """
-  {
-    "name":"Foo",
-    "description":"Bar",
-    "resourceId":"FooBar"
-  }
-"""
         when:
-        def result = mockMvc.perform(post(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON)
-                            .content(JsonOutput.toJson(newGroup)).accept(MediaType.APPLICATION_JSON))
+        def result = mockMvc.perform(post(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON).content(JsonOutput.toJson(newGroup)).accept(MediaType.APPLICATION_JSON))
 
         then:
         result.andExpect(status().isCreated())
-              .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(content().json(expectedJson, false))
-           
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("\$.name").value("Foo"))
+            .andExpect(jsonPath("\$.resourceId").value("FooBar"))
+            .andExpect(jsonPath("\$.description").value("Bar"))
 
-       //'Try to create with an existing resource id'
+        //'Try to create with an existing resource id'
         try {
             mockMvc.perform(post(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON)
                                               .content(JsonOutput.toJson(newGroup))
                                               .accept(MediaType.APPLICATION_JSON))
-            false
+            false // failure if the call didn't throw
         } catch (Throwable expected) {
             expected instanceof GroupExistsConflictException
         }
+
+        when: "POST new group with approvers"
+        groupService.clearAllForTesting()
+        List<Group> apprGroups = new ArrayList<>()
+        String[] groupNames = ['AAA', 'BBB', 'CCC', 'DDD']
+        groupNames.each {name -> {
+            Group group = new Group().with({
+                it.name = name
+                it.description = name
+                it.resourceId = name
+                it
+            })
+            groupRepository.save(group)
+        }}
+        entityManager.flush()
+        entityManager.clear()
+
+        groupNames.each {name ->{
+            if (!name.equals('AAA')) {
+                apprGroups.add(groupRepository.findByResourceId(name))
+            }
+        }}
+        Approvers approvers = new Approvers()
+        approvers.setApproverGroups(apprGroups)
+        def apprList = new ArrayList<>()
+        apprList.add(approvers)
+        def newGroup2 = [name: 'Foo', description: 'Bar', resourceId: 'FooBar', approversList: apprList]
+        def result2 = mockMvc.perform(post(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON).content(JsonOutput.toJson(newGroup2)).accept(MediaType.APPLICATION_JSON))
+
+        then:
+        result2.andExpect(status().isCreated())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("\$.name").value("Foo"))
+            .andExpect(jsonPath("\$.resourceId").value("FooBar"))
+            .andExpect(jsonPath("\$.description").value("Bar"))
+            .andExpect(jsonPath("\$.approversList[0].approverGroups[0].resourceId").value("BBB"))
+            .andExpect(jsonPath("\$.approversList[0].approverGroups[1].resourceId").value("CCC"))
+            .andExpect(jsonPath("\$.approversList[0].approverGroups[2].resourceId").value("DDD"))
     }
 
     @WithMockAdmin
