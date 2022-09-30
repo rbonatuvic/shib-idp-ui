@@ -1,5 +1,4 @@
 import { SourceBase } from './SourceDefinition';
-jest.mock('../../metadata/hoc/MetadataSchema');
 
 jest.mock('../../../../App.constant', () => ({
     get API_BASE_PATH() {

@@ -9,7 +9,7 @@ import { Translate } from '../../i18n/components/translate';
 import { EntityTypeahead } from './EntityTypeahead';
 import kebabCase from 'lodash/kebabCase';
 import { useMetadataSources } from '../hooks/api';
-import { useMetadataSourceSections } from '../domain/source/definition/SourceDefinition';
+import { useMetadataSourceSections } from '../domain/source/definition/sections';
 
 export function CopySource({ copy, onNext }) {
 
