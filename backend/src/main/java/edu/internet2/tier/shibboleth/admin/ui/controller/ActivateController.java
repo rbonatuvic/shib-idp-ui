@@ -39,8 +39,7 @@ public class ActivateController {
     
     @PatchMapping(path = "/entityDescriptor/{resourceId}/{mode}")
     @Transactional
-    public ResponseEntity<?> enableEntityDescriptor(@PathVariable String resourceId, @PathVariable String mode) throws
-                    PersistentEntityNotFound, ForbiddenException {
+    public ResponseEntity<?> enableEntityDescriptor(@PathVariable String resourceId, @PathVariable String mode) throws PersistentEntityNotFound, ForbiddenException {
         boolean status = "enable".equalsIgnoreCase(mode);
         EntityDescriptorRepresentation edr = entityDescriptorService.updateEntityDescriptorEnabledStatus(resourceId, status);
         return ResponseEntity.ok(edr);

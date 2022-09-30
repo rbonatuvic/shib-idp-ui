@@ -465,8 +465,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public EntityDescriptorRepresentation updateEntityDescriptorEnabledStatus(String resourceId, boolean status) throws
-                    PersistentEntityNotFound, ForbiddenException {
+    public EntityDescriptorRepresentation updateEntityDescriptorEnabledStatus(String resourceId, boolean status) throws PersistentEntityNotFound, ForbiddenException {
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
         if (ed == null) {
             throw new PersistentEntityNotFound("Entity with resourceid[" + resourceId + "] was not found for update");

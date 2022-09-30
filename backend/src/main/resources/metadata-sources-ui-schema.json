@@ -5,6 +5,11 @@
         "entityId"
     ],
     "properties": {
+        "approved": {
+            "title": "label.approved",
+            "description": "tooltip.approved",
+            "type": "boolean"
+        },
         "serviceProviderName": {
             "title": "label.service-provider-name",
             "description": "tooltip.service-provider-name",
