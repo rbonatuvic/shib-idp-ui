@@ -16,6 +16,6 @@ public class KeyDescriptorRepresentation implements Serializable {
     private ElementType elementType;
 
     public enum ElementType {
-        jwksData, jwksUri, clientSecret, clientSecretKeyReference, X509Data, unsupported
+        jwksData, jwksUri, clientSecret, clientSecretRef, X509Data, unsupported
     }
 }

@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AssertionConsumerService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Audience;
@@ -51,12 +50,10 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.PostLogoutRedirectUri;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.PostLogoutRedirectUriBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.RequestUri;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.RequestUriBuilder;
-import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLObject;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService;
 import lombok.NonNull;
 import lombok.Setter;
-import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.X509Certificate;
 import org.opensaml.xmlsec.signature.X509Data;
@@ -66,7 +63,6 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -120,7 +116,7 @@ public class EntityDescriptorConversionUtils {
             xmlObject.setValue(value);
             keyInfo.getXMLObjects().add(xmlObject);
             break;
-        case clientSecretKeyReference:
+        case clientSecretRef:
             xmlObject = openSamlObjects.buildDefaultInstanceOfType(ClientSecretKeyReference.class);
             xmlObject.setValue(value);
             keyInfo.getXMLObjects().add(xmlObject);
