@@ -47,6 +47,8 @@ export function CopySource({ copy, onNext }) {
 
     const target = watch('target');
 
+    const form = watch();
+
     const { errors, isValid } = formState;
 
     React.useEffect(() => {
@@ -56,6 +58,8 @@ export function CopySource({ copy, onNext }) {
     const sourceIds = data.map(p => p.entityId);
 
     const sections = useMetadataSourceSections();
+
+    React.useEffect(() => console.log(form), [form]);
 
     return (
         <>

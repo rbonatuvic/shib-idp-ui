@@ -47,7 +47,7 @@ export function MetadataCopy ({ onShowNav }) {
     return (
         <React.Fragment>
             {!confirm && 
-            <CopySource copy={copy} onNext={next} />
+                <CopySource copy={copy} onNext={next} />
             }
             {confirm && copy &&
                 <SaveCopy copy={copy} onBack={back} onSave={save} saving={loading} />
