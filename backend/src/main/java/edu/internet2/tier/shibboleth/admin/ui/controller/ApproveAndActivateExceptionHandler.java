@@ -16,8 +16,8 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InitializationException;
 
-@ControllerAdvice(assignableTypes = {ActivateController.class})
-public class ActivateExceptionHandler extends ResponseEntityExceptionHandler {
+@ControllerAdvice(assignableTypes = {ActivateController.class, ApprovalController.class})
+public class ApproveAndActivateExceptionHandler extends ResponseEntityExceptionHandler {
     
     @ExceptionHandler({ PersistentEntityNotFound.class })
     public ResponseEntity<?> handleEntityNotFoundException(PersistentEntityNotFound e, WebRequest request) {

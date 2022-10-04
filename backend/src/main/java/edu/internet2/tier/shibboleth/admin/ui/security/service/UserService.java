@@ -53,6 +53,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public boolean currentUserCanApprove(List<Group> approverGroups) {
+        if (currentUserIsAdmin()) {
+            return true;
+        }
+        Group currentUserGroup = getCurrentUserGroup();
+        return approverGroups.contains(currentUserGroup);
+    }
+
     public boolean currentUserCanEnable(IActivatable activatableObject) {
         if (currentUserIsAdmin()) { return true; }
         switch (activatableObject.getActivatableType()) {

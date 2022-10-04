@@ -66,8 +66,7 @@ public class EntityDescriptorController {
 
     @PostMapping("/EntityDescriptor")
     @Transactional
-    public ResponseEntity<?> create(@RequestBody EntityDescriptorRepresentation edRepresentation)
-                    throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
+    public ResponseEntity<?> create(@RequestBody EntityDescriptorRepresentation edRepresentation) throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
         EntityDescriptorRepresentation persistedEd = entityDescriptorService.createNew(edRepresentation);            
         return ResponseEntity.created(getResourceUriFor(persistedEd.getId())).body(persistedEd);
     }

@@ -23,6 +23,7 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Approvers;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Owner;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnerType;
@@ -73,6 +74,25 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
     @Autowired
     private UserService userService;
+
+    @Override
+    public EntityDescriptorRepresentation approveEntityDescriptor(String resourceId) throws PersistentEntityNotFound, ForbiddenException {
+        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
+        if (ed == null) {
+            throw new PersistentEntityNotFound("Entity with resourceid[" + resourceId + "] was not found for approval");
+        }
+        int approvedCount = ed.approvedCount();
+        List<Approvers> approversList = groupService.find(ed.getIdOfOwner()).getApproversList();
+        if (!approversList.isEmpty() && approversList.size() > approvedCount) {
+            Approvers approvers = approversList.get(approvedCount); // yea for index zero - use the count to get the next approvers
+            if (!userService.currentUserCanApprove(approvers.getApproverGroups())) {
+                throw new ForbiddenException("You do not have the permissions necessary to approve this entity descriptor.");
+            }
+            ed.addApproval(userService.getCurrentUserGroup());
+            ed = entityDescriptorRepository.save(ed);
+        }
+        return createRepresentationFromDescriptor(ed);
+    }
 
     private EntityDescriptor buildDescriptorFromRepresentation(final EntityDescriptor ed, final EntityDescriptorRepresentation representation) {
         ed.setEntityID(representation.getEntityId());
@@ -128,8 +148,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep)
-                    throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
+    public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep) throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
         if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
         }
@@ -167,6 +186,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         representation.setCreatedBy(ed.getCreatedBy());
         representation.setCurrent(ed.isCurrent());
         representation.setIdOfOwner(ed.getIdOfOwner());
+        representation.setApproved(isEntityDescriptorApproved(ed));
 
         if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getSupportedProtocols().size() > 0) {
             ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);
@@ -362,6 +382,17 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return representation;
     }
 
+    private boolean isEntityDescriptorApproved(EntityDescriptor ed) {
+        if (ed.isServiceEnabled()) {
+            return true;
+        }
+        Group ownerGroup = groupService.find(ed.getIdOfOwner());
+        if (ownerGroup == null) {
+            ownerGroup = Group.ADMIN_GROUP; // This should only happen in the large number of tests that were written prior to group implementation
+        }
+        return ed.approvedCount() >= ownerGroup.getApproversList().size();
+    }
+
     @Override
     public void delete(String resourceId) throws ForbiddenException, PersistentEntityNotFound {
         EntityDescriptor ed = getEntityDescriptorByResourceId(resourceId);
@@ -424,8 +455,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRep)
-                    throws ForbiddenException, PersistentEntityNotFound, InvalidPatternMatchException {
+    public EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRep) throws ForbiddenException, PersistentEntityNotFound, InvalidPatternMatchException {
         EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(edRep.getId());
         if (existingEd == null) {
             throw new PersistentEntityNotFound(String.format("The entity descriptor with entity id [%s] was not found for update.", edRep.getId()));
@@ -472,6 +502,12 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         }
         if (!userService.currentUserCanEnable(ed)) {
             throw new ForbiddenException("You do not have the permissions necessary to change the enable status of this entity descriptor.");
+        }
+        // check to see if approvals have been completed
+        int approvedCount = ed.approvedCount();
+        List<Approvers> approversList = groupService.find(ed.getIdOfOwner()).getApproversList();
+        if (!ed.isServiceEnabled() && !userService.currentUserIsAdmin() && approversList.size() > approvedCount) {
+            throw new ForbiddenException("Approval must be completed before you can change the enable status of this entity descriptor.");
         }
         ed.setServiceEnabled(status);
         ed = entityDescriptorRepository.save(ed);
