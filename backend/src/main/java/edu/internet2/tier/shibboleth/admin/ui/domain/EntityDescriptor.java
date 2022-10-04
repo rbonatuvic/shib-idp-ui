@@ -323,4 +323,10 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     public int approvedCount() {
         return approved.size();
     }
+
+    public void removeLastApproval() {
+        if (!approved.isEmpty()) {
+            approved.remove(approved.size() - 1);
+        }
+    }
 }

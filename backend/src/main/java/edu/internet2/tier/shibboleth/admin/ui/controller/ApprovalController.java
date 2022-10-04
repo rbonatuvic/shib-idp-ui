@@ -24,8 +24,8 @@ public class ApprovalController {
     @PatchMapping(path = "/entityDescriptor/{resourceId}/{mode}")
     @Transactional
     public ResponseEntity<?> approveEntityDescriptor(@PathVariable String resourceId, @PathVariable String mode) throws PersistentEntityNotFound, ForbiddenException {
-//        boolean status = "approve".equalsIgnoreCase(mode); // can we un-approve?
-        EntityDescriptorRepresentation edr = entityDescriptorService.approveEntityDescriptor(resourceId);
+        boolean status = "approve".equalsIgnoreCase(mode);
+        EntityDescriptorRepresentation edr = entityDescriptorService.changeApproveStatusOfEntityDescriptor(resourceId, status);
         return ResponseEntity.ok(edr);
     }
 }

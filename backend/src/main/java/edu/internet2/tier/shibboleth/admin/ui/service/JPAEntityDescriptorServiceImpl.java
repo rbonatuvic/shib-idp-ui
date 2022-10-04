@@ -76,19 +76,25 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     private UserService userService;
 
     @Override
-    public EntityDescriptorRepresentation approveEntityDescriptor(String resourceId) throws PersistentEntityNotFound, ForbiddenException {
+    public EntityDescriptorRepresentation changeApproveStatusOfEntityDescriptor(String resourceId, boolean status) throws PersistentEntityNotFound, ForbiddenException {
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
         if (ed == null) {
             throw new PersistentEntityNotFound("Entity with resourceid[" + resourceId + "] was not found for approval");
         }
-        int approvedCount = ed.approvedCount();
-        List<Approvers> approversList = groupService.find(ed.getIdOfOwner()).getApproversList();
-        if (!approversList.isEmpty() && approversList.size() > approvedCount) {
-            Approvers approvers = approversList.get(approvedCount); // yea for index zero - use the count to get the next approvers
-            if (!userService.currentUserCanApprove(approvers.getApproverGroups())) {
-                throw new ForbiddenException("You do not have the permissions necessary to approve this entity descriptor.");
+        if (status) { // approve
+            int approvedCount = ed.approvedCount();
+            List<Approvers> approversList = groupService.find(ed.getIdOfOwner()).getApproversList();
+            if (!approversList.isEmpty() && approversList.size() > approvedCount) {
+                Approvers approvers = approversList.get(
+                                approvedCount); // yea for index zero - use the count to get the next approvers
+                if (!userService.currentUserCanApprove(approvers.getApproverGroups())) {
+                    throw new ForbiddenException("You do not have the permissions necessary to approve this entity descriptor.");
+                }
+                ed.addApproval(userService.getCurrentUserGroup());
+                ed = entityDescriptorRepository.save(ed);
             }
-            ed.addApproval(userService.getCurrentUserGroup());
+        } else { // un-approve
+            ed.removeLastApproval();
             ed = entityDescriptorRepository.save(ed);
         }
         return createRepresentationFromDescriptor(ed);

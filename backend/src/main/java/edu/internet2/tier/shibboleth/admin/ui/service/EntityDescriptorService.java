@@ -123,5 +123,5 @@ public interface EntityDescriptorService {
 
     EntityDescriptorRepresentation updateGroupForEntityDescriptor(String resourceId, String groupId);
 
-    EntityDescriptorRepresentation approveEntityDescriptor(String resourceId) throws PersistentEntityNotFound, ForbiddenException;
+    EntityDescriptorRepresentation changeApproveStatusOfEntityDescriptor(String resourceId, boolean status) throws PersistentEntityNotFound, ForbiddenException;
 }

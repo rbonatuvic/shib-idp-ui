@@ -141,4 +141,25 @@ class ApproveControllerTests extends AbstractBaseDataJpaTest {
                 .andExpect(jsonPath("\$.approved").value(true))
     }
 
+    @WithMockUser(value = "BUser", roles = ["USER"])
+    def 'Approver can approve and un-approve an entity descriptor'() {
+        when:
+        def result = mockMvc.perform(patch("/api/approve/entityDescriptor/" + defaultEntityDescriptorResourceId + "/approve"))
+
+        then:
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("\$.id").value(defaultEntityDescriptorResourceId))
+                .andExpect(jsonPath("\$.serviceEnabled").value(false))
+                .andExpect(jsonPath("\$.approved").value(true))
+
+        when:
+        def result2 = mockMvc.perform(patch("/api/approve/entityDescriptor/" + defaultEntityDescriptorResourceId + "/unapprove"))
+
+        then:
+        result2.andExpect(status().isOk())
+                .andExpect(jsonPath("\$.id").value(defaultEntityDescriptorResourceId))
+                .andExpect(jsonPath("\$.serviceEnabled").value(false))
+                .andExpect(jsonPath("\$.approved").value(false))
+
+    }
 }
