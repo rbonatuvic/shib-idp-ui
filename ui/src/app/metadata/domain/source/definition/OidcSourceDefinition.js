@@ -53,7 +53,7 @@ export const OidcSourceEditor = defaultsDeep({
                                     'postLogoutRedirectUris',
                                     'defaultAcrValues',
                                     'requestUris',
-                                    'audience'
+                                    'audiences'
                                 ],
                             },
                         ]
@@ -73,7 +73,7 @@ export const OidcSourceEditor = defaultsDeep({
                             orderable: false
                         },
                     },
-                    audience: {
+                    audiences: {
                         "ui:options": {
                             orderable: false
                         },
@@ -126,7 +126,7 @@ export const OidcSourceWizard = defaultsDeep({
                                     'postLogoutRedirectUris',
                                     'defaultAcrValues',
                                     'requestUris',
-                                    'audience'
+                                    'audiences'
                                 ],
                             },
                         ]
@@ -146,7 +146,7 @@ export const OidcSourceWizard = defaultsDeep({
                             orderable: false
                         },
                     },
-                    audience: {
+                    audiences: {
                         "ui:options": {
                             orderable: false
                         },
@@ -156,5 +156,3 @@ export const OidcSourceWizard = defaultsDeep({
         }
     }, SourceBase.uiSchema)
 }, OidcSourceBase);
-
-

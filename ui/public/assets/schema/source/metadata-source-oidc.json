@@ -136,7 +136,7 @@
                                         "type": "string"
                                     }
                                 },
-                                "audience": {
+                                "audiences": {
                                     "title": "label.audience",
                                     "description": "tooltip.audience",
                                     "type": "array",
