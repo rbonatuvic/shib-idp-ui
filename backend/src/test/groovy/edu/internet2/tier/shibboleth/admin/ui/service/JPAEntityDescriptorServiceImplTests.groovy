@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
+import edu.internet2.tier.shibboleth.admin.ui.configuration.JsonSchemaComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
@@ -11,6 +12,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
@@ -19,11 +22,15 @@ import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.json.JacksonTester
 import org.springframework.context.annotation.PropertySource
+import org.springframework.core.io.DefaultResourceLoader
+import org.springframework.mock.http.MockHttpInputMessage
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import org.xmlunit.diff.DefaultNodeMatcher
 import org.xmlunit.diff.ElementSelectors
 import spock.lang.Ignore
+
+import java.time.LocalDateTime
 
 @PropertySource("classpath:application.yml")
 class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
@@ -762,5 +769,30 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         //TODO: Finish fleshing out this thing
 
         return ed
+    }
+
+    def "SHIBUI-1723"() {
+        given:
+        def entityDescriptor = openSamlObjects.unmarshalFromXml(this.class.getResource('/metadata/SHIBUI-1723-1.xml').bytes) as EntityDescriptor
+        entityDescriptor.idOfOwner = "foo"
+
+        def entityDescriptorRepresentation = service.createRepresentationFromDescriptor(entityDescriptor).with {
+            it.serviceProviderName = 'testme'
+            it.contacts = []
+            it.securityInfo.x509Certificates[0].name = 'testcert'
+            it.createdBy = 'root'
+            it.setCreatedDate(LocalDateTime.now())
+            it.setModifiedDate(LocalDateTime.now())
+            it
+        }
+        def json = mapper.writeValueAsString(entityDescriptorRepresentation)
+        def resourceLoader = new DefaultResourceLoader()
+        def schemaUri = JsonSchemaLocationLookup.metadataSourcesSchema(new JsonSchemaComponentsConfiguration().jsonSchemaResourceLocationRegistry(resourceLoader, this.mapper)).uri
+
+        when:
+        LowLevelJsonSchemaValidator.validatePayloadAgainstSchema(new MockHttpInputMessage(json.bytes), schemaUri)
+
+        then:
+        noExceptionThrown()
     }
 }
