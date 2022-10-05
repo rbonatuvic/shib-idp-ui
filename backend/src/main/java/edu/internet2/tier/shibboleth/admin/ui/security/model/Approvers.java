@@ -22,6 +22,6 @@ public class Approvers {
     @Column(name = "resource_id")
     private String resourceId = UUID.randomUUID().toString();
 
-    @OneToMany
+    @ManyToMany
     private List<Group> approverGroups = new ArrayList<>();
 }
