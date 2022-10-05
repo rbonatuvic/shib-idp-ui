@@ -99,7 +99,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         setupLogout(ed, representation);
         setupRelyingPartyOverrides(ed, representation);
 
-        if (ed.getProtocol() == EntityDescriptorProtocol.OIDC) {
+        if (ed.getProtocol() == EntityDescriptorProtocol.OIDC && ed.getSPSSODescriptor("") != null) {
             ed.getSPSSODescriptor("").addSupportedProtocol("http://openid.net/specs/openid-connect-core-1_0.html");
         }
         //Let envers recognize update revision type for EntityDescriptor type
@@ -114,6 +114,9 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
      */
     private Map<String, Object> buildOAuthRPExtensionsMap(EntityDescriptor ed) {
         HashMap<String, Object> result = new HashMap<>();
+        if (!ed.getSPSSODescriptor("").getOptionalExtensions().isPresent()) {
+            return result;
+        }
         for(XMLObject extension : ed.getSPSSODescriptor("").getExtensions().getOrderedChildren()) {
             if (extension.getElementQName().getLocalPart().equals(OAuthRPExtensions.TYPE_LOCAL_NAME)){
                 OAuthRPExtensions oAuthRPExtensions = (OAuthRPExtensions) extension;

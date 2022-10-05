@@ -331,7 +331,7 @@ public class EntityDescriptorConversionUtils {
             SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed);
 
             spssoDescriptor.setSupportedProtocols(new ArrayList<>());
-            if (!Strings.isNullOrEmpty(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum())) {
+            if (representation.getServiceProviderSsoDescriptor() != null && !Strings.isNullOrEmpty(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum())) {
                 spssoDescriptor.setSupportedProtocols(
                         Arrays.stream(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum().split(",")).map(p -> MDDCConstants.PROTOCOL_BINDINGS.get(p.trim())).collect(Collectors.toList())
                 );
@@ -347,7 +347,7 @@ public class EntityDescriptorConversionUtils {
             }
 
             // Setup Extensions
-            if (representation.getProtocol() == EntityDescriptorProtocol.OIDC) {
+            if (representation.getProtocol() == EntityDescriptorProtocol.OIDC && representation.getServiceProviderSsoDescriptor(false) != null) {
                 spssoDescriptor.setExtensions(buildOAuthRPExtensionsFromRepresentation(representation.getServiceProviderSsoDescriptor(false)));
             }
         } else {
