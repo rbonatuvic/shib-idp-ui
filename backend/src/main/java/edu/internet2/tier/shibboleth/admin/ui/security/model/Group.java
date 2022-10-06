@@ -33,6 +33,9 @@ public class Group implements Owner {
     @JsonIgnore
     public static Group ADMIN_GROUP;
 
+    @Transient
+    List<String> approveForList = new ArrayList<>();
+
     @Column(name = "group_description")
     String description;
 
@@ -96,5 +99,12 @@ public class Group implements Owner {
     @Override
     public boolean equals(Object o) {
         return o instanceof Group && this.resourceId.equals(((Group)o).resourceId);
+    }
+
+    public List<String> getApproveForList() {
+        if (lazyLoaderHelper != null) {
+            lazyLoaderHelper.loadApproveForList(this);
+        }
+        return approveForList;
     }
 }

@@ -206,9 +206,9 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository repo) {
+    public GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository repo, GroupsRepository groupsRepository) {
         GroupUpdatedEntityListener listener = new GroupUpdatedEntityListener();
-        listener.init(repo);
+        listener.init(repo, groupsRepository);
         return listener;
     }
 

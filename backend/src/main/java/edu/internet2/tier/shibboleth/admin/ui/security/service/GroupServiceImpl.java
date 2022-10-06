@@ -37,11 +37,6 @@ public class GroupServiceImpl implements IGroupService {
     @Autowired
     protected OwnershipRepository ownershipRepository;
 
-//    public GroupServiceImpl(GroupsRepository repo, OwnershipRepository ownershipRepository) {
-//        this.groupRepository = repo;
-//        this.ownershipRepository = ownershipRepository;
-//    }
-
     @Override
     @Transactional
     public Group createGroup(Group group) throws GroupExistsConflictException, InvalidGroupRegexException {

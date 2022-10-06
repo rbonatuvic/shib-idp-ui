@@ -87,7 +87,7 @@ abstract class AbstractBaseDataJpaTest extends Specification implements ResetsDa
         }
 
         createAdminUser()
-        GroupUpdatedEntityListener.init(ownershipRepository)
+        GroupUpdatedEntityListener.init(ownershipRepository, groupRepository)
         UserUpdatedEntityListener.init(ownershipRepository, groupRepository)
     }
 

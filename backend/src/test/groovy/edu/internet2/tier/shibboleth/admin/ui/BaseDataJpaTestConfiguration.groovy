@@ -54,9 +54,9 @@ class BaseDataJpaTestConfiguration {
     }
 
     @Bean
-    GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository ownershipRepository) {
+    GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository ownershipRepository, GroupsRepository groupsRepository) {
         GroupUpdatedEntityListener listener = new GroupUpdatedEntityListener()
-        listener.init(ownershipRepository)
+        listener.init(ownershipRepository, groupsRepository)
         return listener
     }
 

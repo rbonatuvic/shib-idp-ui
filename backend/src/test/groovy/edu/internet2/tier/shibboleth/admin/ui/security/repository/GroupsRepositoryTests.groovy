@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.repository
 
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Approvers
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
 import org.springframework.beans.factory.annotation.Autowired
@@ -204,5 +205,53 @@ class GroupsRepositoryTests extends AbstractBaseDataJpaTest {
         
         then:
         nothingThere == null
+    }
+
+    def "get list of groups that a group can approve for"() {
+        when:
+        groupService.clearAllForTesting()
+        List<Group> apprGroups = new ArrayList<>()
+        String[] groupNames = ['BBB', 'CCC', 'EEE', 'AAA']
+        groupNames.each {name -> {
+            Group group = new Group().with({
+                it.name = name
+                it.description = name
+                it.resourceId = name
+                it
+            })
+            if (name != "AAA") {
+                apprGroups.add(groupRepository.save(group))
+            } else {
+                Approvers approvers = new Approvers()
+                approvers.setApproverGroups(apprGroups)
+                List<Approvers> apprList = new ArrayList<>()
+                apprList.add(approversRepository.save(approvers))
+                group.setApproversList(apprList)
+                groupRepository.save(group)
+            }
+        }}
+        Group group = new Group().with({
+            it.name = 'DDD'
+            it.description = 'DDD'
+            it.resourceId = 'DDD'
+            it
+        })
+        Approvers approvers = new Approvers()
+        apprGroups = new ArrayList<>()
+        apprGroups.add(groupRepository.findByResourceId('BBB'))
+        approvers.setApproverGroups(apprGroups)
+        List<Approvers> apprList = new ArrayList<>()
+        apprList.add(approversRepository.save(approvers))
+        group.setApproversList(apprList)
+        groupRepository.save(group)
+        entityManager.flush()
+        entityManager.clear()
+
+        then:
+        def result = groupRepository.getGroupIdsOfGroupsToApproveFor('BBB')
+        result.size() == 2
+        result.contains('AAA')
+        result.contains('DDD')
+        groupRepository.findAllGroupIds().size() == 6
     }
 }

@@ -144,6 +144,10 @@ public class UserService {
         }
     }
 
+    public List<String> getGroupsCurrentUserCanApprove() {
+        return getCurrentUserGroup().getApproveForList();
+    }
+
     public Set<String> getUserRoles(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         HashSet<String> result = new HashSet<>();
