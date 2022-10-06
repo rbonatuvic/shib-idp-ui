@@ -65,7 +65,9 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     @Id
     @Column(name = "resource_id", nullable = false)
     String resourceId = UUID.randomUUID().toString();
-        
+
+    String protocol = "saml";
+
     @Override
     public Set<String> getDefaultValues() {
         return customAttrListDefinitions;

@@ -32,7 +32,9 @@ public interface IRelyingPartyOverrideProperty {
     public String getPersistType();
 
     public String getPersistValue();
-    
+
+    public String getProtocol();
+
     /**
      * When the override actually is used in the UI, the "type" list is fairly limited, so each implementing class
      * should adjust the real value so the UI gets a value it expects. For actual file configured overrides, this 
@@ -61,4 +63,6 @@ public interface IRelyingPartyOverrideProperty {
     public void setPersistType(String persistType);
 
     public void setPersistValue(String persistValue);
+
+    public void setProtocol(String protocol);
 }

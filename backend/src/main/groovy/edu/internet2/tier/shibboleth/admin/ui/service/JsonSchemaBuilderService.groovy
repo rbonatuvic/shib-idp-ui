@@ -42,8 +42,15 @@ class JsonSchemaBuilderService {
     }
 
     void addRelyingPartyOverridesToJson(Object json) {
+        addRelyingPartyOverridesToJson(json, "saml")
+    }
+
+    void addRelyingPartyOverridesToJson(Object json, String protocol) {
         def properties = [:]
-        customPropertiesConfiguration.getOverrides().each {
+        customPropertiesConfiguration.getOverrides().stream().filter {
+            it -> it.protocol.contains(protocol)
+        }.each {
+            if (it.protocol)
             def property
             if (it['displayType'] == 'list' || it['displayType'] == 'set' || it['displayType'] == 'selection_list') {
                 property = [$ref: '#/definitions/' + it['name']]
@@ -61,8 +68,12 @@ class JsonSchemaBuilderService {
     }
 
     void addRelyingPartyOverridesCollectionDefinitionsToJson(Object json) {
+        addRelyingPartyOverridesCollectionDefinitionsToJson(json, "saml")
+    }
+
+    void addRelyingPartyOverridesCollectionDefinitionsToJson(Object json, String protocol) {
         customPropertiesConfiguration.getOverrides().stream().filter {
-            it -> it['displayType'] && (it['displayType'] == 'list' || it['displayType'] == 'set' || it['displayType'] == 'selection_list')
+            it -> it.protocol.contains(protocol) && it['displayType'] && (it['displayType'] == 'list' || it['displayType'] == 'set' || it['displayType'] == 'selection_list')
         }.each {
             def definition = [title      : it['displayName'],
                               description: it['helpText'],

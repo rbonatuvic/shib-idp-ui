@@ -53,8 +53,8 @@ class MetadataSourcesUiDefinitionController {
             def parsedJson = jacksonObjectMapper.readValue(url, Map)
             jsonSchemaBuilderService.hideServiceEnabledFromNonAdmins(parsedJson)
             jsonSchemaBuilderService.addReleaseAttributesToJson(parsedJson['properties']['attributeRelease']['items'])
-            jsonSchemaBuilderService.addRelyingPartyOverridesToJson(parsedJson['properties']['relyingPartyOverrides'])
-            jsonSchemaBuilderService.addRelyingPartyOverridesCollectionDefinitionsToJson(parsedJson["definitions"])
+            jsonSchemaBuilderService.addRelyingPartyOverridesToJson(parsedJson['properties']['relyingPartyOverrides'], protocol.toLowerCase())
+            jsonSchemaBuilderService.addRelyingPartyOverridesCollectionDefinitionsToJson(parsedJson["definitions"], protocol.toLowerCase())
             return ResponseEntity.ok(parsedJson)
         }
         catch (IOException e) {
