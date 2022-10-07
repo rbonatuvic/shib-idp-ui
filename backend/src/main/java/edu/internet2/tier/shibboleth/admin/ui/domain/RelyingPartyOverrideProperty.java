@@ -27,7 +27,7 @@ public class RelyingPartyOverrideProperty implements IRelyingPartyOverrideProper
     private String name;
     private String persistType;
     private String persistValue;
-    private String protocol = "saml";
+    private String protocol = "saml, oidc";
     
     @Override
     public Boolean getFromConfigFile() {
@@ -46,7 +46,7 @@ public class RelyingPartyOverrideProperty implements IRelyingPartyOverrideProper
     }
 
     public String getProtocol() {
-        return protocol == null ? "saml" : protocol;
+        return protocol == null ? "saml, oidc" : protocol;
     }
 
     public String getTypeForUI() {
