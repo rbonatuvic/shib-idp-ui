@@ -212,6 +212,7 @@ dependencies {
     integrationTestCompile platform("org.spockframework:spock-bom:2.1-groovy-3.0")
     integrationTestCompile "org.spockframework:spock-core"
     integrationTestCompile "org.spockframework:spock-spring"
+    integrationTestRuntime "net.shibboleth.oidc:oidc-common-saml-api:${project.'shibOIDCVersion'}"
 
     // CSV file support
     compile 'com.opencsv:opencsv:4.4', {
