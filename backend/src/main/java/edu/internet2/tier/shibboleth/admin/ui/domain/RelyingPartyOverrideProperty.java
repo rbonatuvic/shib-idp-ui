@@ -45,6 +45,7 @@ public class RelyingPartyOverrideProperty implements IRelyingPartyOverrideProper
         }
     }
 
+    @Override
     public String getProtocol() {
         return protocol == null ? "saml, oidc" : protocol;
     }

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Transient;
 
+import liquibase.pro.packaged.O;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -94,7 +95,12 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
             return "string";            
         }
     }
-    
+
+    @Override
+    public String getProtocol() {
+        return protocol == null ? "saml, oidc" : protocol;
+    }
+
     @Override
     public void setDefaultValues(Set<String> defaultValues) {
         // This is here to comply with the interface only and should not be used to change the set of values in this implementation
