@@ -161,5 +161,6 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-2270: Verify full property set'                             | '/SHIBUI-2270-2.side'
         'SHIBUI-2268: Verify Algorithm Filter'                              | '/SHIBUI-2268.side'
         'SHIBUI-2269: Verify XML generation of external filters'            | '/SHIBUI-2269.side'
+        'SHIBUI-2380: OIDC metadata source CRUD'                            | '/SHIBUI-2380.side'
     }
 }
