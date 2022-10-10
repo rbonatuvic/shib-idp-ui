@@ -100,7 +100,7 @@ export function MetadataSourceProtocolSelector({ types = [], loading, children})
                                         </span>
                                         <InfoIcon value="tooltip.source-protocol" />
                                     </Form.Label>
-                                    <Form.Select disabled={loading} defaultValue={''} placeholder={translator(`label.select-source-protocol`)} {...register('protocol', {required: true})}>
+                                    <Form.Select disabled={loading} defaultValue={''} placeholder={translator(`label.select-source-protocol`)} {...register('protocol', {required: true})} id="root_protocol">
                                         <option disabled value="">{translator(`label.select-source-protocol`)}</option>
                                         {types.map(t => <option key={t.value} value={t.value}><Translate value={t.label} /></option>)}
                                     </Form.Select>
@@ -114,6 +114,7 @@ export function MetadataSourceProtocolSelector({ types = [], loading, children})
                                         <InfoIcon value="tooltip.service-provider-name-dashboard-display-only" />
                                     </Form.Label>
                                     <Form.Control
+                                        id="root_serviceProviderName"
                                         isInvalid={errors.serviceProviderName}
                                         type="text" {...register('serviceProviderName', {required: true, validate: {
                                             unique: v => !(sourceNames.indexOf(v) > -1)
@@ -132,6 +133,7 @@ export function MetadataSourceProtocolSelector({ types = [], loading, children})
                                         <InfoIcon value="tooltip.entity-id" />
                                     </Form.Label>
                                     <Form.Control
+                                        id="root_entityId"
                                         isInvalid={errors.entityId}
                                         type="text" {...register('entityId', {required: true, validate: {
                                             unique: v => !(sourceIds.indexOf(v) > -1)
