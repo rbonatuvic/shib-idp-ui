@@ -14,6 +14,7 @@ class GroupServiceForTesting extends GroupServiceImpl {
     
     @Transactional
     void clearAllForTesting() {
+        approversRepository.deleteAll()
         groupRepository.deleteAll()
         ownershipRepository.clearAllOwnedByGroup()
         ensureAdminGroupExists()

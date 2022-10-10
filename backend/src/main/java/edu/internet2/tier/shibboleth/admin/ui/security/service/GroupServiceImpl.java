@@ -115,6 +115,30 @@ public class GroupServiceImpl implements IGroupService {
         return groupRepository.findAll();
     }
 
+    private List<Group> getGroupListFromIds(List<String> approverGroupIds) {
+        List<Group> result = new ArrayList<>();
+        for (String id : approverGroupIds) {
+            Group g = find(id);
+            result.add(g);
+        }
+        return result;
+    }
+
+    private void manageApproversList(Group group) {
+        if (group.getApproversList().isEmpty()) {
+            return;
+        }
+        List<Approvers> updatedApprovers = new ArrayList<>();
+        group.getApproversList().forEach(approvers -> {
+            Approvers savedApprovers = approversRepository.findByResourceId(approvers.getResourceId());
+            savedApprovers = savedApprovers == null ? approversRepository.save(approvers) : savedApprovers;
+            savedApprovers.setApproverGroups(getGroupListFromIds(approvers.getApproverGroupIds()));
+            Approvers updatedApp = approversRepository.save(savedApprovers);
+            updatedApprovers.add(updatedApp);
+        });
+        group.setApproversList(updatedApprovers);
+    }
+
     @Override
     public Group updateGroup(Group group) throws PersistentEntityNotFound, InvalidGroupRegexException {
         manageApproversList(group); // have to make sure that approvers have been saved before a fetch or we can get data integrity errors on lookup...
@@ -125,21 +149,6 @@ public class GroupServiceImpl implements IGroupService {
         }
         validateGroupRegex(group);
         return groupRepository.save(group);
-    }
-
-    private void manageApproversList(Group group) {
-        if (group.getApproversList().isEmpty()) {
-            return;
-        }
-        List<Approvers> updatedApprovers = new ArrayList<>();
-        group.getApproversList().forEach(approvers -> {
-            Approvers savedApprovers = approversRepository.findByResourceId(approvers.getResourceId());
-            savedApprovers = savedApprovers == null ? approvers : savedApprovers;
-            savedApprovers.setApproverGroups(approvers.getApproverGroups());
-            Approvers updatedApp = approversRepository.save(savedApprovers);
-            updatedApprovers.add(updatedApp);
-        });
-        group.setApproversList(updatedApprovers);
     }
 
     /**

@@ -108,4 +108,9 @@ public class Group implements Owner {
         }
         return approveForList;
     }
+
+    @Override
+    public String toString() {
+        return "Group resourceId=" + resourceId;
+    }
 }
