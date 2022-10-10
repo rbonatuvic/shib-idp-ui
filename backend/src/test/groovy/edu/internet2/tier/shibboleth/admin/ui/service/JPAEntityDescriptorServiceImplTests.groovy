@@ -15,6 +15,12 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSso
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Approvers
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
@@ -24,6 +30,8 @@ import org.springframework.boot.test.json.JacksonTester
 import org.springframework.context.annotation.PropertySource
 import org.springframework.core.io.DefaultResourceLoader
 import org.springframework.mock.http.MockHttpInputMessage
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.transaction.annotation.Transactional
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import org.xmlunit.diff.DefaultNodeMatcher
@@ -52,13 +60,63 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
     RandomGenerator generator
     JacksonTester<EntityDescriptorRepresentation> jacksonTester
 
+    @Autowired
+    EntityDescriptorRepository entityDescriptorRepository
+
+    @Transactional
     def setup() {        
         JacksonTester.initFields(this, mapper)
         generator = new RandomGenerator()
         EntityDescriptorConversionUtils.openSamlObjects = openSamlObjects
         EntityDescriptorConversionUtils.entityService = entityService
         openSamlObjects.init()
+
+        groupService.clearAllForTesting()
+        List<Group> apprGroups = new ArrayList<>()
+        String[] groupNames = ['BBB', 'CCC', 'EEE', 'AAA']
+        groupNames.each {name -> {
+            Group group = new Group().with({
+                it.name = name
+                it.description = name
+                it.resourceId = name
+                it
+            })
+            if (name != "AAA") {
+                apprGroups.add(groupRepository.save(group))
+            } else {
+                Approvers approvers = new Approvers()
+                approvers.setApproverGroups(apprGroups)
+                List<Approvers> apprList = new ArrayList<>()
+                apprList.add(approversRepository.save(approvers))
+                group.setApproversList(apprList)
+                groupRepository.save(group)
+            }
+        }}
+        Group group = new Group().with({
+            it.name = 'DDD'
+            it.description = 'DDD'
+            it.resourceId = 'DDD'
+            it
+        })
+        Approvers approvers = new Approvers()
+        apprGroups = new ArrayList<>()
+        apprGroups.add(groupRepository.findByResourceId('BBB'))
+        approvers.setApproverGroups(apprGroups)
+        List<Approvers> apprList = new ArrayList<>()
+        apprList.add(approversRepository.save(approvers))
+        group.setApproversList(apprList)
+        groupRepository.save(group)
+
+        Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
+        User user = new User(username: "bbUser", roles:[userRole.get()], password: "foo")
+        user.setGroup(groupRepository.findByResourceId("BBB"))
+        userService.save(user)
+
+        entityManager.flush()
+        entityManager.clear()
     }
+
+
 
     def "simple Entity Descriptor"() {
         when:
@@ -794,5 +852,38 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
 
         then:
         noExceptionThrown()
+    }
+
+    @WithMockUser(value = "bbUser", roles = ["USER"])
+    def "get list of entity descriptors that a group can approve"() {
+        when:
+        def ed = openSamlObjects.unmarshalFromXml(this.class.getResource('/metadata/SHIBUI-553.2.xml').bytes) as EntityDescriptor
+        ed.with {
+            it.idOfOwner = 'AAA' // BBB can approve
+            it.enabled = false
+            it
+        }
+        entityDescriptorRepository.save(ed)
+        def ed2 = openSamlObjects.unmarshalFromXml(this.class.getResource('/metadata/SHIBUI-1772.xml').bytes) as EntityDescriptor
+        ed2.with {
+            it.idOfOwner = 'CCC' // BBB can not approve
+            it.enabled = false
+            it
+        }
+        entityDescriptorRepository.save(ed2)
+
+        entityManager.flush()
+        entityManager.clear()
+
+        then:
+        def result =  service.getAllEntityDescriptorProjectionsNeedingApprovalBasedOnUserAccess()
+        result.size() == 1
+
+        when:
+        service.changeApproveStatusOfEntityDescriptor(result.get(0).getResourceId(), true);
+
+        then:
+        def result2 =  service.getAllEntityDescriptorProjectionsNeedingApprovalBasedOnUserAccess()
+        result2.isEmpty() == true
     }
 }

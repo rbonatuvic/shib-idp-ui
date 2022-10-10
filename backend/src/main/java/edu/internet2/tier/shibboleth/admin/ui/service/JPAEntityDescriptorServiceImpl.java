@@ -91,10 +91,14 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                     throw new ForbiddenException("You do not have the permissions necessary to approve this entity descriptor.");
                 }
                 ed.addApproval(userService.getCurrentUserGroup());
+                Group ownerGroup = groupService.find(ed.getIdOfOwner());
+                ed.setApproved(ed.approvedCount() == ownerGroup.getApproversList().size()); // safe check in case of weird race conditions from the UI
                 ed = entityDescriptorRepository.save(ed);
             }
         } else { // un-approve
             ed.removeLastApproval();
+            Group ownerGroup = groupService.find(ed.getIdOfOwner());
+            ed.setApproved(ed.approvedCount() == ownerGroup.getApproversList().size()); // safe check in case of weird race conditions from the UI
             ed = entityDescriptorRepository.save(ed);
         }
         return createRepresentationFromDescriptor(ed);
@@ -434,6 +438,16 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         }
     }
 
+    /**
+     * Based on the current users group, find those entities that the user can approve that need approval
+     */
+    @Override
+    public List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsNeedingApprovalBasedOnUserAccess() {
+        List<String> groupsToApprove = userService.getGroupsCurrentUserCanApprove();
+        List<EntityDescriptorProjection> result = entityDescriptorRepository.getEntityDescriptorsNeedingApproval(groupsToApprove);
+        return result;
+    }
+
     @Override
     public List<String> getAttributeReleaseListFromAttributeList(List<Attribute> attributeList) {
         if (attributeList == null) {
@@ -512,10 +526,13 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         // check to see if approvals have been completed
         int approvedCount = ed.approvedCount();
         List<Approvers> approversList = groupService.find(ed.getIdOfOwner()).getApproversList();
-        if (!ed.isServiceEnabled() && !userService.currentUserIsAdmin() && approversList.size() > approvedCount) {
+        if (status == true && !ed.isServiceEnabled() && !userService.currentUserIsAdmin() && approversList.size() > approvedCount) {
             throw new ForbiddenException("Approval must be completed before you can change the enable status of this entity descriptor.");
         }
         ed.setServiceEnabled(status);
+        if (status == true) {
+            ed.setApproved(true);
+        }
         ed = entityDescriptorRepository.save(ed);
         return createRepresentationFromDescriptor(ed);
     }

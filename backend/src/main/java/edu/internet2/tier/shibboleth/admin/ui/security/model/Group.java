@@ -34,6 +34,7 @@ public class Group implements Owner {
     public static Group ADMIN_GROUP;
 
     @Transient
+    @JsonIgnore
     List<String> approveForList = new ArrayList<>();
 
     @Column(name = "group_description")

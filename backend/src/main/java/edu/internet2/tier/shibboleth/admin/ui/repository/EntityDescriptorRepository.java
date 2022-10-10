@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.repository;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -37,4 +38,10 @@ public interface EntityDescriptorRepository extends JpaRepository<EntityDescript
      */
     @Deprecated
     List<EntityDescriptor> findAllByIdOfOwnerIsNull();
+
+    @Query(value = "select e from EntityDescriptor e" +
+                   " where e.idOfOwner in (:groupIds)" +
+                   "   and e.serviceEnabled = false" +
+                   "   and e.approved = false")
+    List<EntityDescriptorProjection> getEntityDescriptorsNeedingApproval(@Param("groupIds") List<String> groupIds);
 }

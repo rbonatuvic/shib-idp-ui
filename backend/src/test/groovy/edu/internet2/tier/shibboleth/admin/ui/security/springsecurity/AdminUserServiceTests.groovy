@@ -5,6 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.DevConfig
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.ApproversRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
@@ -74,9 +75,10 @@ class AdminUserServiceTests extends AbstractBaseDataJpaTest {
         @Bean
         DevConfig devConfig(UserRepository adminUserRepository, GroupsRepository groupsRepository, IGroupService groupService,
                             MetadataResolverRepository metadataResolverRepository, OpenSamlObjects openSamlObjects, UserService userService,
-                            RoleRepository roleRepository, EntityDescriptorRepository entityDescriptorRepository) {
+                            RoleRepository roleRepository, EntityDescriptorRepository entityDescriptorRepository,
+                            ApproversRepository approversRepository) {
             DevConfig dc =  new DevConfig( adminUserRepository, groupsRepository, metadataResolverRepository, roleRepository,
-                                           entityDescriptorRepository, openSamlObjects, groupService).with {
+                                           entityDescriptorRepository, openSamlObjects, groupService, approversRepository).with {
                 it.userService = userService
                 it
             }

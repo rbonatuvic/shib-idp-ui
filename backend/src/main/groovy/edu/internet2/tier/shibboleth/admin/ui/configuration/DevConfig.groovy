@@ -12,9 +12,11 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadat
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Approvers
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.ApproversRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
@@ -39,6 +41,7 @@ class DevConfig {
     private final OpenSamlObjects openSamlObjects
     private final RoleRepository roleRepository
     private final UserRepository userRepository
+    private final ApproversRepository approversRepository
     
     @Autowired
     private UserService userService
@@ -49,7 +52,8 @@ class DevConfig {
               RoleRepository roleRepository,
               EntityDescriptorRepository entityDescriptorRepository,
               OpenSamlObjects openSamlObjects, 
-              IGroupService groupService) {
+              IGroupService groupService,
+              ApproversRepository approversRepository) {
 
         this.userRepository = adminUserRepository
         this.metadataResolverRepository = metadataResolverRepository
@@ -57,7 +61,7 @@ class DevConfig {
         this.entityDescriptorRepository = entityDescriptorRepository
         this.openSamlObjects = openSamlObjects
         this.groupsRepository = groupsRepository
-        
+        this.approversRepository = approversRepository
         groupService.ensureAdminGroupExists()
     }
 
@@ -85,7 +89,29 @@ class DevConfig {
             }
         }            
         groupsRepository.flush()
-        
+
+        List<Group> apprGroups = new ArrayList<>()
+        String[] groupNames = ['XXX', 'YYY', 'ZZZ']
+        groupNames.each {name -> {
+            Group group = new Group().with({
+                it.name = name
+                it.description = name
+                it.resourceId = name
+                it
+            })
+            if (name != "ZZZ") {
+                apprGroups.add(groupsRepository.save(group))
+            } else {
+                Approvers approvers = new Approvers()
+                approvers.setApproverGroups(apprGroups)
+                List<Approvers> apprList = new ArrayList<>()
+                apprList.add(approversRepository.save(approvers))
+                group.setApproversList(apprList)
+                groupsRepository.save(group)
+            }
+        }}
+        groupsRepository.flush()
+
         if (roleRepository.count() == 0) {
             def roles = [new Role().with {
                 name = 'ROLE_ADMIN'
