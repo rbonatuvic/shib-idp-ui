@@ -367,9 +367,7 @@
           "enum": [
             "X509Data",
             "jwksUri",
-            "jwksData",
-            "clientSecret",
-            "clientSecretRef"
+            "jwksData"
           ]
         },
         "type": {
