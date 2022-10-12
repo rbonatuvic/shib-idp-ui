@@ -8,7 +8,7 @@ import Translate from '../../i18n/components/translate';
 import { useGroupUiSchema, useGroupUiValidator } from '../hooks';
 import { FormContext, setFormDataAction, setFormErrorAction } from '../../form/FormManager';
 
-export function GroupForm ({group = {}, errors = [], loading = false, schema, onSave, onCancel}) {
+export function GroupForm ({group = {}, errors = [], context = {}, loading = false, schema, onSave, onCancel}) {
 
     const { dispatch } = React.useContext(FormContext);
     const onChange = ({formData, errors}) => {
@@ -42,6 +42,7 @@ export function GroupForm ({group = {}, errors = [], loading = false, schema, on
             <div className="row">
                 <div className="col-12 col-lg-6 order-2">
                     <Form formData={group}
+                        formContext={ context }
                         noHtml5Validate={true}
                         onChange={(form) => onChange(form)}
                         validate={validator}

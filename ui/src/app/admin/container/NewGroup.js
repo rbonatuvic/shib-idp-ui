@@ -11,7 +11,7 @@ import { createNotificationAction, NotificationTypes, useNotificationDispatcher 
 import { useTranslator } from '../../i18n/hooks';
 import { BASE_PATH } from '../../App.constant';
 
-export function NewGroup() {
+export function NewGroup({ groups }) {
     const history = useHistory();
     const notifier = useNotificationDispatcher();
     const translator = useTranslator();
@@ -66,6 +66,7 @@ export function NewGroup() {
                             {(data, errors) =>
                             <>
                                 <GroupForm
+                                context={ { groups } }
                                 group={data}
                                 errors={errors}
                                 schema={schema}

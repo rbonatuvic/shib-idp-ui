@@ -27,6 +27,15 @@ export function useGroupUiSchema () {
     return {
         description: {
             'ui:widget': 'textarea'
+        },
+        approversList: {
+            'ui:options': {
+                'widget': 'MultiSelectWidget',
+                'enum': [
+                    'Foo',
+                    'Bar'
+                ]
+            }
         }
     };
 }

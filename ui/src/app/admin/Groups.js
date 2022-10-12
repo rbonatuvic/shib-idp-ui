@@ -20,10 +20,18 @@ export function Groups() {
                     </GroupsProvider>
                 } />
                 <Route path={`${path}/new`} render={() =>
-                    <NewGroup />
+                    <GroupsProvider>
+                        {(groups) =>
+                            <NewGroup groups={groups} />
+                        }
+                    </GroupsProvider>
                 } />
                 <Route path={`${path}/:id/edit`} render={() =>
-                    <EditGroup />
+                    <GroupsProvider>
+                        {(groups) =>
+                            <EditGroup groups={groups} />
+                        }
+                    </GroupsProvider>
                 } />
                 <Route path={`${path}`} exact render={() =>
                     <Redirect to={`${url}/list`} />
