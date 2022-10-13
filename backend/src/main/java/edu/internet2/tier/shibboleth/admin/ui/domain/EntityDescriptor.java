@@ -47,13 +47,17 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     @NotAudited
     private AffiliationDescriptor affiliationDescriptor;
 
+    @Getter
+    @Setter
+    private boolean approved;
+
     @OneToOne(cascade = CascadeType.ALL)
     @NotAudited
     private AttributeAuthorityDescriptor attributeAuthorityDescriptor;
 
     @ElementCollection (fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
-    private List<String> approved = new ArrayList<>();
+    private List<String> approvedBy = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @NotAudited
@@ -317,16 +321,16 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     }
 
     public void addApproval(Group group) {
-        approved.add(group.getName());
+        approvedBy.add(group.getName());
     }
 
     public int approvedCount() {
-        return approved.size();
+        return approvedBy.size();
     }
 
     public void removeLastApproval() {
-        if (!approved.isEmpty()) {
-            approved.remove(approved.size() - 1);
+        if (!approvedBy.isEmpty()) {
+            approvedBy.remove(approvedBy.size() - 1);
         }
     }
 }

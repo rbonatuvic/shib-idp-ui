@@ -72,7 +72,6 @@ class GroupsControllerIntegrationTests extends AbstractBaseDataJpaTest {
 
         when: "POST new group with approvers"
         groupService.clearAllForTesting()
-        List<Group> apprGroups = new ArrayList<>()
         String[] groupNames = ['AAA', 'BBB', 'CCC', 'DDD']
         groupNames.each {name -> {
             Group group = new Group().with({
@@ -86,13 +85,14 @@ class GroupsControllerIntegrationTests extends AbstractBaseDataJpaTest {
         entityManager.flush()
         entityManager.clear()
 
+        List<String> apprGroups = new ArrayList<>()
         groupNames.each {name ->{
             if (!name.equals('AAA')) {
-                apprGroups.add(groupRepository.findByResourceId(name))
+                apprGroups.add(name)
             }
         }}
         Approvers approvers = new Approvers()
-        approvers.setApproverGroups(apprGroups)
+        approvers.setApproverGroupIds(apprGroups)
         def apprList = new ArrayList<>()
         apprList.add(approvers)
         def newGroup2 = [name: 'Foo', description: 'Bar', resourceId: 'FooBar', approversList: apprList]
@@ -104,9 +104,9 @@ class GroupsControllerIntegrationTests extends AbstractBaseDataJpaTest {
             .andExpect(jsonPath("\$.name").value("Foo"))
             .andExpect(jsonPath("\$.resourceId").value("FooBar"))
             .andExpect(jsonPath("\$.description").value("Bar"))
-            .andExpect(jsonPath("\$.approversList[0].approverGroups[0].resourceId").value("BBB"))
-            .andExpect(jsonPath("\$.approversList[0].approverGroups[1].resourceId").value("CCC"))
-            .andExpect(jsonPath("\$.approversList[0].approverGroups[2].resourceId").value("DDD"))
+            .andExpect(jsonPath("\$.approversList[0].approverGroupIds[0]").value("BBB"))
+            .andExpect(jsonPath("\$.approversList[0].approverGroupIds[1]").value("CCC"))
+            .andExpect(jsonPath("\$.approversList[0].approverGroupIds[2]").value("DDD"))
     }
 
     @WithMockAdmin

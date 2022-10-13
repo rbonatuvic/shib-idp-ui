@@ -110,27 +110,34 @@ class ApproveControllerTests extends AbstractBaseDataJpaTest {
     @WithMockUser(value = "AUser", roles = ["USER"])
     def 'Owner group cannot approve their own entity descriptor'() {
         expect:
+        entityDescriptorRepository.findByResourceId(defaultEntityDescriptorResourceId).isApproved() == false
         try {
             mockMvc.perform(patch("/api/approve/entityDescriptor/" + defaultEntityDescriptorResourceId + "/approve"))
         }
         catch (Exception e) {
             e instanceof ForbiddenException
         }
+        entityDescriptorRepository.findByResourceId(defaultEntityDescriptorResourceId).isApproved() == false
     }
 
     @WithMockUser(value = "DUser", roles = ["USER"])
     def 'non-approver group cannot approve entity descriptor'() {
         expect:
+        entityDescriptorRepository.findByResourceId(defaultEntityDescriptorResourceId).isApproved() == false
         try {
             mockMvc.perform(patch("/api/approve/entityDescriptor/" + defaultEntityDescriptorResourceId + "/approve"))
         }
         catch (Exception e) {
             e instanceof ForbiddenException
         }
+        entityDescriptorRepository.findByResourceId(defaultEntityDescriptorResourceId).isApproved() == false
     }
 
     @WithMockUser(value = "BUser", roles = ["USER"])
     def 'Approver group can approve an entity descriptor'() {
+        expect:
+        entityDescriptorRepository.findByResourceId(defaultEntityDescriptorResourceId).isApproved() == false
+
         when:
         def result = mockMvc.perform(patch("/api/approve/entityDescriptor/" + defaultEntityDescriptorResourceId + "/approve"))
 
@@ -139,10 +146,14 @@ class ApproveControllerTests extends AbstractBaseDataJpaTest {
                 .andExpect(jsonPath("\$.id").value(defaultEntityDescriptorResourceId))
                 .andExpect(jsonPath("\$.serviceEnabled").value(false))
                 .andExpect(jsonPath("\$.approved").value(true))
+        entityDescriptorRepository.findByResourceId(defaultEntityDescriptorResourceId).isApproved()
     }
 
     @WithMockUser(value = "BUser", roles = ["USER"])
     def 'Approver can approve and un-approve an entity descriptor'() {
+        expect:
+        entityDescriptorRepository.findByResourceId(defaultEntityDescriptorResourceId).isApproved() == false
+
         when:
         def result = mockMvc.perform(patch("/api/approve/entityDescriptor/" + defaultEntityDescriptorResourceId + "/approve"))
 
@@ -151,6 +162,7 @@ class ApproveControllerTests extends AbstractBaseDataJpaTest {
                 .andExpect(jsonPath("\$.id").value(defaultEntityDescriptorResourceId))
                 .andExpect(jsonPath("\$.serviceEnabled").value(false))
                 .andExpect(jsonPath("\$.approved").value(true))
+        entityDescriptorRepository.findByResourceId(defaultEntityDescriptorResourceId).isApproved()
 
         when:
         def result2 = mockMvc.perform(patch("/api/approve/entityDescriptor/" + defaultEntityDescriptorResourceId + "/unapprove"))
@@ -160,6 +172,6 @@ class ApproveControllerTests extends AbstractBaseDataJpaTest {
                 .andExpect(jsonPath("\$.id").value(defaultEntityDescriptorResourceId))
                 .andExpect(jsonPath("\$.serviceEnabled").value(false))
                 .andExpect(jsonPath("\$.approved").value(false))
-
+        entityDescriptorRepository.findByResourceId(defaultEntityDescriptorResourceId).isApproved() == false
     }
 }

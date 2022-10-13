@@ -85,6 +85,12 @@ public class EntityDescriptorController {
         return ResponseEntity.ok(entityDescriptorService.getAllEntityDescriptorProjectionsBasedOnUserAccess());
     }
 
+    @GetMapping("/EntityDescriptors/needsApproval")
+    @Transactional
+    public ResponseEntity<?> getAllNeedingApproval() throws ForbiddenException {
+        return ResponseEntity.ok(entityDescriptorService.getAllEntityDescriptorProjectionsNeedingApprovalBasedOnUserAccess());
+    }
+
     @GetMapping("/EntityDescriptor/{resourceId}/Versions")
     @Transactional
     public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) throws PersistentEntityNotFound, ForbiddenException {
