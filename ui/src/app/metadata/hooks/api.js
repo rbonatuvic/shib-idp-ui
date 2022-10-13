@@ -29,6 +29,12 @@ export function useNonAdminSources() {
     });
 }
 
+export function useUnapprovedSources() {
+    return useFetch(`${API_BASE_PATH}${getMetadataListPath('source')}/needsApproval`, {
+        cachePolicy: 'no-cache'
+    });
+}
+
 export function getMetadataListPath(type) {
     return `/${lists[type]}`;
 }

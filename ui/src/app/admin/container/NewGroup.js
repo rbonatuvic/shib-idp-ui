@@ -66,13 +66,13 @@ export function NewGroup({ groups }) {
                             {(data, errors) =>
                             <>
                                 <GroupForm
-                                context={ { groups } }
-                                group={data}
-                                errors={errors}
-                                schema={schema}
-                                loading={loading}
-                                onSave={(data) => save(data)}
-                                onCancel={() => cancel()} />
+                                    context={ { groups } }
+                                    group={data}
+                                    errors={errors}
+                                    schema={schema}
+                                    loading={loading}
+                                    onSave={(data) => save(data)}
+                                    onCancel={() => cancel()} />
                             </>}
                         </FormManager> }
                     </Schema>

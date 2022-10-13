@@ -11,8 +11,9 @@ import Nav from 'react-bootstrap/Nav';
 import { Switch, Route, useRouteMatch, Redirect } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import Badge from 'react-bootstrap/Badge';
+import { ApprovalActions } from '../../admin/container/ApprovalActions';
 
-export function ActionsTab({ sources, users, reloadSources, reloadUsers, loadingSources, loadingUsers }) {
+export function ActionsTab({ sources, users, reloadSources, reloadUsers, reloadApprovals, loadingSources, loadingUsers, loadingApprovals }) {
 
     const { path, url } = useRouteMatch();
 
@@ -52,7 +53,7 @@ export function ActionsTab({ sources, users, reloadSources, reloadUsers, loading
                         </Nav>
                         <hr />
                     </div>
-                    
+                    <div className="px-3 pb-0">
                     <Switch>
                         <Route exact path={`${path}`}>
                             <Redirect to={`${url}/enable`} />
@@ -71,7 +72,17 @@ export function ActionsTab({ sources, users, reloadSources, reloadUsers, loading
                                 {loadingUsers && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
                             </UserActions>
                         } />
+                        <Route path={`${path}/approve`} render={() =>
+                            <ApprovalActions users={users} reloadUsers={reloadApprovals}>
+                                {(approve) =>
+                                    <SourceList entities={sources} onDelete={reloadSources} onApprove={(s, e) => approve(s, e, reloadApprovals)}>
+                                        {loadingApprovals && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
+                                    </SourceList>
+                                }
+                            </ApprovalActions>
+                        } />
                     </Switch>
+                    </div>
                 </div>
             </section>
         </>

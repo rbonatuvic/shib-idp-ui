@@ -14,7 +14,7 @@ import { ActionsTab } from './ActionsTab';
 import { useCurrentUserLoading, useIsAdmin } from '../../core/user/UserContext';
 import useFetch from 'use-http';
 import API_BASE_PATH from '../../App.constant';
-import { useNonAdminSources } from '../../metadata/hooks/api';
+import { useNonAdminSources, useUnapprovedSources} from '../../metadata/hooks/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Badge from 'react-bootstrap/Badge';
@@ -31,12 +31,14 @@ export function Dashboard () {
     const [actions, setActions] = React.useState(0);
     const [users, setUsers] = React.useState([]);
     const [sources, setSources] = React.useState([]);
+    const [approvals, setApprovals] = React.useState([]);
 
     const { get, response, loading } = useFetch(`${API_BASE_PATH}`, {
         cachePolicy: 'no-cache'
     });
 
     const sourceLoader = useNonAdminSources();
+    const approvalLoader = useUnapprovedSources();
 
     async function loadUsers() {
         const users = await get('/admin/users')
@@ -52,14 +54,22 @@ export function Dashboard () {
         }
     }
 
+    async function loadApprovals() {
+        const s = await approvalLoader.get();
+        if (response.ok) {
+            setApprovals(s);
+        }
+    }
+
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
         loadSources();
         loadUsers();
+        loadApprovals();
     }, [location]);
 
     React.useEffect(() => {
-        setActions(users.length + sources.length);
+        setActions(users.length + sources.length + approvals.length);
     }, [users, sources]);
 
     return (
@@ -114,6 +124,8 @@ export function Dashboard () {
                             users={users}
                             reloadSources={loadSources}
                             reloadUsers={loadUsers}
+                            reloadApprovals={loadApprovals}
+                            loadingApprovals={approvalLoader.loading}
                             loadingSources={sourceLoader.loading}
                             loadingUsers={loading} />
                     </ProtectRoute>

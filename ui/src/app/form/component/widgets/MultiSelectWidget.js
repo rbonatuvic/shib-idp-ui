@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
@@ -24,22 +24,28 @@ const MultiSelectWidget = ({
     onBlur,
     onFocus,
     autofocus,
-    options,
     schema,
     rawErrors = [],
     formContext,
     ...props
 }) => {
     // const inputType = (type || schema.type) === 'string' ? 'text' : `${type || schema.type}`;
+    const typeahead = useRef();
+
+    const [enums, setEnums] = React.useState(schema.items.enum);
+    const [enumNames, setEnumNames] = React.useState(schema.items.enumNames);
+
+    React.useEffect(() => {
+        const { items } = schema;
+        setEnums(items.enum);
+        setEnumNames(items.enumNames);
+    }, [schema]);
     
-    const opts = [];
-
-    React.useEffect(() => console.log(formContext), [formContext]);
-    React.useEffect(() => console.log(props), [props]);
-
     const [touched, setTouched] = React.useState(false);
 
-    const [multiSelections, setMultiSelections] = React.useState([]);
+    React.useEffect(() => {
+
+    }, [schema]);
 
     return (
        <Form.Group style={{ marginTop: '20px' }}>
@@ -51,13 +57,14 @@ const MultiSelectWidget = ({
             {schema.description && <InfoIcon value={schema.description} />}
         </Form.Label>
         <Typeahead
-          id={`option-selector-items-${id}`}
-          labelKey="name"
-          multiple
-          onChange={setMultiSelections}
-          options={opts}
-          placeholder="Choose approval groups..."
-          selected={multiSelections}
+            id={`option-selector-items-${id}`}
+            inputProps={{ id: `option-selector-${id}` }}
+            ref={typeahead}
+            labelKey={ (option) => enumNames[enums.indexOf(option)] }
+            onChange={ onChange }
+            options={enums}
+            placeholder="Choose approval groups..."
+            selected={value}
         />
         {rawErrors?.length > 0 && touched && (
             <ListGroup as="ul">
