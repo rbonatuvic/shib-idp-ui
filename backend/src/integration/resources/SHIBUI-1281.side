@@ -1809,6 +1809,13 @@
       ],
       "value": "otherThings"
     }, {
+      "id": "c01aaef5-b886-41aa-be33-2e30f988d2f7",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "id=option-selector-root_relyingPartyOverrides_authenticationMethods_3",
+      "targets": [],
+      "value": "${KEY_ENTER}"
+    }, {
       "id": "7c85fe59-dc95-4328-a010-33d1a06a5ce5",
       "comment": "",
       "command": "click",
@@ -1859,11 +1866,11 @@
       "id": "3baa7bd3-55c0-4d10-8aa3-c0daa63ec4d4",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(2) > div:nth-child(2) > .border-bottom > .text-truncate",
+      "target": "css=div:nth-child(2) > div:nth-child(3) > .border-bottom > .text-truncate",
       "targets": [
-        ["css=div:nth-child(2) > div:nth-child(2) > .border-bottom > .text-truncate", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section/div/div[2]/div[2]/div[2]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(2) > div:nth-child(3) > .border-bottom > .text-truncate", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section/div/div[2]/div[2]/div[3]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'test-1234')]", "xpath:innerText"]
       ],
       "value": "test-1234"
@@ -1922,7 +1929,7 @@
         ["xpath=//section/div/div/span", "xpath:position"],
         ["xpath=//span[contains(.,'Current Metadata Sources')]", "xpath:innerText"]
       ],
-      "value": "10000"
+      "value": "30000"
     }, {
       "id": "ba9fb8e8-d332-45bd-accd-703284744136",
       "comment": "",
@@ -1949,10 +1956,21 @@
       ],
       "value": "test-1234"
     }, {
-      "id": "b2d9f789-fb94-459f-9947-5364cebc43d1",
+      "id": "86ceae7b-49f1-4830-b965-b58a11e06445",
       "comment": "",
       "command": "assertText",
       "target": "css=td:nth-child(3)",
+      "targets": [
+        ["css=td:nth-child(3)", "css:finder"],
+        ["xpath=//td[3]", "xpath:position"],
+        ["xpath=//td[contains(.,'root')]", "xpath:innerText"]
+      ],
+      "value": "SAML"
+    }, {
+      "id": "b2d9f789-fb94-459f-9947-5364cebc43d1",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=td:nth-child(4)",
       "targets": [
         ["css=td:nth-child(3)", "css:finder"],
         ["xpath=//td[3]", "xpath:position"],
