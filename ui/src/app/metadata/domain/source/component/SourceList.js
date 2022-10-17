@@ -68,7 +68,7 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                                 {onEnable && canEnable ?
                                                     <Form.Check
                                                         type="switch"
-                                                        id={`enable-switch-${source.id}`}
+                                                        id={`enable-switch-${idx}`}
                                                         size="lg"
                                                         aria-label={translator(source.serviceEnabled ? 'label.disable' : 'label.enable')}
                                                         onChange={({ target: { checked } }) => onEnable(source, checked)}
