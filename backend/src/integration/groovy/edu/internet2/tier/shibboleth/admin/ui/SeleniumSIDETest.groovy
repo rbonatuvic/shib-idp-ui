@@ -107,12 +107,12 @@ class SeleniumSIDETest extends Specification {
 
         where:
         name                                                                | file
-/*        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
+        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
         'SHIBUI-1364: Compare FSMP'                                         | '/SHIBUI-1364-2.side'
         'SHIBUI-1364: Compare LDMP'                                         | '/SHIBUI-1364-3.side'
-        'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'*/
+        'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
         'SHIBUI-1281: Metadata Source Dashboard'                            | '/SHIBUI-1281.side'
-/*        'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
+        'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
         'SHIBUI-950: Metadata Source from XML w/ digest'                    | '/SHIBUI-950.side'
         'SHIBUI-1352: Create LocalDynamic provider'                         | '/SHIBUI-1352-1.side'
         'SHIBUI-1352: Create FileSystem provider'                           | '/SHIBUI-1352-2.side'
@@ -161,6 +161,6 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-2270: Verify property set CRUD'                             | '/SHIBUI-2270-1.side'
         'SHIBUI-2270: Verify full property set'                             | '/SHIBUI-2270-2.side'
         'SHIBUI-2268: Verify Algorithm Filter'                              | '/SHIBUI-2268.side'
-        'SHIBUI-2269: Verify XML generation of external filters'            | '/SHIBUI-2269.side'*/
+        'SHIBUI-2269: Verify XML generation of external filters'            | '/SHIBUI-2269.side'
     }
 }

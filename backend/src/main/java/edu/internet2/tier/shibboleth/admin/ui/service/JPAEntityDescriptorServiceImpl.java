@@ -517,7 +517,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 keyDescriptorRep.setElementType(keyInfoType);
                 if (keyInfoType != KeyDescriptorRepresentation.ElementType.unsupported) {
                     List<XMLObject> children = keyInfo.getOrderedChildren().stream().filter(xmlObj -> {
-                        boolean xmlWeDoNotWant = xmlObj instanceof KeyName || xmlObj instanceof KeyValue;
+                        boolean xmlWeDoNotWant = xmlObj instanceof KeyName || xmlObj instanceof KeyValue || xmlObj == null;
                         return !xmlWeDoNotWant;
                     }).collect(Collectors.toList());
                     XMLObject obj = children.get(0);
@@ -533,7 +533,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
     private KeyDescriptorRepresentation.ElementType determineKeyInfoType(KeyInfo keyInfo) {
         List<XMLObject> children = keyInfo.getOrderedChildren().stream().filter(xmlObj -> {
-            boolean xmlWeDoNotWant = xmlObj instanceof KeyName || xmlObj instanceof KeyValue;
+            boolean xmlWeDoNotWant = xmlObj instanceof KeyName || xmlObj instanceof KeyValue || xmlObj == null;
             return !xmlWeDoNotWant;
         }).collect(Collectors.toList());
         if (children.size() < 1) {

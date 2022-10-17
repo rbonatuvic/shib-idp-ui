@@ -310,10 +310,21 @@
       ],
       "value": "test-1234"
     }, {
-      "id": "b2d9f789-fb94-459f-9947-5364cebc43d1",
+      "id": "83491735-f305-45f9-922c-697ac167c4e6",
       "comment": "",
       "command": "assertText",
       "target": "css=td:nth-child(3)",
+      "targets": [
+        ["css=td:nth-child(3)", "css:finder"],
+        ["xpath=//td[3]", "xpath:position"],
+        ["xpath=//td[contains(.,'root')]", "xpath:innerText"]
+      ],
+      "value": "SAML"
+    }, {
+      "id": "b2d9f789-fb94-459f-9947-5364cebc43d1",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=td:nth-child(4)",
       "targets": [
         ["css=td:nth-child(3)", "css:finder"],
         ["xpath=//td[3]", "xpath:position"],
