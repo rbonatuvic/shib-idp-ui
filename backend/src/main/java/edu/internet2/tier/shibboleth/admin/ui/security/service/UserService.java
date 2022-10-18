@@ -26,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -145,8 +146,17 @@ public class UserService {
         }
     }
 
+    /**
+     * @return a list of ALL groups that the user can approve for (checks ALL the users groups)
+     */
     public List<String> getGroupsCurrentUserCanApprove() {
-        return getCurrentUserGroup().getApproveForList();
+        HashSet<String> fullSet = new HashSet<>();
+        for (Group g : getCurrentUser().getUserGroups()) {
+            fullSet.addAll(g.getApproveForList());
+        }
+        ArrayList<String> result = new ArrayList<>();
+        result.addAll(fullSet);
+        return result;
     }
 
     public Set<String> getUserRoles(String username) {
