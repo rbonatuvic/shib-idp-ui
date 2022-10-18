@@ -6,7 +6,7 @@ import { faSpinner, faSave } from '@fortawesome/free-solid-svg-icons';
 import Translate from '../../i18n/components/translate';
 import set from 'lodash/set';
 
-import { useGroupUiSchema, useGroupUiValidator, useGroupSchema, useGroupParser, useGroupFormatter} from '../hooks';
+import { useGroupUiSchema, useGroupUiValidator, useGroupParser, useGroupFormatter} from '../hooks';
 import { FormContext, setFormDataAction, setFormErrorAction } from '../../form/FormManager';
 
 export function GroupForm ({group = {}, errors = [], context = {}, loading = false, schema, onSave, onCancel}) {
