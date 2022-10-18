@@ -13,7 +13,7 @@ export function Scroller ({ entities, children }) {
     React.useEffect(() => {
         let maxIndex = (page * PAGE_LIMIT) - 1,
             minIndex = 0;
-        const l = entities.filter((resolver, index) => (maxIndex >= index && index >= minIndex));
+        const l = entities?.filter((resolver, index) => (maxIndex >= index && index >= minIndex));
         setLimited(l);
     }, [entities, page])
 
@@ -23,9 +23,9 @@ export function Scroller ({ entities, children }) {
 
     return (
         <InfiniteScroll
-            dataLength={limited.length} //This is important field to render the next data
+            dataLength={limited?.length} //This is important field to render the next data
             next={() => loadNext()}
-            hasMore={entities.length > limited.length}
+            hasMore={entities?.length > limited?.length}
         >
             { children(limited) }
         </InfiniteScroll>

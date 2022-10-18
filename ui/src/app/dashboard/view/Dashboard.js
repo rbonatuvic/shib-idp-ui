@@ -11,7 +11,7 @@ import { SourcesTab } from './SourcesTab';
 import { ProvidersTab } from './ProvidersTab';
 import { AdminTab } from './AdminTab';
 import { ActionsTab } from './ActionsTab';
-import { useCurrentUserLoading, useIsAdmin } from '../../core/user/UserContext';
+import { useCurrentUserLoading, useIsAdmin, useIsApprover } from '../../core/user/UserContext';
 import useFetch from 'use-http';
 import API_BASE_PATH from '../../App.constant';
 import { useNonAdminSources, useUnapprovedSources} from '../../metadata/hooks/api';
@@ -25,12 +25,13 @@ export function Dashboard () {
     const location = useLocation();
 
     const isAdmin = useIsAdmin();
+    const isApprover = useIsApprover();
 
     const loadingUser = useCurrentUserLoading();
 
     const [actions, setActions] = React.useState(0);
-    const [users, setUsers] = React.useState([]);
-    const [sources, setSources] = React.useState([]);
+    const [users, setUsers] = React.useState(null);
+    const [sources, setSources] = React.useState(null);
     const [approvals, setApprovals] = React.useState([]);
 
     const { get, response, loading } = useFetch(`${API_BASE_PATH}`, {
@@ -49,28 +50,30 @@ export function Dashboard () {
 
     async function loadSources() {
         const s = await sourceLoader.get();
-        if (response.ok) {
+        if (sourceLoader.response.ok) {
             setSources(s);
         }
     }
 
     async function loadApprovals() {
-        const s = await approvalLoader.get();
-        if (response.ok) {
-            setApprovals(s);
+        const a = await approvalLoader.get();
+        if (approvalLoader.response.ok) {
+            setApprovals(a);
         }
     }
 
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
-        loadSources();
-        loadUsers();
+        if (isAdmin) {
+            loadSources();
+            loadUsers();
+        }
         loadApprovals();
     }, [location]);
 
     React.useEffect(() => {
-        setActions(users.length + sources.length + approvals.length);
-    }, [users, sources]);
+        setActions((users?.length || 0) + (sources?.length || 0) + approvals.length);
+    }, [users, sources, approvals]);
 
     return (
         <div className="container-fluid p-3" role="navigation">
@@ -97,13 +100,15 @@ export function Dashboard () {
                             <Translate value="label.admin">Admin</Translate>
                         </NavLink>
                     </Nav.Item>
-                    <Nav.Item>
-                        <NavLink className="nav-link d-flex align-items-center" to={`${path}/admin/actions`}>
-                            <Translate value="label.action-required">Action Required</Translate>
-                            <Badge pill bg="danger" className="ms-1">{actions}</Badge>
-                        </NavLink>
-                    </Nav.Item>
                 </>
+                }
+                {isApprover && 
+                <Nav.Item>
+                    <NavLink className="nav-link d-flex align-items-center" to={`${path}/admin/actions`}>
+                        <Translate value="label.action-required">Action Required</Translate>
+                        <Badge pill bg="danger" className="ms-1">{actions}</Badge>
+                    </NavLink>
+                </Nav.Item>
                 }
             </Nav>
             <Switch>
@@ -112,22 +117,21 @@ export function Dashboard () {
                 </Route>
                 <Route path={`${path}/metadata/manager/resolvers`} component={SourcesTab} />
                 <Route path={`${path}/metadata/manager/providers`} component={ProvidersTab} />
+                <Route path={`${path}/admin/actions`} render={() =>
+                    <ActionsTab
+                        sources={sources}
+                        users={users}
+                        approvals={approvals}
+                        reloadSources={loadSources}
+                        reloadUsers={loadUsers}
+                        reloadApprovals={loadApprovals}
+                        loadingApprovals={approvalLoader.loading}
+                        loadingSources={sourceLoader.loading}
+                        loadingUsers={loading} />
+                } />
                 <Route path={`${path}/admin/management`} render={() =>
                     <ProtectRoute redirectTo="/dashboard">
                         <AdminTab />
-                    </ProtectRoute>
-                } />
-                <Route path={`${path}/admin/actions`} render={() =>
-                    <ProtectRoute redirectTo="/dashboard">
-                        <ActionsTab
-                            sources={sources}
-                            users={users}
-                            reloadSources={loadSources}
-                            reloadUsers={loadUsers}
-                            reloadApprovals={loadApprovals}
-                            loadingApprovals={approvalLoader.loading}
-                            loadingSources={sourceLoader.loading}
-                            loadingUsers={loading} />
                     </ProtectRoute>
                 } />
                 <Route exact path={`${path}/*`}>

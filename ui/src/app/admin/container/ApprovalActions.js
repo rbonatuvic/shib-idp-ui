@@ -1,24 +1,24 @@
 import React from 'react';
 import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
-import { useMetadataActivator, useMetadataEntity } from '../../metadata/hooks/api';
+import { useMetadataApprover, useMetadataEntity } from '../../metadata/hooks/api';
 
 import { NotificationContext, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
 
-export function ApprovalActions ({type, children}) {
+export function ApprovalActions ({type = 'source', children}) {
 
     const { dispatch } = React.useContext(NotificationContext);
 
-    const { del, response } = useMetadataEntity(type, {
+    const { del, response } = useMetadataEntity('source', {
         cachePolicy: 'no-cache'
     });
 
-    const activator = useMetadataActivator(type);
+    const activator = useMetadataApprover('source');
 
     async function approveEntity(entity, enabled, cb = () => {}) {
-        await activator.patch(`/${type === 'source' ? entity.id : entity.resourceId}/${enabled ? 'approve' : 'unapprove'}`);
+        await activator.patch(`${type === 'source' ? entity.id : entity.resourceId}/${enabled ? 'approve' : 'unapprove'}`);
         if (activator?.response.ok) {
             dispatch(createNotificationAction(
-                `Metadata ${type} has been ${enabled ? 'enabled' : 'disabled'}.`
+                `Metadata ${type} has been ${enabled ? 'approved' : 'unapproved'}.`
             ));
             cb();
         } else {

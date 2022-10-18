@@ -16,7 +16,7 @@ import { useTranslator } from '../../../../i18n/hooks';
 import { useCanEnable, useIsAdmin } from '../../../../core/user/UserContext';
 import { GroupsProvider } from '../../../../admin/hoc/GroupsProvider';
 
-export default function SourceList({ entities, onDelete, onEnable, onChangeGroup, children }) {
+export default function SourceList({ entities, onDelete, onEnable, onApprove, onChangeGroup, children }) {
 
     const translator = useTranslator();
     const isAdmin = useIsAdmin();
@@ -24,7 +24,7 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
 
     return (
         <React.Fragment>
-            <Scroller entities={entities}>
+            <Scroller entities={entities || []}>
             {(limited) =>
                 <div className="table-responsive mt-3 source-list">
                     <table className="table table-striped w-100 table-hover">
@@ -35,6 +35,7 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                 <th className=""><Translate value="label.author">Author</Translate></th>
                                 <th className=""><Translate value="label.creation-date">Created Date</Translate></th>
                                 <th className="text-center"><Translate value="label.enabled">Enabled</Translate></th>
+                                {onApprove && <th className="text-center"><Translate value="label.approval">Approval</Translate></th>}
                                 {isAdmin && onChangeGroup && <th className=""><Translate value="label.group">Group</Translate></th> }
                                 {onDelete && isAdmin &&
                                 <th className="w-auto">
@@ -61,7 +62,7 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                             <td className="align-middle"><FormattedDate date={source.createdDate} /></td>
                                             <td className="text-center align-middle">
                                                 <span className="d-flex justify-content-center align-items-center">
-                                                {onEnable && canEnable ?
+                                                {onEnable && (canEnable || source.approved) ?
                                                     <Form.Check
                                                         type="switch"
                                                         id={`enable-switch-${source.id}`}
@@ -78,6 +79,21 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                                 }
                                                 </span>
                                             </td>
+                                            {onApprove &&
+                                            <td className="text-center align-middle">
+                                                <span className="d-flex justify-content-center align-items-center">
+                                                    <Form.Check
+                                                        type="switch"
+                                                        id={`approve-switch-${source.id}`}
+                                                        size="lg"
+                                                        aria-label={translator(source.approved ? 'label.disapprove' : 'label.approve')}
+                                                        onChange={({ target: { checked } }) => onApprove(source, checked)}
+                                                        checked={source.approved}
+                                                    >
+                                                    </Form.Check>
+                                                </span>
+                                            </td>
+                                            }
                                             {isAdmin && onChangeGroup &&
                                                 <td className="align-middle">
                                                     <label htmlFor={`group-${source.serviceProviderName}`} className="sr-only"><Translate value="action.source-group">Group</Translate></label>

@@ -145,6 +145,12 @@ export function useMetadataActivator(type, opts = {
     return useFetch(`${API_BASE_PATH}/activate/${type === 'source' ? 'entityDescriptor' : 'MetadataResolvers'}/`, opts);
 }
 
+export function useMetadataApprover(type, opts = {
+    cachePolicy: 'no-cache'
+}) {
+    return useFetch(`${API_BASE_PATH}/approve/${type === 'source' ? 'entityDescriptor' : 'MetadataResolvers'}/`, opts);
+}
+
 export function useFilterActivator(providerId, opts = {
     cachePolicy: 'no-cache'
 }) {

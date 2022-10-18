@@ -75,6 +75,15 @@ function useCanEnable() {
     return isAdmin || isEnabler;
 }
 
+function useCanApprove() {
+    return true;
+}
+
+function useIsApprover() {
+    const user = useCurrentUser();
+    return user.canApprove;
+}
+
 function useUserGroup() {
     const user = useCurrentUser();
     return (user?.userGroups && user.userGroups.length > 0) ? user.userGroups[0] : null;
@@ -103,7 +112,9 @@ export {
     useCurrentUser,
     useIsAdmin,
     useIsAdminOrInGroup,
+    useIsApprover,
     useCanEnable,
+    useCanApprove,
     useCurrentUserLoading,
     useCurrentUserLoader,
     useUserGroupRegexValidator,

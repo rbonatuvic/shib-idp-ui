@@ -63,6 +63,7 @@ const MultiSelectWidget = ({
             labelKey={ (option) => enumNames[enums.indexOf(option)] }
             onChange={ onChange }
             options={enums}
+            multiple
             placeholder="Choose approval groups..."
             selected={value}
         />
