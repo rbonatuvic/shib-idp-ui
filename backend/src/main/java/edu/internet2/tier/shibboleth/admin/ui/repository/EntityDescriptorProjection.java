@@ -16,4 +16,5 @@ public interface EntityDescriptorProjection {
     LocalDateTime getCreatedDate();
     boolean getServiceEnabled();
     String getIdOfOwner();
+    boolean getApproved();
 }
