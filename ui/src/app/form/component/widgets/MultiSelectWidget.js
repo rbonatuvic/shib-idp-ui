@@ -41,7 +41,7 @@ const MultiSelectWidget = ({
         setEnumNames(items.enumNames);
     }, [schema]);
     
-    const [touched, setTouched] = React.useState(false);
+    const [touched] = React.useState(false);
 
     React.useEffect(() => {
 
