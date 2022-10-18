@@ -140,6 +140,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Override
     public EntityDescriptorRepresentation createNewEntityDescriptorFromXMLOrigin(EntityDescriptor ed) {
         ed.setIdOfOwner(userService.getCurrentUserGroup().getOwnerId());
+        ownershipRepository.deleteEntriesForOwnedObject(ed);
+        ownershipRepository.save(new Ownership(userService.getCurrentUserGroup(), ed));
         EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
         return createRepresentationFromDescriptor(savedEntity);
     }
@@ -153,6 +155,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     public EntityDescriptorRepresentation updateGroupForEntityDescriptor(String resourceId, String groupId) {
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
         ed.setIdOfOwner(groupId);
+        ownershipRepository.deleteEntriesForOwnedObject(ed);
+        ownershipRepository.save(new Ownership(groupService.find(groupId), ed));
         EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
         return createRepresentationFromDescriptor(savedEntity);
     }

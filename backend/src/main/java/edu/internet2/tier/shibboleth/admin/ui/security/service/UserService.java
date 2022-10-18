@@ -8,6 +8,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupReg
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.OwnershipConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnableType;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnerType;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
