@@ -8,6 +8,7 @@ import Translate from '../../i18n/components/translate';
 import { InfoIcon } from '../../form/component/InfoIcon';
 import { useTranslator } from '../../i18n/hooks';
 import { useMetadataSources } from '../hooks/api';
+import { useUserGroup } from '../../core/user/UserContext';
 import Button from 'react-bootstrap/Button';
 
 export function MetadataSourceProtocolSelector({ types = [], loading, children}) {
@@ -51,7 +52,7 @@ export function MetadataSourceProtocolSelector({ types = [], loading, children})
         setSourceIds(data.map(s => s.entityId));
     }, [data]);
 
-    React.useState(() => console.log(sourceNames), [sourceNames]);
+    const group = useUserGroup();
 
     return (
         <>{showSelector ?
@@ -135,12 +136,17 @@ export function MetadataSourceProtocolSelector({ types = [], loading, children})
                                     <Form.Control
                                         id="root_entityId"
                                         isInvalid={errors.entityId}
-                                        type="text" {...register('entityId', {required: true, validate: {
-                                            unique: v => !(sourceIds.indexOf(v) > -1)
-                                        }})} />
+                                        type="text" {...register('entityId', {
+                                            required: true,
+                                            validate: {
+                                                unique: v => !(sourceIds.indexOf(v) > -1)
+                                            },
+                                            pattern: new RegExp(group?.validationRegex)
+                                        })} />
                                     <Form.Text className={errors.entityId ? 'text-danger' : 'text-muted'}>
                                         {errors?.entityId?.type === 'unique' && <Translate value={`message.must-be-unique`} />}
                                         {errors?.entityId?.type === 'required' && <Translate value={`message.service-resolver-name-required`} />}
+                                        {errors?.entityId?.type === 'pattern' && <Translate value={`message.group-pattern-fail`} params={{regex: group?.validationRegex}} />}
                                     </Form.Text>
                                 </Form.Group>
                             </Form>
