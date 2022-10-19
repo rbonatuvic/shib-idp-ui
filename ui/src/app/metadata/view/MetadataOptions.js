@@ -69,7 +69,7 @@ export function MetadataOptions ({reload}) {
                     model={metadata}
                     showGroup={type === 'source'}>
                     <div className="d-flex align-items-start btn-group">
-                        {enable && (canEnable || metadata.approved) &&
+                        {enable && (canEnable && metadata.approved) &&
                         <Button variant={enabled ? 'outline-secondary' : 'outline-secondary' } size="sm" className=""
                                 onClick={() => enable(metadata, !enabled, reload)}>
                                      <span className=" me-1">
