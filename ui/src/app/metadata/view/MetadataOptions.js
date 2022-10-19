@@ -20,7 +20,8 @@ import { MetadataFilterConfigurationList } from '../domain/filter/component/Meta
 import { MetadataFilterTypes } from '../domain/filter';
 import { useMetadataSchema } from '../hooks/schema';
 import { FilterableProviders } from '../domain/provider';
-import { useCanEnable, useIsAdmin } from '../../core/user/UserContext';
+import { useCanEnable, useIsAdmin, useIsApprover } from '../../core/user/UserContext';
+import { ApprovalActions } from '../../admin/container/ApprovalActions';
 
 export function MetadataOptions ({reload}) {
 
@@ -54,6 +55,7 @@ export function MetadataOptions ({reload}) {
 
     const canEnable = useCanEnable();
     const isAdmin = useIsAdmin();
+    const canApprove = useIsApprover();
 
     return (
         <MetadataActions type={type}>
@@ -77,6 +79,19 @@ export function MetadataOptions ({reload}) {
                                      </span>
                             <FontAwesomeIcon size="lg" icon={enabled ? faToggleOn : faToggleOff} />
                         </Button>
+                        }
+                        {canApprove &&
+                        <ApprovalActions>
+                            {(approve) => 
+                            <Button variant={metadata.approved ? 'outline-success' : 'outline-success' } size="sm" className=""
+                                    onClick={() => approve(metadata, !metadata.approved, reload)}>
+                                        <span className=" me-1">
+                                            <Translate value={metadata.approved ? 'label.disapprove' : 'label.approve'} />
+                                        </span>
+                                <FontAwesomeIcon size="lg" icon={metadata.approved ? faToggleOn : faToggleOff} />
+                            </Button>
+                            }
+                        </ApprovalActions>
                         }
                         {type === 'source' && remove && isAdmin &&
                         <Button
