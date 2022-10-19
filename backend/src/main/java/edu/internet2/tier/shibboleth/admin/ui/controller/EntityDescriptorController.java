@@ -109,8 +109,7 @@ public class EntityDescriptorController {
     @GetMapping("/EntityDescriptor/{resourceId}")
     @Transactional
     public ResponseEntity<?> getOne(@PathVariable String resourceId) throws PersistentEntityNotFound, ForbiddenException {
-        return ResponseEntity.ok(entityDescriptorService
-                        .createRepresentationFromDescriptor(entityDescriptorService.getEntityDescriptorByResourceId(resourceId)));
+        return ResponseEntity.ok(entityDescriptorService.createRepresentationFromDescriptor(entityDescriptorService.getEntityDescriptorByResourceId(resourceId)));
     }
 
     @GetMapping(value = "/EntityDescriptor/{resourceId}", produces = "application/xml")

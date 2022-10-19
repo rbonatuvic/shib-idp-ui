@@ -8,7 +8,6 @@ import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupReg
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.OwnershipConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnableType;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnerType;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
@@ -167,15 +166,18 @@ public class UserService {
     }
 
      // @TODO - probably delegate this out to something plugable at some point
-    public boolean isAuthorizedFor(Ownable ownableObject) {
+    public boolean canViewOrEditTarget(Ownable ownableObject) {
         switch (getCurrentUserAccess()) {
         case ADMIN: // Pure admin is authorized to do anything
             return true;
-        case GROUP: // if the current user's group matches the object's group we are good.
+        case GROUP: // if the current user's group matches the object's group OR the user is an approver to the object
             Set<Ownership> owners = ownershipRepository.findOwnableObjectOwners(ownableObject);
             String currentUsersGroupId = getCurrentUser().getGroupId();
+            List<String> userApproveForGroups = getCurrentUser().getGroup().getApproveForList();
+            // Check user is part of the owner's group
             for (Ownership owner : owners) {
-                if (currentUsersGroupId.equals(owner.getOwnerId()) && OwnerType.valueOf(owner.getOwnerType()) == OwnerType.GROUP) {
+                boolean isGroupOwner = OwnerType.valueOf(owner.getOwnerType()) == OwnerType.GROUP;
+                if (isGroupOwner && (currentUsersGroupId.equals(owner.getOwnerId())) || userApproveForGroups.contains(owner.getOwnerId())) {
                     return true;
                 }
             }

@@ -426,6 +426,11 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return entityDescriptorRepository.findAllDisabledAndNotOwnedByAdmin().map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
     }
 
+    /**
+     * Get the "short" detail list of entity descriptors that match the current user's group. The intent is the list will be those
+     * EDs that the user would see on the dashboard.
+     * @throws ForbiddenException
+     */
     @Override
     public List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsBasedOnUserAccess() throws ForbiddenException {
         switch (userService.getCurrentUserAccess()) {
@@ -467,7 +472,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (ed == null) {
             throw new PersistentEntityNotFound(String.format("The entity descriptor with entity id [%s] was not found.", resourceId));
         }
-        if (!userService.isAuthorizedFor(ed)) {
+        if (!userService.canViewOrEditTarget(ed)) {
             throw new ForbiddenException();
         }
         return ed;
@@ -490,7 +495,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (StringUtils.isEmpty(edRep.getIdOfOwner())) {
             edRep.setIdOfOwner(StringUtils.isNotEmpty(existingEd.getIdOfOwner()) ? existingEd.getIdOfOwner() :  userService.getCurrentUserGroup().getOwnerId());
         }
-        if (!userService.isAuthorizedFor(existingEd)) {
+        if (!userService.canViewOrEditTarget(existingEd)) {
             throw new ForbiddenException();
         }
         // Verify we're the only one attempting to update the EntityDescriptor
