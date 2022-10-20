@@ -464,3 +464,4 @@ custom:
       helpText: tooltip.resolveAttributes.oidc
       displayType: boolean
       attributeName: http://shibboleth.net/ns/profiles/oidc/userinfo/resolveAttributes
+      protocol: oidc
