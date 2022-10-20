@@ -6,8 +6,9 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import FormattedDate from '../../../../core/components/FormattedDate';
 import Translate from '../../../../i18n/components/translate';
@@ -63,15 +64,15 @@ export default function SourceList({ entities, onDelete, onEnable, onApprove, on
                                             <td className="text-center align-middle">
                                                 <span className="d-flex justify-content-center align-items-center">
                                                     {onApprove ?
-                                                    <Form.Check
-                                                        type="switch"
+                                                    <Button variant={source.approved ? 'outline-success' : 'outline-success' }
                                                         id={`approve-switch-${source.id}`}
-                                                        size="lg"
-                                                        aria-label={translator(source.approved ? 'label.disapprove' : 'label.approve')}
-                                                        onChange={({ target: { checked } }) => onApprove(source, checked)}
-                                                        checked={source.approved}
-                                                    >
-                                                    </Form.Check>
+                                                        size="sm" className=""
+                                                            onClick={() => onApprove(source, !source.approved)}>
+                                                                <span className=" me-1">
+                                                                    <Translate value={source.approved ? 'label.disapprove' : 'label.approve'} />
+                                                                </span>
+                                                        <FontAwesomeIcon size="lg" icon={faCheck} />
+                                                    </Button>
                                                     :
                                                     <Badge bg={source.approved ? 'success' : 'danger'}>
                                                         <Translate value={source.approved ? 'value.approved' : 'value.disapproved'}></Translate>
