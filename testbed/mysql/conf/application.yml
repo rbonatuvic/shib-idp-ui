@@ -54,28 +54,26 @@ custom:
     - name: signAssertion
       displayName: label.sign-the-assertion
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.sign-assertion
       attributeName: http://shibboleth.net/ns/profiles/saml2/sso/browser/signAssertions
       attributeFriendlyName: signAssertions
     - name: dontSignResponse
       displayName: label.dont-sign-the-response
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.dont-sign-response
       attributeName: http://shibboleth.net/ns/profiles/saml2/sso/browser/signResponses
       attributeFriendlyName: signResponses
+      invert: true
     - name: turnOffEncryption
       displayName: label.turn-off-encryption-of-response
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.turn-off-encryption
       attributeName: http://shibboleth.net/ns/profiles/encryptAssertions
       attributeFriendlyName: encryptAssertions
+      invert: true
     - name: useSha
       displayName: label.use-sha1-signing-algorithm
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.usa-sha-algorithm
       persistType: string
       persistValue: shibboleth.SecurityConfiguration.SHA1
@@ -84,7 +82,6 @@ custom:
     - name: ignoreAuthenticationMethod
       displayName: label.ignore-any-sp-requested-authentication-method
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.ignore-auth-method
       persistType: string
       persistValue: 0x1
@@ -93,14 +90,13 @@ custom:
     - name: omitNotBefore
       displayName: label.omit-not-before-condition
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.omit-not-before-condition
       attributeName: http://shibboleth.net/ns/profiles/includeConditionsNotBefore
       attributeFriendlyName: includeConditionsNotBefore
+      invert: true
     - name: responderId
       displayName: label.responder-id
       displayType: string
-      defaultValue: null
       helpText: tooltip.responder-id
       attributeName: http://shibboleth.net/ns/profiles/responderId
       attributeFriendlyName: responderId
@@ -128,10 +124,316 @@ custom:
     - name: forceAuthn
       displayName: label.force-authn
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.force-authn
       attributeName: http://shibboleth.net/ns/profiles/forceAuthn
       attributeFriendlyName: forceAuthn
+    - name: ignoreRequestSignatures
+      displayName: label.ignore-request-signatures
+      displayType: boolean
+      helpText: tooltip.ignore-request-signatures
+      attributeName: http://shibboleth.net/ns/profiles/ignoreRequestSignatures
+      attributeFriendlyName: ignoreRequestSignatures
+    - name: disallowedFeatures
+      attributeFriendlyName: disallowedFeatures
+      displayName: label.disallowedFeatures
+      helpText: tooltip.disallowedFeatures
+      displayType: string
+      attributeName: http://shibboleth.net/ns/profiles/disallowedFeatures
+      protocol: oidc
+    - name: inboundInterceptorFlows
+      attributeFriendlyName: inboundInterceptorFlows
+      displayName: label.inboundInterceptorFlows
+      helpText: tooltip.inboundInterceptorFlows
+      displayType: string
+      attributeName: http://shibboleth.net/ns/profiles/inboundInterceptorFlows
+      protocol: oidc
+    - name: outboundInterceptorFlows
+      attributeFriendlyName: outboundInterceptorFlows
+      displayName: label.outboundInterceptorFlows
+      helpText: tooltip.outboundInterceptorFlows
+      displayType: string
+      attributeName: http://shibboleth.net/ns/profiles/outboundInterceptorFlows
+      protocol: oidc
+    - name: securityConfiguration
+      attributeFriendlyName: securityConfiguration
+      displayName: label.securityConfiguration
+      helpText: tooltip.securityConfiguration
+      displayType: string
+      defaultValue: shibboleth.DefaultSecurityConfiguration
+      attributeName: http://shibboleth.net/ns/profiles/securityConfiguration
+      protocol: oidc
+    - name: tokenEndpointAuthMethods
+      attributeFriendlyName: tokenEndpointAuthMethods
+      displayName: label.tokenEndpointAuthMethods
+      helpText: tooltip.tokenEndpointAuthMethods
+      displayType: string
+      defaultValue: client_secret_basic, client_secret_post, client_secret_jwt, private_key_jwt
+      attributeName: http://shibboleth.net/ns/profiles/tokenEndpointAuthMethods
+      protocol: oidc
+    - name: defaultAuthenticationMethods
+      attributeFriendlyName: defaultAuthenticationMethods
+      displayName: label.defaultAuthenticationMethods
+      helpText: tooltip.defaultAuthenticationMethods
+      displayType: string
+      attributeName: http://shibboleth.net/ns/profiles/defaultAuthenticationMethods
+      protocol: oidc
+    - name: postAuthenticationFlows
+      attributeFriendlyName: postAuthenticationFlows
+      displayName: label.postAuthenticationFlows
+      helpText: tooltip.postAuthenticationFlows
+      displayType: string
+      attributeName: http://shibboleth.net/ns/profiles/postAuthenticationFlows
+      protocol: oidc
+    - name: proxyCount
+      attributeFriendlyName: proxyCount
+      displayName: label.proxyCount
+      helpText: tooltip.proxyCount
+      displayType: integer
+      attributeName: http://shibboleth.net/ns/profiles/proxyCount
+      protocol: oidc
+    - name: revocationLifetime
+      attributeFriendlyName: revocationLifetime
+      displayName: label.revocationLifetime
+      helpText: tooltip.revocationLifetime
+      displayType: string
+      defaultValue: PT6H
+      attributeName: http://shibboleth.net/ns/profiles/oauth2/revocation/revocationLifetime
+      protocol: oidc
+    - name: revocationMethod
+      attributeFriendlyName: revocationMethod
+      displayName: label.revocationMethod
+      helpText: tooltip.revocationMethod
+      displayType: selection_list
+      defaultValues:
+        - CHAIN
+        - TOKEN
+      defaultValue: CHAIN
+      attributeName: http://shibboleth.net/ns/profiles/oauth2/revocation/revocationMethod
+      protocol: oidc
+    - name: accessTokenLifetime
+      attributeFriendlyName: accessTokenLifetime
+      displayName: label.accessTokenLifetime
+      helpText: tooltip.accessTokenLifetime
+      displayType: string
+      defaultValue: PT10M
+      attributeName: http://shibboleth.net/ns/profiles/oauth2/token/accessTokenLifetime
+      protocol: oidc
+    - name: accessTokenType
+      attributeFriendlyName: accessTokenType
+      displayName: label.accessTokenType
+      helpText: tooltip.accessTokenType
+      displayType: string
+      attributeName: http://shibboleth.net/ns/profiles/oauth2/token/accessTokenType
+      protocol: oidc
+    - name: allowPKCEPlainOauth
+      attributeFriendlyName: allowPKCEPlainOauth
+      displayName: label.allowPKCEPlain.oauth
+      helpText: tooltip.allowPKCEPlain.oauth
+      displayType: boolean
+      attributeName: http://shibboleth.net/ns/profiles/oauth2/token/allowPKCEPlain
+      protocol: oidc
+    - name: enforceRefreshTokenRotation
+      attributeFriendlyName: enforceRefreshTokenRotation
+      displayName: label.enforceRefreshTokenRotation
+      helpText: tooltip.enforceRefreshTokenRotation
+      displayType: boolean
+      attributeName: http://shibboleth.net/ns/profiles/oauth2/token/enforceRefreshTokenRotation
+      protocol: oidc
+    - name: forcePKCEOauth
+      attributeFriendlyName: forcePKCEOauth
+      displayName: label.forcePKCE.oauth
+      helpText: tooltip.forcePKCE.oauth
+      displayType: boolean
+      attributeName: http://shibboleth.net/ns/profiles/oauth2/token/forcePKCE
+      protocol: oidc
+    - name: grantTypes
+      attributeFriendlyName: grantTypes
+      displayName: label.grantTypes
+      helpText: tooltip.grantTypes
+      displayType: string
+      defaultValue: authorization_code, refresh_token
+      attributeName: http://shibboleth.net/ns/profiles/oauth2/token/grantTypes
+      protocol: oidc
+    - name: refreshTokenLifetime
+      attributeFriendlyName: refreshTokenLifetime
+      displayName: label.refreshTokenLifetime
+      helpText: tooltip.refreshTokenLifetime
+      displayType: string
+      defaultValue: PT2H
+      attributeName: http://shibboleth.net/ns/profiles/oauth2/token/refreshTokenLifetime
+      protocol: oidc
+    - name: resolveAttributesOauth
+      attributeFriendlyName: resolveAttributesOauth
+      displayName: label.resolveAttributes.oauth
+      helpText: tooltip.resolveAttributes.oauth
+      displayType: boolean
+      defaultValue: TRUE
+      attributeName: http://shibboleth.net/ns/profiles/oauth2/token/resolveAttributes
+      protocol: oidc
+    - name: authorizationCodeFlowEnabled
+      attributeFriendlyName: authorizationCodeFlowEnabled
+      displayName: label.authorizationCodeFlowEnabled
+      helpText: tooltip.authorizationCodeFlowEnabled
+      displayType: boolean
+      defaultValue: TRUE
+      attributeName: http://shibboleth.net/ns/profiles/authorizationCodeFlowEnabled
+      protocol: oidc
+    - name: hybridFlowEnabled
+      attributeFriendlyName: hybridFlowEnabled
+      displayName: label.hybridFlowEnabled
+      helpText: tooltip.hybridFlowEnabled
+      displayType: boolean
+      defaultValue: TRUE
+      attributeName: http://shibboleth.net/ns/profiles/hybridFlowEnabled
+      protocol: oidc
+    - name: implicitFlowEnabled
+      attributeFriendlyName: implicitFlowEnabled
+      displayName: label.implicitFlowEnabled
+      helpText: tooltip.implicitFlowEnabled
+      displayType: boolean
+      defaultValue: TRUE
+      attributeName: http://shibboleth.net/ns/profiles/implicitFlowEnabled
+      protocol: oidc
+    - name: refreshTokensEnabled
+      attributeFriendlyName: refreshTokensEnabled
+      displayName: label.refreshTokensEnabled
+      helpText: tooltip.refreshTokensEnabled
+      displayType: boolean
+      defaultValue: TRUE
+      attributeName: http://shibboleth.net/ns/profiles/refreshTokensEnabled
+      protocol: oidc
+    - name: accessTokenLifetime
+      attributeFriendlyName: accessTokenLifetime
+      displayName: label.accessTokenLifetime
+      helpText: tooltip.accessTokenLifetime
+      displayType: string
+      defaultValue: PT10M
+      attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/accessTokenLifetime
+      protocol: oidc
+    - name: accessTokenType
+      attributeFriendlyName: accessTokenType
+      displayName: label.accessTokenType
+      helpText: tooltip.accessTokenType
+      displayType: string
+      attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/accessTokenType
+      protocol: oidc
+    - name: acrRequestAlwaysEssential
+      attributeFriendlyName: acrRequestAlwaysEssential
+      displayName: label.acrRequestAlwaysEssential
+      helpText: tooltip.acrRequestAlwaysEssential
+      displayType: boolean
+      attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/acrRequestAlwaysEssential
+      protocol: oidc
+    - name: allowPKCEPlainOidc
+      attributeFriendlyName: allowPKCEPlainOidc
+      displayName: label.allowPKCEPlain.oidc
+      helpText: tooltip.allowPKCEPlain.oidc
+      displayType: boolean
+      attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/allowPKCEPlain
+      protocol: oidc
+    - name: alwaysIncludedAttributes
+      attributeFriendlyName: alwaysIncludedAttributes
+      displayName: label.alwaysIncludedAttributes
+      helpText: tooltip.alwaysIncludedAttributes
+      displayType: string
+      attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/alwaysIncludedAttributes
+      protocol: oidc
+    - name: authorizeCodeLifetime
+      attributeFriendlyName: authorizeCodeLifetime
+      displayName: label.authorizeCodeLifetime
+      helpText: tooltip.authorizeCodeLifetime
+      displayType: string
+      defaultValue: PT5M
+      attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/authorizeCodeLifetime
+      protocol: oidc
+    - name: deniedUserInfoAttributes
+      attributeFriendlyName: deniedUserInfoAttributes
+      displayName: label.deniedUserInfoAttributes
+      helpText: tooltip.deniedUserInfoAttributes
+      displayType: string
+      attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/deniedUserInfoAttributes
+      protocol: oidc
+    - name: encodeConsentInTokens
+      attributeFriendlyName: encodeConsentInTokens
+      displayName: label.encodeConsentInTokens
+      helpText: tooltip.encodeConsentInTokens
+      displayType: boolean
+      attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/encodeConsentInTokens
+      protocol: oidc
+    - name: encodedAttributes
+      attributeFriendlyName: encodedAttributes
+      displayName: label.encodedAttributes
+      helpText: tooltip.encodedAttributes
+      displayType: string
+      attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/encodedAttributes
+      protocol: oidc
+    - name: forcePKCEOidc
+      attributeFriendlyName: forcePKCEOidc
+      displayName: label.forcePKCE.oidc
+      helpText: tooltip.forcePKCE.oidc
+      displayType: boolean
+      attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/forcePKCE
+      protocol: oidc
+    - name: IDTokenLifetimeBrowser
+      attributeFriendlyName: IDTokenLifetimeBrowser
+      displayName: label.IDTokenLifetime.browser
+      helpText: tooltip.IDTokenLifetime.broswer
+      displayType: string
+      defaultValue: PT1H
+      attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/IDTokenLifetime
+      protocol: oidc
+    - name: includeIssuerInResponse
+      attributeFriendlyName: includeIssuerInResponse
+      displayName: label.includeIssuerInResponse
+      helpText: tooltip.includeIssuerInResponse
+      displayType: boolean
+      attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/includeIssuerInResponse
+      protocol: oidc
+    - name: refreshTokenLifetime
+      attributeFriendlyName: refreshTokenLifetime
+      displayName: label.refreshTokenLifetime
+      helpText: tooltip.refreshTokenLifetime
+      displayType: string
+      defaultValue: PT2H
+      attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/refreshTokenLifetime
+      protocol: oidc
+    - name: alwaysIncludedAttributes
+      attributeFriendlyName: alwaysIncludedAttributes
+      displayName: label.alwaysIncludedAttributes
+      helpText: tooltip.alwaysIncludedAttributes
+      displayType: string
+      attributeName: http://shibboleth.net/ns/profiles/oidc/token/alwaysIncludedAttributes
+      protocol: oidc
+    - name: encryptionOptional
+      attributeFriendlyName: encryptionOptional
+      displayName: label.encryptionOptional
+      helpText: tooltip.encryptionOptional
+      displayType: boolean
+      defaultValue: TRUE
+      attributeName: http://shibboleth.net/ns/profiles/oidc/token/encryptionOptional
+      protocol: oidc
+    - name: IDTokenLifetime
+      attributeFriendlyName: IDTokenLifetime
+      displayName: label.IDTokenLifetime
+      helpText: tooltip.IDTokenLifetime
+      displayType: string
+      defaultValue: PT1H
+      attributeName: http://shibboleth.net/ns/profiles/oidc/token/IDTokenLifetime
+      protocol: oidc
+    - name: deniedUserInfoAttributes
+      attributeFriendlyName: deniedUserInfoAttributes
+      displayName: label.deniedUserInfoAttributes
+      helpText: tooltip.deniedUserInfoAttributes
+      displayType: string
+      attributeName: http://shibboleth.net/ns/profiles/oidc/userinfo/deniedUserInfoAttributes
+      protocol: oidc
+    - name: resolveAttributesOIDC
+      attributeFriendlyName: resolveAttributesOIDC
+      displayName: label.resolveAttributes.oidc
+      helpText: tooltip.resolveAttributes.oidc
+      displayType: boolean
+      attributeName: http://shibboleth.net/ns/profiles/oidc/userinfo/resolveAttributes
+      protocol: oidc
 logging:
   level:
     org.pac4j: "TRACE"
