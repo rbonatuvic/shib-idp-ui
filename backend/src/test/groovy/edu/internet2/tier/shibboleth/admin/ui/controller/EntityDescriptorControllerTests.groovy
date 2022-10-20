@@ -27,6 +27,7 @@ import lombok.SneakyThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
 import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.RestTemplate
@@ -160,11 +161,13 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
         def result = mockMvc.perform(get('/api/EntityDescriptors'))
 
         then:
-        result.andExpect(expectedHttpResponseStatus).andExpect(content().contentType(expectedResponseContentType))
+        result.andDo(MockMvcResultHandlers.print())
+              .andExpect(expectedHttpResponseStatus).andExpect(content().contentType(expectedResponseContentType))
               .andExpect(jsonPath("\$.[0].id").value("uuid-1"))
               .andExpect(jsonPath("\$.[0].entityId").value("eid1"))
               .andExpect(jsonPath("\$.[0].serviceEnabled").value(true))
               .andExpect(jsonPath("\$.[0].idOfOwner").value("admingroup"))
+              .andExpect(jsonPath("\$.[0].protocol").value("SAML"))
     }
 
     @WithMockAdmin
@@ -189,10 +192,12 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
               .andExpect(jsonPath("\$.[0].entityId").value("eid1"))
               .andExpect(jsonPath("\$.[0].serviceEnabled").value(true))
               .andExpect(jsonPath("\$.[0].idOfOwner").value("admingroup"))
+              .andExpect(jsonPath("\$.[0].protocol").value("SAML"))
               .andExpect(jsonPath("\$.[1].id").value("uuid-2"))
               .andExpect(jsonPath("\$.[1].entityId").value("eid2"))
               .andExpect(jsonPath("\$.[1].serviceEnabled").value(false))
               .andExpect(jsonPath("\$.[1].idOfOwner").value("admingroup"))
+              .andExpect(jsonPath("\$.[1].protocol").value("SAML"))
     }
 
     @WithMockUser(value = "someUser", roles = ["USER"])
