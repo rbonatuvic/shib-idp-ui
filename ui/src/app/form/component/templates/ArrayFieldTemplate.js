@@ -80,6 +80,9 @@ const ObjectArrayItem = ({type, ...props}) => {
         paddingRight: 6,
         fontWeight: "bold",
     };
+
+    console.log(props);
+
     return (
         <div key={props.key} className={`mt-2 mb-3 bg-light border rounded p-2 list-group`}>
             <Accordion>
@@ -122,6 +125,7 @@ const ObjectArrayItem = ({type, ...props}) => {
                             {props.hasRemove && (
                                 <div className="m-0 pb-1">
                                     <IconButton
+                                        id={`array-field-deletebtn-${props.uniqueIdForTest}-${props.index}`}
                                         className="text-danger"
                                         variant='text'
                                         icon="remove"
@@ -153,6 +157,8 @@ const DefaultArrayItem = (props) => {
     };
 
     const uiSchemaOptions = props.uiSchema ? props.uiSchema['ui:options'] || {} : {};
+
+    console.log(props);
 
     return (
         <div key={props.key} className={`mt-2 mb-3`}>
@@ -192,6 +198,7 @@ const DefaultArrayItem = (props) => {
                         {props.hasRemove && (
                             <div className="m-0 px-1 pt-3">
                                 <IconButton
+                                    id={`array-field-deletebtn-${props.uniqueIdForTest}-${props.index}`}
                                     className="text-danger"
                                     variant='text'
                                     icon="remove"
@@ -220,7 +227,6 @@ const DefaultFixedArrayFieldTemplate = (props) => {
                     title={props.uiSchema["ui:title"] || props.title}
                     required={props.required}
                 />
-                hi there
                 {props.canAdd && (
                     <AddButton
                         id={`array-field-addbtn-${props.idSchema.$id}`}
@@ -288,9 +294,9 @@ const DefaultNormalArrayFieldTemplate = (props) => {
                 <Container fluid key={`array-item-list-${props.idSchema.$id}`} className="p-0 m-0">
                     {props.items && props.items.map(p =>
                         props.schema.items.type === 'object' || props.schema.items.$ref ?
-                            ObjectArrayItem({ type: props.uiSchema.type, ...p })
+                            ObjectArrayItem({ type: props.uiSchema.type, ...p, uniqueIdForTest: props.idSchema.$id })
                             :
-                            DefaultArrayItem({ ...p, uiSchema: props.uiSchema.items })
+                            DefaultArrayItem({ ...p, uiSchema: props.uiSchema.items, uniqueIdForTest: props.idSchema.$id })
                     )}
                 </Container>
             </Col>
