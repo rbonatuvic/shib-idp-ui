@@ -220,8 +220,10 @@ const DefaultFixedArrayFieldTemplate = (props) => {
                     title={props.uiSchema["ui:title"] || props.title}
                     required={props.required}
                 />
+                hi there
                 {props.canAdd && (
                     <AddButton
+                        id={`array-field-addbtn-${props.idSchema.$id}`}
                         className="array-item-add"
                         onClick={props.onAddClick}
                         disabled={props.disabled || props.readonly}
@@ -266,6 +268,7 @@ const DefaultNormalArrayFieldTemplate = (props) => {
                     />}
                     {props.canAdd && (
                         <AddButton
+                            id={`array-field-addbtn-${props.idSchema.$id}`}
                             className="array-item-add mx-2"
                             onClick={props.onAddClick}
                             disabled={props.disabled || props.readonly}
