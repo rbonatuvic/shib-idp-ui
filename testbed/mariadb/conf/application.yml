@@ -210,18 +210,18 @@ custom:
       defaultValue: CHAIN
       attributeName: http://shibboleth.net/ns/profiles/oauth2/revocation/revocationMethod
       protocol: oidc
-    - name: accessTokenLifetime
+    - name: accessTokenLifetimeOauth
       attributeFriendlyName: accessTokenLifetime
-      displayName: label.accessTokenLifetime
-      helpText: tooltip.accessTokenLifetime
+      displayName: label.accessTokenLifetime.oauth
+      helpText: tooltip.accessTokenLifetime.oauth
       displayType: string
       defaultValue: PT10M
       attributeName: http://shibboleth.net/ns/profiles/oauth2/token/accessTokenLifetime
       protocol: oidc
-    - name: accessTokenType
+    - name: accessTokenTypeOauth
       attributeFriendlyName: accessTokenType
-      displayName: label.accessTokenType
-      helpText: tooltip.accessTokenType
+      displayName: label.accessTokenType.oauth
+      helpText: tooltip.accessTokenType.oauth
       displayType: string
       attributeName: http://shibboleth.net/ns/profiles/oauth2/token/accessTokenType
       protocol: oidc
@@ -254,10 +254,10 @@ custom:
       defaultValue: authorization_code, refresh_token
       attributeName: http://shibboleth.net/ns/profiles/oauth2/token/grantTypes
       protocol: oidc
-    - name: refreshTokenLifetime
+    - name: refreshTokenLifetimeOauth
       attributeFriendlyName: refreshTokenLifetime
-      displayName: label.refreshTokenLifetime
-      helpText: tooltip.refreshTokenLifetime
+      displayName: label.refreshTokenLifetime.oauth
+      helpText: tooltip.refreshTokenLifetime.oauth
       displayType: string
       defaultValue: PT2H
       attributeName: http://shibboleth.net/ns/profiles/oauth2/token/refreshTokenLifetime
@@ -267,7 +267,7 @@ custom:
       displayName: label.resolveAttributes.oauth
       helpText: tooltip.resolveAttributes.oauth
       displayType: boolean
-      defaultValue: TRUE
+      defaultValue: true
       attributeName: http://shibboleth.net/ns/profiles/oauth2/token/resolveAttributes
       protocol: oidc
     - name: authorizationCodeFlowEnabled
@@ -275,7 +275,7 @@ custom:
       displayName: label.authorizationCodeFlowEnabled
       helpText: tooltip.authorizationCodeFlowEnabled
       displayType: boolean
-      defaultValue: TRUE
+      defaultValue: true
       attributeName: http://shibboleth.net/ns/profiles/authorizationCodeFlowEnabled
       protocol: oidc
     - name: hybridFlowEnabled
@@ -283,7 +283,7 @@ custom:
       displayName: label.hybridFlowEnabled
       helpText: tooltip.hybridFlowEnabled
       displayType: boolean
-      defaultValue: TRUE
+      defaultValue: true
       attributeName: http://shibboleth.net/ns/profiles/hybridFlowEnabled
       protocol: oidc
     - name: implicitFlowEnabled
@@ -291,7 +291,7 @@ custom:
       displayName: label.implicitFlowEnabled
       helpText: tooltip.implicitFlowEnabled
       displayType: boolean
-      defaultValue: TRUE
+      defaultValue: true
       attributeName: http://shibboleth.net/ns/profiles/implicitFlowEnabled
       protocol: oidc
     - name: refreshTokensEnabled
@@ -299,21 +299,21 @@ custom:
       displayName: label.refreshTokensEnabled
       helpText: tooltip.refreshTokensEnabled
       displayType: boolean
-      defaultValue: TRUE
+      defaultValue: true
       attributeName: http://shibboleth.net/ns/profiles/refreshTokensEnabled
       protocol: oidc
-    - name: accessTokenLifetime
+    - name: accessTokenLifetimeOidc
       attributeFriendlyName: accessTokenLifetime
-      displayName: label.accessTokenLifetime
-      helpText: tooltip.accessTokenLifetime
+      displayName: label.accessTokenLifetime.oidc
+      helpText: tooltip.accessTokenLifetime.oidc
       displayType: string
       defaultValue: PT10M
       attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/accessTokenLifetime
       protocol: oidc
-    - name: accessTokenType
+    - name: accessTokenTypeOidc
       attributeFriendlyName: accessTokenType
-      displayName: label.accessTokenType
-      helpText: tooltip.accessTokenType
+      displayName: label.accessTokenType.oidc
+      helpText: tooltip.accessTokenType.oidc
       displayType: string
       attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/accessTokenType
       protocol: oidc
@@ -331,10 +331,10 @@ custom:
       displayType: boolean
       attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/allowPKCEPlain
       protocol: oidc
-    - name: alwaysIncludedAttributes
+    - name: alwaysIncludedAttributesBrowser
       attributeFriendlyName: alwaysIncludedAttributes
-      displayName: label.alwaysIncludedAttributes
-      helpText: tooltip.alwaysIncludedAttributes
+      displayName: label.alwaysIncludedAttributes.browser
+      helpText: tooltip.alwaysIncludedAttributes.browser
       displayType: string
       attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/alwaysIncludedAttributes
       protocol: oidc
@@ -346,10 +346,10 @@ custom:
       defaultValue: PT5M
       attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/authorizeCodeLifetime
       protocol: oidc
-    - name: deniedUserInfoAttributes
+    - name: deniedUserInfoAttributesBrowser
       attributeFriendlyName: deniedUserInfoAttributes
-      displayName: label.deniedUserInfoAttributes
-      helpText: tooltip.deniedUserInfoAttributes
+      displayName: label.deniedUserInfoAttributes.browser
+      helpText: tooltip.deniedUserInfoAttributes.browser
       displayType: string
       attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/deniedUserInfoAttributes
       protocol: oidc
@@ -389,18 +389,18 @@ custom:
       displayType: boolean
       attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/includeIssuerInResponse
       protocol: oidc
-    - name: refreshTokenLifetime
+    - name: refreshTokenLifetimeOidc
       attributeFriendlyName: refreshTokenLifetime
-      displayName: label.refreshTokenLifetime
-      helpText: tooltip.refreshTokenLifetime
+      displayName: label.refreshTokenLifetime.oidc
+      helpText: tooltip.refreshTokenLifetime.oidc
       displayType: string
       defaultValue: PT2H
       attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/refreshTokenLifetime
       protocol: oidc
-    - name: alwaysIncludedAttributes
+    - name: alwaysIncludedAttributesToken
       attributeFriendlyName: alwaysIncludedAttributes
-      displayName: label.alwaysIncludedAttributes
-      helpText: tooltip.alwaysIncludedAttributes
+      displayName: label.alwaysIncludedAttributes.token
+      helpText: tooltip.alwaysIncludedAttributes.token
       displayType: string
       attributeName: http://shibboleth.net/ns/profiles/oidc/token/alwaysIncludedAttributes
       protocol: oidc
@@ -409,7 +409,7 @@ custom:
       displayName: label.encryptionOptional
       helpText: tooltip.encryptionOptional
       displayType: boolean
-      defaultValue: TRUE
+      defaultValue: true
       attributeName: http://shibboleth.net/ns/profiles/oidc/token/encryptionOptional
       protocol: oidc
     - name: IDTokenLifetime
