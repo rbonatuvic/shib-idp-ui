@@ -35,7 +35,8 @@ import { Groups } from './admin/Groups';
 import { BASE_PATH } from './App.constant';
 import { ProtectRoute } from './core/components/ProtectRoute';
 import { IdpConfiguration } from './admin/IdpConfiguration';
-
+import { DynamicRegistration } from './dynamic-registration/DynamicRegistration';
+import { DynamicRegistrationsApi } from './dynamic-registration/hoc/DynamicRegistrationContext';
 
 function App() {
 
@@ -83,6 +84,11 @@ function App() {
                                                     </Route>
                                                     <Route path="/dashboard" component={Dashboard} />
                                                     <Route path="/metadata/source/new" component={NewSource} />
+                                                    <Route path="/dynamic-registration" render={() =>
+                                                        <DynamicRegistrationsApi>
+                                                            <DynamicRegistration />
+                                                        </DynamicRegistrationsApi>
+                                                    } />
                                                     <Route path="/metadata/provider/new" render={() =>
                                                         <ProtectRoute redirectTo="/dashboard">
                                                             <NewProvider />

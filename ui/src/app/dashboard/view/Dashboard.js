@@ -15,6 +15,8 @@ import { useCurrentUserLoading, useIsAdmin } from '../../core/user/UserContext';
 import useFetch from 'use-http';
 import API_BASE_PATH from '../../App.constant';
 import { useNonAdminSources } from '../../metadata/hooks/api';
+import { DynamicRegistrationsApi } from '../../dynamic-registration/hoc/DynamicRegistrationContext';
+import { DynamicRegistrationsTab } from './DynamicRegistrationsTab';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Badge from 'react-bootstrap/Badge';
@@ -76,12 +78,19 @@ export function Dashboard () {
                     </NavLink>
                 </Nav.Item>
                 {isAdmin &&
-                <>
                     <Nav.Item>
                         <NavLink className="nav-link" to={`${path}/metadata/manager/providers`}>
                             <Translate value="label.metadata-providers">Metadata Providers</Translate>
                         </NavLink>
                     </Nav.Item>
+                }
+                <Nav.Item>
+                    <NavLink className="nav-link" to={`${path}/dynamic-registrations`}>
+                        <Translate value="label.dynamic-registration">Dynamic Registration</Translate>
+                    </NavLink>
+                </Nav.Item>
+                {isAdmin &&
+                <>
                     <Nav.Item>
                         <NavLink className="nav-link" to={`${path}/admin/management`}>
                             <Translate value="label.admin">Admin</Translate>
@@ -102,6 +111,11 @@ export function Dashboard () {
                 </Route>
                 <Route path={`${path}/metadata/manager/resolvers`} component={SourcesTab} />
                 <Route path={`${path}/metadata/manager/providers`} component={ProvidersTab} />
+                <Route path={`${path}/dynamic-registrations`} render={() =>
+                    <DynamicRegistrationsApi>
+                        <DynamicRegistrationsTab />
+                    </DynamicRegistrationsApi>
+                } />
                 <Route path={`${path}/admin/management`} render={() =>
                     <ProtectRoute redirectTo="/dashboard">
                         <AdminTab />
