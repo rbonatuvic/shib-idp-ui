@@ -1,0 +1,13 @@
+{
+    "type": "object",
+    "required": ["name"],
+    "properties": {
+        "name": {
+            "title": "label.dynamic-registration-name",
+            "description": "tooltip.dynamic-registration-name",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+        }
+    }
+}

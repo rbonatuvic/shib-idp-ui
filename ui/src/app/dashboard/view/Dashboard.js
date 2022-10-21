@@ -85,7 +85,7 @@ export function Dashboard () {
                     </Nav.Item>
                 }
                 <Nav.Item>
-                    <NavLink className="nav-link" to={`${path}/dynamic-registrations`}>
+                    <NavLink className="nav-link" to={`${path}/dynamic-registration`}>
                         <Translate value="label.dynamic-registration">Dynamic Registration</Translate>
                     </NavLink>
                 </Nav.Item>
@@ -111,7 +111,7 @@ export function Dashboard () {
                 </Route>
                 <Route path={`${path}/metadata/manager/resolvers`} component={SourcesTab} />
                 <Route path={`${path}/metadata/manager/providers`} component={ProvidersTab} />
-                <Route path={`${path}/dynamic-registrations`} render={() =>
+                <Route path={`${path}/dynamic-registration`} render={() =>
                     <DynamicRegistrationsApi>
                         <DynamicRegistrationsTab />
                     </DynamicRegistrationsApi>

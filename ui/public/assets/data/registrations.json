@@ -1,5 +1,6 @@
 [
     {
+        "resourceId": "foobar",
         "name": "Foobar",
         "redirect_uris": [],
         "response_types": [],

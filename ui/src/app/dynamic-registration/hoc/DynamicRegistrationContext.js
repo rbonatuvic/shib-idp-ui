@@ -1,5 +1,6 @@
 import React from 'react';
 
+import {useDynamicRegistrations, useDynamicRegistration} from '../api';
 
 const initialState = {
     registrations: [],
@@ -55,6 +56,16 @@ export const deleteRegistration = (payload) => {
 
 function reducer(state, action) {
     switch (action.type) {
+        case DynamicRegistrationActions.LOAD_REGISTRATIONS:
+            return {
+                ...state,
+                registrations: action.payload
+            };
+        case DynamicRegistrationActions.SELECT_REGISTRATION:
+            return {
+                ...state,
+                selected: action.payload
+            };
         default:
             return state;
     }
@@ -62,12 +73,74 @@ function reducer(state, action) {
 
 /*eslint-disable react-hooks/exhaustive-deps*/
 function DynamicRegistrationsApi({ children, initial = {} }) {
+    const [state, dispatch] = React.useReducer(reducer, initialState);
+    const contextValue = React.useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
-    const [contextValue, setContextValue] = React.useState({...initialState});
+    const loader = useDynamicRegistrations({
+        cachePolicy: 'no-cache'
+    });
+
+    const selector = useDynamicRegistration({
+        cachePolicy: 'no-cache'
+    });
+
+    async function load() {
+        const s = await loader.get();
+        if (loader.response.ok) {
+            dispatch(loadRegistrations(s));
+        }
+    }
+
+    async function select(id) {
+        const s = await selector.get();
+        if (selector.response.ok) {
+            dispatch(selectRegistration(s));
+        }
+    }
+
+    async function update(id) {
+        /*const s = await selector.update();
+        if (selector.response.ok) {
+            dispatch(selectRegistration(s));
+        }*/
+        return Promise.resolve(id);
+    }
+
+    async function enable(id) {
+        /*const s = await selector.update();
+        if (selector.response.ok) {
+            dispatch(selectRegistration(s));
+        }*/
+        return Promise.resolve(id);
+    }
+
+    async function create(body) {
+        /*const s = await selector.update();
+        if (selector.response.ok) {
+            dispatch(selectRegistration(s));
+        }*/
+        return Promise.resolve(body);
+    }
+
+    async function remove(id) {
+        /*const s = await selector.update();
+        if (selector.response.ok) {
+            dispatch(selectRegistration(s));
+        }*/
+        return Promise.resolve(id);
+    }
 
     return (
         <React.Fragment>
-            <Provider value={contextValue}>{children}</Provider>
+            <Provider value={{
+                load,
+                select,
+                update,
+                enable,
+                create,
+                remove,
+                ...contextValue
+            }}>{children}</Provider>
         </React.Fragment>
     );
 }
@@ -82,10 +155,40 @@ function useDynamicRegistrationDispatcher () {
     return dispatch;
 }
 
+function useDynamicRegistrationState () {
+    const { state } = useDynamicRegistrationContext();
+    return state;
+}
+
+function useDynamicRegistrationCollection () {
+    const state = useDynamicRegistrationState();
+    return state.registrations;
+}
+
+function useSelectedDynamicRegistration () {
+    const state = useDynamicRegistrationState();
+    return state.selected;
+}
+
+function useDynamicRegistrationApi () {
+    const {load, select, enable, create, update, remove} = useDynamicRegistrationContext();
+    return {
+        load,
+        select,
+        enable,
+        create,
+        update,
+        remove
+    };
+}
+
 export {
     DynamicRegistrationsApi,
     useDynamicRegistrationContext,
     useDynamicRegistrationDispatcher,
+    useDynamicRegistrationCollection,
+    useSelectedDynamicRegistration,
+    useDynamicRegistrationApi,
     Provider as MetadataFormProvider,
     Consumer as MetadataFormConsumer
 };

@@ -5,16 +5,17 @@ import { Ordered } from '../component/Ordered';
 import { Search } from '../component/Search';
 
 import {DynamicRegistrationList} from '../../dynamic-registration/component/DynamicRegistrationList';
+import { useDynamicRegistrationCollection, useDynamicRegistrationApi } from '../../dynamic-registration/hoc/DynamicRegistrationContext';
 
 const searchProps = ['name'];
 
 export function DynamicRegistrationsTab () {
 
-    // const dispatcher = useDynamicRegistrationDispatcher();
+    const registrations = useDynamicRegistrationCollection();
+    const { load } = useDynamicRegistrationApi();
 
     /*eslint-disable react-hooks/exhaustive-deps*/
-    // React.useEffect(() => { loadRegistrations() }, []);
-    const registrations = [];
+    React.useEffect(() => { load() }, []);
 
     return (
         <section className="section">

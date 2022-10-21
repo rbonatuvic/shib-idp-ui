@@ -1,0 +1,20 @@
+{
+    "resourceId": "foobar",
+    "name": "Foobar",
+    "redirect_uris": [],
+    "response_types": [],
+    "grant_types": "",
+    "application_type": "",
+    "contacts": "",
+    "subject_type": "",
+    "jwks": "",
+    "jwks_uri": "",
+    "token_endpoint_auth_method": "",
+    "logo_uri": "",
+    "policy_uri": "",
+    "tos_uri": "",
+    "scope": "",
+    "enabled": true,
+    "modifiedDate": "2022-10-21T11:57:24.391649",
+    "createdData": "2022-10-21T11:57:24.391649"
+}

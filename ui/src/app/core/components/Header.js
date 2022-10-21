@@ -63,6 +63,10 @@ export function Header () {
                                 <FontAwesomeIcon icon={faCubes} className="me-2" fixedWidth />
                                 <Translate value="action.add-new-provider" />
                             </Dropdown.Item> }
+                            <Dropdown.Item as={Link} to="/dynamic-registration/new" className="text-primary py-2" id="metadata-nav-dropdown-dynreg">
+                                <FontAwesomeIcon icon={faCube} className="me-2" fixedWidth />
+                                <Translate value="action.add-new-dynamic-registration" />
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     {isAdmin &&

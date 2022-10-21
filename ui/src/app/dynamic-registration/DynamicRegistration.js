@@ -1,38 +1,31 @@
 import React from 'react';
-import { useDynamicRegistrationDispatcher } from './hoc/DynamicRegistrationContext';
-import Translate from '../i18n/components/translate';
-import { Search } from '../dashboard/component/Search';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
 
-import {DynamicRegistrationList} from './component/DynamicRegistrationList';
+import { DynamicRegistrationDetail } from './view/DynamicRegistrationDetail';
 
-const searchProps = ['name'];
+import { DynamicRegistrationsApi } from './hoc/DynamicRegistrationContext';
+import { DynamicRegistrationEdit } from './view/DynamicRegistrationEdit';
+import { DynamicRegistrationCreate } from './view/DynamicRegistrationCreate';
 
 export function DynamicRegistration () {
 
-    // const dispatcher = useDynamicRegistrationDispatcher();
-
-    /*eslint-disable react-hooks/exhaustive-deps*/
-    // React.useEffect(() => { loadRegistrations() }, []);
-    const registrations = [];
+    const { path } = useRouteMatch();
 
     return (
-        <section className="section">
-            <div className="section-body border border-top-0 border-primary">
-                <>
-                    <div className="section-header bg-primary p-2 text-light">
-                        <span className="lead">
-                            <Translate value="label.current-dynamic-registrations">Dynamic Registrations</Translate>
-                        </span>
-                    </div>
-                    <div className="p-3">
-                        <Search entities={registrations} searchable={searchProps}>
-                            {(searched) =>
-                            <DynamicRegistrationList entities={searched} />
-                            }
-                        </Search>
-                    </div>
-                </>
-            </div>
-        </section>
+        <div className='container-fluid p-3'>
+            <DynamicRegistrationsApi>
+                <Switch>
+                    <Route exact path={`${path}/new`} render={() =>
+                        <DynamicRegistrationCreate />
+                    } />
+                    <Route exact path={`${path}/:id`} render={() =>
+                        <DynamicRegistrationDetail />
+                    } />
+                    <Route path={`${path}/:id/edit`} render={() =>
+                        <DynamicRegistrationEdit />
+                    } />
+                </Switch>
+            </DynamicRegistrationsApi>
+        </div>
     )
 }
