@@ -59,7 +59,7 @@ class JsonSchemaBuilderService {
                         [title       : it['displayName'],
                          description : it['helpText'],
                          type        : ((IRelyingPartyOverrideProperty)it).getTypeForUI(),
-                         default     : it['displayType'] == 'boolean' ? Boolean.getBoolean(it['defaultValue']) : it['defaultValue'],
+                         default     : it['displayType'] == 'boolean' ? Boolean.parseBoolean(it['defaultValue']) : it['defaultValue'],
                          examples    : it['examples']]
             }
             properties[(String) it['name']] = property
