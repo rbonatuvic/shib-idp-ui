@@ -1,8 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -11,14 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Transient;
-
-import liquibase.pro.packaged.O;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.envers.Audited;
-
-import lombok.Data;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity(name = "custom_entity_attribute_definition")
 @Audited

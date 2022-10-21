@@ -1,22 +1,61 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-public interface EntityDescriptorProjection {
-    default String getId() {
-        return getResourceId();
+public class EntityDescriptorProjection {
+    @Getter
+    String id;
+    String entityID;
+    String entityId;
+    @Getter
+    String resourceId;
+    @Getter
+    String serviceProviderName;
+    @Getter
+    String createdBy;
+    @Getter
+    LocalDateTime createdDate;
+    @Getter
+    boolean serviceEnabled;
+    @Getter
+    String idOfOwner;
+    EntityDescriptorProtocol protocol;
+
+    public EntityDescriptorProjection(String entityID, String resourceId, String serviceProviderName, String createdBy,
+                                      LocalDateTime createdDate, boolean serviceEnabled, String idOfOwner, String protocol) {
+        this.entityID = entityID;
+        this.entityId = entityID;
+        this.resourceId = resourceId;
+        this.id = resourceId;
+        this.serviceProviderName = serviceProviderName;
+        this.createdBy = createdBy;
+        this.createdDate = createdDate;
+        this.serviceEnabled = serviceEnabled;
+        this.idOfOwner = idOfOwner;
+        setProtocol(protocol);
     }
-    String getEntityID();
-    default String getEntityId() {
-        return getEntityID();
+
+    public String getEntityID() {
+        return entityID;
     }
-    String getResourceId();
-    String getServiceProviderName();
-    String getCreatedBy();
-    LocalDateTime getCreatedDate();
-    boolean getServiceEnabled();
-    String getIdOfOwner();
-    EntityDescriptorProtocol getProtocol();
+
+    public String getEntityId() {
+        return entityId;
+    }
+
+    public EntityDescriptorProtocol getProtocol() {
+        return protocol == null ? EntityDescriptorProtocol.SAML : protocol;
+    }
+
+    public void setProtocol(String index) {
+        int i = Integer.valueOf(index);
+        protocol = EntityDescriptorProtocol.values()[i];
+    }
 }
