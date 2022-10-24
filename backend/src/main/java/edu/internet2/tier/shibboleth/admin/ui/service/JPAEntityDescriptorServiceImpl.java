@@ -376,13 +376,13 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                             case DURATION:
                             case SPRING_BEAN_ID:
                                 if (jpaAttribute.getAttributeValues().size() != 1) {
-                                    throw new RuntimeException("Multiple/No values detected where one is expected!");
+                                    throw new RuntimeException("Multiple/No values detected where one is expected for override: " + jpaAttribute.getName());
                                 }
                                 attributeValues = ModelRepresentationConversions.getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0));
                                 break;
                             case INTEGER:
                                 if (jpaAttribute.getAttributeValues().size() != 1) {
-                                    throw new RuntimeException("Multiple/No values detected where one is expected!");
+                                    throw new RuntimeException("Multiple/No values detected where one is expected for override: " + jpaAttribute.getName());
                                 }
                                 attributeValues = ((XSInteger)jpaAttribute.getAttributeValues().get(0)).getValue();
                                 break;

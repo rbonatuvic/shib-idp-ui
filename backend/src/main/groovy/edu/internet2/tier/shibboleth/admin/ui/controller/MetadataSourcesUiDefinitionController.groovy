@@ -58,7 +58,7 @@ class MetadataSourcesUiDefinitionController {
             return ResponseEntity.ok(parsedJson)
         }
         catch (IOException e) {
-            log.error("An error occurred while attempting to get json schema for metadata sources!", e)
+            log.error("An error occurred while attempting to get json schema [" + url + "] for metadata sources!", e)
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body([jsonParseError : e.getMessage(), sourceUiSchemaDefinitionFile: this.samlJsonSchemaLocation.url])
         }
     }

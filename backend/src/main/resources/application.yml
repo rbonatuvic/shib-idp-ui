@@ -152,6 +152,7 @@ custom:
         - urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport
       attributeName: http://shibboleth.net/ns/profiles/defaultAuthenticationMethods
       attributeFriendlyName: defaultAuthenticationMethods
+      protocol: saml,oidc
     - name: forceAuthn
       displayName: label.force-authn
       displayType: boolean
@@ -200,13 +201,6 @@ custom:
       displayType: string
       defaultValue: client_secret_basic, client_secret_post, client_secret_jwt, private_key_jwt
       attributeName: http://shibboleth.net/ns/profiles/tokenEndpointAuthMethods
-      protocol: oidc
-    - name: defaultAuthenticationMethods
-      attributeFriendlyName: defaultAuthenticationMethods
-      displayName: label.defaultAuthenticationMethods
-      helpText: tooltip.defaultAuthenticationMethods
-      displayType: string
-      attributeName: http://shibboleth.net/ns/profiles/defaultAuthenticationMethods
       protocol: oidc
     - name: postAuthenticationFlows
       attributeFriendlyName: postAuthenticationFlows
