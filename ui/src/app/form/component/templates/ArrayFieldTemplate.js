@@ -81,8 +81,6 @@ const ObjectArrayItem = ({type, ...props}) => {
         fontWeight: "bold",
     };
 
-    console.log(props);
-
     return (
         <div key={props.key} className={`mt-2 mb-3 bg-light border rounded p-2 list-group`}>
             <Accordion>
@@ -157,8 +155,6 @@ const DefaultArrayItem = (props) => {
     };
 
     const uiSchemaOptions = props.uiSchema ? props.uiSchema['ui:options'] || {} : {};
-
-    console.log(props);
 
     return (
         <div key={props.key} className={`mt-2 mb-3`}>
