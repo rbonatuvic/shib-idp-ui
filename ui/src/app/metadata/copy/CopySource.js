@@ -59,8 +59,6 @@ export function CopySource({ copy, onNext }) {
 
     const sections = useMetadataSourceSections();
 
-    React.useEffect(() => console.log(form), [form]);
-
     return (
         <>
             <div className="row">
