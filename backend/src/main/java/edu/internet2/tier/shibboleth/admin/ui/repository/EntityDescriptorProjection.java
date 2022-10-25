@@ -54,8 +54,4 @@ public class EntityDescriptorProjection {
     public EntityDescriptorProtocol getProtocol() {
         return protocol == null ? EntityDescriptorProtocol.SAML : protocol;
     }
-
-//    public void setProtocol(int i) {
-//        protocol = EntityDescriptorProtocol.values()[i];
-//    }
 }

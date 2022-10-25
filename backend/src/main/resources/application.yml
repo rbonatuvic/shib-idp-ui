@@ -402,7 +402,7 @@ custom:
     - name: IDTokenLifetimeBrowser
       attributeFriendlyName: IDTokenLifetimeBrowser
       displayName: label.IDTokenLifetime.browser
-      helpText: tooltip.IDTokenLifetime.broswer
+      helpText: tooltip.IDTokenLifetime.browser
       displayType: string
       defaultValue: PT1H
       attributeName: http://shibboleth.net/ns/profiles/oidc/sso/browser/IDTokenLifetime
