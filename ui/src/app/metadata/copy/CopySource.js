@@ -47,8 +47,6 @@ export function CopySource({ copy, onNext }) {
 
     const target = watch('target');
 
-    const form = watch();
-
     const { errors, isValid } = formState;
 
     React.useEffect(() => {
