@@ -348,9 +348,9 @@
       "id": "56f49fe8-340c-46fa-bda9-0b3c0de98bdb",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(1) > .col-12:nth-child(1) > .mb-3:nth-child(1) path:nth-child(1)",
+      "target": "css=.row:nth-child(5) .svg-inline--fa:nth-child(2)",
       "targets": [
-        ["css=.row:nth-child(1) > .col-12:nth-child(1) > .mb-3:nth-child(1) path:nth-child(1)", "css:finder"]
+        ["css=.row:nth-child(5) .svg-inline--fa:nth-child(2)", "css:finder"]
       ],
       "value": ""
     }, {
@@ -385,7 +385,7 @@
       "id": "54a74399-69aa-4412-85c2-a5bbb543d8be",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(9) path:nth-child(1)",
+      "target": "css=.row:nth-child(11) path:nth-child(1)",
       "targets": [
         ["css=.row:nth-child(9) path:nth-child(1)", "css:finder"]
       ],
@@ -719,7 +719,7 @@
       "id": "2928ba27-b934-499e-8dda-8441dbbb463d",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(8) path:nth-child(1)",
+      "target": "css=.row:nth-child(10) path:nth-child(1)",
       "targets": [
         ["css=.row:nth-child(8) path:nth-child(1)", "css:finder"]
       ],
