@@ -26,10 +26,11 @@ public class EntityDescriptorProjection {
     boolean serviceEnabled;
     @Getter
     String idOfOwner;
+
     EntityDescriptorProtocol protocol;
 
     public EntityDescriptorProjection(String entityID, String resourceId, String serviceProviderName, String createdBy,
-                                      LocalDateTime createdDate, boolean serviceEnabled, String idOfOwner, String protocol) {
+                                      LocalDateTime createdDate, boolean serviceEnabled, String idOfOwner, EntityDescriptorProtocol edp) {
         this.entityID = entityID;
         this.entityId = entityID;
         this.resourceId = resourceId;
@@ -39,7 +40,7 @@ public class EntityDescriptorProjection {
         this.createdDate = createdDate;
         this.serviceEnabled = serviceEnabled;
         this.idOfOwner = idOfOwner;
-        setProtocol(protocol);
+        this.protocol = edp == null ? EntityDescriptorProtocol.SAML : edp;
     }
 
     public String getEntityID() {
@@ -52,10 +53,5 @@ public class EntityDescriptorProjection {
 
     public EntityDescriptorProtocol getProtocol() {
         return protocol == null ? EntityDescriptorProtocol.SAML : protocol;
-    }
-
-    public void setProtocol(String index) {
-        int i = Integer.valueOf(index);
-        protocol = EntityDescriptorProtocol.values()[i];
     }
 }

@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.repository;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -14,12 +15,12 @@ import java.util.stream.Stream;
  */
 public interface EntityDescriptorRepository extends JpaRepository<EntityDescriptor, Long> {
     @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
-                   "e.createdDate, e.serviceEnabled, e.idOfOwner, case e.protocol when null then 'SAML' else e.protocol end ) " +
+                   "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol) " +
                     "from EntityDescriptor e")
     List<EntityDescriptorProjection> findAllBy();
 
     @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
-                   "e.createdDate, e.serviceEnabled, e.idOfOwner, case e.protocol when null then 'SAML' else e.protocol end ) " +
+                   "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol) " +
                    "from EntityDescriptor e " +
                    "where e.idOfOwner = :ownerId")
     List<EntityDescriptorProjection> findAllByIdOfOwner(@Param("ownerId") String ownerId);
