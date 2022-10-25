@@ -171,6 +171,19 @@
       ],
       "value": ""
     }, {
+      "id": "93443481-aa70-4742-8501-a4a562235ae7",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "id=root_xmlId",
+      "targets": [
+        ["id=root_xmlId", "id"],
+        ["css=#root_xmlId", "css:finder"],
+        ["xpath=//input[@id='root_xmlId']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[2]/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "30000"
+    }, {
       "id": "6d8efa55-ad05-4a15-b65a-74622feff0af",
       "comment": "",
       "command": "type",
@@ -1284,9 +1297,9 @@
       "id": "583b61c9-b021-452b-b488-1faf2be311b6",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(6) .svg-inline--fa:nth-child(2)",
+      "target": "css=.row:nth-child(9) path:nth-child(1)",
       "targets": [
-        ["css=.row:nth-child(6) .svg-inline--fa:nth-child(2)", "css:finder"]
+        ["css=.row:nth-child(9) path:nth-child(1)", "css:finder"]
       ],
       "value": ""
     }, {

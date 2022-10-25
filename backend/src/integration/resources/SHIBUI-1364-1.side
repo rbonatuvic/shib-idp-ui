@@ -2364,7 +2364,11 @@
       "command": "waitForElementEditable",
       "target": "css=#filters > div:nth-child(3) > div:nth-child(2) > div > button",
       "targets": [
-        ["css=.d-flex:nth-child(3) > .border-primary:nth-child(2) .svg-inline--fa", "css:finder"]
+        ["css=.d-flex:nth-child(3) > .border-primary:nth-child(2) .mx-auto", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='filters']/div[3]/div[2]/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Compare')]", "xpath:innerText"]
       ],
       "value": "30000"
     }, {
@@ -2373,7 +2377,7 @@
       "command": "click",
       "target": "css=#filters > div:nth-child(3) > div:nth-child(2) > div > button",
       "targets": [
-        ["css=.d-flex:nth-child(3) > .border-primary:nth-child(2) .svg-inline--fa", "css:finder"]
+        ["css=.d-flex:nth-child(3) > .border-primary:nth-child(2) path", "css:finder"]
       ],
       "value": ""
     }, {
