@@ -110,6 +110,7 @@ custom:
       persistValue: shibboleth.SecurityConfiguration.SHA1
       attributeName: http://shibboleth.net/ns/profiles/securityConfiguration
       attributeFriendlyName: securityConfiguration
+      protocol: saml,oidc
     - name: ignoreAuthenticationMethod
       displayName: label.ignore-any-sp-requested-authentication-method
       displayType: boolean
@@ -118,6 +119,7 @@ custom:
       persistValue: 0x1
       attributeName: http://shibboleth.net/ns/profiles/disallowedFeatures
       attributeFriendlyName: disallowedFeatures
+      protocol: saml,oidc
     - name: omitNotBefore
       displayName: label.omit-not-before-condition
       displayType: boolean
@@ -165,13 +167,6 @@ custom:
       helpText: tooltip.ignore-request-signatures
       attributeName: http://shibboleth.net/ns/profiles/ignoreRequestSignatures
       attributeFriendlyName: ignoreRequestSignatures
-    - name: disallowedFeatures
-      attributeFriendlyName: disallowedFeatures
-      displayName: label.disallowedFeatures
-      helpText: tooltip.disallowedFeatures
-      displayType: string
-      attributeName: http://shibboleth.net/ns/profiles/disallowedFeatures
-      protocol: oidc
     - name: inboundInterceptorFlows
       attributeFriendlyName: inboundInterceptorFlows
       displayName: label.inboundInterceptorFlows
@@ -185,14 +180,6 @@ custom:
       helpText: tooltip.outboundInterceptorFlows
       displayType: string
       attributeName: http://shibboleth.net/ns/profiles/outboundInterceptorFlows
-      protocol: oidc
-    - name: securityConfiguration
-      attributeFriendlyName: securityConfiguration
-      displayName: label.securityConfiguration
-      helpText: tooltip.securityConfiguration
-      displayType: string
-      defaultValue: shibboleth.DefaultSecurityConfiguration
-      attributeName: http://shibboleth.net/ns/profiles/securityConfiguration
       protocol: oidc
     - name: tokenEndpointAuthMethods
       attributeFriendlyName: tokenEndpointAuthMethods
