@@ -35,7 +35,7 @@ export function FilterTargetPreview ({ entityId, children }) {
 
     return (
         <React.Fragment>
-            {children(preview, loading, data)}
+            {data && children(preview, loading, data)}
             <Modal show={show} onHide={handleClose} dialogClassName="modal-xl">
                 <Modal.Header closeButton>
                     <Modal.Title><Translate value="label.preview-provider">Preview XML</Translate></Modal.Title>
