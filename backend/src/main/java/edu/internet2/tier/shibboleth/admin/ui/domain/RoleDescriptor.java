@@ -8,18 +8,15 @@ import org.opensaml.core.xml.util.AttributeMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
-import javax.persistence.ElementCollection;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-
 import javax.xml.namespace.QName;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

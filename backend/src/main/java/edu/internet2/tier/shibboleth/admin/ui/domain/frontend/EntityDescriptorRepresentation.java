@@ -3,8 +3,6 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.frontend;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol;
 import lombok.Getter;
 import lombok.Setter;

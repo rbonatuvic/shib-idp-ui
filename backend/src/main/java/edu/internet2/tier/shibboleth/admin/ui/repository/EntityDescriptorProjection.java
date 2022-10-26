@@ -1,11 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 

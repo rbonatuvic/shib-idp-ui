@@ -1,8 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.oidc;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractXMLObject;
-import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;

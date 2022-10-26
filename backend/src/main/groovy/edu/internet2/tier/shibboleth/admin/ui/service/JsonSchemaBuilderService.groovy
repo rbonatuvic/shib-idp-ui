@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBundle
 import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService

@@ -1,9 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-
-import javax.script.ScriptException;
-
+import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.InitializationException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException;
-import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
-import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
-import edu.internet2.tier.shibboleth.admin.ui.exception.InitializationException;
+import javax.script.ScriptException;
+
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @ControllerAdvice(assignableTypes = {ActivateController.class})
 public class ActivateExceptionHandler extends ResponseEntityExceptionHandler {

@@ -21,10 +21,10 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepres
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.OAuthRPExtensions;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLObject;
-import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
@@ -36,17 +36,8 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupACSs;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupContacts;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupLogout;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupOrganization;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupRelyingPartyOverrides;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupSPSSODescriptor;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupSecurity;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupUIInfo;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.opensaml.core.xml.XMLObject;
@@ -64,6 +55,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupACSs;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupContacts;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupLogout;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupOrganization;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupRelyingPartyOverrides;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupSPSSODescriptor;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupSecurity;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupUIInfo;
+import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
 
 @Slf4j
 @Service

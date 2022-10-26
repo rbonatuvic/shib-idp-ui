@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.util;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeValue;
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSInteger;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSString;
@@ -9,7 +8,6 @@ import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)

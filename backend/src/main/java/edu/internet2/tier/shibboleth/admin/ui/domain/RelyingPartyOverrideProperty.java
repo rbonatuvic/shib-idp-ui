@@ -1,12 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.Set;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)

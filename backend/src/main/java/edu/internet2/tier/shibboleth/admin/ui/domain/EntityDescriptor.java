@@ -3,16 +3,13 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
-
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnableType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
-import org.hibernate.envers.RelationTargetAuditMode;
 import org.opensaml.core.xml.XMLObject;
 import org.springframework.util.StringUtils;
 
@@ -20,7 +17,6 @@ import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
