@@ -348,9 +348,9 @@
       "id": "56f49fe8-340c-46fa-bda9-0b3c0de98bdb",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(5) .svg-inline--fa:nth-child(2)",
+      "target": "css=.row:nth-child(2) path:nth-child(1)",
       "targets": [
-        ["css=.row:nth-child(5) .svg-inline--fa:nth-child(2)", "css:finder"]
+        ["css=.row:nth-child(2) path:nth-child(1)", "css:finder"]
       ],
       "value": ""
     }, {

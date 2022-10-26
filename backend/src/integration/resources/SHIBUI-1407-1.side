@@ -2313,11 +2313,11 @@
       "id": "951a21c9-4cd3-4989-8dc0-77760ca0dc95",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(8) .text-truncate",
+      "target": "css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(2)",
       "targets": [
-        ["css=div:nth-child(8) .text-truncate", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[8]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[8]/div/span[2]", "xpath:position"],
+        ["css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//section[7]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'responder-id-123')]", "xpath:innerText"]
       ],
       "value": "responder-id-123"

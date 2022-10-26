@@ -254,11 +254,11 @@
       "id": "3baa7bd3-55c0-4d10-8aa3-c0daa63ec4d4",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(8) div:nth-child(4) .d-block:nth-child(2)",
+      "target": "css=div:nth-child(8) .text-truncate",
       "targets": [
-        ["css=.mb-4:nth-child(8) div:nth-child(4) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[4]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[8]/div/div[2]/div[2]/div/div[4]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(8) .text-truncate", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[8]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[8]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'true')]", "xpath:innerText"]
       ],
       "value": "true"
@@ -357,11 +357,11 @@
       "id": "121a6247-05d6-4553-b565-ebee2552f7e9",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(9) div:nth-child(4) .d-block:nth-child(2)",
+      "target": "css=div:nth-child(8) .text-truncate",
       "targets": [
-        ["css=.mb-4:nth-child(9) div:nth-child(4) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[4]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[7]/div/div[2]/div[2]/div/div[4]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(8) .text-truncate", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[8]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[8]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'true')]", "xpath:innerText"]
       ],
       "value": "true"

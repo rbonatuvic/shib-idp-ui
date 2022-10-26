@@ -107,7 +107,7 @@ class SeleniumSIDETest extends Specification {
 
         where:
         name                                                                | file
-/*        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
+        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
         'SHIBUI-1364: Compare FSMP'                                         | '/SHIBUI-1364-2.side'
         'SHIBUI-1364: Compare LDMP'                                         | '/SHIBUI-1364-3.side'
         'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
@@ -153,14 +153,14 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1744: Verify attribute bundles in entity attribute filters' | '/SHIBUI-1744-3.side'
         'SHIBUI-2052: Logged in user & role appear on dashboard'            | '/SHIBUI-2052.side'
         'SHIBUI-2116: Verify entity attribute bundle highlights'            | '/SHIBUI-2116.side' // Note that this script WILL NOT PASS in the Selenium IDE due to ${driver} not being set (it is provided by this groovy script).
-        'SHIBUI-2267: Verify new RPO CRUD'                                  | '/SHIBUI-2267.side'*/
+        'SHIBUI-2267: Verify new RPO CRUD'                                  | '/SHIBUI-2267.side'
         'SHIBUI-2380: OIDC metadata source CRUD'                            | '/SHIBUI-2380.side'
-/*        'SHIBUI-1674: Verify metadata source tooltips'                      | '/SHIBUI-1674-1.side'
+        'SHIBUI-1674: Verify metadata source tooltips'                      | '/SHIBUI-1674-1.side'
         'SHIBUI-1674: Verify metadata provider tooltips'                    | '/SHIBUI-1674-2.side'
         'SHIBUI-1674: Verify advanced menu tooltips'                        | '/SHIBUI-1674-3.side'
         'SHIBUI-2270: Verify property set CRUD'                             | '/SHIBUI-2270-1.side'
         'SHIBUI-2270: Verify full property set'                             | '/SHIBUI-2270-2.side'
         'SHIBUI-2268: Verify Algorithm Filter'                              | '/SHIBUI-2268.side'
-        'SHIBUI-2269: Verify XML generation of external filters'            | '/SHIBUI-2269.side'*/
+        'SHIBUI-2269: Verify XML generation of external filters'            | '/SHIBUI-2269.side'
     }
 }

@@ -660,19 +660,6 @@
       ],
       "value": ""
     }, {
-      "id": "881d4939-af1c-4557-8ee1-e08abf3a5402",
-      "comment": "",
-      "command": "type",
-      "target": "id=root_relyingPartyOverrides_disallowedFeatures",
-      "targets": [
-        ["id=root_relyingPartyOverrides_disallowedFeatures", "id"],
-        ["css=#root_relyingPartyOverrides_disallowedFeatures", "css:finder"],
-        ["xpath=//input[@id='root_relyingPartyOverrides_disallowedFeatures']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[8]/div/div/div/div[5]/div/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//div[5]/div/div/div/div/input", "xpath:position"]
-      ],
-      "value": "theseAreDisallowed"
-    }, {
       "id": "da429ce2-0145-4c3d-a924-46d4549c6038",
       "comment": "",
       "command": "type",
@@ -1099,35 +1086,23 @@
       "id": "72f99f17-450a-4f9c-b791-3b6f7b61e76c",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(8) div:nth-child(2) > .d-flex > .d-block:nth-child(2)",
-      "targets": [
-        ["css=.mb-4:nth-child(8) div:nth-child(2) > .d-flex > .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[2]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[8]/div/div[2]/div[2]/div/div[2]/div/span[2]", "xpath:position"],
-        ["xpath=//span[contains(.,'PT2H')]", "xpath:innerText"]
-      ],
-      "value": "PT2H"
-    }, {
-      "id": "e6087be5-881a-4637-aa84-540ce6c80b54",
-      "comment": "",
-      "command": "assertText",
       "target": "css=.mb-4:nth-child(8) div:nth-child(5) .d-block:nth-child(2)",
       "targets": [
         ["css=.mb-4:nth-child(8) div:nth-child(5) .d-block:nth-child(2)", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:idRelative"],
         ["xpath=//section[8]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:position"],
-        ["xpath=//span[contains(.,'theseAreDisallowed')]", "xpath:innerText"]
+        ["xpath=//span[contains(.,'PT2H')]", "xpath:innerText"]
       ],
-      "value": "theseAreDisallowed"
+      "value": "PT2H"
     }, {
       "id": "97624c53-1510-4bbb-b661-8a22539b1d86",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(1) > div:nth-child(13) .text-truncate",
+      "target": "css=div:nth-child(1) > div:nth-child(22) .text-truncate",
       "targets": [
-        ["css=div:nth-child(1) > div:nth-child(13) .text-truncate", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[13]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div[13]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(1) > div:nth-child(22) .text-truncate", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[22]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[22]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'postFlow')]", "xpath:innerText"]
       ],
       "value": "postFlow"
@@ -1135,11 +1110,11 @@
       "id": "336449c5-1e29-4534-8be3-96b334e044b6",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(1) > div:nth-child(18) .text-truncate",
+      "target": "css=div:nth-child(31) .text-truncate",
       "targets": [
-        ["css=div:nth-child(1) > div:nth-child(18) .text-truncate", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[18]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div[18]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(31) .text-truncate", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[31]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[31]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'someRandomTokenType')]", "xpath:innerText"]
       ],
       "value": "someRandomTokenType"
@@ -1147,11 +1122,11 @@
       "id": "ab9a292a-358e-4f37-be17-969299b295c4",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(29) .text-truncate",
+      "target": "css=.mb-4:nth-child(8) div:nth-child(4) .d-block:nth-child(2)",
       "targets": [
-        ["css=div:nth-child(29) .text-truncate", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[29]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[29]/div/span[2]", "xpath:position"],
+        ["css=.mb-4:nth-child(8) div:nth-child(4) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[4]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//section[8]/div/div[2]/div[2]/div/div[4]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'9000')]", "xpath:innerText"]
       ],
       "value": "9000"
@@ -1159,11 +1134,11 @@
       "id": "9d62366b-bcb3-43bf-ba61-6e42ba5900e6",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(42) .text-truncate",
+      "target": "css=div:nth-child(35) .text-truncate",
       "targets": [
-        ["css=div:nth-child(42) .text-truncate", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[42]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[42]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(35) .text-truncate", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[35]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[35]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'PT6H')]", "xpath:innerText"]
       ],
       "value": "PT6H"
