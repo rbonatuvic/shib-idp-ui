@@ -70,7 +70,7 @@ class EntityDescriptorRepositoryTest extends AbstractBaseDataJpaTest {
         noExceptionThrown()
 
         when:
-        List<EntityDescriptorProjection> projections = entityDescriptorRepository.findAllBy()
+        List<EntityDescriptorProjection> projections = entityDescriptorRepository.findAllReturnProjections()
 
         then:
         projections.size() == 1

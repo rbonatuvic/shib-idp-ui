@@ -439,7 +439,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     public List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsBasedOnUserAccess() throws ForbiddenException {
         switch (userService.getCurrentUserAccess()) {
         case ADMIN:
-            List<EntityDescriptorProjection> o = entityDescriptorRepository.findAllBy();
+            List<EntityDescriptorProjection> o = entityDescriptorRepository.findAllReturnProjections();
             return o;
         case GROUP:
             User user = userService.getCurrentUser();

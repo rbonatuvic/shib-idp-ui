@@ -2,7 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.repository;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -17,7 +16,7 @@ public interface EntityDescriptorRepository extends JpaRepository<EntityDescript
     @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
                    "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol) " +
                     "from EntityDescriptor e")
-    List<EntityDescriptorProjection> findAllBy();
+    List<EntityDescriptorProjection> findAllReturnProjections();
 
     @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
                    "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol) " +
