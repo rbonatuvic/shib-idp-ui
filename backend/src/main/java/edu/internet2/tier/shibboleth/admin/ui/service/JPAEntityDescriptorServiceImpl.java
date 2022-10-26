@@ -264,7 +264,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             );
         }
 
-        if (ed.getSPSSODescriptor("") != null && ed.getProtocol() == EntityDescriptorProtocol.OIDC) {
+        if (ed.isOidcProtocol()) {
             ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);
             serviceProviderSsoDescriptorRepresentation.addExtensions("OAuthRPExtensions", buildOAuthRPExtensionsMap(ed));
         }
@@ -480,14 +480,14 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
     private void setupSecurityRepresentationFromEntityDescriptor(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
         SecurityInfoRepresentation securityInfoRepresentation = representation.getSecurityInfo();
-        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getWantAssertionsSigned() != null && ed.getSPSSODescriptor("").getWantAssertionsSigned()) {
+        if (ed.wantsAssertionsSigned()) {
             if (securityInfoRepresentation == null) {
                 securityInfoRepresentation = new SecurityInfoRepresentation();
                 representation.setSecurityInfo(securityInfoRepresentation);
             }
             securityInfoRepresentation.setWantAssertionsSigned(true);
         }
-        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").isAuthnRequestsSigned() != null && ed.getSPSSODescriptor("").isAuthnRequestsSigned()) {
+        if (ed.isAuthnRequestsSigned()) {
             if (securityInfoRepresentation == null) {
                 securityInfoRepresentation = new SecurityInfoRepresentation();
                 representation.setSecurityInfo(securityInfoRepresentation);
@@ -496,7 +496,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         }
 
         // If the EntityDescriptor has key descriptors - parse them out.
-        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getKeyDescriptors().size() > 0) {
+        if (ed.hasKeyDescriptors()) {
             if (securityInfoRepresentation == null) {
                 securityInfoRepresentation = new SecurityInfoRepresentation();
                 representation.setSecurityInfo(securityInfoRepresentation);

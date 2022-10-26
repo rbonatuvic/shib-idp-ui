@@ -304,7 +304,6 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("entityID", entityID)
-                //  .add("organization", organization)
                 .add("id", id)
                 .toString();
     }
@@ -319,5 +318,28 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
 
     @Override public ActivatableType getActivatableType() {
         return ENTITY_DESCRIPTOR;
+    }
+
+    @JsonIgnore
+    public boolean wantsAssertionsSigned() {
+        SPSSODescriptor spssoDescriptor = getSPSSODescriptor("");
+        return  spssoDescriptor != null && spssoDescriptor.getWantAssertionsSigned() != null && spssoDescriptor.getWantAssertionsSigned();
+    }
+
+    @JsonIgnore
+    public boolean isAuthnRequestsSigned() {
+        SPSSODescriptor spssoDescriptor = getSPSSODescriptor("");
+        return spssoDescriptor != null && spssoDescriptor.isAuthnRequestsSigned() != null && spssoDescriptor.isAuthnRequestsSigned();
+    }
+
+    @JsonIgnore
+    public boolean isOidcProtocol() {
+        return getSPSSODescriptor("") != null && getProtocol() == EntityDescriptorProtocol.OIDC;
+    }
+
+    @JsonIgnore
+    public boolean hasKeyDescriptors() {
+        SPSSODescriptor spssoDescriptor = getSPSSODescriptor("");
+        return spssoDescriptor != null && spssoDescriptor.getKeyDescriptors().size() > 0;
     }
 }
