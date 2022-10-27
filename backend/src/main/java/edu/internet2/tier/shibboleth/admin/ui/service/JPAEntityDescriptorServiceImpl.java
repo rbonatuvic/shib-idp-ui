@@ -3,23 +3,28 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributes;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
+import edu.internet2.tier.shibboleth.admin.ui.domain.X509Data;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSInteger;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.KeyDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.OAuthRPExtensions;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLObject;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
@@ -32,19 +37,14 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupACSs;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupContacts;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupLogout;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupOrganization;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupRelyingPartyOverrides;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupSPSSODescriptor;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupSecurity;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupUIInfo;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyName;
+import org.opensaml.xmlsec.signature.KeyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +56,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupACSs;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupContacts;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupLogout;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupOrganization;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupRelyingPartyOverrides;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupSPSSODescriptor;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupSecurity;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupUIInfo;
+import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
 
 @Slf4j
 @Service
@@ -74,6 +84,93 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
     @Autowired
     private UserService userService;
+
+    private EntityDescriptor buildDescriptorFromRepresentation(final EntityDescriptor ed, final EntityDescriptorRepresentation representation) {
+        ed.setEntityID(representation.getEntityId());
+        ed.setIdOfOwner(representation.getIdOfOwner());
+        ed.setProtocol(representation.getProtocol()); // SAML vs OIDC
+
+        setupSPSSODescriptor(ed, representation);
+        ed.setServiceProviderName(representation.getServiceProviderName());
+        ed.setServiceEnabled(representation.isServiceEnabled());
+        setupOrganization(ed, representation);
+        setupContacts(ed, representation);
+        setupUIInfo(ed, representation);
+        setupSecurity(ed, representation);
+        setupACSs(ed, representation);
+        setupLogout(ed, representation);
+        setupRelyingPartyOverrides(ed, representation);
+
+        if (ed.getProtocol() == EntityDescriptorProtocol.OIDC && ed.getSPSSODescriptor("") != null) {
+            ed.getSPSSODescriptor("").addSupportedProtocol("http://openid.net/specs/openid-connect-core-1_0.html");
+        }
+        //Let envers recognize update revision type for EntityDescriptor type
+        //when modifying Attributes and SPSSODescriptor inside RoleDescriptors collection
+        ed.setVersionModifiedTimestamp(System.currentTimeMillis());
+
+        return ed;
+    }
+
+    /**
+     * Currently only supporting oidcmd:OAuthRPExtensions in the extensions block
+     */
+    private Map<String, Object> buildOAuthRPExtensionsMap(EntityDescriptor ed) {
+        HashMap<String, Object> result = new HashMap<>();
+        if (!ed.getSPSSODescriptor("").getOptionalExtensions().isPresent()) {
+            return result;
+        }
+        for(XMLObject extension : ed.getSPSSODescriptor("").getExtensions().getOrderedChildren()) {
+            if (extension.getElementQName().getLocalPart().equals(OAuthRPExtensions.TYPE_LOCAL_NAME)){
+                OAuthRPExtensions oAuthRPExtensions = (OAuthRPExtensions) extension;
+                HashMap<String, Object> attributeMap = new HashMap();
+                attributeMap.put("applicationType", oAuthRPExtensions.getApplicationType());
+                attributeMap.put("clientUri", oAuthRPExtensions.getClientUri());
+                attributeMap.put("defaultMaxAge", oAuthRPExtensions.getDefaultMaxAge());
+                attributeMap.put("grantTypes", oAuthRPExtensions.getGrantTypes());
+                attributeMap.put("idTokenEncryptedResponseAlg", oAuthRPExtensions.getIdTokenEncryptedResponseAlg());
+                attributeMap.put("idTokenEncryptedResponseEnc", oAuthRPExtensions.getIdTokenEncryptedResponseEnc());
+                attributeMap.put("idTokenSignedResponseAlg", oAuthRPExtensions.getIdTokenSignedResponseAlg());
+                attributeMap.put("initiateLoginUri", oAuthRPExtensions.getInitiateLoginUri());
+                attributeMap.put("requestObjectEncryptionAlg", oAuthRPExtensions.getRequestObjectEncryptionAlg());
+                attributeMap.put("requestObjectEncryptionEnc", oAuthRPExtensions.getRequestObjectEncryptionEnc());
+                attributeMap.put("requestObjectSigningAlg", oAuthRPExtensions.getRequestObjectSigningAlg());
+                attributeMap.put("requireAuthTime", oAuthRPExtensions.isRequireAuthTime());
+                attributeMap.put("responseTypes", oAuthRPExtensions.getResponseTypes());
+                attributeMap.put("scopes", oAuthRPExtensions.getScopes());
+                attributeMap.put("sectorIdentifierUri", oAuthRPExtensions.getSectorIdentifierUri());
+                attributeMap.put("softwareId", oAuthRPExtensions.getSoftwareId());
+                attributeMap.put("softwareVersion", oAuthRPExtensions.getSoftwareVersion());
+                attributeMap.put("tokenEndpointAuthMethod", oAuthRPExtensions.getTokenEndpointAuthMethod());
+                attributeMap.put("tokenEndpointAuthSigningAlg", oAuthRPExtensions.getTokenEndpointAuthSigningAlg());
+                attributeMap.put("userInfoSignedResponseAlg", oAuthRPExtensions.getUserInfoSignedResponseAlg());
+                attributeMap.put("userInfoEncryptedResponseAlg", oAuthRPExtensions.getUserInfoEncryptedResponseAlg());
+                attributeMap.put("userInfoEncryptedResponseEnc", oAuthRPExtensions.getUserInfoEncryptedResponseEnc());
+                result.put("attributes", attributeMap);
+                // spit out the children
+                if (oAuthRPExtensions.getRequestUris().size() > 0){
+                    List<String> requestUris = new ArrayList<>();
+                    oAuthRPExtensions.getRequestUris().forEach(requestUri -> requestUris.add(requestUri.getValue()));
+                    result.put("requestUris", requestUris);
+                }
+                if (oAuthRPExtensions.getPostLogoutRedirectUris().size() > 0){
+                    List<String> postLogoutRedirectUris = new ArrayList<>();
+                    oAuthRPExtensions.getPostLogoutRedirectUris().forEach(redirectUri -> postLogoutRedirectUris.add(redirectUri.getValue()));
+                    result.put("postLogoutRedirectUris", postLogoutRedirectUris);
+                }
+                if (oAuthRPExtensions.getDefaultAcrValues().size() > 0){
+                    List<String> defaultAcrValues = new ArrayList<>();
+                    oAuthRPExtensions.getDefaultAcrValues().forEach(acrValue -> defaultAcrValues.add(acrValue.getValue()));
+                    result.put("defaultAcrValues", defaultAcrValues);
+                }
+                if (oAuthRPExtensions.getAudiences().size() > 0){
+                    List<String> audiences = new ArrayList<>();
+                    oAuthRPExtensions.getAudiences().forEach(aud -> audiences.add(aud.getURI()));
+                    result.put("audiences", audiences);
+                }
+            }
+        }
+        return result;
+    }
 
     @Override
     public EntityDescriptorRepresentation changeApproveStatusOfEntityDescriptor(String resourceId, boolean status) throws PersistentEntityNotFound, ForbiddenException {
@@ -104,28 +201,6 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return createRepresentationFromDescriptor(ed);
     }
 
-    private EntityDescriptor buildDescriptorFromRepresentation(final EntityDescriptor ed, final EntityDescriptorRepresentation representation) {
-        ed.setEntityID(representation.getEntityId());
-        ed.setIdOfOwner(representation.getIdOfOwner());
-
-        setupSPSSODescriptor(ed, representation);
-        ed.setServiceProviderName(representation.getServiceProviderName());
-        ed.setServiceEnabled(representation.isServiceEnabled());
-        setupOrganization(ed, representation);
-        setupContacts(ed, representation);
-        setupUIInfo(ed, representation);
-        setupSecurity(ed, representation);
-        setupACSs(ed, representation);
-        setupLogout(ed, representation);
-        setupRelyingPartyOverrides(ed, representation);
-
-        //Let envers recognize update revision type for EntityDescriptor type
-        //when modifying Attributes and SPSSODescriptor inside RoleDescriptors collection
-        ed.setVersionModifiedTimestamp(System.currentTimeMillis());
-
-        return ed;
-    }
-
     @Override
     public EntityDescriptor createDescriptorFromRepresentation(final EntityDescriptorRepresentation representation) {
         EntityDescriptor ed = openSamlObjects.buildDefaultInstanceOfType(EntityDescriptor.class);
@@ -135,30 +210,6 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Override
     public EntityDescriptorRepresentation createNew(EntityDescriptor ed) throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
         return createNew(createRepresentationFromDescriptor(ed));
-    }
-
-    @Override
-    public EntityDescriptorRepresentation createNewEntityDescriptorFromXMLOrigin(EntityDescriptor ed) {
-        ed.setIdOfOwner(userService.getCurrentUserGroup().getOwnerId());
-        ownershipRepository.deleteEntriesForOwnedObject(ed);
-        ownershipRepository.save(new Ownership(userService.getCurrentUserGroup(), ed));
-        EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
-        return createRepresentationFromDescriptor(savedEntity);
-    }
-
-    @Override
-    public boolean entityExists(String entityID) {
-        return entityDescriptorRepository.findByEntityID(entityID) != null ;
-    }
-
-    @Override
-    public EntityDescriptorRepresentation updateGroupForEntityDescriptor(String resourceId, String groupId) {
-        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
-        ed.setIdOfOwner(groupId);
-        ownershipRepository.deleteEntriesForOwnedObject(ed);
-        ownershipRepository.save(new Ownership(groupService.find(groupId), ed));
-        EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
-        return createRepresentationFromDescriptor(savedEntity);
     }
 
     @Override
@@ -186,6 +237,19 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
+    public EntityDescriptorRepresentation createNewEntityDescriptorFromXMLOrigin(EntityDescriptor ed) {
+        ed.setIdOfOwner(userService.getCurrentUserGroup().getOwnerId());
+        ownershipRepository.deleteEntriesForOwnedObject(ed);
+        ownershipRepository.save(new Ownership(userService.getCurrentUserGroup(), ed));
+        ed.setProtocol(determineEntityDescriptorProtocol(ed));
+        if (ed.getProtocol() == EntityDescriptorProtocol.OIDC) {
+            ed.getSPSSODescriptor("").addSupportedProtocol("http://openid.net/specs/openid-connect-core-1_0.html");
+        }
+        EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
+        return createRepresentationFromDescriptor(savedEntity);
+    }
+
+    @Override
     public EntityDescriptorRepresentation createRepresentationFromDescriptor(org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor) {
         EntityDescriptor ed = (EntityDescriptor) entityDescriptor;
         EntityDescriptorRepresentation representation = new EntityDescriptorRepresentation();
@@ -200,8 +264,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         representation.setCreatedBy(ed.getCreatedBy());
         representation.setCurrent(ed.isCurrent());
         representation.setIdOfOwner(ed.getIdOfOwner());
+        representation.setProtocol(ed.getProtocol());
         representation.setApproved(isEntityDescriptorApproved(ed));
 
+        // Set up SPSSODescriptor
         if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getSupportedProtocols().size() > 0) {
             ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);
             serviceProviderSsoDescriptorRepresentation.setProtocolSupportEnum(String.join(",", ed.getSPSSODescriptor("").getSupportedProtocols().stream().map(p -> MDDCConstants.PROTOCOL_BINDINGS.get(p)).collect(Collectors.toList())));
@@ -210,8 +276,13 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getNameIDFormats().size() > 0) {
             ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);
             serviceProviderSsoDescriptorRepresentation.setNameIdFormats(
-                    ed.getSPSSODescriptor("").getNameIDFormats().stream().map(p -> p.getURI()).collect(Collectors.toList())
+                            ed.getSPSSODescriptor("").getNameIDFormats().stream().map(p -> p.getURI()).collect(Collectors.toList())
             );
+        }
+
+        if (ed.isOidcProtocol()) {
+            ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);
+            serviceProviderSsoDescriptorRepresentation.addExtensions("OAuthRPExtensions", buildOAuthRPExtensionsMap(ed));
         }
 
         if (ed.getOrganization() != null) {
@@ -270,42 +341,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             }
         }
 
-        // set up security
-        // TODO: cleanup, probably use a lazy initializer
-        SecurityInfoRepresentation securityInfoRepresentation = representation.getSecurityInfo();
-        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getWantAssertionsSigned() != null && ed.getSPSSODescriptor("").getWantAssertionsSigned()) {
-            if (securityInfoRepresentation == null) {
-                securityInfoRepresentation = new SecurityInfoRepresentation();
-                representation.setSecurityInfo(securityInfoRepresentation);
-            }
-            securityInfoRepresentation.setWantAssertionsSigned(true);
-        }
-        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").isAuthnRequestsSigned() != null && ed.getSPSSODescriptor("").isAuthnRequestsSigned()) {
-            if (securityInfoRepresentation == null) {
-                securityInfoRepresentation = new SecurityInfoRepresentation();
-                representation.setSecurityInfo(securityInfoRepresentation);
-            }
-            securityInfoRepresentation.setAuthenticationRequestsSigned(true);
-        }
-        if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getKeyDescriptors().size() > 0) {
-            if (securityInfoRepresentation == null) {
-                securityInfoRepresentation = new SecurityInfoRepresentation();
-                representation.setSecurityInfo(securityInfoRepresentation);
-            }
-            securityInfoRepresentation.setX509CertificateAvailable(true);
-            for (org.opensaml.saml.saml2.metadata.KeyDescriptor keyDescriptor : ed.getSPSSODescriptor("").getKeyDescriptors()) {
-                SecurityInfoRepresentation.X509CertificateRepresentation x509CertificateRepresentation = new SecurityInfoRepresentation.X509CertificateRepresentation();
-                x509CertificateRepresentation.setName(((KeyDescriptor) keyDescriptor).getName());
-                //TODO: check this. assume that if no value is set, it's used for both
-                if (keyDescriptor.getUse() != null) {
-                    x509CertificateRepresentation.setType(keyDescriptor.getUse().toString().toLowerCase());
-                } else {
-                    x509CertificateRepresentation.setType("both");
-                }
-                x509CertificateRepresentation.setValue(keyDescriptor.getKeyInfo().getX509Datas().get(0).getX509Certificates().get(0).getValue());
-                securityInfoRepresentation.getX509Certificates().add(x509CertificateRepresentation);
-            }
-        }
+        setupSecurityRepresentationFromEntityDescriptor(ed, representation);
 
         // set up ACSs
         if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getAssertionConsumerServices().size() > 0) {
@@ -350,40 +386,40 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                         IRelyingPartyOverrideProperty overrideProperty = (IRelyingPartyOverrideProperty)override.get();
                         Object attributeValues = null;
                         switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
-                            case STRING:
-                            case LONG:
-                            case DOUBLE:
-                            case DURATION:
-                            case SPRING_BEAN_ID:
-                                if (jpaAttribute.getAttributeValues().size() != 1) {
-                                    throw new RuntimeException("Multiple/No values detected where one is expected!");
-                                }
-                                attributeValues = ModelRepresentationConversions.getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0));
-                                break;
-                            case INTEGER:
-                                if (jpaAttribute.getAttributeValues().size() != 1) {
-                                    throw new RuntimeException("Multiple/No values detected where one is expected!");
-                                }
-                                attributeValues = ((XSInteger)jpaAttribute.getAttributeValues().get(0)).getValue();
-                                break;
-                            case BOOLEAN:
-                                if (jpaAttribute.getAttributeValues().size() != 1) {
-                                    throw new RuntimeException("Multiple/No values detected where one is expected!");
-                                }
-                                if (overrideProperty.getPersistType() != null &&
-                                    !overrideProperty.getPersistType().equals(overrideProperty.getDisplayType())) {
-                                    attributeValues = overrideProperty.getPersistValue().equals(ModelRepresentationConversions.getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0)));
-                                } else {
-                                    attributeValues = Boolean.valueOf(overrideProperty.getInvert()) ^ Boolean.valueOf(((XSBoolean) jpaAttribute.getAttributeValues()
-                                            .get(0)).getStoredValue());
-                                }
-                                break;
-                            case SET:
-                            case LIST:
-                            case SELECTION_LIST:
-                                attributeValues = jpaAttribute.getAttributeValues().stream()
-                                        .map(attributeValue -> ModelRepresentationConversions.getValueFromXMLObject(attributeValue))
-                                        .collect(Collectors.toList());
+                        case STRING:
+                        case LONG:
+                        case DOUBLE:
+                        case DURATION:
+                        case SPRING_BEAN_ID:
+                            if (jpaAttribute.getAttributeValues().size() != 1) {
+                                throw new RuntimeException("Multiple/No values detected where one is expected for override: " + jpaAttribute.getName());
+                            }
+                            attributeValues = ModelRepresentationConversions.getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0));
+                            break;
+                        case INTEGER:
+                            if (jpaAttribute.getAttributeValues().size() != 1) {
+                                throw new RuntimeException("Multiple/No values detected where one is expected for override: " + jpaAttribute.getName());
+                            }
+                            attributeValues = ((XSInteger)jpaAttribute.getAttributeValues().get(0)).getValue();
+                            break;
+                        case BOOLEAN:
+                            if (jpaAttribute.getAttributeValues().size() != 1) {
+                                throw new RuntimeException("Multiple/No values detected where one is expected!");
+                            }
+                            if (overrideProperty.getPersistType() != null &&
+                                            !overrideProperty.getPersistType().equals(overrideProperty.getDisplayType())) {
+                                attributeValues = overrideProperty.getPersistValue().equals(ModelRepresentationConversions.getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0)));
+                            } else {
+                                attributeValues = Boolean.valueOf(overrideProperty.getInvert()) ^ Boolean.valueOf(((XSBoolean) jpaAttribute.getAttributeValues()
+                                                .get(0)).getStoredValue());
+                            }
+                            break;
+                        case SET:
+                        case LIST:
+                        case SELECTION_LIST:
+                            attributeValues = jpaAttribute.getAttributeValues().stream()
+                                            .map(attributeValue -> ModelRepresentationConversions.getValueFromXMLObject(attributeValue))
+                                            .collect(Collectors.toList());
                         }
                         relyingPartyOverrides.put(((IRelyingPartyOverrideProperty) override.get()).getName(), attributeValues);
                     }
@@ -396,17 +432,6 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return representation;
     }
 
-    private boolean isEntityDescriptorApproved(EntityDescriptor ed) {
-        if (ed.isServiceEnabled()) {
-            return true;
-        }
-        Group ownerGroup = groupService.find(ed.getIdOfOwner());
-        if (ownerGroup == null) {
-            ownerGroup = Group.ADMIN_GROUP; // This should only happen in the large number of tests that were written prior to group implementation
-        }
-        return ed.approvedCount() >= ownerGroup.getApproversList().size();
-    }
-
     @Override
     public void delete(String resourceId) throws ForbiddenException, PersistentEntityNotFound {
         EntityDescriptor ed = getEntityDescriptorByResourceId(resourceId);
@@ -416,6 +441,41 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         ownershipRepository.deleteEntriesForOwnedObject(ed);
         entityDescriptorRepository.delete(ed);
 
+    }
+
+    private EntityDescriptorProtocol determineEntityDescriptorProtocol(EntityDescriptor ed) {
+        boolean oidcType = ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").isOidcType();
+        return oidcType ? EntityDescriptorProtocol.OIDC : EntityDescriptorProtocol.SAML;
+    }
+
+    private KeyDescriptorRepresentation.ElementType determineKeyInfoType(KeyInfo keyInfo) {
+        List<XMLObject> children = keyInfo.getOrderedChildren().stream().filter(xmlObj -> {
+            boolean xmlWeDoNotWant = xmlObj instanceof KeyName || xmlObj instanceof KeyValue || xmlObj == null;
+            return !xmlWeDoNotWant;
+        }).collect(Collectors.toList());
+        if (children.size() < 1) {
+            return KeyDescriptorRepresentation.ElementType.unsupported;
+        }
+        XMLObject xmlObject = children.get(0);
+        switch (xmlObject.getElementQName().getLocalPart()) {
+        case "X509Data":
+            return KeyDescriptorRepresentation.ElementType.X509Data;
+        case "ClientSecret":
+            return KeyDescriptorRepresentation.ElementType.clientSecret;
+        case "ClientSecretKeyReference":
+            return KeyDescriptorRepresentation.ElementType.clientSecretRef;
+        case "JwksData":
+            return KeyDescriptorRepresentation.ElementType.jwksData;
+        case "JwksUri":
+            return KeyDescriptorRepresentation.ElementType.jwksUri;
+        default:
+            return KeyDescriptorRepresentation.ElementType.unsupported;
+        }
+    }
+
+    @Override
+    public boolean entityExists(String entityID) {
+        return entityDescriptorRepository.findByEntityID(entityID) != null ;
     }
 
     @Override
@@ -435,7 +495,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     public List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsBasedOnUserAccess() throws ForbiddenException {
         switch (userService.getCurrentUserAccess()) {
         case ADMIN:
-            List<EntityDescriptorProjection> o = entityDescriptorRepository.findAllBy();
+            List<EntityDescriptorProjection> o = entityDescriptorRepository.findAllReturnProjections();
             return o;
         case GROUP:
             User user = userService.getCurrentUser();
@@ -481,6 +541,70 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Override
     public Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
         return ModelRepresentationConversions.getRelyingPartyOverridesRepresentationFromAttributeList(attributeList);
+    }
+
+    private boolean isEntityDescriptorApproved(EntityDescriptor ed) {
+        if (ed.isServiceEnabled()) {
+            return true;
+        }
+        Group ownerGroup = groupService.find(ed.getIdOfOwner());
+        if (ownerGroup == null) {
+            ownerGroup = Group.ADMIN_GROUP; // This should only happen in the large number of tests that were written prior to group implementation
+        }
+        return ed.approvedCount() >= ownerGroup.getApproversList().size();
+    }
+
+    private void setupSecurityRepresentationFromEntityDescriptor(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
+        SecurityInfoRepresentation securityInfoRepresentation = representation.getSecurityInfo();
+        if (ed.wantsAssertionsSigned()) {
+            if (securityInfoRepresentation == null) {
+                securityInfoRepresentation = new SecurityInfoRepresentation();
+                representation.setSecurityInfo(securityInfoRepresentation);
+            }
+            securityInfoRepresentation.setWantAssertionsSigned(true);
+        }
+        if (ed.isAuthnRequestsSigned()) {
+            if (securityInfoRepresentation == null) {
+                securityInfoRepresentation = new SecurityInfoRepresentation();
+                representation.setSecurityInfo(securityInfoRepresentation);
+            }
+            securityInfoRepresentation.setAuthenticationRequestsSigned(true);
+        }
+
+        // If the EntityDescriptor has key descriptors - parse them out.
+        if (ed.hasKeyDescriptors()) {
+            if (securityInfoRepresentation == null) {
+                securityInfoRepresentation = new SecurityInfoRepresentation();
+                representation.setSecurityInfo(securityInfoRepresentation);
+            }
+
+            for (org.opensaml.saml.saml2.metadata.KeyDescriptor keyDescriptor : ed.getSPSSODescriptor("").getKeyDescriptors()) {
+                KeyDescriptorRepresentation keyDescriptorRep = new KeyDescriptorRepresentation();
+                String name = keyDescriptor.getKeyInfo().getKeyNames().size() > 0 ? keyDescriptor.getKeyInfo().getKeyNames().get(0).getValue() : null;
+                name = name == null ? ((KeyDescriptor)keyDescriptor).getName() : name;
+                keyDescriptorRep.setName(name);
+
+                //TODO: check this. assume that if no value is set, it's used for both
+                String useType = keyDescriptor.getUse() != null ? keyDescriptor.getUse().toString().toLowerCase() : "both";
+                keyDescriptorRep.setType(useType);
+
+                KeyInfo keyInfo = keyDescriptor.getKeyInfo();
+                KeyDescriptorRepresentation.ElementType keyInfoType = determineKeyInfoType(keyInfo);
+                keyDescriptorRep.setElementType(keyInfoType);
+                if (keyInfoType != KeyDescriptorRepresentation.ElementType.unsupported) {
+                    List<XMLObject> children = keyInfo.getOrderedChildren().stream().filter(xmlObj -> {
+                        boolean xmlWeDoNotWant = xmlObj instanceof KeyName || xmlObj instanceof KeyValue || xmlObj == null;
+                        return !xmlWeDoNotWant;
+                    }).collect(Collectors.toList());
+                    XMLObject obj = children.get(0);
+                    if (keyInfoType == KeyDescriptorRepresentation.ElementType.X509Data) {
+                        obj = ((X509Data) obj).getX509Certificates().get(0);
+                    }
+                    keyDescriptorRep.setValue(((ValueXMLObject) obj).getValue());
+                    securityInfoRepresentation.addKeyDescriptor(keyDescriptorRep);
+                }
+            }
+        }
     }
 
     @Override
@@ -544,6 +668,16 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         }
         ed = entityDescriptorRepository.save(ed);
         return createRepresentationFromDescriptor(ed);
+    }
+
+    @Override
+    public EntityDescriptorRepresentation updateGroupForEntityDescriptor(String resourceId, String groupId) {
+        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
+        ed.setIdOfOwner(groupId);
+        ownershipRepository.deleteEntriesForOwnedObject(ed);
+        ownershipRepository.save(new Ownership(groupService.find(groupId), ed));
+        EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
+        return createRepresentationFromDescriptor(savedEntity);
     }
 
     private void validateEntityIdAndACSUrls(EntityDescriptorRepresentation edRep) throws InvalidPatternMatchException {

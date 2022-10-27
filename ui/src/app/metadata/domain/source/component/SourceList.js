@@ -33,6 +33,7 @@ export default function SourceList({ entities, onDelete, onEnable, onApprove, on
                             <tr>
                                 <th className="w-25"><Translate value="label.title">Title</Translate></th>
                                 <th className="w-25"><Translate value="label.entity-id">Entity ID</Translate></th>
+                                <th className=""><Translate value="label.source-protocol">Protocol</Translate></th>
                                 <th className=""><Translate value="label.author">Author</Translate></th>
                                 <th className=""><Translate value="label.creation-date">Created Date</Translate></th>
                                 <th className="text-center"><Translate value="label.approval">Approval</Translate></th>
@@ -56,6 +57,9 @@ export default function SourceList({ entities, onDelete, onEnable, onApprove, on
                                             </td>
                                             <td className="align-middle">
                                                 {source.entityId}
+                                            </td>
+                                            <td className="align-middle">
+                                                {source.protocol}
                                             </td>
                                             <td className="align-middle">
                                                 {source.createdBy}
@@ -85,7 +89,7 @@ export default function SourceList({ entities, onDelete, onEnable, onApprove, on
                                                 {onEnable && (canEnable && source.approved) ?
                                                     <Form.Check
                                                         type="switch"
-                                                        id={`enable-switch-${source.id}`}
+                                                        id={`enable-switch-${idx}`}
                                                         size="lg"
                                                         aria-label={translator(source.serviceEnabled ? 'label.disable' : 'label.enable')}
                                                         onChange={({ target: { checked } }) => onEnable(source, checked)}

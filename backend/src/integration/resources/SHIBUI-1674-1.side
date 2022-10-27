@@ -119,16 +119,16 @@
       "id": "93d20204-7dfa-44c0-8e61-6741e73594f5",
       "comment": "",
       "command": "waitForElementPresent",
-      "target": "css=.mb-3:nth-child(2) .btn path",
+      "target": "css=.mb-3:nth-child(3) .info-icon path",
       "targets": [],
       "value": "30000"
     }, {
       "id": "a7b2b925-2274-4dcc-a4e3-3b727c9a047a",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(2) .btn path",
+      "target": "css=.mb-3:nth-child(3) .info-icon path",
       "targets": [
-        ["css=.mb-3:nth-child(2) .btn path", "css:finder"]
+        ["css=.mb-3:nth-child(3) .info-icon path", "css:finder"]
       ],
       "value": ""
     }, {
@@ -348,9 +348,9 @@
       "id": "56f49fe8-340c-46fa-bda9-0b3c0de98bdb",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(1) > .col-12:nth-child(1) > .mb-3:nth-child(1) path:nth-child(1)",
+      "target": "css=.row:nth-child(2) path:nth-child(1)",
       "targets": [
-        ["css=.row:nth-child(1) > .col-12:nth-child(1) > .mb-3:nth-child(1) path:nth-child(1)", "css:finder"]
+        ["css=.row:nth-child(2) path:nth-child(1)", "css:finder"]
       ],
       "value": ""
     }, {
@@ -385,11 +385,9 @@
       "id": "54a74399-69aa-4412-85c2-a5bbb543d8be",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(8) path:nth-child(1)",
+      "target": "css=.row:nth-child(11) path:nth-child(1)",
       "targets": [
-        ["css=.app-root", "css:finder"],
-        ["xpath=//div[@id='root']/div", "xpath:idRelative"],
-        ["xpath=//div[3]/div", "xpath:position"]
+        ["css=.row:nth-child(9) path:nth-child(1)", "css:finder"]
       ],
       "value": ""
     }, {
@@ -721,9 +719,9 @@
       "id": "2928ba27-b934-499e-8dda-8441dbbb463d",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(7) path:nth-child(1)",
+      "target": "css=.row:nth-child(10) path:nth-child(1)",
       "targets": [
-        ["css=.row:nth-child(7) path:nth-child(1)", "css:finder"]
+        ["css=.row:nth-child(8) path:nth-child(1)", "css:finder"]
       ],
       "value": ""
     }, {

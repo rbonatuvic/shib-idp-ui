@@ -1,7 +1,15 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
-import javax.script.ScriptException;
-
+import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.InitializationException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
+import edu.internet2.tier.shibboleth.admin.ui.service.FilterService;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,16 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException;
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
-import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
-import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
-import edu.internet2.tier.shibboleth.admin.ui.exception.InitializationException;
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
-import edu.internet2.tier.shibboleth.admin.ui.service.FilterService;
-import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
+import javax.script.ScriptException;
 
 @RestController
 @RequestMapping("/api/activate")

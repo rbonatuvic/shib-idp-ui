@@ -4,18 +4,21 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.JsonSchemaComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.KeyDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.OAuthRPExtensions
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
-import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Approvers
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
@@ -39,6 +42,9 @@ import org.xmlunit.diff.ElementSelectors
 import spock.lang.Ignore
 
 import java.time.LocalDateTime
+
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesOIDCSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSAMLSchema
 
 @PropertySource("classpath:application.yml")
 class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
@@ -64,7 +70,7 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
     EntityDescriptorRepository entityDescriptorRepository
 
     @Transactional
-    def setup() {        
+    def setup() {
         JacksonTester.initFields(this, mapper)
         generator = new RandomGenerator()
         EntityDescriptorConversionUtils.openSamlObjects = openSamlObjects
@@ -367,10 +373,10 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         def test = openSamlObjects.marshalToXmlString(service.createDescriptorFromRepresentation(new EntityDescriptorRepresentation().with {
             it.entityId = 'http://test.example.org/test1'
             it.securityInfo = new SecurityInfoRepresentation().with {
-                it.x509CertificateAvailable = true
-                it.x509Certificates = [new SecurityInfoRepresentation.X509CertificateRepresentation().with {
+                it.keyDescriptors = [new KeyDescriptorRepresentation().with {
                     it.type = 'signing'
                     it.value = 'certificate'
+                    it.elementType = KeyDescriptorRepresentation.ElementType.X509Data
                     it
                 }]
                 it
@@ -407,10 +413,10 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         def test = openSamlObjects.marshalToXmlString(service.createDescriptorFromRepresentation(new EntityDescriptorRepresentation().with {
             it.entityId = 'http://test.example.org/test1'
             it.securityInfo = new SecurityInfoRepresentation().with {
-                it.x509CertificateAvailable = true
-                it.x509Certificates = [new SecurityInfoRepresentation.X509CertificateRepresentation().with {
+                it.keyDescriptors = [new KeyDescriptorRepresentation().with {
                     it.type = 'encryption'
                     it.value = 'certificate'
+                    it.elementType = KeyDescriptorRepresentation.ElementType.X509Data
                     it
                 }]
                 it
@@ -447,10 +453,10 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         def test = openSamlObjects.marshalToXmlString(service.createDescriptorFromRepresentation(new EntityDescriptorRepresentation().with {
             it.entityId = 'http://test.example.org/test1'
             it.securityInfo = new SecurityInfoRepresentation().with {
-                it.x509CertificateAvailable = true
-                it.x509Certificates = [new SecurityInfoRepresentation.X509CertificateRepresentation().with {
+                it.keyDescriptors = [new KeyDescriptorRepresentation().with {
                     it.type = 'both'
                     it.value = 'certificate'
+                    it.elementType = KeyDescriptorRepresentation.ElementType.X509Data
                     it
                 }]
                 it
@@ -716,9 +722,6 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         def output = service.createRepresentationFromDescriptor(descriptor)
 
         then:
-        assert output.securityInfo.x509Certificates.size() == 1
-        assert output.securityInfo.x509Certificates[0].type == 'both'
-
         assert descriptor.getSPSSODescriptor('').getKeyDescriptors().size() == 1
         assert descriptor.getSPSSODescriptor('').getKeyDescriptors()[0].getUse() == null
     }
@@ -829,6 +832,42 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         return ed
     }
 
+    def "SHIBUI-2830 OIDC"() {
+        when:
+        def representation = new ObjectMapper().readValue(this.class.getResource('/json/SHIBUI-2380.json').bytes, EntityDescriptorRepresentation)
+        def ed = service.createDescriptorFromRepresentation(representation)
+        def oauthRpExt = (OAuthRPExtensions) ed.getSPSSODescriptor("").getExtensions().getOrderedChildren().get(0)
+
+        then:
+        assert ed.getProtocol() == EntityDescriptorProtocol.OIDC
+        assert oauthRpExt.getDefaultAcrValues().size() == 2
+        assert oauthRpExt.getPostLogoutRedirectUris().size() == 1
+        assert oauthRpExt.getRequestUris().size() == 1
+        assert oauthRpExt.getAudiences().size() == 1
+        assert oauthRpExt.getClientUri().equals("https://example.org/clientUri")
+        assert oauthRpExt.getResponseTypes().equals("code id_token")
+        assert oauthRpExt.getSectorIdentifierUri().equals("https://example.org/sectorIdentifier")
+        assert oauthRpExt.getIdTokenEncryptedResponseEnc().equals("A256GCM")
+        assert oauthRpExt.getApplicationType().equals("web")
+        assert oauthRpExt.getTokenEndpointAuthMethod().equals("client_secret_basic")
+        assert oauthRpExt.isRequireAuthTime() == false
+
+        assert oauthRpExt.getUserInfoEncryptedResponseEnc().equals("A192GCM")
+        assert oauthRpExt.getUserInfoSignedResponseAlg().equals("RS384")
+        assert oauthRpExt.getUserInfoEncryptedResponseAlg().equals("A192KW")
+        assert oauthRpExt.getGrantTypes().equals("authorization_code")
+        assert oauthRpExt.getSoftwareId().equals("mockSoftwareId")
+        assert oauthRpExt.getRequestObjectEncryptionEnc().equals("A128GCM")
+        assert oauthRpExt.getInitiateLoginUri().equals("https://example.org/initiateLogin")
+        assert oauthRpExt.getTokenEndpointAuthMethod().equals("client_secret_basic")
+        assert oauthRpExt.getRequestObjectSigningAlg().equals("RS256")
+        assert oauthRpExt.getScopes().equals("openid profile")
+        assert oauthRpExt.getIdTokenEncryptedResponseAlg().equals("A256KW")
+        assert oauthRpExt.getSoftwareVersion().equals("mockSoftwareVersion")
+
+        assert oauthRpExt.getDefaultMaxAge() == 0
+    }
+
     def "SHIBUI-1723"() {
         given:
         def entityDescriptor = openSamlObjects.unmarshalFromXml(this.class.getResource('/metadata/SHIBUI-1723-1.xml').bytes) as EntityDescriptor
@@ -837,18 +876,20 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         def entityDescriptorRepresentation = service.createRepresentationFromDescriptor(entityDescriptor).with {
             it.serviceProviderName = 'testme'
             it.contacts = []
-            it.securityInfo.x509Certificates[0].name = 'testcert'
+            it.securityInfo.keyDescriptors[0].name = 'testcert'
             it.createdBy = 'root'
             it.setCreatedDate(LocalDateTime.now())
             it.setModifiedDate(LocalDateTime.now())
             it
         }
         def json = mapper.writeValueAsString(entityDescriptorRepresentation)
-        def resourceLoader = new DefaultResourceLoader()
-        def schemaUri = JsonSchemaLocationLookup.metadataSourcesSchema(new JsonSchemaComponentsConfiguration().jsonSchemaResourceLocationRegistry(resourceLoader, this.mapper)).uri
+        HashMap<String, JsonSchemaResourceLocation> schemaLocations = new HashMap<>()
+        def jsonSchemaResourceLocationRegistry = new JsonSchemaComponentsConfiguration().jsonSchemaResourceLocationRegistry(new DefaultResourceLoader(), this.mapper)
+        schemaLocations.put("SAML", metadataSourcesSAMLSchema(jsonSchemaResourceLocationRegistry))
+        schemaLocations.put("OIDC", metadataSourcesOIDCSchema(jsonSchemaResourceLocationRegistry))
 
         when:
-        LowLevelJsonSchemaValidator.validatePayloadAgainstSchema(new MockHttpInputMessage(json.bytes), schemaUri)
+        LowLevelJsonSchemaValidator.validateMetadataSourcePayloadAgainstSchema(new MockHttpInputMessage(json.bytes), schemaLocations)
 
         then:
         noExceptionThrown()

@@ -403,7 +403,7 @@
       "target": "css=.row:nth-child(8) .form-label > span",
       "targets": [
         ["css=.row:nth-child(8) .form-label > span", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[9]/div/div/div/div[8]/div/div/div/div/label/span", "xpath:idRelative"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[8]/div/div/div/div[8]/div/div/div/div/label/span", "xpath:idRelative"],
         ["xpath=//div[8]/div/div/div/div/label/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom String Display')]", "xpath:innerText"]
       ],
@@ -417,8 +417,8 @@
         ["id=root_relyingPartyOverrides_CustomString", "id"],
         ["css=#root_relyingPartyOverrides_CustomString", "css:finder"],
         ["xpath=//input[@id='root_relyingPartyOverrides_CustomString']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[9]/div/div/div/div[7]/div/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//div[7]/div/div/div/div/input", "xpath:position"]
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[8]/div/div/div/div[8]/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[8]/div/div/div/div/input", "xpath:position"]
       ],
       "value": "Custom String Default"
     }, {

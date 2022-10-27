@@ -39,7 +39,6 @@ export function MetadataSelector({ children, ...props }) {
     function reload() {
         setLoading(true);
         loadMetadata(id);
-        
     }
 
     React.useEffect(() => reload(), [id]);

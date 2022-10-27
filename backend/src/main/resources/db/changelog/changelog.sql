@@ -256,3 +256,23 @@ ALTER TABLE description ALTER COLUMN description_value TEXT;
 GO
 ALTER TABLE description_aud ALTER COLUMN description_value TEXT;
 GO
+
+-- changeset liquibase:1.14.0.1 dbms:mariadb,mysql
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- comment: /* we don't need to run this if the system is new */
+
+ALTER TABLE xsany ALTER COLUMN text_context LONGTEXT;
+GO
+ALTER TABLE xsany_aud ALTER COLUMN text_context LONGTEXT;
+GO
+
+-- changeset liquibase:1.14.0.1 dbms:postgresql,mssql
+-- preconditions onFail:MARK_RAN
+-- precondition-sql-check expectedResult:1 SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'
+-- comment: /* we don't need to run this if the system is new */
+
+ALTER TABLE xsany ALTER COLUMN text_context TYPE TEXT;
+GO
+ALTER TABLE xsany_aud ALTER COLUMN text_context TYPE TEXT;
+GO

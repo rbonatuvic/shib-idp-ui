@@ -1,7 +1,16 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.ILazyLoaderHelper;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,20 +21,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.ILazyLoaderHelper;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Models a basic administrative user in the system.

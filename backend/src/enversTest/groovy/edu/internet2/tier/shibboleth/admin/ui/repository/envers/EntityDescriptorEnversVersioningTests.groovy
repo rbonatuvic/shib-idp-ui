@@ -34,6 +34,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.XSString
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.KeyDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
@@ -380,8 +381,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         def representation = new EntityDescriptorRepresentation().with {
             it.securityInfo = new SecurityInfoRepresentation().with {
                 it.authenticationRequestsSigned = true
-                it.x509CertificateAvailable = true
-                it.x509Certificates = [new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'sign', type: 'signing', value: 'signingValue')]
+                it.keyDescriptors = [new KeyDescriptorRepresentation(name: 'sign', type: 'signing', value: 'signingValue', elementType: 'X509Data')]
                 it
             }
             it
@@ -411,9 +411,8 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         representation = new EntityDescriptorRepresentation().with {
             it.securityInfo = new SecurityInfoRepresentation().with {
                 it.authenticationRequestsSigned = false
-                it.x509CertificateAvailable = true
-                it.x509Certificates = [new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'sign', type: 'signing', value: 'signingValue'),
-                                       new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'encrypt', type: 'encryption', value: 'encryptionValue')]
+                it.keyDescriptors = [new KeyDescriptorRepresentation(name: 'sign', type: 'signing', value: 'signingValue', elementType: 'X509Data'),
+                                     new KeyDescriptorRepresentation(name: 'encrypt', type: 'encryption', value: 'encryptionValue', elementType: 'X509Data')]
                 it
             }
             it

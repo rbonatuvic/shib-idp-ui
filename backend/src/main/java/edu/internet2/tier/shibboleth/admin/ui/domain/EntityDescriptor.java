@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
@@ -69,18 +70,21 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
 
     private String entityID;
 
+    @Getter
+    @Setter
+    private String idOfOwner;
+
     private String localId;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Organization organization;
 
-    @Getter
-    @Setter
-    private String idOfOwner;
-
     @OneToOne(cascade = CascadeType.ALL)
     @NotAudited
     private PDPDescriptor pdpDescriptor;
+
+    @Setter
+    private EntityDescriptorProtocol protocol = EntityDescriptorProtocol.SAML;
 
     private String resourceId;
 
@@ -100,8 +104,20 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
         this.resourceId = UUID.randomUUID().toString();
     }
 
+    public void addApproval(Group group) {
+        approvedBy.add(group.getName());
+    }
+
     public void addContactPerson(ContactPerson contactPerson) {
         this.contactPersons.add(contactPerson);
+    }
+
+    public int approvedCount() {
+        return approvedBy.size();
+    }
+
+    @Override public ActivatableType getActivatableType() {
+        return ENTITY_DESCRIPTOR;
     }
 
     @Override
@@ -149,6 +165,10 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
                 .orElse(null);
     }
 
+    public String getObjectId() {
+        return entityID;
+    }
+
     @Transient
     public Optional<SPSSODescriptor> getOptionalSPSSODescriptor() {
         return this.getOptionalSPSSODescriptor("");
@@ -180,6 +200,14 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     @Override
     public org.opensaml.saml.saml2.metadata.Organization getOrganization() {
         return organization;
+    }
+
+    public OwnableType getOwnableType() {
+        return OwnableType.ENTITY_DESCRIPTOR;
+    }
+
+    public EntityDescriptorProtocol getProtocol() {
+        return protocol == null ? EntityDescriptorProtocol.SAML : protocol;
     }
 
     @Override
@@ -231,8 +259,31 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
                 .orElse(null);
     }
 
+    @JsonIgnore
+    public boolean hasKeyDescriptors() {
+        SPSSODescriptor spssoDescriptor = getSPSSODescriptor("");
+        return spssoDescriptor != null && spssoDescriptor.getKeyDescriptors().size() > 0;
+    }
+
+    @JsonIgnore
+    public boolean isAuthnRequestsSigned() {
+        SPSSODescriptor spssoDescriptor = getSPSSODescriptor("");
+        return spssoDescriptor != null && spssoDescriptor.isAuthnRequestsSigned() != null && spssoDescriptor.isAuthnRequestsSigned();
+    }
+
+    @JsonIgnore
+    public boolean isOidcProtocol() {
+        return getSPSSODescriptor("") != null && getProtocol() == EntityDescriptorProtocol.OIDC;
+    }
+
     public boolean isServiceEnabled() {
         return serviceEnabled;
+    }
+
+    public void removeLastApproval() {
+        if (!approvedBy.isEmpty()) {
+            approvedBy.remove(approvedBy.size() - 1);
+        }
     }
 
     public void setAdditionalMetadataLocations(List<AdditionalMetadataLocation> additionalMetadataLocations) {
@@ -308,29 +359,9 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
                 .toString();
     }
 
-    public String getObjectId() {
-        return entityID;
-    }
-
-    public OwnableType getOwnableType() {
-        return OwnableType.ENTITY_DESCRIPTOR;
-    }
-
-    @Override public ActivatableType getActivatableType() {
-        return ENTITY_DESCRIPTOR;
-    }
-
-    public void addApproval(Group group) {
-        approvedBy.add(group.getName());
-    }
-
-    public int approvedCount() {
-        return approvedBy.size();
-    }
-
-    public void removeLastApproval() {
-        if (!approvedBy.isEmpty()) {
-            approvedBy.remove(approvedBy.size() - 1);
-        }
+    @JsonIgnore
+    public boolean wantsAssertionsSigned() {
+        SPSSODescriptor spssoDescriptor = getSPSSODescriptor("");
+        return  spssoDescriptor != null && spssoDescriptor.getWantAssertionsSigned() != null && spssoDescriptor.getWantAssertionsSigned();
     }
 }

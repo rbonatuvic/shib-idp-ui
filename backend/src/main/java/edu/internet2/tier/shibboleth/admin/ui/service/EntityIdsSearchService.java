@@ -1,12 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityIdsSearchResultRepresentation;
-import edu.internet2.tier.shibboleth.admin.util.LuceneUtility;
-import net.andreinc.mockneat.MockNeat;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * API component responsible for entity ids search.

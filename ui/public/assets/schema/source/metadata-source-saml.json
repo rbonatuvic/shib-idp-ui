@@ -10,6 +10,11 @@
             "description": "tooltip.approved",
             "type": "boolean"
         },
+        "protocol": {
+            "title": "label.source-protocol",
+            "description": "tooltip.source-protocol",
+            "type": "string"
+        },
         "serviceProviderName": {
             "title": "label.service-provider-name",
             "description": "tooltip.service-provider-name",
@@ -75,9 +80,6 @@
                 }
             },
             "properties": {
-                "x509CertificateAvailable": {
-                    "type": "boolean"
-                },
                 "authenticationRequestsSigned": {
                     "title": "label.authentication-requests-signed",
                     "description": "tooltip.authentication-requests-signed",
@@ -96,9 +98,9 @@
                         "value.false"
                     ]
                 },
-                "x509Certificates": {
-                    "title": "label.x509-certificates",
-                    "description": "tooltip.x509-certificates",
+                "keyDescriptors": {
+                    "title": "label.key-descriptors",
+                    "description": "tooltip.key-descriptors",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/Certificate"
@@ -154,14 +156,100 @@
         },
         "relyingPartyOverrides": {
             "type": "object",
-            "properties": {}
+            "properties": {
+                "signAssertion": {
+                    "title": "label.sign-the-assertion",
+                    "description": "tooltip.sign-assertion",
+                    "type": "boolean",
+                    "default": false
+                },
+                "nameIdFormats": { "$ref": "#/definitions/nameIdFormats" },
+                "responderId": {
+                    "title": "label.responder-id",
+                    "description": "tooltip.responder-id",
+                    "type": "string"
+                },
+                "authenticationMethods": {
+                    "$ref": "#/definitions/authenticationMethods"
+                },
+                "ignoreRequestSignatures": {
+                    "title": "label.ignore-request-signatures",
+                    "description": "tooltip.ignore-request-signatures",
+                    "type": "boolean",
+                    "default": false
+                },
+                "turnOffEncryption": {
+                    "title": "label.turn-off-encryption-of-response",
+                    "description": "tooltip.turn-off-encryption",
+                    "type": "boolean",
+                    "default": false
+                },
+                "forceAuthn": {
+                    "title": "label.force-authn",
+                    "description": "tooltip.force-authn",
+                    "type": "boolean",
+                    "default": false
+                },
+                "dontSignResponse": {
+                    "title": "label.dont-sign-the-response",
+                    "description": "tooltip.dont-sign-response",
+                    "type": "boolean",
+                    "default": false
+                },
+                "ignoreAuthenticationMethod": {
+                    "title": "label.ignore-any-sp-requested-authentication-method",
+                    "description": "tooltip.ignore-auth-method",
+                    "type": "boolean",
+                    "default": false
+                },
+                "useSha": {
+                    "title": "label.use-sha1-signing-algorithm",
+                    "description": "tooltip.usa-sha-algorithm",
+                    "type": "boolean",
+                    "default": false
+                },
+                "omitNotBefore": {
+                    "title": "label.omit-not-before-condition",
+                    "description": "tooltip.omit-not-before-condition",
+                    "type": "boolean",
+                    "default": false
+                }
+            }
         },
         "attributeRelease": {
             "type": "array",
             "title": "label.attribute-release",
             "description": "Attribute release table - select the attributes you want to release (default unchecked)",
             "items": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                    "eduPersonPrincipalName",
+                    "uid",
+                    "mail",
+                    "surname",
+                    "givenName",
+                    "eduPersonAffiliation",
+                    "eduPersonScopedAffiliation",
+                    "eduPersonPrimaryAffiliation",
+                    "eduPersonEntitlement",
+                    "eduPersonAssurance",
+                    "eduPersonUniqueId",
+                    "employeeNumber"
+                ],
+                "enumNames": [
+                    "label.attribute-eduPersonPrincipalName",
+                    "label.attribute-uid",
+                    "label.attribute-mail",
+                    "label.attribute-surname",
+                    "label.attribute-givenName",
+                    "label.attribute-eduPersonAffiliation",
+                    "label.attribute-eduPersonScopedAffiliation",
+                    "label.attribute-eduPersonPrimaryAffiliation",
+                    "label.attribute-eduPersonEntitlement",
+                    "label.attribute-eduPersonAssurance",
+                    "label.attribute-eduPersonUniqueId",
+                    "label.attribute-employeeNumber"
+                ]
             },
             "uniqueItems": true
         }
@@ -189,16 +277,9 @@
                     "widget": "select",
                     "minLength": 1,
                     "oneOf": [
+                        { "enum": ["support"], "description": "value.support" },
                         {
-                            "enum": [
-                                "support"
-                            ],
-                            "description": "value.support"
-                        },
-                        {
-                            "enum": [
-                                "technical"
-                            ],
+                            "enum": ["technical"],
                             "description": "value.technical"
                         },
                         {
@@ -207,12 +288,7 @@
                             ],
                             "description": "value.administrative"
                         },
-                        {
-                            "enum": [
-                                "other"
-                            ],
-                            "description": "value.other"
-                        }
+                        { "enum": ["other"], "description": "value.other" }
                     ]
                 },
                 "emailAddress": {
@@ -238,6 +314,12 @@
                     "type": "string",
                     "maxLength": 255
                 },
+                "elementType": {
+                    "title": "label.element-type",
+                    "description": "tooltip.element-type",
+                    "type": "string",
+                    "default": "X509Data"
+                },
                 "type": {
                     "title": "label.certificate-type",
                     "type": "string",
@@ -246,24 +328,12 @@
                         "class": "form-check-inline"
                     },
                     "oneOf": [
+                        { "enum": ["signing"], "description": "value.signing" },
                         {
-                            "enum": [
-                                "signing"
-                            ],
-                            "description": "value.signing"
-                        },
-                        {
-                            "enum": [
-                                "encryption"
-                            ],
+                            "enum": ["encryption"],
                             "description": "value.encryption"
                         },
-                        {
-                            "enum": [
-                                "both"
-                            ],
-                            "description": "value.both"
-                        }
+                        { "enum": ["both"], "description": "value.both" }
                     ]
                 },
                 "value": {
@@ -334,6 +404,12 @@
                                 "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"
                             ],
                             "description": "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"
+                        },
+                        {
+                            "enum": [
+                                "https://tools.ietf.org/html/rfc6749#section-3.1.2"
+                            ],
+                            "description": "OIDC / OAUTH Binding"
                         }
                     ]
                 },
@@ -347,18 +423,8 @@
         "LogoutEndpoint": {
             "description": "tooltip.new-endpoint",
             "type": "object",
-            "fieldsets": [
-                {
-                    "fields": [
-                        "url",
-                        "bindingType"
-                    ]
-                }
-            ],
-            "required": [
-                "url",
-                "bindingType"
-            ],
+            "fieldsets": [{ "fields": ["url", "bindingType"] }],
+            "required": ["url", "bindingType"],
             "properties": {
                 "url": {
                     "title": "label.url",
@@ -485,43 +551,58 @@
                     "title": "label.organization-name",
                     "description": "tooltip.organization-name",
                     "type": "string",
-                    "minLength": 1,
                     "maxLength": 255
                 },
                 "displayName": {
                     "title": "label.organization-display-name",
                     "description": "tooltip.organization-display-name",
                     "type": "string",
-                    "minLength": 1,
                     "maxLength": 255
                 },
                 "url": {
                     "title": "label.organization-url",
                     "description": "tooltip.organization-url",
                     "type": "string",
-                    "minLength": 1,
                     "maxLength": 255
                 }
             },
             "dependencies": {
-                "name": {
-                    "required": [
-                        "displayName",
-                        "url"
-                    ]
-                },
-                "displayName": {
-                    "required": [
-                        "name",
-                        "url"
-                    ]
-                },
-                "url": {
-                    "required": [
-                        "name",
-                        "displayName"
-                    ]
-                }
+                "url": ["name", "displayName"],
+                "name": ["displayName", "url"],
+                "displayName": ["name", "url"]
+            }
+        },
+        "nameIdFormats": {
+            "title": "label.nameid-format-to-send",
+            "description": "tooltip.nameid-format",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "examples": [
+                    "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+                    "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                    "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                    "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+                ]
+            }
+        },
+        "authenticationMethods": {
+            "title": "label.authentication-methods-to-use",
+            "description": "tooltip.authentication-methods-to-use",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "examples": [
+                    "https://refeds.org/profile/mfa",
+                    "urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken",
+                    "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
+                ]
             }
         }
     }

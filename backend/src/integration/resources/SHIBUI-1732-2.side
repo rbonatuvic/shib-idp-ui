@@ -197,6 +197,19 @@
       ],
       "value": "Custom Boolean Help"
     }, {
+      "id": "053668db-f394-490f-bc83-cf3333107383",
+      "comment": "",
+      "command": "click",
+      "target": "id=root_defaultValueBoolean-False",
+      "targets": [
+        ["id=root_defaultValueBoolean-False", "id"],
+        ["css=#root_defaultValueBoolean-False", "css:finder"],
+        ["xpath=//input[@id='root_defaultValueBoolean-False']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div/form/div/div/div/div/div[2]/div/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
       "id": "1c1e0a14-a4be-406d-80c5-809de8704799",
       "comment": "",
       "command": "type",
@@ -374,11 +387,11 @@
       "id": "fb8782e1-3376-4c59-af8a-5cf383c78239",
       "comment": "",
       "command": "assertText",
-      "target": "css=.row:nth-child(7) .d-flex > span",
+      "target": "css=.row:nth-child(5) .d-flex > span",
       "targets": [
-        ["css=.row:nth-child(7) .d-flex > span", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[9]/div/div/div/div[7]/div/div/div/div/div/label/span/span", "xpath:idRelative"],
-        ["xpath=//div[7]/div/div/div/div/div/label/span/span", "xpath:position"]
+        ["css=.row:nth-child(5) .d-flex > span", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[8]/div/div/div/div[5]/div/div/div/div/div/label/span/span", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div/div/div/label/span/span", "xpath:position"]
       ],
       "value": "Custom Boolean Display"
     }, {
@@ -435,11 +448,11 @@
       "id": "a7db0511-2584-4cb0-bbaa-2341a705ef07",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(8) div:nth-child(7) .d-block:nth-child(1)",
+      "target": "css=.mb-4:nth-child(8) div:nth-child(5) .d-block:nth-child(1)",
       "targets": [
-        ["css=.mb-4:nth-child(8) div:nth-child(7) .d-block:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:idRelative"],
-        ["xpath=//section[8]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:position"],
+        ["css=.mb-4:nth-child(8) div:nth-child(5) .d-block:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:idRelative"],
+        ["xpath=//section[8]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Boolean Display')]", "xpath:innerText"]
       ],
       "value": "Custom Boolean Display"
@@ -447,11 +460,11 @@
       "id": "771a8f70-ed99-486f-90f3-3401215d8743",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(8) div:nth-child(7) .d-block:nth-child(2)",
+      "target": "css=.mb-4:nth-child(8) div:nth-child(5) .d-block:nth-child(2)",
       "targets": [
-        ["css=.mb-4:nth-child(8) div:nth-child(7) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[8]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:position"],
+        ["css=.mb-4:nth-child(8) div:nth-child(5) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//section[8]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'true')]", "xpath:innerText"]
       ],
       "value": "true"
@@ -493,11 +506,11 @@
       "id": "4dc24329-7c83-43c9-86d6-95f9bf5da92d",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(1)",
+      "target": "css=.mb-4:nth-child(9) div:nth-child(5) .d-block:nth-child(1)",
       "targets": [
-        ["css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:idRelative"],
-        ["xpath=//section[7]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:position"],
+        ["css=.mb-4:nth-child(9) div:nth-child(5) .d-block:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:idRelative"],
+        ["xpath=//section[7]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Boolean Display')]", "xpath:innerText"]
       ],
       "value": "Custom Boolean Display"
@@ -505,11 +518,11 @@
       "id": "32f6aaa6-a256-4c36-932e-7c45b4045cba",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(2)",
+      "target": "css=.mb-4:nth-child(9) div:nth-child(5) .d-block:nth-child(2)",
       "targets": [
-        ["css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[7]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:position"],
+        ["css=.mb-4:nth-child(9) div:nth-child(5) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//section[7]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'true')]", "xpath:innerText"]
       ],
       "value": "true"
@@ -840,11 +853,11 @@
       "id": "73e0928e-a395-4cdd-b90c-229a01cbe7c4",
       "comment": "",
       "command": "assertText",
-      "target": "css=.row:nth-child(7) > .col-12 > .mb-3 > div > .checkbox .d-flex > span",
+      "target": "css=.row:nth-child(5) .d-flex > span",
       "targets": [
-        ["css=.row:nth-child(7) > .col-12 > .mb-3 > div > .checkbox .d-flex > span", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[7]/div/div/div/div/div[7]/div/div/div/div/div/label/span/span", "xpath:idRelative"],
-        ["xpath=//div[7]/div/div/div/div/div/label/span/span", "xpath:position"]
+        ["css=.row:nth-child(5) .d-flex > span", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[7]/div/div/div/div/div[5]/div/div/div/div/div/label/span/span", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div/div/div/label/span/span", "xpath:position"]
       ],
       "value": "Custom Boolean Display"
     }, {
@@ -897,11 +910,11 @@
       "id": "d445f01f-b936-4ebb-b011-8ce2f056e06c",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(1) > div:nth-child(7) .d-block:nth-child(1)",
+      "target": "css=.mb-4:nth-child(4) div:nth-child(5) .d-block:nth-child(1)",
       "targets": [
-        ["css=div:nth-child(1) > div:nth-child(7) .d-block:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:idRelative"],
-        ["xpath=//div[2]/div[2]/div/div[7]/div/span", "xpath:position"],
+        ["css=.mb-4:nth-child(4) div:nth-child(5) .d-block:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:idRelative"],
+        ["xpath=//section[2]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Boolean Display')]", "xpath:innerText"]
       ],
       "value": "Custom Boolean Display"
@@ -909,11 +922,11 @@
       "id": "662f922e-4d41-4274-b7a3-aae312fe8c36",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(1) > div:nth-child(7) .text-truncate",
+      "target": "css=.mb-4:nth-child(4) div:nth-child(5) .d-block:nth-child(2)",
       "targets": [
-        ["css=div:nth-child(1) > div:nth-child(7) .text-truncate", "css:finder"],
-        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div[2]/div/div[7]/div/span[2]", "xpath:position"]
+        ["css=.mb-4:nth-child(4) div:nth-child(5) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//section[2]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:position"]
       ],
       "value": "true"
     }, {

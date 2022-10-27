@@ -13,9 +13,16 @@ import java.util.stream.Stream;
  * Repository to manage {@link EntityDescriptor} instances.
  */
 public interface EntityDescriptorRepository extends JpaRepository<EntityDescriptor, Long> {
-    List<EntityDescriptorProjection> findAllBy();
+    @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
+                   "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol, e.approved) " +
+                   "from EntityDescriptor e")
+    List<EntityDescriptorProjection> findAllReturnProjections();
 
-    List<EntityDescriptorProjection> findAllByIdOfOwner(String ownerId);
+    @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
+                   "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol, e.approved) " +
+                   "from EntityDescriptor e " +
+                   "where e.idOfOwner = :ownerId")
+    List<EntityDescriptorProjection> findAllByIdOfOwner(@Param("ownerId") String ownerId);
 
     EntityDescriptor findByEntityID(String entityId);
 
@@ -39,7 +46,9 @@ public interface EntityDescriptorRepository extends JpaRepository<EntityDescript
     @Deprecated
     List<EntityDescriptor> findAllByIdOfOwnerIsNull();
 
-    @Query(value = "select e from EntityDescriptor e" +
+    @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
+                   "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol, e.approved) " +
+                   "  from EntityDescriptor e " +
                    " where e.idOfOwner in (:groupIds)" +
                    "   and e.serviceEnabled = false" +
                    "   and e.approved = false")

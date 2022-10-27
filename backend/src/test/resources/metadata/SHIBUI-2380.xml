@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor entityID="mockSamlClientId" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">
+
+    <md:SPSSODescriptor protocolSupportEnumeration="http://openid.net/specs/openid-connect-core-1_0.html" xmlns:oidcmd="urn:mace:shibboleth:metadata:oidc:1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <md:Extensions>
+            <oidcmd:OAuthRPExtensions
+                    application_type="web"
+                    client_uri="https://example.org/clientUri"
+                    grant_types="authorization_code"
+                    response_types="code id_token"
+                    scopes="openid profile"
+                    initiate_login_uri="https://example.org/initiateLogin"
+                    software_id="mockSoftwareId"
+                    software_version="mockSoftwareVersion"
+                    token_endpoint_auth_method="client_secret_basic"
+                    sector_identifier_uri="https://example.org/sectorIdentifier"
+                    id_token_signed_response_alg="RS512"
+                    id_token_encrypted_response_alg="A256KW"
+                    id_token_encrypted_response_enc="A256GCM"
+                    userinfo_signed_response_alg="RS384"
+                    userinfo_encrypted_response_alg="A192KW"
+                    userinfo_encrypted_response_enc="A192GCM"
+                    request_object_signing_alg="RS256"
+                    request_object_encryption_alg="A128KW"
+                    request_object_encryption_enc="A128GCM"
+                    token_endpoint_auth_signing_alg="RS512">
+                <oidcmd:default_acr_value>password</oidcmd:default_acr_value>
+                <oidcmd:default_acr_value>mfa</oidcmd:default_acr_value>
+                <oidcmd:request_uri>https://example.org/request</oidcmd:request_uri>
+                <oidcmd:post_logout_redirect_uri>https://example.org/postLogout</oidcmd:post_logout_redirect_uri>
+                <saml2:Audience>http://mypeeps</saml2:Audience>
+            </oidcmd:OAuthRPExtensions>
+        </md:Extensions>
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:KeyName>test1</ds:KeyName>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        MIIEQDCCAqigAwIBAgIVAIarXvdvyS47KJR7U40FlTufyD8vMA0GCSqGSIb3DQEB
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:KeyName>test2</ds:KeyName>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        MIIBKDCBzgIJAOYlspXlaqguMAoGCCqGSM49BAMCMBwxCzAJBgNVBAYTAkZJMQ0w
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:KeyDescriptor>
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:KeyName>mockJwksUri</ds:KeyName>
+                <oidcmd:JwksUri>https://example.org/jwks</oidcmd:JwksUri>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:KeyDescriptor>
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:KeyName>mockClientSecret</ds:KeyName>
+                <oidcmd:ClientSecret>mockClientSecretValue</oidcmd:ClientSecret>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+        <md:NameIDFormat>urn:mace:shibboleth:metadata:oidc:1.0:nameid-format:pairwise</md:NameIDFormat>
+        <md:AssertionConsumerService
+                Binding="https://tools.ietf.org/html/rfc6749#section-3.1.2"
+                Location="https://example.org/cb"/>
+        <md:AssertionConsumerService
+                Binding="https://tools.ietf.org/html/rfc6749#section-3.1.2"
+                Location="https://example.org/cb2"/>
+        <md:AssertionConsumerService
+                Binding="http://example.org/not/supported/profile/id"
+                Location="https://example.org/cb3"/>
+    </md:SPSSODescriptor>
+</md:EntityDescriptor>
