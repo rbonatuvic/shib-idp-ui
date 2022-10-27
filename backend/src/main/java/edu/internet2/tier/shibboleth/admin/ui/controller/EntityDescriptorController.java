@@ -2,10 +2,10 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService;
@@ -66,8 +66,7 @@ public class EntityDescriptorController {
 
     @PostMapping("/EntityDescriptor")
     @Transactional
-    public ResponseEntity<?> create(@RequestBody EntityDescriptorRepresentation edRepresentation)
-                    throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
+    public ResponseEntity<?> create(@RequestBody EntityDescriptorRepresentation edRepresentation) throws ForbiddenException, ObjectIdExistsException, InvalidPatternMatchException {
         EntityDescriptorRepresentation persistedEd = entityDescriptorService.createNew(edRepresentation);            
         return ResponseEntity.created(getResourceUriFor(persistedEd.getId())).body(persistedEd);
     }
@@ -104,8 +103,7 @@ public class EntityDescriptorController {
     @GetMapping("/EntityDescriptor/{resourceId}")
     @Transactional
     public ResponseEntity<?> getOne(@PathVariable String resourceId) throws PersistentEntityNotFound, ForbiddenException {
-        return ResponseEntity.ok(entityDescriptorService
-                        .createRepresentationFromDescriptor(entityDescriptorService.getEntityDescriptorByResourceId(resourceId)));
+        return ResponseEntity.ok(entityDescriptorService.createRepresentationFromDescriptor(entityDescriptorService.getEntityDescriptorByResourceId(resourceId)));
     }
 
     @GetMapping(value = "/EntityDescriptor/{resourceId}", produces = "application/xml")

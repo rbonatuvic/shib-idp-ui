@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBundle
 import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
@@ -42,8 +41,15 @@ class JsonSchemaBuilderService {
     }
 
     void addRelyingPartyOverridesToJson(Object json) {
+        addRelyingPartyOverridesToJson(json, "saml")
+    }
+
+    void addRelyingPartyOverridesToJson(Object json, String protocol) {
         def properties = [:]
-        customPropertiesConfiguration.getOverrides().each {
+        customPropertiesConfiguration.getOverrides().stream().filter {
+            it -> it.getProtocol().contains(protocol)
+        }.each {
+            if (it.protocol)
             def property
             if (it['displayType'] == 'list' || it['displayType'] == 'set' || it['displayType'] == 'selection_list') {
                 property = [$ref: '#/definitions/' + it['name']]
@@ -52,7 +58,7 @@ class JsonSchemaBuilderService {
                         [title       : it['displayName'],
                          description : it['helpText'],
                          type        : ((IRelyingPartyOverrideProperty)it).getTypeForUI(),
-                         default     : it['displayType'] == 'boolean' ? Boolean.getBoolean(it['defaultValue']) : it['defaultValue'],
+                         default     : it['displayType'] == 'boolean' ? Boolean.parseBoolean(it['defaultValue']) : it['defaultValue'],
                          examples    : it['examples']]
             }
             properties[(String) it['name']] = property
@@ -61,8 +67,12 @@ class JsonSchemaBuilderService {
     }
 
     void addRelyingPartyOverridesCollectionDefinitionsToJson(Object json) {
+        addRelyingPartyOverridesCollectionDefinitionsToJson(json, "saml")
+    }
+
+    void addRelyingPartyOverridesCollectionDefinitionsToJson(Object json, String protocol) {
         customPropertiesConfiguration.getOverrides().stream().filter {
-            it -> it['displayType'] && (it['displayType'] == 'list' || it['displayType'] == 'set' || it['displayType'] == 'selection_list')
+            it -> it.getProtocol().contains(protocol) && it['displayType'] && (it['displayType'] == 'list' || it['displayType'] == 'set' || it['displayType'] == 'selection_list')
         }.each {
             def definition = [title      : it['displayName'],
                               description: it['helpText'],

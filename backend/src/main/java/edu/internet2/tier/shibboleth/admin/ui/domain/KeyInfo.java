@@ -45,9 +45,7 @@ public class KeyInfo extends AbstractXMLObject implements org.opensaml.xmlsec.si
     }
 
     @Override
-    public void setID(@Nullable String newID) {
-
-    }
+    public void setID(@Nullable String newID) {}
 
     @Nonnull
     @Override
@@ -64,7 +62,14 @@ public class KeyInfo extends AbstractXMLObject implements org.opensaml.xmlsec.si
     @Nonnull
     @Override
     public List<KeyName> getKeyNames() {
-        return Collections.emptyList();
+        List<KeyName> result = new ArrayList<>();
+        getXMLObjects().forEach(obj -> {
+            if (obj instanceof KeyName){
+                result.add((KeyName)obj);
+            }
+        });
+        return result;
+
     }
 
     @Nonnull

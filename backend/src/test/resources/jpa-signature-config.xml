@@ -16,16 +16,7 @@
             <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
             <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
-        
-        <!-- KeyValue -->
-        <!--
-        <ObjectProvider qualifiedName="ds:KeyValue">
-            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.KeyValueBuilder"/>
-            <MarshallingClass className="org.opensaml.xmlsec.signature.impl.KeyValueMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.KeyValueUnmarshaller"/>
-        </ObjectProvider>
-        -->
-        
+
         <!-- X509Certificate -->
         <ObjectProvider qualifiedName="ds:X509Certificate">
             <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.X509CertificateBuilder"/>
@@ -56,20 +47,20 @@
             <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.DigestMethodUnmarshaller"/>
         </ObjectProvider>
 
-        <!-- DSAKeyValue -->
+        <!-- DSAKeyValue
         <ObjectProvider qualifiedName="ds:DSAKeyValue">
             <BuilderClass className="org.opensaml.xmlsec.signature.impl.DSAKeyValueBuilder"/>
             <MarshallingClass className="org.opensaml.xmlsec.signature.impl.DSAKeyValueMarshaller"/>
             <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.DSAKeyValueUnmarshaller"/>
         </ObjectProvider>
-
-        <!-- Exponent -->
+-->
+        <!-- Exponent
         <ObjectProvider qualifiedName="ds:Exponent">
             <BuilderClass className="org.opensaml.xmlsec.signature.impl.ExponentBuilder"/>
             <MarshallingClass className="org.opensaml.xmlsec.signature.impl.CryptoBinaryMarshaller"/>
             <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.CryptoBinaryUnmarshaller"/>
         </ObjectProvider>
-
+-->
         <!-- G -->
         <ObjectProvider qualifiedName="ds:G">
             <BuilderClass className="org.opensaml.xmlsec.signature.impl.GBuilder"/>
@@ -84,13 +75,13 @@
             <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.CryptoBinaryUnmarshaller"/>
         </ObjectProvider>
 
-        <!-- KeyValue -->
+        <!-- KeyValue
         <ObjectProvider qualifiedName="ds:KeyValue">
             <BuilderClass className="org.opensaml.xmlsec.signature.impl.KeyValueBuilder"/>
             <MarshallingClass className="org.opensaml.xmlsec.signature.impl.KeyValueMarshaller"/>
             <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.KeyValueUnmarshaller"/>
         </ObjectProvider>
-
+-->
         <!-- MgmtData -->
         <ObjectProvider qualifiedName="ds:MgmtData">
             <BuilderClass className="org.opensaml.xmlsec.signature.impl.MgmtDataBuilder"/>
@@ -98,13 +89,13 @@
             <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
 
-        <!-- Modulus -->
+        <!-- Modulus
         <ObjectProvider qualifiedName="ds:Modulus">
             <BuilderClass className="org.opensaml.xmlsec.signature.impl.ModulusBuilder"/>
             <MarshallingClass className="org.opensaml.xmlsec.signature.impl.CryptoBinaryMarshaller"/>
             <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.CryptoBinaryUnmarshaller"/>
         </ObjectProvider>
-
+-->
         <!-- P -->
         <ObjectProvider qualifiedName="ds:P">
             <BuilderClass className="org.opensaml.xmlsec.signature.impl.PBuilder"/>
@@ -154,13 +145,13 @@
             <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.RetrievalMethodUnmarshaller"/>
         </ObjectProvider>
 
-        <!-- RSAKeyValue -->
+        <!-- RSAKeyValue
         <ObjectProvider qualifiedName="ds:RSAKeyValue">
             <BuilderClass className="org.opensaml.xmlsec.signature.impl.RSAKeyValueBuilder"/>
             <MarshallingClass className="org.opensaml.xmlsec.signature.impl.RSAKeyValueMarshaller"/>
             <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.RSAKeyValueUnmarshaller"/>
         </ObjectProvider>
-
+ -->
         <!-- Seed -->
         <ObjectProvider qualifiedName="ds:Seed">
             <BuilderClass className="org.opensaml.xmlsec.signature.impl.SeedBuilder"/>

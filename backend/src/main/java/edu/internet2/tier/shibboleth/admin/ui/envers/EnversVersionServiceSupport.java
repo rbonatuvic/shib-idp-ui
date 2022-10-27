@@ -7,7 +7,6 @@ import org.hibernate.envers.query.AuditEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import java.time.ZoneOffset;
 import java.util.List;
 
 import static java.util.Comparator.comparing;

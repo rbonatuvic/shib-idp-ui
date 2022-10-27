@@ -17,10 +17,10 @@
 
 package edu.internet2.tier.shibboleth.admin.ui.opensaml.xml;
 
-import javax.annotation.Nonnull;
-
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
+
+import javax.annotation.Nonnull;
 
 /**
  * Base builder for {@link org.opensaml.saml.common.SAMLObject}s.

@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.env.PropertySources;
 
 /**

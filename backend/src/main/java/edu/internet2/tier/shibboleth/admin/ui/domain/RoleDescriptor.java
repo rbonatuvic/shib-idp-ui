@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.OAuthRPExtensions;
 import lombok.EqualsAndHashCode;
 import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.XMLObject;
@@ -7,18 +8,15 @@ import org.opensaml.core.xml.util.AttributeMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
-import javax.persistence.ElementCollection;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-
 import javax.xml.namespace.QName;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -90,7 +88,9 @@ public class RoleDescriptor extends AbstractDescriptor implements org.opensaml.s
 
     @Override
     public void addSupportedProtocol(String supportedProtocol) {
-        supportedProtocols.add(supportedProtocol);
+        if (!supportedProtocols.contains(supportedProtocol)) {
+            supportedProtocols.add(supportedProtocol);
+        }
     }
 
     @Override
@@ -194,5 +194,20 @@ public class RoleDescriptor extends AbstractDescriptor implements org.opensaml.s
         children.addAll(getContactPersons());
 
         return Collections.unmodifiableList(children);
+    }
+
+    @Transient
+    public boolean isOidcType() {
+        if (getExtensions() == null || getExtensions().getOrderedChildren() == null || getExtensions().getOrderedChildren().isEmpty()){
+            return false;
+        }
+        else {
+            for (XMLObject e : getExtensions().getOrderedChildren()) {
+                if (e.getElementQName().getLocalPart().equals(OAuthRPExtensions.TYPE_LOCAL_NAME)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

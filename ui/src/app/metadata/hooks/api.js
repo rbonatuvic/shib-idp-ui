@@ -93,6 +93,14 @@ export function useMetadataProviderTypes(opts = {}, onMount = null) {
     return useFetch(`${API_BASE_PATH}/ui/MetadataResolver/types`, opts, onMount);
 }
 
+export function useMetadataSourceProtocols(opts = {}, onMount = null) {
+    return [
+        { label: 'value.oidc', value: 'OIDC' },
+        { label: 'value.saml', value: 'SAML' },
+        // { label: 'value.cas', value: 'CAS' }
+    ];
+}
+
 export function useMetadataFilterTypes () {
     return MetadataFilterTypes;
 }

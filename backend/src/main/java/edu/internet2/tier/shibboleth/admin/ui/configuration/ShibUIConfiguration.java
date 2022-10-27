@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Configuration

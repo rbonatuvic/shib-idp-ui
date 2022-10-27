@@ -1,7 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 
-import java.util.Optional;
-
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleDeleteException;
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleExistsConflictException;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IRolesService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
-import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleDeleteException;
-import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleExistsConflictException;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
-import edu.internet2.tier.shibboleth.admin.ui.security.service.IRolesService;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/admin/roles")
