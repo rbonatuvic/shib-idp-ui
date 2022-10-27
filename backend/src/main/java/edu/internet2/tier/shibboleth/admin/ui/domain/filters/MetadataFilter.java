@@ -1,6 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
@@ -19,7 +23,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
 import java.util.UUID;
 
-import static edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType.*;
+import static edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType.FILTER;
 
 /**
  * Domain class to store information about {@link org.opensaml.saml.metadata.resolver.filter.MetadataFilter}

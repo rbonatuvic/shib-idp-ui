@@ -1,22 +1,20 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.model;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Models a basic administrative role concept in the system.

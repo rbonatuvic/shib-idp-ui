@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.IMetadataResolverValidator;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.IMetadataResolverValidator.ValidationResult;
 
 import java.util.ArrayList;

@@ -1,17 +1,16 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.opensaml.saml.saml2.core.Attribute;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
+import org.opensaml.saml.saml2.core.Attribute;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class JPAEntityServiceImpl implements EntityService {
 

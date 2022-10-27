@@ -7,7 +7,13 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration;
 
 import javax.annotation.Nullable;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 

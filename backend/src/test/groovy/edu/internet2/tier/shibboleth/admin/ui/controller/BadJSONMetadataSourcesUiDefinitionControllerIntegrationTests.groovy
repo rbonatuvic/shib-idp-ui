@@ -18,7 +18,8 @@ import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResour
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.FILESYSTEM_METADATA_RESOLVER
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.LOCAL_DYNAMIC_METADATA_RESOLVER
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES_OIDC
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES_SAML
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.NAME_ID_FORMAT_FILTER
 
 /**
@@ -47,11 +48,16 @@ class BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests extends Speci
     @Profile('badjson')
     static class Config {
         @Bean
-        JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry(ResourceLoader resourceLoader,
-                                                                          ObjectMapper jacksonMapper) {
+        JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry(ResourceLoader resourceLoader, ObjectMapper jacksonMapper) {
 
             JsonSchemaResourceLocationRegistry.inMemory()
-                    .register(METADATA_SOURCES, JsonSchemaLocationBuilder.with()
+                .register(METADATA_SOURCES_OIDC, JsonSchemaLocationBuilder.with()
+                    .jsonSchemaLocation('classpath:metadata-sources-ui-schema_MALFORMED.json')
+                    .resourceLoader(resourceLoader)
+                    .jacksonMapper(jacksonMapper)
+                    .detectMalformedJson(false)
+                    .build())
+                .register(METADATA_SOURCES_SAML, JsonSchemaLocationBuilder.with()
                     .jsonSchemaLocation('classpath:metadata-sources-ui-schema_MALFORMED.json')
                     .resourceLoader(resourceLoader)
                     .jacksonMapper(jacksonMapper)
@@ -89,11 +95,11 @@ class BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests extends Speci
                     .detectMalformedJson(false)
                     .build())
                 .register(ALGORITHM_FILTER, JsonSchemaLocationBuilder.with()
-                        .jsonSchemaLocation('classpath:algorithm-filter.schema.json')
-                        .resourceLoader(resourceLoader)
-                        .jacksonMapper(jacksonMapper)
-                        .detectMalformedJson(false)
-                        .build())
+                    .jsonSchemaLocation('classpath:algorithm-filter.schema.json')
+                    .resourceLoader(resourceLoader)
+                    .jacksonMapper(jacksonMapper)
+                    .detectMalformedJson(false)
+                    .build())
 
         }
     }
