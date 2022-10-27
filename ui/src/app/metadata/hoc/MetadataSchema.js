@@ -10,6 +10,7 @@ export const MetadataSchemaLoading = React.createContext();
 export function MetadataSchema({ type, children, wizard = false }) {
 
     const definition = React.useMemo(() => wizard ? getWizard(type) : getDefinition(type), [type, wizard]);
+
     const [loading, setLoading] = React.useState(false);
 
     const { get, response } = useFetch(``, {

@@ -51,6 +51,8 @@ public class MDDCConstants {
         map.put(SAMLConstants.SAML20P_NS, "SAML 2");
         map.put(SAMLConstants.SAML11P_NS, "SAML 1.1");
 
+        map.put("http://openid.net/specs/openid-connect-core-1_0.html", "http://openid.net/specs/openid-connect-core-1_0.html");
+
         PROTOCOL_BINDINGS = Collections.unmodifiableMap(map);
     }
 }

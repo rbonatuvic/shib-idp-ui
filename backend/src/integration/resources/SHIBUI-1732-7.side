@@ -374,11 +374,11 @@
       "id": "b5aaed88-02ef-49b7-93fb-55c179ae27c1",
       "comment": "",
       "command": "assertText",
-      "target": "css=.row:nth-child(10) .form-label > span",
+      "target": "css=.row:nth-child(2) .form-label > span",
       "targets": [
-        ["css=.row:nth-child(10) .form-label > span", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[9]/div/div/div/div[10]/div/div/div/div/label/span", "xpath:idRelative"],
-        ["xpath=//div[10]/div/div/div/div/label/span", "xpath:position"],
+        ["css=.row:nth-child(2) .form-label > span", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[8]/div/div/div/div[2]/div/div/div/div/label/span", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/label/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Spring Display')]", "xpath:innerText"]
       ],
       "value": "Custom Spring Display"
@@ -488,23 +488,23 @@
       "id": "fe8b707d-37b1-4369-8f0f-574edbdec412",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(10) .d-block:nth-child(1)",
+      "target": "css=.mb-4:nth-child(9) div:nth-child(2) > .d-flex > .d-block:nth-child(1)",
       "targets": [
-        ["css=div:nth-child(10) .text-truncate", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[10]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[10]/div/span[2]", "xpath:position"],
-        ["xpath=//span[contains(.,'Custom Spring Bean Default Edited')]", "xpath:innerText"]
+        ["css=.mb-4:nth-child(9) div:nth-child(2) > .d-flex > .d-block:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[2]/div/span", "xpath:idRelative"],
+        ["xpath=//section[7]/div/div[2]/div[2]/div/div[2]/div/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Custom Spring Display')]", "xpath:innerText"]
       ],
       "value": "Custom Spring Display"
     }, {
       "id": "3846ad98-da0d-4b51-abda-4c06225033c2",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(10) .text-truncate",
+      "target": "css=.mb-4:nth-child(9) div:nth-child(2) > .d-flex > .d-block:nth-child(2)",
       "targets": [
-        ["css=div:nth-child(10) .text-truncate", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[10]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[10]/div/span[2]", "xpath:position"],
+        ["css=.mb-4:nth-child(9) div:nth-child(2) > .d-flex > .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[2]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//section[7]/div/div[2]/div[2]/div/div[2]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Spring Bean Default Edited')]", "xpath:innerText"]
       ],
       "value": "Custom Spring Bean Default Edited"
@@ -825,11 +825,11 @@
       "id": "fbef6ebb-1f20-4dcd-a907-735e4113c382",
       "comment": "",
       "command": "assertText",
-      "target": "css=.row:nth-child(10) .form-label > span",
+      "target": "css=.row:nth-child(2) .form-label > span",
       "targets": [
-        ["css=.row:nth-child(10) .form-label > span", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[7]/div/div/div/div/div[10]/div/div/div/div/label/span", "xpath:idRelative"],
-        ["xpath=//div[10]/div/div/div/div/label/span", "xpath:position"],
+        ["css=.row:nth-child(2) .form-label > span", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[7]/div/div/div/div/div[2]/div/div/div/div/label/span", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/label/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Spring Display')]", "xpath:innerText"]
       ],
       "value": "Custom Spring Display"
@@ -909,11 +909,11 @@
       "id": "47f8360f-1b8d-4e0f-9792-e51d34dbee95",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(4) div:nth-child(10) .d-block:nth-child(1)",
+      "target": "css=div:nth-child(2) > .mb-4 div:nth-child(2) > .d-flex > .d-block:nth-child(1)",
       "targets": [
-        ["css=.mb-4:nth-child(4) div:nth-child(10) .d-block:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[10]/div/span", "xpath:idRelative"],
-        ["xpath=//section[2]/div/div[2]/div[2]/div/div[10]/div/span", "xpath:position"],
+        ["css=div:nth-child(2) > .mb-4 div:nth-child(2) > .d-flex > .d-block:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[2]/div/span", "xpath:idRelative"],
+        ["xpath=//div[2]/section[2]/div/div[2]/div[2]/div/div[2]/div/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Spring Display')]", "xpath:innerText"]
       ],
       "value": "Custom Spring Display"
@@ -921,11 +921,11 @@
       "id": "93126f8b-823c-4b79-87c8-df32ece80ad6",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(4) div:nth-child(10) .d-block:nth-child(2)",
+      "target": "css=div:nth-child(2) > .mb-4 div:nth-child(2) > .d-flex > .d-block:nth-child(2)",
       "targets": [
-        ["css=.mb-4:nth-child(4) div:nth-child(10) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[10]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[2]/div/div[2]/div[2]/div/div[10]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(2) > .mb-4 div:nth-child(2) > .d-flex > .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[2]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/section[2]/div/div[2]/div[2]/div/div[2]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Spring Bean Default Edited')]", "xpath:innerText"]
       ],
       "value": "Custom Spring Bean Default Edited"

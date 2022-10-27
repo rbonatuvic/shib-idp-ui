@@ -37,7 +37,6 @@ export function ConfigurationList({ configurations, onDelete, loading }) {
         const file = await downloader.response.blob();
         if (downloader.response.ok) {
             downloadAsZip('configuration', file);
-            console.log(file);
         }
     };
 

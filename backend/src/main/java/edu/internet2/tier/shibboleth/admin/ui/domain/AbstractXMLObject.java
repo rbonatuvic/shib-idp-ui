@@ -5,12 +5,9 @@ import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceM
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
-import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
-import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.IDIndex;
 import org.w3c.dom.Element;

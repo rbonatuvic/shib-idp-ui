@@ -7,12 +7,16 @@ import { MetadataCopy } from '../view/MetadataCopy';
 import { MetadataUpload } from '../view/MetadataUpload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faLink, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { MetadataSourceProtocolSelector } from '../wizard/MetadataSourceProtocolSelector';
+import { useMetadataSourceProtocols } from '../hooks/api';
 
 export function NewSource() {
 
     const { path, url } = useRouteMatch();
 
     const [showNav, setShowNav] = React.useState(true);
+
+    const protocols = useMetadataSourceProtocols();
 
     return (
         <div className="container-fluid p-3">
@@ -75,22 +79,36 @@ export function NewSource() {
                             </div>
                         </div>
                     </>}
-                    <MetadataSchema type={'source'} wizard={true}>
-                        <Switch>
-                            <Route path={`${path}/blank`} render={() =>
-                                <MetadataWizard type="source" onCallback={(s) => { setShowNav(s) }} />
-                            } />
-                            <Route path={`${path}/upload`} render={() =>
-                                <MetadataUpload />
-                            } />
-                            <Route path={`${path}/copy`} render={() =>
+                    <Switch>
+                        <Route path={`${path}/blank`} render={() =>
+                            <MetadataSourceProtocolSelector types={[...protocols]}>
+                                {(data, onRestart) =>
+                                <MetadataSchema type={data.protocol} wizard={true}>
+                                    <MetadataWizard type="source"
+                                        onContinue={(s) => { setShowNav(s) }}
+                                        onCallback={onRestart}
+                                        data={{
+                                            protocol: data.protocol,
+                                            serviceProviderName: data.serviceProviderName,
+                                            entityId: data.entityId
+                                        }} />
+                                </MetadataSchema>
+                                }
+                            </MetadataSourceProtocolSelector>
+                            
+                        } />
+                        <Route path={`${path}/upload`} render={() =>
+                            <MetadataUpload />
+                        } />
+                        <Route path={`${path}/copy`} render={() =>
+                            <MetadataSchema type={'SAML'} wizard={true}>
                                 <MetadataCopy onShowNav={ (s) => { setShowNav(s) } } />
-                            } />
-                            <Route exact path={`${path}`} render={() =>
-                                <Redirect to={`${url}/blank`} />
-                            } />
-                        </Switch>
-                    </MetadataSchema>
+                            </MetadataSchema>
+                        } />
+                        <Route exact path={`${path}`} render={() =>
+                            <Redirect to={`${url}/blank`} />
+                        } />
+                    </Switch>
                 </div>
             </section>
         </div>

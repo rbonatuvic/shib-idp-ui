@@ -154,8 +154,7 @@ public class ModelRepresentationConversions {
         return (List<org.opensaml.saml.saml2.core.Attribute>) (List<? extends org.opensaml.saml.saml2.core.Attribute>) attributeList;
     }
 
-    public static List<org.opensaml.saml.saml2.core.Attribute> getAttributeListFromRelyingPartyOverridesRepresentation
-            (Map<String, Object> relyingPartyOverridesRepresentation) {
+    public static List<org.opensaml.saml.saml2.core.Attribute> getAttributeListFromRelyingPartyOverridesRepresentation(Map<String, Object> relyingPartyOverridesRepresentation) {
         List<IRelyingPartyOverrideProperty> overridePropertyList = customPropertiesConfiguration.getOverrides();
         List<edu.internet2.tier.shibboleth.admin.ui.domain.Attribute> list = new ArrayList<>();
 
@@ -176,10 +175,8 @@ public class ModelRepresentationConversions {
     public static Attribute getAttributeFromObjectAndRelyingPartyOverrideProperty(Object o, IRelyingPartyOverrideProperty overrideProperty) {
         switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
             case BOOLEAN:
-                if ((o instanceof Boolean && ((Boolean) o)) ||
-                        (o instanceof String) && Boolean.valueOf((String) o)) {
-                    if (overrideProperty.getPersistType() != null &&
-                            !overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
+                if ((o instanceof Boolean && ((Boolean) o)) || (o instanceof String) && Boolean.valueOf((String) o)) {
+                    if (overrideProperty.getPersistType() != null && !overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
                         return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
                                 overrideProperty.getAttributeFriendlyName(),
                                 overrideProperty.getPersistValue());
@@ -200,7 +197,7 @@ public class ModelRepresentationConversions {
             case INTEGER:
                 return ATTRIBUTE_UTILITY.createAttributeWithIntegerValue(overrideProperty.getAttributeName(),
                         overrideProperty.getAttributeFriendlyName(),
-                        Integer.valueOf((String) o));
+                        (Integer) o);
             case STRING:
             case LONG:
             case DOUBLE:

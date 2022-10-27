@@ -1,16 +1,15 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.repository;
 
-import java.util.List;
-import java.util.Set;
-
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Owner;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Owner;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership;
+import java.util.List;
+import java.util.Set;
 
 public interface OwnershipRepository extends JpaRepository<Ownership, String> {
     /**

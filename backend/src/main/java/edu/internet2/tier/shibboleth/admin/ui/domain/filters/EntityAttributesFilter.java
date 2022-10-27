@@ -2,10 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeListFromAttributeReleaseList;
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeListFromRelyingPartyOverridesRepresentation;
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeReleaseListFromAttributeList;
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getRelyingPartyOverridesRepresentationFromAttributeList;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeListFromAttributeReleaseList;
+import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeListFromRelyingPartyOverridesRepresentation;
+import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeReleaseListFromAttributeList;
+import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getRelyingPartyOverridesRepresentationFromAttributeList;
 
 @Entity
 @EqualsAndHashCode(callSuper = true, exclude = { "attributeRelease", "relyingPartyOverrides" })
