@@ -23,6 +23,8 @@
         <property name="profileConfigurations">
             <list>
                 <!-- <bean parent="SAML2.SSO" p:encryptAssertions="false" /> -->
+              <ref bean="OIDC.Keyset" />
+              <bean parent="OIDC.Configuration" />
             </list>
         </property>
     </bean>
@@ -51,6 +53,10 @@
                 <ref bean="CAS.LoginConfiguration" />
                 <ref bean="CAS.ProxyConfiguration" />
                 <ref bean="CAS.ValidateConfiguration" />
+                <ref bean="OIDC.SSO" />
+			          <ref bean="OIDC.UserInfo"/>
+			          <ref bean="OAUTH2.Revocation"/>
+			          <ref bean="OAUTH2.Introspection" />
             </list>
         </property>
     </bean>
