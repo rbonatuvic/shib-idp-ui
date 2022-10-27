@@ -10,8 +10,12 @@ import { EntityTypeahead } from './EntityTypeahead';
 import kebabCase from 'lodash/kebabCase';
 import { useMetadataSources } from '../hooks/api';
 import { useMetadataSourceSections } from '../domain/source/definition/sections';
+import { useMetadataSchemaLoader, useMetadataSchemaType } from '../hoc/MetadataSchema';
 
 export function CopySource({ copy, onNext }) {
+
+    const schemaLoader = useMetadataSchemaLoader();
+    const kind = useMetadataSchemaType();
 
     const { data = [] } = useMetadataSources({ cachePolicy: 'no-cache' }, []);
 
@@ -56,6 +60,12 @@ export function CopySource({ copy, onNext }) {
     const sourceIds = data.map(p => p.entityId);
 
     const sections = useMetadataSourceSections();
+
+    React.useEffect(() => {
+        if (target && target.protocol !== kind) {
+            schemaLoader(target.protocol);
+        }
+    }, [target, schemaLoader, kind]);
 
     return (
         <>
