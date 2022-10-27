@@ -35,10 +35,11 @@ function reducer(state, action) {
     }
 }
 
-function Wizard ({children}) {
+function Wizard ({children, starting = 'common'}) {
 
     const [state, dispatch] = React.useReducer(reducer, {
-        ...initialState
+        ...initialState,
+        current: starting
     });
 
     const contextValue = React.useMemo(() => ({ state, dispatch }), [state, dispatch]);

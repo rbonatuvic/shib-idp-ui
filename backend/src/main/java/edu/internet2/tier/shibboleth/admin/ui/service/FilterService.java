@@ -1,12 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import javax.script.ScriptException;
-
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
+
+import javax.script.ScriptException;
 
 /**
  * Main backend facade API that defines operations pertaining to manipulating <code>{@link EntityAttributesFilter}</code> objects.

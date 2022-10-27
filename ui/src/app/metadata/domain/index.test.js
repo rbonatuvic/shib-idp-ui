@@ -1,7 +1,7 @@
 import { NameIDFilterEditor } from './filter/definition/NameIdFilterDefinition';
 import { getDefinition } from './index';
 import { FileSystemMetadataProviderEditor } from './provider/definition/FileSystemMetadataProviderDefinition';
-import { SourceEditor } from './source/definition/SourceDefinition';
+import { OidcSourceEditor } from './source/definition/OidcSourceDefinition';
 
 jest.mock('../../App.constant', () => ({
     get API_BASE_PATH() {
@@ -11,7 +11,7 @@ jest.mock('../../App.constant', () => ({
 
 describe('getDefinitions method', () => {
     it('should retrieve the definition', () => {
-        expect(getDefinition('source')).toBe(SourceEditor);
+        expect(getDefinition('OIDC')).toBe(OidcSourceEditor);
         expect(getDefinition('NameIDFormat')).toBe(NameIDFilterEditor);
         expect(getDefinition('FilesystemMetadataResolver')).toBe(FileSystemMetadataProviderEditor);
     });

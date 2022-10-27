@@ -18,14 +18,14 @@
     "logoWidth": null
   },
   "securityInfo": {
-    "x509CertificateAvailable": true,
     "authenticationRequestsSigned": false,
     "wantAssertionsSigned": false,
-    "x509Certificates": [
+    "keyDescriptors": [
       {
         "name": "test cert",
         "type": "both",
-        "value": "testcert"
+        "value": "testcert",
+        "elementType": "X509Data"
       }
     ]
   },
@@ -40,5 +40,6 @@
     "nameIdFormats": [],
     "authenticationMethods": []
   },
-  "attributeRelease": []
+  "attributeRelease": [],
+  "protocol": "SAML"
 }

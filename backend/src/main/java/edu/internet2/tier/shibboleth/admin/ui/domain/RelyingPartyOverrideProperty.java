@@ -1,12 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.Set;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -27,6 +25,7 @@ public class RelyingPartyOverrideProperty implements IRelyingPartyOverrideProper
     private String name;
     private String persistType;
     private String persistValue;
+    private String protocol = "saml, oidc";
     
     @Override
     public Boolean getFromConfigFile() {
@@ -43,7 +42,12 @@ public class RelyingPartyOverrideProperty implements IRelyingPartyOverrideProper
             return CustomAttributeType.valueOf(displayType.toUpperCase());
         }
     }
-    
+
+    @Override
+    public String getProtocol() {
+        return protocol == null ? "saml, oidc" : protocol;
+    }
+
     public String getTypeForUI() {
         return getDisplayType();
     }

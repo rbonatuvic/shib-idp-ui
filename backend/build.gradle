@@ -135,6 +135,8 @@ dependencies {
         compile "net.shibboleth.idp:${it}:${project.'shibbolethVersion'}"
     }
 
+    implementation "net.shibboleth.oidc:oidc-common-saml-api:${project.'shibOIDCVersion'}"
+
     // hibernate deps
     ['hibernate-core'].each {
         compile "org.hibernate:${it}:${project.'hibernateVersion'}"
@@ -187,7 +189,8 @@ dependencies {
     testCompile "org.springframework.boot:spring-boot-starter-test:${project.'springbootVersion'}"
     testCompile "org.springframework.security:spring-security-test:${project.'springSecurityVersion'}"
     testCompile 'org.skyscreamer:jsonassert:1.5.0'
-    testCompile "org.xmlunit:xmlunit-core:2.5.1"
+    testImplementation "org.xmlunit:xmlunit-core:2.9.0"
+    testImplementation "org.xmlunit:xmlunit-assertj:2.9.0"
     testRuntime 'cglib:cglib-nodep:3.2.5'
 
     compile "net.shibboleth.ext:spring-extensions:6.2.0"
@@ -209,6 +212,7 @@ dependencies {
     integrationTestCompile platform("org.spockframework:spock-bom:2.1-groovy-3.0")
     integrationTestCompile "org.spockframework:spock-core"
     integrationTestCompile "org.spockframework:spock-spring"
+    integrationTestRuntime "net.shibboleth.oidc:oidc-common-saml-api:${project.'shibOIDCVersion'}"
 
     // CSV file support
     compile 'com.opencsv:opencsv:4.4', {
@@ -335,6 +339,12 @@ task generateSources {
         new XmlSlurper().parse(file('src/main/resources/jpa-signature-config.xml')).with { builders ->
             builders.ObjectProviders.ObjectProvider.BuilderClass.each {
                 processLine(it['@className'].toString(), 'src/main/templates/SignatureBuilderTemplate.java')
+            }
+        }
+
+        new XmlSlurper().parse(file('src/main/resources/jpa-shib-oidc-config.xml')).with { builders ->
+            builders.ObjectProviders.ObjectProvider.BuilderClass.each {
+                processLine(it['@className'].toString(), 'src/main/templates/OIDCBuilderTemplate.java')
             }
         }
     }

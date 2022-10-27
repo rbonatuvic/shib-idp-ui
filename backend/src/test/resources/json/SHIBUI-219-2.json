@@ -18,10 +18,9 @@
     "logoWidth": null
   },
   "securityInfo": {
-    "x509CertificateAvailable": false,
     "authenticationRequestsSigned": true,
     "wantAssertionsSigned": false,
-    "x509Certificates": []
+    "keyDescriptors": []
   },
   "assertionConsumerServices": [],
   "serviceProviderSsoDescriptor": {

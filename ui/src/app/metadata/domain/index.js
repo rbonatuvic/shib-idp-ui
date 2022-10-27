@@ -4,14 +4,14 @@ import { MetadataProviderEditorTypes, MetadataProviderWizardTypes } from './prov
 import { DynamicHttpMetadataProviderEditor } from './provider/definition/DynamicHttpMetadataProviderDefinition';
 import { FileBackedHttpMetadataProviderEditor } from './provider/definition/FileBackedHttpMetadataProviderDefinition';
 import { LocalDynamicMetadataProviderEditor } from './provider/definition/LocalDynamicMetadataProviderDefinition';
-import { SourceEditor, SourceWizard } from "./source/definition/SourceDefinition";
+import { MetadataSourceEditorTypes, MetadataSourceWizardTypes } from "./source";
 
 export const editors = {
-    source: SourceEditor
+    ...MetadataSourceEditorTypes
 };
 
 export const wizards = {
-    source: SourceWizard
+    ...MetadataSourceWizardTypes
 };
 
 export const ProviderEditorTypes = [
@@ -37,10 +37,10 @@ export const FilterableProviders = [
 export const getWizard = (type) =>
     ProviderWizardTypes.find(def => def.type === type) ||
     FilterEditorTypes.find(def => def.type === type) ||
-    SourceWizard;
+    wizards[type];
 
 export const getDefinition = (type) =>
     typeof type === 'string' ?
     ProviderEditorTypes.find(def => def.type === type) ||
     FilterEditorTypes.find(def => def.type === type) ||
-    SourceEditor : type;
+    editors[type] : type;

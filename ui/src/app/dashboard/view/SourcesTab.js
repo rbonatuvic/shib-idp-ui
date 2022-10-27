@@ -10,7 +10,7 @@ import { Spinner } from '../../core/components/Spinner';
 import { NotificationContext, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
 
 
-const searchProps = ['serviceProviderName', 'entityId', 'createdBy'];
+const searchProps = ['serviceProviderName', 'entityId', 'createdBy', 'protocol'];
 
 export function SourcesTab () {
 

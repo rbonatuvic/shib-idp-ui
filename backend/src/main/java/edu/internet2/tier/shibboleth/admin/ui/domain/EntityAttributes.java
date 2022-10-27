@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.ext.saml2mdattr.impl.EntityAttributesImpl;
 import org.opensaml.saml.saml2.core.Assertion;
 
 import javax.annotation.Nullable;

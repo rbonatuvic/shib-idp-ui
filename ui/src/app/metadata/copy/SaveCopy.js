@@ -12,11 +12,16 @@ import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import Translate from '../../i18n/components/translate';
 
 export function useCopiedModel (copy) {
+
     const { properties, target, serviceProviderName, entityId } = copy;
-    const copied = removeNull(properties.reduce((c, section) => ({ ...c, ...{ [section]: target[section] } }), {}));
+    const { protocol } = target;
+
+    let copied = removeNull(properties.reduce((c, section) => ({ ...c, ...{ [section]: target[section] } }), {}));
+
     const model = {
         serviceProviderName,
         entityId,
+        protocol,
         ...copied
     };
     return model;
@@ -31,6 +36,7 @@ export function SaveCopy ({ copy, saving, onSave, onBack }) {
     const schema = React.useContext(MetadataSchemaContext);
 
     const model = useCopiedModel(copy);
+
     const configuration = useCopiedConfiguration(model, schema, definition);
 
     const { handleSubmit } = useForm({

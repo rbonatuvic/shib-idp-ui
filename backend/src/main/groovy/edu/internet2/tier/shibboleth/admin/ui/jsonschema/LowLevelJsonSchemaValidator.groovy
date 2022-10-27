@@ -16,15 +16,16 @@ import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocati
  */
 class LowLevelJsonSchemaValidator {
 
-    static HttpInputMessage validatePayloadAgainstSchema(HttpInputMessage inputMessage, URI schemaUri) {
+    static HttpInputMessage validateMetadataSourcePayloadAgainstSchema(HttpInputMessage inputMessage, HashMap<String, JsonSchemaResourceLocation> schemaLocations) {
         def origInput = [inputMessage.body.bytes, inputMessage.headers]
         def json = extractJsonPayload(origInput)
-        def schema = Json.schema(schemaUri)
+        def protocol = json.at("protocol")
+        String key = protocol == null ? "SAML" : org.apache.commons.lang3.StringUtils.defaultIfEmpty(json.at("protocol").getValue(), "SAML")
+        def schema = Json.schema(schemaLocations.get(key).getUri())
         doValidate(origInput, schema, json)
     }
 
-    static HttpInputMessage validateMetadataResolverTypePayloadAgainstSchema(HttpInputMessage inputMessage,
-                                                                             JsonSchemaResourceLocationRegistry schemaRegistry) {
+    static HttpInputMessage validateMetadataResolverTypePayloadAgainstSchema(HttpInputMessage inputMessage, JsonSchemaResourceLocationRegistry schemaRegistry) {
 
         def origInput = [inputMessage.body.bytes, inputMessage.headers]
         def json = extractJsonPayload(origInput)
