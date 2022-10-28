@@ -8,6 +8,81 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 255
-        }
+        },
+        "resourceId": {
+            "type": "string"
+        },
+        "redirectUris": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "responseTypes": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "grantTypes": {
+            "title": "label.dynamic-registration-",
+            "description": "tooltip.dynamic-registration-",
+            "type": "string"
+        },
+        "applicationType": {
+            "title": "label.dynamic-registration-",
+            "description": "tooltip.dynamic-registration-",
+            "type": "string"
+        },
+        "contacts": {
+            "title": "label.dynamic-registration-",
+            "description": "tooltip.dynamic-registration-",
+            "type": "string"
+        },
+        "subjectType": {
+            "title": "label.dynamic-registration-",
+            "description": "tooltip.dynamic-registration-",
+            "type": "string"
+        },
+        "jwks": {
+            "title": "label.dynamic-registration-",
+            "description": "tooltip.dynamic-registration-",
+            "type": "string"
+        },
+        "jwksUri": {
+            "title": "label.dynamic-registration-",
+            "description": "tooltip.dynamic-registration-",
+            "type": "string"
+        },
+        "tokenEndpointAuthMethod": {
+            "title": "label.dynamic-registration-",
+            "description": "tooltip.dynamic-registration-",
+            "type": "string"
+        },
+        "logoUri": {
+            "title": "label.dynamic-registration-",
+            "description": "tooltip.dynamic-registration-",
+            "type": "string"
+        },
+        "policyUri": {
+            "title": "label.dynamic-registration-",
+            "description": "tooltip.dynamic-registration-",
+            "type": "string"
+        },
+        "tosUri": {
+            "title": "label.dynamic-registration-",
+            "description": "tooltip.dynamic-registration-",
+            "type": "string"
+        },
+        "scope": {
+            "title": "label.dynamic-registration-",
+            "description": "tooltip.dynamic-registration-",
+            "type": "string"
+        },
+        "enabled": {
+            "type": "boolean"
+        },
+        "modifiedDate": "2022-10-21T11:57:24.391649",
+        "createdData": "2022-10-21T11:57:24.391649"
     }
 }
