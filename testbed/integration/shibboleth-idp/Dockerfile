@@ -10,6 +10,8 @@ ARG SHBVIEWS=config/shib-idp/views
 ARG SHBEDWAPP=config/shib-idp/edit-webapp
 ARG SHBMSGS=config/shib-idp/messages
 ARG SHBMD=config/shib-idp/metadata
+ARG OIDCREG=config/shib-idp/static
+ARG TOMREWRITE=config/tomcat/rewrite.config
 
 #enable OIDC plugins and generate needed keys
 ADD ${SHBCREDS} /opt/shibboleth-idp/credentials
@@ -28,6 +30,7 @@ ADD ${SHBCFG} /opt/shibboleth-idp/conf
 #ADD ${SHBEDWAPP} /opt/shibboleth-idp/edit-webapp
 #ADD ${SHBMSGS} /opt/shibboleth-idp/messages
 ADD ${SHBMD} /opt/shibboleth-idp/metadata
-
+ADD ${OIDCREG} /opt/shibboleth-idp/static
+ADD ${TOMREWRITE} /opt/shibboleth-idp/edit-webapp/WEB-INF/rewrite.config
 
 EXPOSE 8080
