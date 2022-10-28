@@ -79,15 +79,6 @@ export function MetadataOptions ({reload}) {
                             <FontAwesomeIcon size="lg" icon={enabled ? faToggleOn : faToggleOff} />
                         </Button>
                         }
-                        {canApprove &&
-                        <Button variant={metadata.approved ? 'outline-success' : 'outline-success' } size="sm" className=""
-                                onClick={() => approve(metadata, !metadata.approved, reload)}>
-                                    <span className=" me-1">
-                                        <Translate value={metadata.approved ? 'label.disapprove' : 'label.approve'} />
-                                    </span>
-                            <FontAwesomeIcon size="lg" icon={metadata.approved ? faToggleOn : faToggleOff} />
-                        </Button>
-                        }
                         {type === 'source' && remove && isAdmin &&
                         <Button
                             size="sm"
