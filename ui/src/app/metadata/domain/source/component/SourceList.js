@@ -8,7 +8,8 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faSquareCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSquare } from '@fortawesome/free-regular-svg-icons';
 
 import FormattedDate from '../../../../core/components/FormattedDate';
 import Translate from '../../../../i18n/components/translate';
@@ -68,14 +69,14 @@ export default function SourceList({ entities, onDelete, onEnable, onApprove, on
                                             <td className="text-center align-middle">
                                                 <span className="d-flex justify-content-center align-items-center">
                                                     {onApprove ?
-                                                    <Button variant={source.approved ? 'outline-success' : 'outline-success' }
+                                                    <Button variant={source.approved ? 'outline-success' : 'outline-primary' }
                                                         id={`approve-switch-${source.id}`}
                                                         size="sm" className=""
                                                             onClick={() => onApprove(source, !source.approved)}>
                                                                 <span className=" me-1">
                                                                     <Translate value={source.approved ? 'label.disapprove' : 'label.approve'} />
                                                                 </span>
-                                                        <FontAwesomeIcon size="lg" icon={faCheck} />
+                                                        <FontAwesomeIcon size="lg" icon={source.approved ? faSquareCheck : faSquare} />
                                                     </Button>
                                                     :
                                                     <Badge bg={source.approved ? 'success' : 'danger'}>
