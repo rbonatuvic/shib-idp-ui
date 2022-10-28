@@ -65,7 +65,7 @@ public interface EntityDescriptorService {
      * "admin"
      * @throws ForbiddenException - If user is not an ADMIN
      */
-    Iterable<EntityDescriptorRepresentation> getAllDisabledAndNotOwnedByAdmin() throws ForbiddenException;
+    Iterable<EntityDescriptorProjection> getAllDisabledAndNotOwnedByAdmin() throws ForbiddenException;
 
     /**
      * @return a list of EntityDescriptorProjections that a user has the rights to access

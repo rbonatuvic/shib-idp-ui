@@ -485,11 +485,11 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public Iterable<EntityDescriptorRepresentation> getAllDisabledAndNotOwnedByAdmin() throws ForbiddenException {
+    public Iterable<EntityDescriptorProjection> getAllDisabledAndNotOwnedByAdmin() throws ForbiddenException {
         if (!userService.currentUserIsAdmin()) {
             throw new ForbiddenException();
         }
-        return entityDescriptorRepository.findAllDisabledAndNotOwnedByAdmin().map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
+        return entityDescriptorRepository.getEntityDescriptorsNeedingEnabling();
     }
 
     /**

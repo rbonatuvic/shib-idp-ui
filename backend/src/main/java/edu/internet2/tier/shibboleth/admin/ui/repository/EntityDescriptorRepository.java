@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,9 +36,12 @@ public interface EntityDescriptorRepository extends JpaRepository<EntityDescript
 
     Stream<EntityDescriptor> findAllStreamByIdOfOwner(String ownerId);
     
-    @Query("select e from EntityDescriptor e, User u join u.roles r " +
-            "where e.createdBy = u.username and e.serviceEnabled = false and r.name in ('ROLE_USER', 'ROLE_NONE')")
-    Stream<EntityDescriptor> findAllDisabledAndNotOwnedByAdmin();
+    @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
+                    "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol, e.approved) " +
+                    "  from EntityDescriptor e " +
+                    " where e.serviceEnabled = false"
+    )
+    List<EntityDescriptorProjection> getEntityDescriptorsNeedingEnabling();
     
     /**
      * SHIBUI-1740 This is here to aid in migration of systems using the SHIBUI prior to group functionality being added

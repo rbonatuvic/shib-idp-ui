@@ -102,8 +102,8 @@ public class EntityDescriptorController {
     @Secured("ROLE_ADMIN")
     @Transactional
     @GetMapping(value = "/EntityDescriptor/disabledNonAdmin")
-    public Iterable<EntityDescriptorRepresentation> getDisabledAndNotOwnedByAdmin() throws ForbiddenException {
-        return entityDescriptorService.getAllDisabledAndNotOwnedByAdmin();
+    public ResponseEntity<?> getDisabledAndNotOwnedByAdmin() throws ForbiddenException {
+        return ResponseEntity.ok(entityDescriptorService.getAllDisabledAndNotOwnedByAdmin());
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}")
