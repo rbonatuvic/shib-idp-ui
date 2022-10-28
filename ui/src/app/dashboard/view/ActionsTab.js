@@ -10,7 +10,6 @@ import Nav from 'react-bootstrap/Nav';
 import { Switch, Route, useRouteMatch, Redirect } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import Badge from 'react-bootstrap/Badge';
-import { ApprovalActions } from '../../admin/container/ApprovalActions';
 
 export function ActionsTab({ sources, users, approvals, reloadSources, reloadUsers, reloadApprovals, loadingSources, loadingUsers, loadingApprovals }) {
 
@@ -62,19 +61,23 @@ export function ActionsTab({ sources, users, approvals, reloadSources, reloadUse
                             <Redirect to={`${url}/approve`} />
                         </Route>
                         <Route path={`${path}/approve`} render={() =>
-                            <ApprovalActions entities={approvals} reloadUsers={reloadApprovals}>
-                                {(approve) =>
-                                    <SourceList entities={approvals} onDelete={reloadSources} onApprove={(s, e) => approve(s, e, reloadApprovals)}>
+                            <MetadataActions entities={approvals} type="source">
+                                {({approve, remove}) =>
+                                    <SourceList entities={approvals}
+                                        onDelete={(id) => remove(id, reloadApprovals)}
+                                        onApprove={(s, e) => approve(s, e, reloadApprovals)}>
                                         {loadingApprovals && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
                                     </SourceList>
                                 }
-                            </ApprovalActions>
+                            </MetadataActions>
                         } />
                         <Route path={`${path}/enable`}>
                             <ProtectRoute redirectTo="/dashboard">
                                 <MetadataActions type="source">
-                                    {(enable) =>
-                                        <SourceList entities={sources} onDelete={reloadSources} onEnable={(s, e) => enable(s, e, reloadSources)}>
+                                    {({enable, remove}) =>
+                                        <SourceList entities={sources}
+                                            onDelete={(id) => remove(id, reloadSources)}
+                                            onEnable={(s, e) => enable(s, e, reloadSources)}>
                                             {loadingSources && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
                                         </SourceList>
                                     }

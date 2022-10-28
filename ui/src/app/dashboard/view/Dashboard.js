@@ -69,7 +69,7 @@ export function Dashboard () {
             loadUsers();
         }
         loadApprovals();
-    }, [location]);
+    }, [location, isAdmin]);
 
     React.useEffect(() => {
         setActions((users?.length || 0) + (sources?.length || 0) + approvals.length);
