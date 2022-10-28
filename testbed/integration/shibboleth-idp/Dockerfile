@@ -31,6 +31,6 @@ ADD ${SHBCFG} /opt/shibboleth-idp/conf
 #ADD ${SHBMSGS} /opt/shibboleth-idp/messages
 ADD ${SHBMD} /opt/shibboleth-idp/metadata
 ADD ${OIDCREG} /opt/shibboleth-idp/static
-ADD ${TOMREWRITE} /opt/shibboleth-idp/edit-webapp/WEB-INF/rewrite.config
+ADD ${TOMREWRITE} /usr/local/tomcat/conf/Catalina/localhost/rewrite.config
 
 EXPOSE 8080
