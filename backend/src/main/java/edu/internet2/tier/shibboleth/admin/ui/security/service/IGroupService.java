@@ -1,12 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
-import java.util.List;
-
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
+
+import java.util.List;
 
 public interface IGroupService {
 

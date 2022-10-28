@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.ValueXMLObject;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
@@ -12,7 +13,7 @@ import javax.persistence.Lob;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @Audited
-public class X509Certificate extends AbstractXMLObject implements org.opensaml.xmlsec.signature.X509Certificate {
+public class X509Certificate extends AbstractXMLObject implements ValueXMLObject, org.opensaml.xmlsec.signature.X509Certificate {
     @Column(name = "x509CertificateValue")
     @Lob
     @Type(type = "org.hibernate.type.TextType")

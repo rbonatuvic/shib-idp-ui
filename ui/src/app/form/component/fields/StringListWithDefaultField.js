@@ -105,6 +105,7 @@ const StringListWithDefaultField = ({
                                 required={props.required}
                             />}
                             <AddButton
+                                id={`array-field-addbtn-${props.idSchema.$id}`}
                                 className="array-item-add mx-2"
                                 onClick={onAdd}
                                 disabled={props.disabled || props.readonly}

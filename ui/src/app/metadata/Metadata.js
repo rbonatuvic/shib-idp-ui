@@ -21,7 +21,7 @@ export function Metadata () {
         <MetadataSelector>
             {(entity, reload) =>
                 <MetadataXmlLoader>
-                    <MetadataSchema type={entity['@type'] ? entity['@type'] : 'source'}>
+                    <MetadataSchema type={entity['@type'] ? entity['@type'] : entity['protocol']}>
                         <Switch>
                             <Route path={`${path}/configuration/options`} render={() =>
                                 <MetadataDetail>

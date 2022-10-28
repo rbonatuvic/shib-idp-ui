@@ -3,8 +3,8 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.MetadataResolverValidationService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.MetadataResolverValidationService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService;
@@ -35,7 +35,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;

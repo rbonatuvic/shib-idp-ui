@@ -154,6 +154,7 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-2052: Logged in user & role appear on dashboard'            | '/SHIBUI-2052.side'
         'SHIBUI-2116: Verify entity attribute bundle highlights'            | '/SHIBUI-2116.side' // Note that this script WILL NOT PASS in the Selenium IDE due to ${driver} not being set (it is provided by this groovy script).
         'SHIBUI-2267: Verify new RPO CRUD'                                  | '/SHIBUI-2267.side'
+        'SHIBUI-2380: OIDC metadata source CRUD'                            | '/SHIBUI-2380.side'
         'SHIBUI-1674: Verify metadata source tooltips'                      | '/SHIBUI-1674-1.side'
         'SHIBUI-1674: Verify metadata provider tooltips'                    | '/SHIBUI-1674-2.side'
         'SHIBUI-1674: Verify advanced menu tooltips'                        | '/SHIBUI-1674-3.side'

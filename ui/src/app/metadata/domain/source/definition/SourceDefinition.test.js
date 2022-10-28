@@ -92,8 +92,7 @@ describe('SourceDefinition', () => {
                 securityInfo: {
                     x509Certificates: [
                         {}
-                    ],
-                    x509CertificateAvailable: true
+                    ]
                 }
             });
 
@@ -106,8 +105,7 @@ describe('SourceDefinition', () => {
                 }
             )).toMatchObject({
                 securityInfo: {
-                    x509Certificates: [],
-                    x509CertificateAvailable: false
+                    x509Certificates: []
                 }
             });
 

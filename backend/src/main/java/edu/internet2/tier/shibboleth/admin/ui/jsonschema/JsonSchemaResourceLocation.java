@@ -94,7 +94,8 @@ public class JsonSchemaResourceLocation {
 
     public enum SchemaType {
         // common types
-        METADATA_SOURCES("MetadataSources"),
+        METADATA_SOURCES_SAML("MetadataSourcesSAML"),
+        METADATA_SOURCES_OIDC("MetadataSourcesOIDC"),
 
         // filter types
         ENTITY_ATTRIBUTES_FILTERS("EntityAttributesFilters"),

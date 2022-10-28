@@ -374,11 +374,11 @@
       "id": "7e4914a1-bd67-451b-8618-ec89fbbdc608",
       "comment": "",
       "command": "assertText",
-      "target": "css=.row:nth-child(7) .form-label > span",
+      "target": "css=.row:nth-child(5) .form-label > span",
       "targets": [
-        ["css=.row:nth-child(7) .form-label > span", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[9]/div/div/div/div[7]/div/div/div/div/label/span", "xpath:idRelative"],
-        ["xpath=//div[7]/div/div/div/div/label/span", "xpath:position"],
+        ["css=.row:nth-child(5) .form-label > span", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[8]/div/div/div/div[5]/div/div/div/div/label/span", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div/div/label/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Double Display')]", "xpath:innerText"]
       ],
       "value": "Custom Double Display"
@@ -449,11 +449,11 @@
       "id": "6a2b0c7e-4629-4f02-9361-ef6afdb97227",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(8) div:nth-child(7) .d-block:nth-child(1)",
+      "target": "css=.mb-4:nth-child(8) div:nth-child(5) .d-block:nth-child(1)",
       "targets": [
-        ["css=.mb-4:nth-child(8) div:nth-child(7) .d-block:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:idRelative"],
-        ["xpath=//section[8]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:position"],
+        ["css=.mb-4:nth-child(8) div:nth-child(5) .d-block:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:idRelative"],
+        ["xpath=//section[8]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Double Display')]", "xpath:innerText"]
       ],
       "value": "Custom Double Display"
@@ -461,11 +461,11 @@
       "id": "75f95b74-c4e5-49a3-858f-a516ca1ac57e",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(8) div:nth-child(7) .d-block:nth-child(2)",
+      "target": "css=.mb-4:nth-child(8) div:nth-child(5) .d-block:nth-child(2)",
       "targets": [
-        ["css=.mb-4:nth-child(8) div:nth-child(7) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[8]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:position"],
+        ["css=.mb-4:nth-child(8) div:nth-child(5) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//section[8]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'3.141592653589')]", "xpath:innerText"]
       ],
       "value": "3.141592653589"
@@ -500,18 +500,23 @@
       "id": "24edd27b-44c3-4705-ac8a-2773cd645464",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=.mb-4:nth-child(9) div:nth-child(6) .d-block:nth-child(1)",
-      "targets": [],
+      "target": "css=.mb-4:nth-child(9) div:nth-child(5) .d-block:nth-child(1)",
+      "targets": [
+        ["css=.mb-4:nth-child(9) div:nth-child(5) .d-block:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:idRelative"],
+        ["xpath=//section[7]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Custom Double Display')]", "xpath:innerText"]
+      ],
       "value": "Custom Double Display"
     }, {
       "id": "bfe564c1-7a44-4e18-8e12-f9a2069ca022",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(1)",
+      "target": "css=.mb-4:nth-child(9) div:nth-child(5) .d-block:nth-child(1)",
       "targets": [
-        ["css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:idRelative"],
-        ["xpath=//section[7]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:position"],
+        ["css=.mb-4:nth-child(9) div:nth-child(5) .d-block:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:idRelative"],
+        ["xpath=//section[7]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Double Display')]", "xpath:innerText"]
       ],
       "value": "Custom Double Display"
@@ -519,11 +524,11 @@
       "id": "822de10a-24bc-45ca-a28c-242f880b7d11",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(2)",
+      "target": "css=.mb-4:nth-child(9) div:nth-child(5) .d-block:nth-child(2)",
       "targets": [
-        ["css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[7]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:position"],
+        ["css=.mb-4:nth-child(9) div:nth-child(5) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//section[7]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'3.141592653589')]", "xpath:innerText"]
       ],
       "value": "3.141592653589"
@@ -837,11 +842,11 @@
       "id": "302b95c3-ca6d-4f67-9553-d248544a121c",
       "comment": "",
       "command": "assertText",
-      "target": "css=.row:nth-child(7) > .col-12 > .mb-3 > div > div > .form-label > span",
+      "target": "css=.row:nth-child(5) .form-label > span",
       "targets": [
-        ["css=.row:nth-child(7) > .col-12 > .mb-3 > div > div > .form-label > span", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[7]/div/div/div/div/div[7]/div/div/div/div/label/span", "xpath:idRelative"],
-        ["xpath=//div[7]/div/div/div/div/label/span", "xpath:position"],
+        ["css=.row:nth-child(5) .form-label > span", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[7]/div/div/div/div/div[5]/div/div/div/div/label/span", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div/div/label/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Double Display')]", "xpath:innerText"]
       ],
       "value": "Custom Double Display"
@@ -928,11 +933,11 @@
       "id": "692d0155-2e73-45da-ba35-180e2195045e",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(1) > div:nth-child(7) .d-block:nth-child(1)",
+      "target": "css=.mb-4:nth-child(4) div:nth-child(5) .d-block:nth-child(1)",
       "targets": [
-        ["css=div:nth-child(1) > div:nth-child(7) .d-block:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[7]/div/span", "xpath:idRelative"],
-        ["xpath=//div[2]/div[2]/div/div[7]/div/span", "xpath:position"],
+        ["css=.mb-4:nth-child(4) div:nth-child(5) .d-block:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:idRelative"],
+        ["xpath=//section[2]/div/div[2]/div[2]/div/div[5]/div/span", "xpath:position"],
         ["xpath=//span[contains(.,'Custom Double Display')]", "xpath:innerText"]
       ],
       "value": "Custom Double Display"
@@ -940,11 +945,11 @@
       "id": "fc1c7695-9b42-413f-9c17-a3fcce2be919",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(1) > div:nth-child(7) .text-truncate",
+      "target": "css=.mb-4:nth-child(4) div:nth-child(5) .d-block:nth-child(2)",
       "targets": [
-        ["css=div:nth-child(1) > div:nth-child(7) .text-truncate", "css:finder"],
-        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div[2]/div/div[7]/div/span[2]", "xpath:position"],
+        ["css=.mb-4:nth-child(4) div:nth-child(5) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='filters']/ul/li/div[2]/section[2]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//section[2]/div/div[2]/div[2]/div/div[5]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'3.141592653589')]", "xpath:innerText"]
       ],
       "value": "3.141592653589"
