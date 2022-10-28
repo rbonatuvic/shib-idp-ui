@@ -8,6 +8,12 @@ import Button from 'react-bootstrap/esm/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faHistory, faToggleOff, faToggleOn, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Badge from 'react-bootstrap/esm/Badge';
+import { Configuration } from '../../metadata/hoc/Configuration';
+import { MetadataConfiguration } from '../../metadata/component/MetadataConfiguration';
+
+import { Schema } from '../../form/Schema';
+
+import definition from '../hoc/DynamicConfigurationDefinition';
 
 export function DynamicRegistrationDetail () {
 
@@ -54,7 +60,7 @@ export function DynamicRegistrationDetail () {
                         </h2>
                         <div className="container">
 
-                            <div className="card enabled-status">
+                            <div className="card enabled-status mb-4">
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between">
                                         <h5 className="card-title version-title flex-grow-1">
@@ -97,35 +103,15 @@ export function DynamicRegistrationDetail () {
                                 </div>
                             </div>
 
-                             <div className="px-3 my-3 d-flex justify-content-between" id="navigation">
-                                <div>
-                                    <Link className="btn btn-link" to={`/dynamic-registration/${id}/history`}>
-                                        <FontAwesomeIcon icon={ faHistory } />&nbsp;
-                                        <Translate value="action.version-history">Version History</Translate>
-                                    </Link>
-                                </div>
-                            </div>
-
-                            <section className="mb-4 config-section-list-item">
-                                <div className="config-group">
-                                    <div className="numbered-header d-flex justify-content-start bg-light align-items-center">
-                                        <h2 className="title h4 m-0 flex-grow-1">
-                                           <span className="text ms-2">
-                                                <Translate value={ `label.dynamic-registraction-configuration` } />
-                                            </span>
-                                        </h2>
-                                        <div className="actions px-2">
-                                            <Button variant="link" className="edit-link change-view" onClick={()=>edit()}>
-                                                <FontAwesomeIcon icon={faEdit} />&nbsp;
-                                                <Translate value="action.edit">Edit</Translate>
-                                            </Button>
-                                        </div>
-                                    </div>
-                                    <div className="p-2">
-                                        <pre>{JSON.stringify(detail, null, 4)}</pre>
-                                    </div>
-                                </div>
-                            </section>
+                            <Schema path={definition.schema}>
+                                    {(schema) => 
+                                    <Configuration entities={[detail]} schema={schema} definition={definition}>
+                                        {(config) =>
+                                            <MetadataConfiguration configuration={config} onEdit={() => edit()} />
+                                        }
+                                    </Configuration>
+                                }
+                            </Schema>
                             
                         </div>
                     </React.Fragment>
