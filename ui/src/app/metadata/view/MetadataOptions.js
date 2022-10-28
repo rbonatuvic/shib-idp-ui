@@ -53,7 +53,7 @@ export function MetadataOptions ({reload}) {
 
     const enabled = type === 'source' ? metadata.serviceEnabled : metadata.enabled;
 
-    const canEnable = useCanEnable();
+    const canEnable = useCanEnable()(metadata.approved);
     const isAdmin = useIsAdmin();
     const canApprove = useIsApprover();
 

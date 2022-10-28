@@ -86,7 +86,7 @@ export default function SourceList({ entities, onDelete, onEnable, onApprove, on
                                             </td>
                                             <td className="text-center align-middle">
                                                 <span className="d-flex justify-content-center align-items-center">
-                                                {onEnable && (canEnable && source.approved) ?
+                                                {onEnable && canEnable(source.approved) ?
                                                     <Form.Check
                                                         type="switch"
                                                         id={`enable-switch-${idx}`}

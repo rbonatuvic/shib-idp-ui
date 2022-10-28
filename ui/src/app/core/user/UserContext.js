@@ -72,7 +72,7 @@ function useIsAdminOrInGroup() {
 function useCanEnable() {
     const isAdmin = useIsAdmin();
     const isEnabler = useIsEnabler();
-    return isAdmin || isEnabler;
+    return (approved) => isAdmin ? true : (isEnabler && approved);
 }
 
 function useIsApprover() {
