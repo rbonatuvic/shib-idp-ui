@@ -20,7 +20,7 @@ import { MetadataFilterConfigurationList } from '../domain/filter/component/Meta
 import { MetadataFilterTypes } from '../domain/filter';
 import { useMetadataSchema } from '../hooks/schema';
 import { FilterableProviders } from '../domain/provider';
-import { useCanEnable, useIsAdmin, useIsApprover } from '../../core/user/UserContext';
+import { useCanEnable, useIsAdmin } from '../../core/user/UserContext';
 
 export function MetadataOptions ({reload}) {
 
@@ -54,7 +54,6 @@ export function MetadataOptions ({reload}) {
 
     const canEnable = useCanEnable()(metadata.approved);
     const isAdmin = useIsAdmin();
-    const canApprove = useIsApprover();
 
     return (
         <MetadataActions type={type}>
