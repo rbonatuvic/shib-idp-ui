@@ -18,6 +18,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,6 +107,10 @@ public class UserService {
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public Authentication getCurrentUserAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 
     public User getCurrentUser() {

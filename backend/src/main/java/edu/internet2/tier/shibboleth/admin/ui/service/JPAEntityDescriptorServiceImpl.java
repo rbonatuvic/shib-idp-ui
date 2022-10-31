@@ -181,9 +181,11 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (status) { // approve
             int approvedCount = ed.approvedCount();
             List<Approvers> approversList = groupService.find(ed.getIdOfOwner()).getApproversList();
-            if (!approversList.isEmpty() && approversList.size() > approvedCount) {
-                Approvers approvers = approversList.get(
-                                approvedCount); // yea for index zero - use the count to get the next approvers
+            if (approversList.isEmpty() && userService.currentUserIsAdmin()){
+                ed.setApproved(true);
+                ed = entityDescriptorRepository.save(ed);
+            } else if (!approversList.isEmpty() && approversList.size() > approvedCount) {
+                Approvers approvers = approversList.get(approvedCount); // yea for index zero - use the count to get the next approvers
                 if (!userService.currentUserCanApprove(approvers.getApproverGroups())) {
                     throw new ForbiddenException("You do not have the permissions necessary to approve this entity descriptor.");
                 }
