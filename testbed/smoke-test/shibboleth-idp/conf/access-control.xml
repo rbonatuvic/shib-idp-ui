@@ -28,21 +28,20 @@
 
     <util:map id="shibboleth.AccessControlPolicies">
 
+        <entry key="AccessByAdminUser">
+            <bean parent="shibboleth.PredicateAccessControl">
+                <constructor-arg>
+                    <bean parent="shibboleth.Conditions.SubjectName" c:collection="#{'banderson'}" />
+                </constructor-arg>
+            </bean>
+        </entry>
+
         <entry key="AccessByIPAddress">
             <bean id="AccessByIPAddress" parent="shibboleth.IPRangeAccessControl"
                   p:allowedRanges="#{ {'127.0.0.1/32', '::1/128', '172.16.0.0/12', '192.168.0.0/12'} }" />
         </entry>
 
-        <!--
-        <entry key="AccessByAdminUser">
-            <bean parent="shibboleth.PredicateAccessControl">
-                <constructor-arg>
-                    <bean parent="shibboleth.Conditions.SubjectName" c:collection="#{'jdoe'}" />
-                </constructor-arg>
-            </bean>
-        </entry>
-        -->
-
+        
         <!--
         <entry key="AccessByAttribute">
             <bean parent="shibboleth.PredicateAccessControl">
