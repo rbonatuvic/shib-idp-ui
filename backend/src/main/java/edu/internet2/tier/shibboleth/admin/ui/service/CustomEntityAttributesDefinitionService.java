@@ -1,8 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import java.util.List;
-
 import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition;
+
+import java.util.List;
 
 public interface CustomEntityAttributesDefinitionService {
 

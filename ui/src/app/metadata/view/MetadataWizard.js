@@ -9,7 +9,7 @@ import { createNotificationAction, NotificationTypes, useNotificationDispatcher 
 import { Prompt, useHistory } from 'react-router-dom';
 import { useTranslator } from '../../i18n/hooks';
 
-export function MetadataWizard ({type, data, onCallback}) {
+export function MetadataWizard ({type, data, onCallback, onContinue}) {
 
     const history = useHistory();
     const translator = useTranslator();
@@ -55,9 +55,9 @@ export function MetadataWizard ({type, data, onCallback}) {
                     `message.unsaved-editor`
                 }
             />
-            <Wizard>
+            <Wizard starting={type === 'source' ? 'org-info' : 'common'}>
                 {type === 'source' ?
-                    <MetadataSourceWizard onSave={save} loading={loading} block={setBlocking} onShowNav={onCallback} />
+                    <MetadataSourceWizard onSave={save} loading={loading} block={setBlocking} onShowNav={ onContinue } onRestart={onCallback} />
                     :
                     <MetadataProviderWizard onSave={save} loading={loading} block={setBlocking} onRestart={onCallback} />
                 }

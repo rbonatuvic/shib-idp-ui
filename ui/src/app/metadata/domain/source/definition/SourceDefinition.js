@@ -2,18 +2,11 @@ import defaults from 'lodash/defaults';
 import merge from 'lodash/merge';
 import toNumber  from 'lodash/toNumber';
 import defaultsDeep from 'lodash/defaultsDeep';
-import API_BASE_PATH from '../../../../App.constant';
 import {removeNull} from '../../../../core/utility/remove_null';
 import { detailedDiff } from 'deep-object-diff';
 import isNil from 'lodash/isNil';
-import { useMetadataSchemaContext } from '../../../hoc/MetadataSchema';
 
 export const SourceBase = {
-    label: 'Metadata Source',
-    type: '@MetadataProvider',
-    steps: [],
-    schema: `${API_BASE_PATH}/ui/MetadataSources`,
-    // schema: `/assets/schema/source/metadata-source.json`,
 
     parser: (data) => removeNull(data, true),
 
@@ -91,14 +84,6 @@ export const SourceBase = {
             }
         }
 
-        if (formData?.securityInfo?.x509Certificates) {
-            if (formData.securityInfo.x509Certificates?.length > 0) {
-                d.securityInfo.x509CertificateAvailable = true;
-            } else {
-                d.securityInfo.x509CertificateAvailable = false;
-            }
-        }
-
         return d;
     },
 
@@ -109,6 +94,7 @@ export const SourceBase = {
                 {
                     size: 6,
                     fields: [
+                        'protocol',
                         'serviceProviderName',
                         'entityId',
                         'organization'
@@ -127,7 +113,7 @@ export const SourceBase = {
                     ],
                 },
                 {
-                    size: 6,
+                    size: 12,
                     fields: [
                         'serviceProviderSsoDescriptor'
                     ],
@@ -230,13 +216,10 @@ export const SourceBase = {
                         fields: [
                             'authenticationRequestsSigned',
                             'wantAssertionsSigned',
-                            'x509Certificates'
+                            'keyDescriptors'
                         ],
                     }
                 ]
-            },
-            x509CertificateAvailable: {
-                'ui:widget': 'hidden'
             },
             authenticationRequestsSigned: {
                 'ui:widget': 'radio',
@@ -250,11 +233,12 @@ export const SourceBase = {
                     inline: true
                 }
             },
-            x509Certificates: {
+            keyDescriptors: {
                 type: 'certificate',
                 "ui:options": {
                     orderable: false
                 },
+                'ui:order': ['name', 'elementType', 'type', 'value'],
                 items: {
                     type: {
                         'ui:widget': 'radio',
@@ -306,13 +290,18 @@ export const SourceBase = {
 
 export const SourceEditor = {
     ...SourceBase,
-    uiSchema: defaultsDeep({}, SourceBase.uiSchema),
+    uiSchema: defaultsDeep({
+        protocol: {
+            'ui:readonly': true
+        }
+    }, SourceBase.uiSchema),
     steps: [
         {
             index: 1,
-            id: 'common',
+            id: 'org-info',
             label: 'label.sp-org-info',
             fields: [
+                'protocol',
                 'serviceProviderName',
                 'entityId',
                 'organization',
@@ -388,13 +377,6 @@ export const SourceWizard = {
                     size: 6,
                     classNames: 'bg-light border rounded px-4 pt-4 pb-3',
                     fields: [
-                        'serviceProviderName',
-                        'entityId'
-                    ]
-                },
-                {
-                    size: 6,
-                    fields: [
                         'organization',
                     ],
                 },
@@ -459,6 +441,7 @@ export const SourceWizard = {
             id: 'common',
             label: 'label.name-and-entity-id',
             fields: [
+                'protocol',
                 'serviceProviderName',
                 'entityId'
             ]
@@ -537,33 +520,3 @@ export const SourceWizard = {
     ]
 }
 
-export const sections = [
-    { i18nKey: 'organizationInformation', property: 'organization' },
-    { i18nKey: 'contacts', property: 'contacts' },
-    { i18nKey: 'uiMduiInfo', property: 'mdui' },
-    { i18nKey: 'spSsoDescriptorInfo', property: 'serviceProviderSsoDescriptor' },
-    { i18nKey: 'logoutEndpoints', property: 'logoutEndpoints' },
-    { i18nKey: 'securityDescriptorInfo', property: 'securityInfo' },
-    { i18nKey: 'assertionConsumerServices', property: 'assertionConsumerServices' },
-    { i18nKey: 'relyingPartyOverrides', property: 'relyingPartyOverrides' },
-    { i18nKey: 'attributeRelease', property: 'attributeRelease' }
-];
-
-export function useMetadataSourceSections() {
-    const schema = useMetadataSchemaContext();
-
-    const keys = Object.keys(schema.properties);
-    const properties = sections.map((s) => s.property);
-    
-    const reduced = keys.reduce(
-        (collection, key) => {
-            if (properties.indexOf(key) > -1) {
-                collection.push(sections.find(s => s.property === key));
-            }
-            return collection;
-        },
-        []
-    );
-
-    return reduced;
-}
