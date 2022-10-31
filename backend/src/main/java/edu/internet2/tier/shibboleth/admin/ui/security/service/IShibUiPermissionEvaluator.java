@@ -15,8 +15,8 @@ public interface IShibUiPermissionEvaluator extends PermissionEvaluator {
      * @param authentication
      * @return
      */
-    Map<IPersistentEntityTupple, Object> getPersistentEntities(Authentication authentication);
+    Map<IPersistentEntityTuple, Object> getPersistentEntities(Authentication authentication);
 
-    Map<IPersistentEntityTupple, Object> getPersistentEntities(Authentication authentication, Class clazz);
-    
+    Map<IPersistentEntityTuple, Object> getPersistentEntities(Authentication authentication, Class clazz);
+
 }

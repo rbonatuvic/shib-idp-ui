@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Will be used as a key for PersmissionEvaluator return types
  */
-public interface IPersistentEntityTupple extends Serializable {
+public interface IPersistentEntityTuple extends Serializable {
 
     String getId();
 
