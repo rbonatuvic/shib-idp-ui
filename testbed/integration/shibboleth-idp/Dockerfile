@@ -17,6 +17,7 @@ ARG TOMREWRITE=config/tomcat/rewrite.config
 ADD ${SHBCREDS} /opt/shibboleth-idp/credentials
 RUN /opt/shibboleth-idp/bin/plugin.sh -i https://shibboleth.net/downloads/identity-provider/plugins/oidc-common/2.1.0/oidc-common-dist-2.1.0.tar.gz --noPrompt
 RUN /opt/shibboleth-idp/bin/plugin.sh -i https://shibboleth.net/downloads/identity-provider/plugins/oidc-op/3.2.1/idp-plugin-oidc-op-distribution-3.2.1.tar.gz --noPrompt
+RUN /opt/shibboleth-idp/bin/module.sh -e idp.authn.RemoteUserInternal
 RUN /opt/shibboleth-idp/bin/jwtgen.sh -t RSA -s 2048 -u sig -i defaultRSASign | tail -n +2 > /opt/shibboleth-idp/credentials/idp-signing-rs.jwk
 RUN /opt/shibboleth-idp/bin/jwtgen.sh	-t EC -c P-256 -u sig -i defaultECSign | tail -n +2 > /opt/shibboleth-idp/credentials/idp-signing-es.jwk
 RUN /opt/shibboleth-idp/bin/jwtgen.sh	-t RSA -s 2048 -u enc -i defaultRSAEnc | tail -n +2 > /opt/shibboleth-idp/credentials/idp-encryption-rsa.jwk
@@ -27,7 +28,7 @@ ADD ${TOMCERT} /opt/certs
 ADD ${TOMWWWROOT} /usr/local/tomcat/webapps/ROOT
 ADD ${SHBCFG} /opt/shibboleth-idp/conf
 #ADD ${SHBVIEWS} /opt/shibboleth-idp/views
-#ADD ${SHBEDWAPP} /opt/shibboleth-idp/edit-webapp
+ADD ${SHBEDWAPP} /opt/shibboleth-idp/edit-webapp
 #ADD ${SHBMSGS} /opt/shibboleth-idp/messages
 ADD ${SHBMD} /opt/shibboleth-idp/metadata
 ADD ${OIDCREG} /opt/shibboleth-idp/static
