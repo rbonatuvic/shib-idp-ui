@@ -1,13 +1,17 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
-import com.google.common.collect.Lists;
 import lombok.EqualsAndHashCode;
 import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 
 import javax.annotation.Nullable;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

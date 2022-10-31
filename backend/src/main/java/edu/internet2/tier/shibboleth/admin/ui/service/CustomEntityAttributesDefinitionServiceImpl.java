@@ -1,17 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-
+import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition;
+import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeDefinitionRepository;
+import edu.internet2.tier.shibboleth.admin.ui.service.events.CustomEntityAttributeDefinitionChangeEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition;
-import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeDefinitionRepository;
-import edu.internet2.tier.shibboleth.admin.ui.service.events.CustomEntityAttributeDefinitionChangeEvent;
+import java.util.List;
 
 @Service
 public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntityAttributesDefinitionService {    

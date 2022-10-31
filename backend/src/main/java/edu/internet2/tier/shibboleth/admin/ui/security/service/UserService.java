@@ -15,9 +15,6 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
-import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.ADMIN;
-import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.GROUP;
-import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.NONE;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +27,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.ADMIN;
+import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.GROUP;
+import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.NONE;
 
 @Service
 @NoArgsConstructor

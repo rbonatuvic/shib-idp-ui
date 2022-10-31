@@ -1,7 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -9,13 +12,8 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OrderColumn;
-
-import org.hibernate.envers.Audited;
-
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)

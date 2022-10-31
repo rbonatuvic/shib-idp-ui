@@ -1,5 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 
+import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleDeleteException;
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleExistsConflictException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,11 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
-import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
-import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleDeleteException;
-import edu.internet2.tier.shibboleth.admin.ui.security.exception.RoleExistsConflictException;
 
 @ControllerAdvice(assignableTypes = {RolesController.class})
 public class RolesExceptionHandler extends ResponseEntityExceptionHandler {

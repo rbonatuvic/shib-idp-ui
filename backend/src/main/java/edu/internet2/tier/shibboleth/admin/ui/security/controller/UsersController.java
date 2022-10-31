@@ -1,11 +1,11 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
-import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
-
+import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.OwnershipConflictException;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +25,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
-import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
-import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
-import edu.internet2.tier.shibboleth.admin.ui.security.exception.OwnershipConflictException;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
+import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 
 /**

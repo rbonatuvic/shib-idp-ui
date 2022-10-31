@@ -1,10 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository;
 
-import java.util.List;
-
+import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition;
+import java.util.List;
 
 /**
  * Repository to manage {@link CustomEntityAttributeDefinition} instances.

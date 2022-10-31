@@ -3,16 +3,13 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
-
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnableType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
-import org.hibernate.envers.RelationTargetAuditMode;
 import org.opensaml.core.xml.XMLObject;
 import org.springframework.util.StringUtils;
 
@@ -20,7 +17,6 @@ import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
@@ -88,6 +84,9 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
 
     @EqualsAndHashCode.Exclude
     private Long versionModifiedTimestamp;
+
+    @Setter
+    private EntityDescriptorProtocol protocol = EntityDescriptorProtocol.SAML;
 
     public EntityDescriptor() {
         super();
@@ -174,6 +173,10 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     @Override
     public org.opensaml.saml.saml2.metadata.Organization getOrganization() {
         return organization;
+    }
+
+    public EntityDescriptorProtocol getProtocol() {
+        return protocol == null ? EntityDescriptorProtocol.SAML : protocol;
     }
 
     @Override
@@ -297,7 +300,6 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("entityID", entityID)
-                //  .add("organization", organization)
                 .add("id", id)
                 .toString();
     }
@@ -312,5 +314,28 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
 
     @Override public ActivatableType getActivatableType() {
         return ENTITY_DESCRIPTOR;
+    }
+
+    @JsonIgnore
+    public boolean wantsAssertionsSigned() {
+        SPSSODescriptor spssoDescriptor = getSPSSODescriptor("");
+        return  spssoDescriptor != null && spssoDescriptor.getWantAssertionsSigned() != null && spssoDescriptor.getWantAssertionsSigned();
+    }
+
+    @JsonIgnore
+    public boolean isAuthnRequestsSigned() {
+        SPSSODescriptor spssoDescriptor = getSPSSODescriptor("");
+        return spssoDescriptor != null && spssoDescriptor.isAuthnRequestsSigned() != null && spssoDescriptor.isAuthnRequestsSigned();
+    }
+
+    @JsonIgnore
+    public boolean isOidcProtocol() {
+        return getSPSSODescriptor("") != null && getProtocol() == EntityDescriptorProtocol.OIDC;
+    }
+
+    @JsonIgnore
+    public boolean hasKeyDescriptors() {
+        SPSSODescriptor spssoDescriptor = getSPSSODescriptor("");
+        return spssoDescriptor != null && spssoDescriptor.getKeyDescriptors().size() > 0;
     }
 }

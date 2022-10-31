@@ -2,11 +2,13 @@ package edu.internet2.tier.shibboleth.admin.ui.repository
 
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
+import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.en.EnglishAnalyzer
 import org.opensaml.saml.metadata.resolver.MetadataResolver
@@ -57,13 +59,22 @@ class EntityDescriptorRepositoryTest extends AbstractBaseDataJpaTest {
         noExceptionThrown()
     }
 
+    @WithMockAdmin
     def "SHIBUI-1772"() {
         when:
         def input = openSamlObjects.unmarshalFromXml(this.class.getResource('/metadata/SHIBUI-1772.xml').bytes) as EntityDescriptor
+        input.protocol = null // This mimics an upgrade where older entries wont have a protocol in the db
         entityDescriptorRepository.save(input)
 
         then:
         noExceptionThrown()
+
+        when:
+        List<EntityDescriptorProjection> projections = entityDescriptorRepository.findAllReturnProjections()
+
+        then:
+        projections.size() == 1
+        projections.get(0).getProtocol() == EntityDescriptorProtocol.SAML
     }
 
     def "SHIBUI-1849 - extend data model for ownership"() {

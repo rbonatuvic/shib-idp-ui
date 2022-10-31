@@ -6,9 +6,12 @@ import junit.framework.Assert
 import org.apache.commons.lang.StringUtils
 import org.w3c.dom.Document
 import org.w3c.dom.Node
+import org.xmlunit.assertj.XmlAssert
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import org.xmlunit.builder.Input.Builder
+import org.xmlunit.diff.DefaultNodeMatcher
+import org.xmlunit.diff.ElementSelectors
 
 import javax.xml.transform.Source
 import javax.xml.transform.Transformer
@@ -35,6 +38,11 @@ class TestHelpers {
         }
 
         return count
+    }
+
+    static void generatedXmlIsTheSameAsExpectedXml(String expectedXmlResource, String generatedXml) {
+        XmlAssert.assertThat(generatedXml).and(expectedXmlResource).ignoreWhitespace().normalizeWhitespace()
+                 .withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byNameAndText)).areSimilar();
     }
 
     static void generatedXmlIsTheSameAsExpectedXml(String expectedXmlResource, Document generatedXml) {

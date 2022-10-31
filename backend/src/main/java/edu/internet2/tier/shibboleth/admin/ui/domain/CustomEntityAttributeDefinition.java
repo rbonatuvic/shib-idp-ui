@@ -1,8 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -11,13 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Transient;
-
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.envers.Audited;
-
-import lombok.Data;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity(name = "custom_entity_attribute_definition")
 @Audited
@@ -65,7 +62,9 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     @Id
     @Column(name = "resource_id", nullable = false)
     String resourceId = UUID.randomUUID().toString();
-        
+
+    String protocol = "saml";
+
     @Override
     public Set<String> getDefaultValues() {
         return customAttrListDefinitions;
@@ -92,7 +91,12 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
             return "string";            
         }
     }
-    
+
+    @Override
+    public String getProtocol() {
+        return protocol == null ? "saml, oidc" : protocol;
+    }
+
     @Override
     public void setDefaultValues(Set<String> defaultValues) {
         // This is here to comply with the interface only and should not be used to change the set of values in this implementation

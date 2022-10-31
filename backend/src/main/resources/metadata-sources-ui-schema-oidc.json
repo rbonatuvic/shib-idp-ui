@@ -1,0 +1,610 @@
+{
+  "type": "object",
+  "required": [
+    "serviceProviderName",
+    "entityId"
+  ],
+  "properties": {
+    "protocol": {
+      "title": "label.source-protocol",
+      "description": "tooltip.source-protocol",
+      "type": "string",
+      "default": "oidc"
+    },
+    "serviceProviderName": {
+      "title": "label.service-provider-name",
+      "description": "tooltip.service-provider-name",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "entityId": {
+      "title": "label.entity-id",
+      "description": "tooltip.entity-id",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "serviceEnabled": {
+      "title": "label.enable-this-service",
+      "description": "tooltip.enable-this-service-upon-saving",
+      "type": "boolean"
+    },
+    "organization": {
+      "$ref": "#/definitions/Organization"
+    },
+    "contacts": {
+      "title": "label.contact-information",
+      "description": "tooltip.contact-information",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Contact"
+      }
+    },
+    "mdui": {
+      "$ref": "#/definitions/MDUI"
+    },
+    "securityInfo": {
+      "type": "object",
+      "widget": {
+        "id": "fieldset"
+      },
+      "dependencies": {
+        "authenticationRequestsSigned": {
+          "oneOf": [
+            {
+              "properties": {
+                "authenticationRequestsSigned": {
+                  "enum": [true]
+                },
+                "x509Certificates": {
+                  "minItems": 1
+                }
+              }
+            },
+            {
+              "properties": {
+                "authenticationRequestsSigned": {
+                  "enum": [false]
+                },
+                "x509Certificates": {
+                  "minItems": 0
+                }
+              }
+            }
+          ]
+        }
+      },
+      "properties": {
+        "x509CertificateAvailable": {
+          "type": "boolean"
+        },
+        "authenticationRequestsSigned": {
+          "title": "label.authentication-requests-signed",
+          "description": "tooltip.authentication-requests-signed",
+          "type": "boolean",
+          "enumNames": ["value.true", "value.false"]
+        },
+        "wantAssertionsSigned": {
+          "title": "label.want-assertions-signed",
+          "description": "tooltip.want-assertions-signed",
+          "type": "boolean",
+          "enumNames": ["value.true", "value.false"]
+        },
+        "keyDescriptors": {
+          "title": "label.key-descriptors",
+          "description": "tooltip.key-descriptors",
+          "type": "array",
+          "items": { "$ref": "#/definitions/Certificate" }
+        }
+      }
+    },
+    "assertionConsumerServices": {
+      "title": "label.assertion-consumer-service-endpoints",
+      "description": "tooltip.assertion-consumer-service-endpoints",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/AssertionConsumerService"
+      }
+    },
+    "serviceProviderSsoDescriptor": {
+      "type": "object",
+      "properties": {
+        "protocolSupportEnum": {
+          "title": "label.protocol-support-enumeration",
+          "description": "tooltip.protocol-support-enumeration",
+          "type": "string",
+          "widget": {
+            "id": "select"
+          },
+          "default": "http://openid.net/specs/openid-connect-core-1_0.html"
+        },
+        "nameIdFormats": {
+          "$ref": "#/definitions/nameIdFormats"
+        },
+        "extensions": {
+          "type": "object",
+          "properties": {
+            "OAuthRPExtensions": {
+              "title": "label.oauth-rp-extensions",
+              "type": "object",
+              "properties": {
+                "postLogoutRedirectUris": {
+                  "title": "label.post-logout-redirect-uris",
+                  "description": "tooltip.post-logout-redirect-uris",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "defaultAcrValues": {
+                  "title": "label.default-acr-values",
+                  "description": "tooltip.default-acr-values",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "requestUris": {
+                  "title": "label.request-uris",
+                  "description": "tooltip.request-uris",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "audiences": {
+                  "title": "label.audience",
+                  "description": "tooltip.audience",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "attributes": {
+                  "type": "object",
+                  "properties": {
+                    "clientUri": {
+                      "title": "label.client-uri",
+                      "description": "tooltip.client-uri",
+                      "type": "string"
+                    },
+                    "responseTypes": {
+                      "title": "label.responseTypes",
+                      "description": "tooltip.response-types",
+                      "type": "string"
+                    },
+                    "sectorIdentifierUri": {
+                      "title": "label.sector-identifier-uri",
+                      "description": "tooltip.sector-identifier-uri",
+                      "type": "string"
+                    },
+                    "idTokenEncryptedResponseAlg": {
+                      "title": "label.id-token-encrypted-response-alg",
+                      "description": "tooltip.id-token-encrypted-response-alg",
+                      "type": "string"
+                    },
+                    "applicationType": {
+                      "title": "label.application-type",
+                      "description": "tooltip.application-type",
+                      "type": "string"
+                    },
+                    "tokenEndpointAuthSigningAlg": {
+                      "title": "label.token-endpoint-auth-signing-alg",
+                      "description": "tooltip.token-endpoint-auth-signing-alg",
+                      "type": "string"
+                    },
+                    "idTokenEncryptedResponseEnc": {
+                      "title": "label.id-token-encrypted-response-enc",
+                      "description": "tooltip.id-token-encrypted-response-enc",
+                      "type": "string"
+                    },
+                    "requireAuthTime": {
+                      "title": "label.require-auth-time",
+                      "description": "tooltip.require-auth-time",
+                      "type": "boolean"
+                    },
+                    "userInfoEncryptedResponseEnc": {
+                      "title": "label.user-info-encrypted-response-enc",
+                      "description": "tooltip.user-info-encrypted-response-enc",
+                      "type": "string"
+                    },
+                    "userInfoSignedResponseAlg": {
+                      "title": "label.user-info-signed-response-alg",
+                      "description": "tooltip.user-info-signed-response-alg",
+                      "type": "string"
+                    },
+                    "userInfoEncryptedResponseAlg": {
+                      "title": "label.user-info-encrypted-response-alg",
+                      "description": "tooltip.user-info-encrypted-response-alg",
+                      "type": "string"
+                    },
+                    "grantTypes": {
+                      "title": "label.grant-types",
+                      "description": "tooltip.grant-types",
+                      "type": "string"
+                    },
+                    "softwareId": {
+                      "title": "label.software-id",
+                      "description": "tooltip.software-id",
+                      "type": "string"
+                    },
+                    "requestObjectEncryptionEnc": {
+                      "title": "label.request-object-encryption-enc",
+                      "description": "tooltip.request-object-encryption-enc",
+                      "type": "string"
+                    },
+                    "initiateLoginUri": {
+                      "title": "label.initiate-login-uri",
+                      "description": "tooltip.initiate-login-uri",
+                      "type": "string"
+                    },
+                    "requestObjectEncryptionAlg": {
+                      "title": "label.request-object-encryption-alg",
+                      "description": "tooltip.request-object-encryption-alg",
+                      "type": "string"
+                    },
+                    "tokenEndpointAuthMethod": {
+                      "title": "label.token-endpoint-auth-method",
+                      "description": "tooltip.token-endpoint-auth-method",
+                      "type": "string"
+                    },
+                    "requestObjectSigningAlg": {
+                      "title": "label.request-object-signing-alg",
+                      "description": "tooltip.request-object-signing-alg",
+                      "type": "string"
+                    },
+                    "scopes": {
+                      "title": "label.scopes",
+                      "description": "tooltip.scopes",
+                      "type": "string"
+                    },
+                    "idTokenSignedResponseAlg": {
+                      "title": "label.id-token-signed-response-alg",
+                      "description": "tooltip.id-token-signed-response-alg",
+                      "type": "string"
+                    },
+                    "softwareVersion": {
+                      "title": "label.software-version",
+                      "description": "tooltip.software-version",
+                      "type": "string"
+                    },
+                    "defaultMaxAge": {
+                      "title": "label.default-max-age",
+                      "description": "tooltip.default-max-age",
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "logoutEndpoints": {
+      "title": "label.logout-endpoints",
+      "description": "tooltip.logout-endpoints",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/LogoutEndpoint"
+      }
+    },
+    "relyingPartyOverrides": {
+      "type": "object",
+      "properties": {}
+    },
+    "attributeRelease": {
+      "type": "array",
+      "title": "label.attribute-release",
+      "description": "Attribute release table - select the attributes you want to release (default unchecked)",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "definitions": {
+    "Contact": {
+      "type": "object",
+      "required": ["name", "type", "emailAddress"],
+      "properties": {
+        "name": {
+          "title": "label.contact-name",
+          "description": "tooltip.contact-name",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "type": {
+          "title": "label.contact-type",
+          "description": "tooltip.contact-type",
+          "type": "string",
+          "widget": "select",
+          "minLength": 1,
+          "oneOf": [
+            {
+              "enum": ["support"],
+              "description": "value.support"
+            },
+            {
+              "enum": ["technical"],
+              "description": "value.technical"
+            },
+            {
+              "enum": ["administrative"],
+              "description": "value.administrative"
+            },
+            {
+              "enum": ["other"],
+              "description": "value.other"
+            }
+          ]
+        },
+        "emailAddress": {
+          "title": "label.contact-email-address",
+          "description": "tooltip.contact-email",
+          "type": "string",
+          "pattern": "^(mailto:)?(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$",
+          "minLength": 1,
+          "maxLength": 255
+        }
+      }
+    },
+    "Certificate": {
+      "type": "object",
+      "required": ["type", "value", "elementType"],
+      "properties": {
+        "name": {
+          "title": "label.certificate-name-display-only",
+          "description": "tooltip.certificate-name",
+          "type": "string",
+          "maxLength": 255
+        },
+        "elementType": {
+          "title": "label.element-type",
+          "description": "tooltip.element-type",
+          "type": "string",
+          "enum": [
+            "X509Data",
+            "jwksUri",
+            "jwksData"
+          ]
+        },
+        "type": {
+          "title": "label.certificate-type",
+          "type": "string",
+          "widget": { "id": "radio", "class": "form-check-inline" },
+          "oneOf": [
+            { "enum": ["signing"], "description": "value.signing" },
+            {
+              "enum": ["encryption"],
+              "description": "value.encryption"
+            },
+            { "enum": ["both"], "description": "value.both" }
+          ]
+        },
+        "value": {
+          "title": "label.certificate-value",
+          "description": "tooltip.certificate-value",
+          "type": "string",
+          "widget": "textarea",
+          "minLength": 1
+        }
+      }
+    },
+    "AssertionConsumerService": {
+      "type": "object",
+      "required": ["locationUrl", "binding"],
+      "properties": {
+        "locationUrl": {
+          "title": "label.assertion-consumer-service-location",
+          "description": "tooltip.assertion-consumer-service-location",
+          "type": "string",
+          "widget": {
+            "id": "string",
+            "help": "message.valid-url"
+          },
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "binding": {
+          "title": "label.assertion-consumer-service-location-binding",
+          "description": "tooltip.assertion-consumer-service-location-binding",
+          "type": "string",
+          "widget": "select",
+          "oneOf": [
+            {
+              "enum": ["urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"],
+              "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+            },
+            {
+              "enum": [
+                "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign"
+              ],
+              "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign"
+            },
+            {
+              "enum": ["urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"],
+              "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
+            },
+            {
+              "enum": ["urn:oasis:names:tc:SAML:2.0:bindings:PAOS"],
+              "description": "urn:oasis:names:tc:SAML:2.0:bindings:PAOS"
+            },
+            {
+              "enum": ["urn:oasis:names:tc:SAML:1.0:profiles:browser-post"],
+              "description": "urn:oasis:names:tc:SAML:1.0:profiles:browser-post"
+            },
+            {
+              "enum": ["urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"],
+              "description": "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"
+            },
+            {
+              "enum": ["https://tools.ietf.org/html/rfc6749#section-3.1.2"],
+              "description": "OIDC / OAUTH Binding"
+            }
+          ]
+        },
+        "makeDefault": {
+          "title": "label.mark-as-default",
+          "description": "tooltip.mark-as-default",
+          "type": "boolean"
+        }
+      }
+    },
+    "LogoutEndpoint": {
+      "description": "tooltip.new-endpoint",
+      "type": "object",
+      "fieldsets": [
+        {
+          "fields": ["url", "bindingType"]
+        }
+      ],
+      "required": ["url", "bindingType"],
+      "properties": {
+        "url": {
+          "title": "label.url",
+          "description": "tooltip.url",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "bindingType": {
+          "title": "label.binding-type",
+          "description": "tooltip.binding-type",
+          "type": "string",
+          "widget": "select",
+          "oneOf": [
+            {
+              "enum": ["urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"],
+              "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+            },
+            {
+              "enum": ["urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"],
+              "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+            },
+            {
+              "enum": ["urn:oasis:names:tc:SAML:2.0:bindings:SOAP"],
+              "description": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+            },
+            {
+              "enum": ["urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"],
+              "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
+            }
+          ]
+        }
+      }
+    },
+    "MDUI": {
+      "type": "object",
+      "widget": {
+        "id": "fieldset"
+      },
+      "fieldsets": [
+        {
+          "type": "group",
+          "fields": ["displayName", "informationUrl", "description"]
+        },
+        {
+          "type": "group",
+          "fields": [
+            "privacyStatementUrl",
+            "logoUrl",
+            "logoWidth",
+            "logoHeight"
+          ]
+        }
+      ],
+      "properties": {
+        "displayName": {
+          "title": "label.display-name",
+          "description": "tooltip.mdui-display-name",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "informationUrl": {
+          "title": "label.information-url",
+          "description": "tooltip.mdui-information-url",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "privacyStatementUrl": {
+          "title": "label.privacy-statement-url",
+          "description": "tooltip.mdui-privacy-statement-url",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "description": {
+          "title": "label.description",
+          "description": "tooltip.mdui-description",
+          "type": "string",
+          "widget": {
+            "id": "textarea"
+          },
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "logoUrl": {
+          "title": "label.logo-url",
+          "description": "tooltip.mdui-logo-url",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "logoHeight": {
+          "title": "label.logo-height",
+          "description": "tooltip.mdui-logo-height",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "logoWidth": {
+          "title": "label.logo-width",
+          "description": "tooltip.mdui-logo-width",
+          "minimum": 0,
+          "type": "integer"
+        }
+      }
+    },
+    "Organization": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "label.organization-name",
+          "description": "tooltip.organization-name",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "displayName": {
+          "title": "label.organization-display-name",
+          "description": "tooltip.organization-display-name",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "url": {
+          "title": "label.organization-url",
+          "description": "tooltip.organization-url",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        }
+      },
+      "dependencies": {
+        "name": {
+          "required": ["displayName", "url"]
+        },
+        "displayName": {
+          "required": ["name", "url"]
+        },
+        "url": {
+          "required": ["name", "displayName"]
+        }
+      }
+    }
+  }
+}

@@ -20,7 +20,6 @@ import java.time.Duration;
 import java.time.Instant;
 
 import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toPositiveNonZeroDuration;
-import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toTimeDuration;
 import static edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers.placeholderResolverService;
 
 /**

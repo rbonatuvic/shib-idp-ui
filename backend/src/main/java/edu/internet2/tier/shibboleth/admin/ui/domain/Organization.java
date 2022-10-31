@@ -5,7 +5,12 @@ import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.XMLObject;
 
 import javax.annotation.Nullable;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,5 +88,3 @@ public class Organization extends AbstractAttributeExtensibleXMLObject implement
         return children;
     }
 }
-
-

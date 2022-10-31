@@ -301,11 +301,11 @@
       "id": "1a61840b-2ac7-4335-be8c-b1152de04316",
       "comment": "",
       "command": "assertText",
-      "target": "css=.border-0 > .m-0",
+      "target": "css=.text-danger > .text-danger",
       "targets": [
-        ["css=.border-0 > .m-0", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/div/form/div/div/div/div/div/div[2]/div/div/ul/li/small", "xpath:idRelative"],
-        ["xpath=//small", "xpath:position"],
+        ["css=.text-danger > .text-danger", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div[3]/small", "xpath:idRelative"],
+        ["xpath=//div[3]/small", "xpath:position"],
         ["xpath=//small[contains(.,'Pattern must match group url validation pattern: foo.*')]", "xpath:innerText"]
       ],
       "value": "Pattern must match group url validation pattern: foo.*"
@@ -578,11 +578,11 @@
       "id": "93b99f62-f09e-4ac3-a69f-d3fc5d8576d7",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(2) > div:nth-child(2) > .d-flex > .text-truncate",
+      "target": "css=div:nth-child(2) > div:nth-child(3) > .d-flex > .text-truncate",
       "targets": [
-        ["css=div:nth-child(2) > div:nth-child(2) > .d-flex > .text-truncate", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[2]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(2) > div:nth-child(3) > .d-flex > .text-truncate", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[3]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'foobar')]", "xpath:innerText"]
       ],
       "value": "foobar"
@@ -597,21 +597,21 @@
         ["xpath=//section[6]/div/div[2]/div[2]/div/div[2]/div/span", "xpath:position"]
       ],
       "value": "foobar"
-    },{
-            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
-            "comment": "",
-            "command": "open",
-            "target": "/api/heheheheheheheWipeout",
-            "targets": [],
-            "value": ""
-          }, {
-            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
-            "comment": "",
-            "command": "assertText",
-            "target": "css=body",
-            "targets": [],
-            "value": "yes, you did it"
-          }]
+    }, {
+      "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }]
   }],
   "suites": [{
     "id": "c1770d48-99b6-4866-af1c-d4e485b851ab",

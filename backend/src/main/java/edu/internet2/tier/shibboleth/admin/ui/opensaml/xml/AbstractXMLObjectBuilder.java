@@ -17,17 +17,16 @@
 
 package edu.internet2.tier.shibboleth.admin.ui.opensaml.xml;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.xml.namespace.QName;
-
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractXMLObject;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.w3c.dom.Element;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.xml.namespace.QName;
 
 /**
  * Base implementation for XMLObject builders.
