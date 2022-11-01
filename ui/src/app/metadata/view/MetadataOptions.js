@@ -15,9 +15,7 @@ import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/Metadat
 import { useMetadataConfiguration } from '../hooks/configuration';
 import { MetadataViewToggle } from '../component/MetadataViewToggle';
 import { MetadataActions } from '../../admin/container/MetadataActions';
-import { MetadataFilters } from '../domain/filter/component/MetadataFilters';
 import { MetadataFilterConfigurationList } from '../domain/filter/component/MetadataFilterConfigurationList';
-import { MetadataFilterTypes } from '../domain/filter';
 import { useMetadataSchema } from '../hooks/schema';
 import { FilterableProviders } from '../domain/provider';
 import { useCanEnable, useIsAdmin } from '../../core/user/UserContext';
@@ -120,13 +118,7 @@ export function MetadataOptions ({reload}) {
                                 </Link>
                             </div>
                         </div>
-                        <MetadataFilters providerId={metadata.resourceId} types={MetadataFilterTypes}>
-                            {(filters, onUpdate, onDelete, loading) =>
-                                <MetadataFilterConfigurationList
-                                    provider={metadata}
-                                    filters={filters}
-                                    onDelete={onDelete} />}
-                        </MetadataFilters>
+                        <MetadataFilterConfigurationList provider={metadata} />
                     </div>
                 }
                 <Button variant="link" onClick={ () => onScrollTo('header', -60) }>

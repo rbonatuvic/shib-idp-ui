@@ -83,6 +83,10 @@ export function Ordered({ path = '/MetadataResolversPositionOrder', entities, ch
 
     React.useEffect(() => orderEntities(order, entities), [order, entities]);
 
+    React.useEffect(() => {
+        loadOrder();
+    }, [entities]);
+
     return (
         <>
             {children(ordered, firstId, lastId, onOrderUp, onOrderDown)}
