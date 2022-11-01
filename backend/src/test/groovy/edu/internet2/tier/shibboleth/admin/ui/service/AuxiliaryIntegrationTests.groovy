@@ -3,7 +3,6 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.JsonSchemaComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects

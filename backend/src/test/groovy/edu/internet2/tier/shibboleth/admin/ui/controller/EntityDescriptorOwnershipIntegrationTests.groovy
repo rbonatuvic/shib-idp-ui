@@ -1,13 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
@@ -15,36 +9,17 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorReposit
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
-import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Primary
-import org.springframework.context.annotation.Profile
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.RestTemplate
-import spock.lang.Specification
 import spock.lang.Stepwise
 import spock.lang.Subject
-
-import javax.persistence.EntityManager
 
 import static org.springframework.http.MediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post

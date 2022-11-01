@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator

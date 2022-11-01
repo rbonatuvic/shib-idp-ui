@@ -1,38 +1,7 @@
 package jp.vmi.selenium.selenese;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Deque;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.output.NullOutputStream;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.FastDateFormat;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.HasCapabilities;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.remote.Augmenter;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.assertthat.selenium_shutterbug.core.Shutterbug;
 import com.assertthat.selenium_shutterbug.utils.web.ScrollStrategy;
-
 import jp.vmi.html.result.HtmlResult;
 import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.JUnitResult;
@@ -55,9 +24,38 @@ import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 import jp.vmi.selenium.selenese.utils.MouseUtils;
 import jp.vmi.selenium.selenese.utils.PathUtils;
 import jp.vmi.selenium.webdriver.WebDriverPreparator;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.output.NullOutputStream;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.HasCapabilities;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.remote.Augmenter;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import static jp.vmi.selenium.selenese.result.Unexecuted.*;
-import static org.openqa.selenium.remote.CapabilityType.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Deque;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import static jp.vmi.selenium.selenese.result.Unexecuted.UNEXECUTED;
+import static org.openqa.selenium.remote.CapabilityType.TAKES_SCREENSHOT;
 
 /**
  * Provide Java API to run Selenese script.

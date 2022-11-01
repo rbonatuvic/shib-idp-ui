@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.util
 
-
 import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
 import edu.internet2.tier.shibboleth.admin.ui.domain.Description
 import edu.internet2.tier.shibboleth.admin.ui.domain.DisplayName
@@ -9,7 +8,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.Extensions
 import edu.internet2.tier.shibboleth.admin.ui.domain.GivenName
 import edu.internet2.tier.shibboleth.admin.ui.domain.InformationURL
-import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.Logo
 import edu.internet2.tier.shibboleth.admin.ui.domain.NameIDFormat
 import edu.internet2.tier.shibboleth.admin.ui.domain.PrivacyStatementURL
