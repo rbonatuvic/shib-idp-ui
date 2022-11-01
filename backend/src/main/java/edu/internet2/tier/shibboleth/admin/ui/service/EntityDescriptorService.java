@@ -65,7 +65,7 @@ public interface EntityDescriptorService {
      * "admin"
      * @throws ForbiddenException - If user is not an ADMIN
      */
-    Iterable<EntityDescriptorProjection> getAllDisabledAndNotOwnedByAdmin() throws ForbiddenException;
+    Iterable<EntityDescriptorProjection> getDisabledMetadataSources() throws ForbiddenException;
 
     /**
      * @return a list of EntityDescriptorProjections that a user has the rights to access
@@ -125,5 +125,5 @@ public interface EntityDescriptorService {
 
     EntityDescriptorRepresentation changeApproveStatusOfEntityDescriptor(String resourceId, boolean status) throws PersistentEntityNotFound, ForbiddenException;
 
-    List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsNeedingApprovalBasedOnUserAccess();
+    List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsNeedingApprovalBasedOnUserAccess() throws ForbiddenException;
 }

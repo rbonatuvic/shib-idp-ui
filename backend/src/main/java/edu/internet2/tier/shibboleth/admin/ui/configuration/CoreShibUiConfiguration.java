@@ -10,6 +10,8 @@ import edu.internet2.tier.shibboleth.admin.ui.scheduled.ExternalMetadataProvider
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.MetadataProvidersScheduledTasks;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener;
+import edu.internet2.tier.shibboleth.admin.ui.security.permission.IShibUiPermissionEvaluator;
+import edu.internet2.tier.shibboleth.admin.ui.security.permission.ShibUiPermissionDelegate;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
@@ -229,5 +231,11 @@ public class CoreShibUiConfiguration {
         UserUpdatedEntityListener listener = new UserUpdatedEntityListener();
         listener.init(repo, groupRepo);
         return listener;
+    }
+
+    @Bean
+    public IShibUiPermissionEvaluator shibUiPermissionEvaluator(EntityDescriptorRepository entityDescriptorRepository, UserService userService) {
+        // TODO: @jj define type to return for Grouper integration
+        return new ShibUiPermissionDelegate(entityDescriptorRepository, userService);
     }
 }

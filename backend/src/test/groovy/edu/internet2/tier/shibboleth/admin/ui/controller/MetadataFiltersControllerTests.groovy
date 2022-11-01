@@ -96,7 +96,7 @@ class MetadataFiltersControllerTests extends AbstractBaseDataJpaTest {
                     }
 
                     @Override
-                    MetadataResolver updateMetadataResolverEnabledStatus(MetadataResolver existingResolver) throws ForbiddenException, MetadataFileNotFoundException, InitializationException {
+                    MetadataResolver updateMetadataResolverEnabledStatus(String id, boolean status) throws ForbiddenException, MetadataFileNotFoundException, InitializationException {
                         // This won't get called
                         return null
                     }
