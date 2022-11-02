@@ -231,7 +231,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
         EntityDescriptor ed = (EntityDescriptor) createDescriptorFromRepresentation(edRep);
         ed.setIdOfOwner(userService.getCurrentUserGroup().getOwnerId());
-        if (userService.currentUserIsAdmin()) {
+        if (userService.currentUserIsAdmin() || userService.getCurrentUserGroup().getApproversList().isEmpty()) {
             ed.setApproved(true);
         }
 
@@ -250,7 +250,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (ed.getProtocol() == EntityDescriptorProtocol.OIDC) {
             ed.getSPSSODescriptor("").addSupportedProtocol("http://openid.net/specs/openid-connect-core-1_0.html");
         }
-        if (userService.currentUserIsAdmin()) {
+        if (userService.currentUserIsAdmin() || userService.getCurrentUserGroup().getApproversList().isEmpty()) {
             ed.setApproved(true);
         }
         EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
