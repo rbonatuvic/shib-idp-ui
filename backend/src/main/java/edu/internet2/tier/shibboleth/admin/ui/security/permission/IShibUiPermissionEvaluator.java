@@ -1,6 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.permission;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.Auditable;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+import liquibase.pro.packaged.T;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
@@ -19,4 +21,6 @@ public interface IShibUiPermissionEvaluator extends PermissionEvaluator {
      * @throws ForbiddenException if the user does not have the correct authority required
      */
     Collection getPersistentEntities(Authentication authentication, ShibUiPermissibleType type, PermissionType permissionType) throws ForbiddenException;
+
+    <T extends Auditable> Collection<T> getAuditableEntities(Authentication authentication, Class<T> auditableType, PermissionType permissionType);
 }

@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.repository;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptorProtocol;
 import lombok.Getter;
+import org.hibernate.criterion.Projection;
 
 import java.time.LocalDateTime;
 
