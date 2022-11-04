@@ -30,7 +30,7 @@ public class ShibUiPermissionDelegate implements IShibUiPermissionEvaluator {
         switch (shibUiType) {
         case entityDescriptorProjection:
             switch (permissionType) {
-            case approver:
+            case approve:
                 return getAllEntityDescriptorProjectionsNeedingApprovalBasedOnUserAccess();
             case enable:
                 // This particular list is used for an admin function, so the user must be an ADMIN
@@ -67,7 +67,7 @@ public class ShibUiPermissionDelegate implements IShibUiPermissionEvaluator {
         switch ((PermissionType) permission) {
         case admin: // we don't care about the object - the user is an admin or not
             return userService.currentUserIsAdmin();
-        case approver:
+        case approve:
             if (userService.currentUserIsAdmin()) { return true; }
             return targetDomainObject instanceof IApprovable ? userService.getGroupsCurrentUserCanApprove().contains(((IApprovable)targetDomainObject).getIdOfOwner()) : false;
         case enable:

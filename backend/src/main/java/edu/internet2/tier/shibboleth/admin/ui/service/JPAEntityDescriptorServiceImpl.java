@@ -183,7 +183,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (ed == null) {
             throw new PersistentEntityNotFound("Entity with resourceid[" + resourceId + "] was not found for approval");
         }
-        if (!shibUiService.hasPermission(userService.getCurrentUserAuthentication(), ed, PermissionType.approver)) {
+        if (!shibUiService.hasPermission(userService.getCurrentUserAuthentication(), ed, PermissionType.approve)) {
             throw new ForbiddenException("You do not have the permissions necessary to approve this entity descriptor.");
         }
         if (status) { // approve
@@ -501,7 +501,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
      */
     @Override
     public List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsNeedingApprovalBasedOnUserAccess() throws ForbiddenException {
-        return (List<EntityDescriptorProjection>) shibUiService.getPersistentEntities(userService.getCurrentUserAuthentication(), ShibUiPermissibleType.entityDescriptorProjection, PermissionType.approver);
+        return (List<EntityDescriptorProjection>) shibUiService.getPersistentEntities(userService.getCurrentUserAuthentication(), ShibUiPermissibleType.entityDescriptorProjection, PermissionType.approve);
     }
 
     @Override
