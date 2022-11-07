@@ -231,7 +231,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         validateEntityIdAndACSUrls(edRep);
 
         ed.setIdOfOwner(userService.getCurrentUserGroup().getOwnerId());
-        if (shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), null, PermissionType.admin)) {
+        if (shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), null, PermissionType.admin) ||
+             userService.getCurrentUserGroup().getApproversList().isEmpty()) {
             ed.setApproved(true);
         }
 
@@ -250,7 +251,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (ed.getProtocol() == EntityDescriptorProtocol.OIDC) {
             ed.getSPSSODescriptor("").addSupportedProtocol("http://openid.net/specs/openid-connect-core-1_0.html");
         }
-        if (shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), null, PermissionType.admin)) {
+        if (shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), null, PermissionType.admin) ||
+            userService.getCurrentUserGroup().getApproversList().isEmpty()) {
             ed.setApproved(true);
         }
         EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
@@ -669,8 +671,14 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     public EntityDescriptorRepresentation updateGroupForEntityDescriptor(String resourceId, String groupId) {
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
         ed.setIdOfOwner(groupId);
+        Group group = groupService.find(groupId);
         ownershipRepository.deleteEntriesForOwnedObject(ed);
-        ownershipRepository.save(new Ownership(groupService.find(groupId), ed));
+        ownershipRepository.save(new Ownership(group, ed));
+        // check and see if we need to update the approved status
+        if (!ed.isServiceEnabled()) {
+            int numApprovers = group.getApproversList().size();
+            ed.setApproved(!(numApprovers > 0 && ed.approvedCount() < numApprovers));
+        }
         EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
         return createRepresentationFromDescriptor(savedEntity);
     }

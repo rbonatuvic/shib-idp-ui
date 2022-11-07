@@ -16,7 +16,7 @@ export const getActuatorPath = () => {
 
 export const BASE_PATH = getBasePath();
 export const API_BASE_PATH = `${BASE_PATH}api`;
-export const ACTUATOR_PATH = getActuatorPath();
+export const ACTUATOR_PATH = getBasePath();
 
 export const FILTER_PLUGIN_TYPES = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
 

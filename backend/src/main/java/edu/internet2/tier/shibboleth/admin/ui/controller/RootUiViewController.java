@@ -1,6 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.info.InfoEndpoint;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +18,13 @@ import java.util.stream.Collectors;
 
 @Controller
 public class RootUiViewController {
+
+    @Autowired InfoEndpoint infoEndpoint;
+
+    @GetMapping(value = "/info")
+    public ResponseEntity<?> getInfo() {
+        return ResponseEntity.ok(infoEndpoint.info());
+    }
 
     @RequestMapping("/")
     public String index() {
