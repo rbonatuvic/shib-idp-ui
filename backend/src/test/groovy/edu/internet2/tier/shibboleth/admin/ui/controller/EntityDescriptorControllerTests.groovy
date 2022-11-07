@@ -131,6 +131,25 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
         entityDescriptorRepository.findAll().size() == 0
     }
 
+    @WithMockUser(value = "someUser", roles = ["USER"])
+    def 'DELETE as non-admin'() {
+        given:
+        def entityDescriptor = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: false)
+        entityDescriptorRepository.save(entityDescriptor)
+
+        when: 'pre-check'
+        entityManager.flush()
+
+        then:
+        entityDescriptorRepository.findAll().size() == 1
+        try {
+            result = mockMvc.perform(delete("/api/EntityDescriptor/uuid-1"))
+        }
+        catch (Exception e) {
+            e instanceof ForbiddenException
+        }
+    }
+
     @WithMockAdmin
     def 'GET /EntityDescriptors with empty repository as admin'() {
         given:
