@@ -56,37 +56,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean currentUserCanApprove(List<Group> approverGroups) {
-        if (currentUserIsAdmin()) {
-            return true;
-        }
-        Group currentUserGroup = getCurrentUserGroup();
-        return approverGroups.contains(currentUserGroup);
-    }
-
-    public boolean currentUserCanEnable(IActivatable activatableObject) {
-        if (currentUserIsAdmin()) { return true; }
-        switch (activatableObject.getActivatableType()) {
-        case ENTITY_DESCRIPTOR: {
-            return currentUserHasExpectedRole(Arrays.asList("ROLE_ENABLE" )) && getCurrentUserGroup().getOwnerId().equals(((EntityDescriptor) activatableObject).getIdOfOwner());
-        }
-        // Currently filters and providers dont have ownership, so we just look for the right role
-        case FILTER:
-        case METADATA_RESOLVER:
-            return currentUserHasExpectedRole(Arrays.asList("ROLE_ENABLE" ));
-        default:
-            return false;
-        }
-    }
-
     /**
-     * This basic logic assumes users only have a single role (despite users having a list of roles, we assume only 1 currently)
+     * @deprecated don't call this, call the ShibUiPermissionDelegate method hasPermission(...)
      */
-    private boolean currentUserHasExpectedRole(List<String> acceptedRoles) {
-        User user = getCurrentUser();
-        return acceptedRoles.contains(user.getRole());
-    }
-
+    @Deprecated
     public boolean currentUserIsAdmin() {
         User user = getCurrentUser();
         return user != null && user.getRole().equals("ROLE_ADMIN");

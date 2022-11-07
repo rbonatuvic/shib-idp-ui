@@ -85,7 +85,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     private OwnershipRepository ownershipRepository;
 
     @Autowired
-    private IShibUiPermissionEvaluator shibUiService;
+    private IShibUiPermissionEvaluator shibUiAuthorizationDelegate;
 
     @Autowired
     private UserService userService;
@@ -183,7 +183,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (ed == null) {
             throw new PersistentEntityNotFound("Entity with resourceid[" + resourceId + "] was not found for approval");
         }
-        if (!shibUiService.hasPermission(userService.getCurrentUserAuthentication(), ed, PermissionType.approve)) {
+        if (!shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), ed, PermissionType.approve)) {
             throw new ForbiddenException("You do not have the permissions necessary to approve this entity descriptor.");
         }
         if (status) { // approve
@@ -221,7 +221,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         }
 
         EntityDescriptor ed = (EntityDescriptor) createDescriptorFromRepresentation(edRep);
-        if (ed.isServiceEnabled() && !shibUiService.hasPermission(userService.getCurrentUserAuthentication(), ed, PermissionType.enable)) {
+        if (ed.isServiceEnabled() && !shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), ed, PermissionType.enable)) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this entity descriptor.");
         }
 
@@ -231,7 +231,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         validateEntityIdAndACSUrls(edRep);
 
         ed.setIdOfOwner(userService.getCurrentUserGroup().getOwnerId());
-        if (shibUiService.hasPermission(userService.getCurrentUserAuthentication(), null, PermissionType.admin)) {
+        if (shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), null, PermissionType.admin)) {
             ed.setApproved(true);
         }
 
@@ -250,7 +250,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (ed.getProtocol() == EntityDescriptorProtocol.OIDC) {
             ed.getSPSSODescriptor("").addSupportedProtocol("http://openid.net/specs/openid-connect-core-1_0.html");
         }
-        if (shibUiService.hasPermission(userService.getCurrentUserAuthentication(), null, PermissionType.admin)) {
+        if (shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), null, PermissionType.admin)) {
             ed.setApproved(true);
         }
         EntityDescriptor savedEntity = entityDescriptorRepository.save(ed);
@@ -493,7 +493,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
      */
     @Override
     public List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsBasedOnUserAccess() throws ForbiddenException {
-        return (List<EntityDescriptorProjection>) shibUiService.getPersistentEntities(userService.getCurrentUserAuthentication(), ShibUiPermissibleType.entityDescriptorProjection, PermissionType.fetch);
+        return (List<EntityDescriptorProjection>) shibUiAuthorizationDelegate.getPersistentEntities(userService.getCurrentUserAuthentication(), ShibUiPermissibleType.entityDescriptorProjection, PermissionType.fetch);
     }
 
     /**
@@ -501,7 +501,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
      */
     @Override
     public List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsNeedingApprovalBasedOnUserAccess() throws ForbiddenException {
-        return (List<EntityDescriptorProjection>) shibUiService.getPersistentEntities(userService.getCurrentUserAuthentication(), ShibUiPermissibleType.entityDescriptorProjection, PermissionType.approve);
+        return (List<EntityDescriptorProjection>) shibUiAuthorizationDelegate.getPersistentEntities(userService.getCurrentUserAuthentication(), ShibUiPermissibleType.entityDescriptorProjection, PermissionType.approve);
     }
 
     @Override
@@ -515,7 +515,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
     @Override
     public Iterable<EntityDescriptorProjection> getDisabledMetadataSources() throws ForbiddenException {
-        return (List<EntityDescriptorProjection>) shibUiService.getPersistentEntities(userService.getCurrentUserAuthentication(), ShibUiPermissibleType.entityDescriptorProjection, PermissionType.enable);
+        return (List<EntityDescriptorProjection>) shibUiAuthorizationDelegate.getPersistentEntities(userService.getCurrentUserAuthentication(), ShibUiPermissibleType.entityDescriptorProjection, PermissionType.enable);
     }
 
     @Override
@@ -524,7 +524,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (ed == null) {
             throw new PersistentEntityNotFound(String.format("The entity descriptor with entity id [%s] was not found.", resourceId));
         }
-        if (!shibUiService.hasPermission(userService.getCurrentUserAuthentication(), ed, PermissionType.viewOrEdit)) {
+        if (!shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), ed, PermissionType.viewOrEdit)) {
             throw new ForbiddenException();
         }
         return ed;
@@ -605,13 +605,13 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (existingEd == null) {
             throw new PersistentEntityNotFound(String.format("The entity descriptor with entity id [%s] was not found for update.", edRep.getId()));
         }
-        if (edRep.isServiceEnabled() && !shibUiService.hasPermission(userService.getCurrentUserAuthentication(), existingEd, PermissionType.enable)) {
+        if (edRep.isServiceEnabled() && !shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), existingEd, PermissionType.enable)) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
         }
         if (StringUtils.isEmpty(edRep.getIdOfOwner())) {
             edRep.setIdOfOwner(StringUtils.isNotEmpty(existingEd.getIdOfOwner()) ? existingEd.getIdOfOwner() :  userService.getCurrentUserGroup().getOwnerId());
         }
-        if (!shibUiService.hasPermission(userService.getCurrentUserAuthentication(), existingEd, PermissionType.viewOrEdit)) {
+        if (!shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), existingEd, PermissionType.viewOrEdit)) {
             throw new ForbiddenException();
         }
         // Verify we're the only one attempting to update the EntityDescriptor
@@ -645,7 +645,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (ed == null) {
             throw new PersistentEntityNotFound("Entity with resourceid[" + resourceId + "] was not found for update");
         }
-        if (!shibUiService.hasPermission(userService.getCurrentUserAuthentication(), ed, PermissionType.enable)) {
+        if (!shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), ed, PermissionType.enable)) {
             throw new ForbiddenException("You do not have the permissions necessary to change the enable status of this entity descriptor.");
         }
         // check to see if approvals have been completed
@@ -653,7 +653,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         List<Approvers> approversList = groupService.find(ed.getIdOfOwner()).getApproversList();
         if (enabled == true &&
             !ed.isServiceEnabled() &&
-            !shibUiService.hasPermission(userService.getCurrentUserAuthentication(), null, PermissionType.admin) &&
+            !shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), null, PermissionType.admin) &&
             approversList.size() > approvedCount) {
             throw new ForbiddenException("Approval must be completed before you can change the enable status of this entity descriptor.");
         }

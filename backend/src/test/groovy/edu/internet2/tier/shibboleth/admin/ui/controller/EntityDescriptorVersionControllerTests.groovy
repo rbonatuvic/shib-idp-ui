@@ -44,9 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes=[EDCLocalConfig])
 class EntityDescriptorVersionControllerTests extends AbstractBaseDataJpaTest {
     @Autowired
-    EntityDescriptorRepository entityDescriptorRepository
-
-    @Autowired
     private TestEntityManager testEntityManager
 
     @Autowired

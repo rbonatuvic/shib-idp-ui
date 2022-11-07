@@ -1,5 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener
@@ -36,6 +38,9 @@ import javax.persistence.EntityManager
 abstract class AbstractBaseDataJpaTest extends Specification implements ResetsDatabaseTrait {
     @Autowired
     ApproversRepository approversRepository
+
+    @Autowired
+    EntityDescriptorRepository entityDescriptorRepository
 
     @Autowired
     EntityManager entityManager
