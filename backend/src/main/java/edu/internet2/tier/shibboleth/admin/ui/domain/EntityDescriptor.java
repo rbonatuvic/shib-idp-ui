@@ -37,7 +37,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType.ENTI
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @Audited
-public class EntityDescriptor extends AbstractDescriptor implements org.opensaml.saml.saml2.metadata.EntityDescriptor, Ownable, IActivatable {
+public class EntityDescriptor extends AbstractDescriptor implements org.opensaml.saml.saml2.metadata.EntityDescriptor, Ownable, IActivatable, IApprovable {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "entitydesc_addlmetdatlocations_id")
     @OrderColumn

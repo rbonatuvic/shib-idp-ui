@@ -1,24 +1,29 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.permission;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.Auditable;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+import liquibase.pro.packaged.T;
+import org.apache.commons.lang.NotImplementedException;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
 import java.util.Collection;
-import java.util.Map;
 
 public interface IShibUiPermissionEvaluator extends PermissionEvaluator {
-//
-//    /**
-//     * For a given permission, find all the persistant entities a user has rights to.
-//     */
-//    Collection getPersistentEntitiesWithPermission(Authentication authentication, Object permission);
-//
-//    /**
-//     * Get ALL persistent entities that user has access to
-//     * @param authentication
-//     * @return a map. The key value will be the entity tuple and the value portions will be the set of permissions a user has on those objects
-//     */
-//    Map<IPersistentEntityTuple, Object> getPersistentEntities(Authentication authentication);
 
-    Collection getPersistentEntities(Authentication authentication, ShibUiType type, PermissionType permissionType);
+    /**
+     * Return a Collection of items matching the type describing those types that can be asked for and for which the authenticated
+     * user has the correct permission to access
+     * @param authentication The security Authorization
+     * @param type The permissible type that should be returned in the collection. This is an abstraction
+     * @param permissionType The type of permissions the user should have to access the items returned in the collection. Determining
+     *                       the relationship is up to the implementation
+     * @return Collection of objects representing the type described by the ShibUiPermissibleType enumeration
+     * @throws ForbiddenException if the user does not have the correct authority required
+     */
+    Collection getPersistentEntities(Authentication authentication, ShibUiPermissibleType type, PermissionType permissionType) throws ForbiddenException;
+
+    default <T extends Auditable> Collection<T> getAuditableEntities(Authentication authentication,
+                                                                     Class<T> auditableType,
+                                                                     PermissionType permissionType) throws ForbiddenException {throw new NotImplementedException();}
 }

@@ -15,7 +15,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepres
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.OAuthRPExtensions
-import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects

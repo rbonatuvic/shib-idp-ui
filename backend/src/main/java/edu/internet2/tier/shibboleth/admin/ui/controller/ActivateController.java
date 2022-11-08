@@ -56,10 +56,7 @@ public class ActivateController {
     @Transactional
     public ResponseEntity<?> enableProvider(@PathVariable String resourceId, @PathVariable String mode) throws PersistentEntityNotFound, ForbiddenException, MetadataFileNotFoundException, InitializationException {
         boolean status = "enable".equalsIgnoreCase(mode);
-        MetadataResolver existingResolver = metadataResolverService.findByResourceId(resourceId);
-        existingResolver.setEnabled(status);
-        existingResolver = metadataResolverService.updateMetadataResolverEnabledStatus(existingResolver);
-
-        return ResponseEntity.ok(existingResolver);
+        MetadataResolver metadataResolver = metadataResolverService.updateMetadataResolverEnabledStatus(resourceId, status);
+        return ResponseEntity.ok(metadataResolver);
     }
 }

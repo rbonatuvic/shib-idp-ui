@@ -57,7 +57,7 @@ public class Group implements Owner {
     @Column(name = "validation_regex")
     private String validationRegex;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Approvers> approversList = new ArrayList<>();
 
     /**

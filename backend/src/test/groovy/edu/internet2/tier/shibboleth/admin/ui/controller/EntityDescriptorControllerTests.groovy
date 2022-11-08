@@ -48,7 +48,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath
 
 class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
     @Autowired
@@ -130,6 +129,25 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
         result.andExpect(status().isNoContent())
         entityDescriptorRepository.findByResourceId("uuid-1") == null
         entityDescriptorRepository.findAll().size() == 0
+    }
+
+    @WithMockUser(value = "someUser", roles = ["USER"])
+    def 'DELETE as non-admin'() {
+        given:
+        def entityDescriptor = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: false)
+        entityDescriptorRepository.save(entityDescriptor)
+
+        when: 'pre-check'
+        entityManager.flush()
+
+        then:
+        entityDescriptorRepository.findAll().size() == 1
+        try {
+            result = mockMvc.perform(delete("/api/EntityDescriptor/uuid-1"))
+        }
+        catch (Exception e) {
+            e instanceof ForbiddenException
+        }
     }
 
     @WithMockAdmin

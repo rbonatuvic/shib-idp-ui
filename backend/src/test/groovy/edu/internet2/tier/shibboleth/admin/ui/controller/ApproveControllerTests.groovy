@@ -16,7 +16,6 @@ import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import org.springframework.web.client.RestTemplate
 import spock.lang.Subject
 
 import javax.transaction.Transactional

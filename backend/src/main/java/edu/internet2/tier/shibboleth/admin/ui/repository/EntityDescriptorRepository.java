@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

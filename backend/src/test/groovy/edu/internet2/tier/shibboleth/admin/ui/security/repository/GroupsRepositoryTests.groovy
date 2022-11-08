@@ -9,8 +9,6 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.test.annotation.Rollback
 import org.springframework.transaction.annotation.Transactional
 
-import javax.persistence.EntityManager
-
 /**
  * Tests to validate the repo and model for groups
  * @author chasegawa
