@@ -8,6 +8,7 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchExcep
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -19,6 +20,8 @@ import java.util.Map;
  * @since 1.0
  */
 public interface EntityDescriptorService {
+    void checkApprovalStatusOfEntitiesForGroup(Group group);
+
     /**
      * Map from front-end data representation of entity descriptor to opensaml implementation of entity descriptor model
      *

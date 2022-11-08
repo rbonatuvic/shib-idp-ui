@@ -58,6 +58,7 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
 
     @ElementCollection (fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
+    @Getter
     private List<String> approvedBy = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)

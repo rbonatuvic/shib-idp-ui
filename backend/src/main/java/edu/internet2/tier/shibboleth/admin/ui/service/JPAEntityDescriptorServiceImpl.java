@@ -183,6 +183,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (ed == null) {
             throw new PersistentEntityNotFound("Entity with resourceid[" + resourceId + "] was not found for approval");
         }
+        return changeApproveStatusOfEntityDescriptor(ed, status);
+    }
+
+    private EntityDescriptorRepresentation changeApproveStatusOfEntityDescriptor(EntityDescriptor ed, boolean status) throws PersistentEntityNotFound, ForbiddenException {
         if (!shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), ed, PermissionType.approve)) {
             throw new ForbiddenException("You do not have the permissions necessary to approve this entity descriptor.");
         }
@@ -201,6 +205,20 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             ed = entityDescriptorRepository.save(ed);
         }
         return createRepresentationFromDescriptor(ed);
+    }
+
+    /**
+     * Update the approval status of entities that were in some approval state but the group approvers were added/removed.
+     */
+    @Override
+    public void checkApprovalStatusOfEntitiesForGroup(Group group) {
+        entityDescriptorRepository.findAllResourceIdsByIdOfOwnerAndNotEnabled(group.getResourceId()).forEach(id -> {
+            EntityDescriptor ed = entityDescriptorRepository.findByResourceId(id);
+            int approvedCount = ed.approvedCount(); // total number of approvals so far
+            List<Approvers> theApprovers = groupService.find(ed.getIdOfOwner()).getApproversList();
+            ed.setApproved(approvedCount >= theApprovers.size());
+            ed = entityDescriptorRepository.save(ed);
+        });
     }
 
     @Override

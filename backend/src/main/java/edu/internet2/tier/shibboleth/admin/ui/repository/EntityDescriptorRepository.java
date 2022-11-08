@@ -13,6 +13,10 @@ import java.util.stream.Stream;
  * Repository to manage {@link EntityDescriptor} instances.
  */
 public interface EntityDescriptorRepository extends JpaRepository<EntityDescriptor, Long> {
+
+    @Query(value="SELECT e.resourceId FROM EntityDescriptor e WHERE e.idOfOwner = :groupId AND e.serviceEnabled = false")
+    List<String> findAllResourceIdsByIdOfOwnerAndNotEnabled(@Param("groupId") String groupId);
+
     @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
                    "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol, e.approved) " +
                    "from EntityDescriptor e")
@@ -56,4 +60,5 @@ public interface EntityDescriptorRepository extends JpaRepository<EntityDescript
                    "   and e.serviceEnabled = false" +
                    "   and e.approved = false")
     List<EntityDescriptorProjection> getEntityDescriptorsNeedingApproval(@Param("groupIds") List<String> groupIds);
+
 }

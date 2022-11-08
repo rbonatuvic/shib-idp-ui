@@ -9,6 +9,8 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,6 +33,9 @@ class GroupsControllerIntegrationTests extends AbstractBaseDataJpaTest {
     @Autowired
     GroupsRepository groupsRepository
 
+    @Autowired
+    JPAEntityDescriptorServiceImpl service
+
     static RESOURCE_URI = '/api/admin/groups'
 
     MockMvc mockMvc
@@ -39,6 +44,7 @@ class GroupsControllerIntegrationTests extends AbstractBaseDataJpaTest {
     def setup() {
         GroupController groupController = new GroupController().with ({
             it.groupService = this.groupService
+            it.entityDescriptorService = this.service
             it
         })
         mockMvc = MockMvcBuilders.standaloneSetup(groupController).build()
@@ -129,8 +135,7 @@ class GroupsControllerIntegrationTests extends AbstractBaseDataJpaTest {
         groupAAA.setName("NOT AAA")
         
         when:
-        def result = mockMvc.perform(put(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON)
-                            .content(JsonOutput.toJson(groupAAA)).accept(MediaType.APPLICATION_JSON))
+        def result = mockMvc.perform(put(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON).content(JsonOutput.toJson(groupAAA)).accept(MediaType.APPLICATION_JSON))
 
         then:
         result.andExpect(status().isOk())

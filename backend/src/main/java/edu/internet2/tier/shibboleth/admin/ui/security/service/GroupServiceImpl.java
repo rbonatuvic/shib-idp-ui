@@ -20,6 +20,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @NoArgsConstructor
@@ -125,7 +126,13 @@ public class GroupServiceImpl implements IGroupService {
     }
 
     private void manageApproversList(Group group) {
-        if (group.getApproversList().isEmpty()) {
+        AtomicInteger approversCount = new AtomicInteger();
+        group.getApproversList().forEach(a -> approversCount.addAndGet(a.getApproverGroupIds().size()));
+        if (approversCount.intValue() == 0) {
+            List<String> ids = approversRepository.getApproverIdsForGroup(group.getResourceId());
+            groupRepository.clearApproversForGroup(group.getResourceId());
+            approversRepository.deleteAllById(ids);
+            group.setApproversList(new ArrayList<>());
             return;
         }
         List<Approvers> updatedApprovers = new ArrayList<>();
@@ -148,7 +155,8 @@ public class GroupServiceImpl implements IGroupService {
                             group.getResourceId(), group.getName()));
         }
         validateGroupRegex(group);
-        return groupRepository.save(group);
+        Group result = groupRepository.save(group);
+        return result;
     }
 
     /**
