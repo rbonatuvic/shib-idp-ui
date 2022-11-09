@@ -129,8 +129,10 @@ public class GroupServiceImpl implements IGroupService {
         AtomicInteger approversCount = new AtomicInteger();
         group.getApproversList().forEach(a -> approversCount.addAndGet(a.getApproverGroupIds().size()));
         if (approversCount.intValue() == 0) {
+            // Need to manually manage the join tables
             List<String> ids = approversRepository.getApproverIdsForGroup(group.getResourceId());
-            groupRepository.clearApproversForGroup(group.getResourceId());
+            groupRepository.clearApproversByApproverIds(ids);
+            approversRepository.deleteGroupAssociationsForIds(ids);
             approversRepository.deleteAllById(ids);
             group.setApproversList(new ArrayList<>());
             return;

@@ -10,12 +10,8 @@ import java.util.List;
 
 public interface GroupsRepository extends JpaRepository<Group, String> {
     @Modifying
-    @Query(nativeQuery = true,
-           value = "DELETE user_groups_approvers " +
-                   " WHERE approvers_list_resource_id IN (SELECT approvers_list_resource_id " +
-                   "                                        FROM user_group_approvers " +
-                   "                                       WHERE user_groups_resource_id = :resourceId)")
-    void clearApproversForGroup(@Param("resourceId") String resourceId);
+    @Query(nativeQuery = true, value = "DELETE FROM user_groups_approvers WHERE approvers_list_resource_id IN (:approverIds)")
+    void clearApproversByApproverIds(@Param("approverIds") List<String> approverIds);
 
     void deleteByResourceId(String resourceId);
 
