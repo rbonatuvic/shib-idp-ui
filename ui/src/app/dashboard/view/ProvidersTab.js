@@ -47,7 +47,7 @@ export function ProvidersTab () {
                             <Search entities={ordered} searchable={searchProps}>
                                 {(searched) =>
                                 <MetadataActions type="provider">
-                                    {(enable) =>
+                                    {({enable}) =>
                                         <ProviderList
                                             entities={searched}
                                             reorder={providers.length === searched.length}
