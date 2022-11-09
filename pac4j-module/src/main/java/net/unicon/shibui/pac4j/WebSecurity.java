@@ -116,6 +116,7 @@ public class WebSecurity {
             StrictHttpFirewall firewall = new StrictHttpFirewall();
             firewall.setAllowUrlEncodedSlash(true);
             firewall.setAllowUrlEncodedDoubleSlash(true);
+            firewall.setAllowSemicolon(true);
             web.httpFirewall(firewall);
    
             // These don't need to be secured
