@@ -126,9 +126,9 @@
       "id": "a9865fff-afe0-4786-8a32-18eb1f920424",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(4) .text-primary path",
+      "target": "css=tr:nth-child(7) .text-primary path",
       "targets": [
-        ["css=tr:nth-child(4) .text-primary path", "css:finder"]
+        ["css=tr:nth-child(7) .text-primary path", "css:finder"]
       ],
       "value": ""
     }, {
