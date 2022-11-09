@@ -12,9 +12,9 @@ public interface GroupsRepository extends JpaRepository<Group, String> {
     @Modifying
     @Query(nativeQuery = true,
            value = "DELETE user_groups_approvers " +
-                   " WHERE approvers_list_resource_id IN (SELECT approvers_resource_id " +
-                   "                                        FROM approvers_user_groups " +
-                   "                                       WHERE approver_groups_resource_id = :resourceId)")
+                   " WHERE approvers_list_resource_id IN (SELECT approvers_list_resource_id " +
+                   "                                        FROM user_group_approvers " +
+                   "                                       WHERE user_groups_resource_id = :resourceId)")
     void clearApproversForGroup(@Param("resourceId") String resourceId);
 
     void deleteByResourceId(String resourceId);
