@@ -64,7 +64,7 @@ public class WebSecurity {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().antMatchers("/unsecured/**/*").permitAll();
+            http.authorizeRequests().antMatchers("/unsecured/**/*","/entities/**/*").permitAll();
 
             // adding the authorizer bypasses the default behavior of checking CSRF in Pac4J's default securitylogic+defaultauthorizationchecker
             final SecurityFilter securityFilter = new SecurityFilter(this.config, PAC4J_CLIENT_NAME, DefaultAuthorizers.IS_AUTHENTICATED);
@@ -120,7 +120,7 @@ public class WebSecurity {
             web.httpFirewall(firewall);
    
             // These don't need to be secured
-            web.ignoring().antMatchers("/favicon.ico", "/unsecured/**/*", "/assets/**/*.png", "/static/**/*", "/**/*.css"); 
+            web.ignoring().antMatchers("/favicon.ico", "/unsecured/**/*", "/assets/**/*.png", "/static/**/*", "/**/*.css", "/entities/**/*");
         }
     }
 

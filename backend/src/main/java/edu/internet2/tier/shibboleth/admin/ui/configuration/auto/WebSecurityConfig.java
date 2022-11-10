@@ -88,7 +88,7 @@ public class WebSecurityConfig {
                         .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .and()
                         .authorizeRequests()
-                        .antMatchers("/unsecured/**/*").permitAll()
+                        .antMatchers("/unsecured/**/*","/entities/**/*").permitAll()
                         .anyRequest().hasAnyRole(acceptedAuthenticationRoles)
                         .and()
                         .exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> response.sendRedirect("/unsecured/error.html"))
