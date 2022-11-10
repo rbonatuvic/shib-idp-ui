@@ -20,14 +20,19 @@ export const OidcSourceEditor = defaultsDeep({
                 groups: [
                     {
                         classNames: 'bg-light border rounded px-4 pt-4 mb-4',
-                        size: 6,
+                        sizes: {
+                            xs: 12,
+                            lg: 6
+                        },
                         fields: [
                             'protocolSupportEnum',
                             'nameIdFormats'
                         ],
                     },
                     {
-                        size: 12,
+                        sizes: {
+                            xs: 12
+                        },
                         fields: [
                             'extensions'
                         ],
@@ -93,14 +98,19 @@ export const OidcSourceWizard = defaultsDeep({
                 groups: [
                     {
                         classNames: 'bg-light border rounded px-4 pt-4 mb-4',
-                        size: 6,
+                        sizes: {
+                            xs: 12,
+                            lg: 6
+                        },
                         fields: [
                             'protocolSupportEnum',
                             'nameIdFormats'
                         ],
                     },
                     {
-                        size: 12,
+                        sizes: {
+                            xs: 12
+                        },
                         fields: [
                             'extensions'
                         ],

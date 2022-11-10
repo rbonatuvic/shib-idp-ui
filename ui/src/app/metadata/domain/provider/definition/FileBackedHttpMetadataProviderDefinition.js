@@ -75,7 +75,11 @@ export const FileBackedHttpMetadataProviderWizard = {
         layout: {
             groups: [
                 {
-                    size: 8,
+                    sizes: {
+                        xs: 12,
+                        lg: 8,
+                        xxl: 6
+                    },
                     classNames: 'bg-light border rounded px-4 pt-4 pb-3 mb-4',
                     fields: [
                         'name',
@@ -83,7 +87,11 @@ export const FileBackedHttpMetadataProviderWizard = {
                     ]
                 },
                 {
-                    size: 8,
+                    sizes: {
+                        xs: 12,
+                        lg: 8,
+                        xxl: 6
+                    },
                     fields: [
                         'xmlId',
                         'metadataURL',
@@ -97,19 +105,31 @@ export const FileBackedHttpMetadataProviderWizard = {
                     ]
                 },
                 {
-                    size: 8,
+                    sizes: {
+                        xs: 12,
+                        lg: 8,
+                        xxl: 6
+                    },
                     fields: [
                         'reloadableMetadataResolverAttributes'
                     ],
                 },
                 {
-                    size: 8,
+                    sizes: {
+                        xs: 12,
+                        lg: 8,
+                        xxl: 6
+                    },
                     fields: [
                         'metadataFilters'
                     ],
                 },
                 {
-                    size: 8,
+                    sizes: {
+                        xs: 12,
+                        lg: 8,
+                        xxl: 6
+                    },
                     fields: [
                         'httpMetadataResolverAttributes'
                     ]
