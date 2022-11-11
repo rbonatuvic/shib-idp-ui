@@ -1,5 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.model;
 
 public enum OwnableType {
-    USER, ENTITY_DESCRIPTOR, METADATA_PROVIDER
+    USER, ENTITY_DESCRIPTOR, METADATA_PROVIDER, DYNAMIC_REGISTRATION
 }

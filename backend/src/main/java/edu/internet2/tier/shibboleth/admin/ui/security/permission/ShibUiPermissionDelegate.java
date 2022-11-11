@@ -1,13 +1,16 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.permission;
 
+import edu.internet2.tier.shibboleth.admin.ui.controller.DynamicRegistrationController;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IApprovable;
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.DynamicRegistrationInfo;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.DynamicRegistrationInfoRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import lombok.AllArgsConstructor;
@@ -27,6 +30,8 @@ import java.util.List;
  */
 @AllArgsConstructor
 public class ShibUiPermissionDelegate implements IShibUiPermissionEvaluator {
+    private DynamicRegistrationInfoRepository dynamicRegistrationInfoRepository;
+
     private EntityDescriptorRepository entityDescriptorRepository;
 
     private UserService userService;
@@ -46,12 +51,28 @@ public class ShibUiPermissionDelegate implements IShibUiPermissionEvaluator {
                 return entityDescriptorRepository.getEntityDescriptorsNeedingEnabling();
             case fetch:
                 if (!hasPermission(ignored, null, PermissionType.fetch)) {
-                    throw new ForbiddenException("User has no access rights to get a list of Metadata Sources");
+                    throw new ForbiddenException("User has no access rights to get a list of : " + shibUiType);
                 }
                 return getAllEntityDescriptorProjectionsBasedOnUserAccess();
             }
+        case dynamicRegistrationInfo:
+            switch (permissionType) {
+            case fetch:
+                if (!hasPermission(ignored, null, PermissionType.fetch)) {
+                    throw new ForbiddenException("User has no access rights to get a list of : " + shibUiType);
+                }
+                return getAllDynamicRegistrationInfoObjectsBasedOnUserAccess();
+            }
         }
         return null;
+    }
+
+    private List<DynamicRegistrationInfo> getAllDynamicRegistrationInfoObjectsBasedOnUserAccess() {
+        if (userService.currentUserIsAdmin()) {
+            return dynamicRegistrationInfoRepository.findAll();
+        } else {
+            return dynamicRegistrationInfoRepository.findAllByIdOfOwner(userService.getCurrentUser().getGroup().getOwnerId());
+        }
     }
 
     private List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsBasedOnUserAccess() {
