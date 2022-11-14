@@ -6,15 +6,18 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 
 public interface DynamicRegistrationService {
-    Object getAllDynamicRegistrationsBasedOnUserAccess() throws ForbiddenException;
+    DynamicRegistrationRepresentation approveDynamicRegistration(String resourceId, boolean status)
+                    throws PersistentEntityNotFound, ForbiddenException;
 
     DynamicRegistrationRepresentation createNew(DynamicRegistrationRepresentation dynRegRepresentation) throws ObjectIdExistsException;
 
     void delete(String resourceId) throws ForbiddenException, PersistentEntityNotFound;
 
-    DynamicRegistrationRepresentation update(DynamicRegistrationRepresentation dynRegRepresentation)
-                    throws PersistentEntityNotFound, ForbiddenException;
+    DynamicRegistrationRepresentation enableDynamicRegistration(String resourceId) throws PersistentEntityNotFound, ForbiddenException;
 
-    DynamicRegistrationRepresentation updateGroupForDynamicRegistration(String resourceId, String groupId)
-                    throws ForbiddenException, PersistentEntityNotFound;
+    Object getAllDynamicRegistrationsBasedOnUserAccess() throws ForbiddenException;
+
+    DynamicRegistrationRepresentation update(DynamicRegistrationRepresentation dynRegRepresentation) throws PersistentEntityNotFound, ForbiddenException;
+
+    DynamicRegistrationRepresentation updateGroupForDynamicRegistration(String resourceId, String groupId) throws ForbiddenException, PersistentEntityNotFound;
 }

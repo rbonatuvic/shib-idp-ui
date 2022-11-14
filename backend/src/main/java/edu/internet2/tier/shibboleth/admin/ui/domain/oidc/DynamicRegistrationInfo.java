@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IApprovable;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnableType;
 import lombok.Data;
@@ -78,5 +79,9 @@ public class DynamicRegistrationInfo extends AbstractAuditable implements Ownabl
 
     public int approvedCount() {
         return approvedBy.size();
+    }
+
+    public void addApproval(Group currentUserGroup) {
+        approvedBy.add(currentUserGroup.getName());
     }
 }

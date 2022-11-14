@@ -3,6 +3,8 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.DynamicRegistrationInfo
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.GrantType
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
@@ -10,6 +12,8 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Approvers
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.DynamicRegistrationInfoRepository
+import edu.internet2.tier.shibboleth.admin.ui.service.DynamicRegistrationService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
@@ -32,6 +36,12 @@ class ApproveControllerTests extends AbstractBaseDataJpaTest {
     ObjectMapper mapper
 
     @Autowired
+    DynamicRegistrationInfoRepository dynamicRegistrationInfoRepository
+
+    @Autowired
+    DynamicRegistrationService dynamicRegistrationService
+
+    @Autowired
     EntityService entityService
 
     @Autowired
@@ -50,6 +60,7 @@ class ApproveControllerTests extends AbstractBaseDataJpaTest {
     def setup() {
         controller = new ApprovalController()
         controller.entityDescriptorService = entDescriptorService
+        controller.dynamicRegistrationService = dynamicRegistrationService
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
 
         EntityDescriptorConversionUtils.setOpenSamlObjects(openSamlObjects)
@@ -104,6 +115,25 @@ class ApproveControllerTests extends AbstractBaseDataJpaTest {
         entityDescriptor = entityDescriptorRepository.save(entityDescriptor)
 
         defaultEntityDescriptorResourceId = entityDescriptor.getResourceId()
+
+        def dynReg = new DynamicRegistrationInfo(resourceId: 'uuid-1', enabled: false, idOfOwner: "AAA", applicationType: 'apptype',
+                approved: false, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri',
+                redirectUris: 'redirecturis', responseTypes: 'responsetypes', scope: 'scope', subjectType: 'subjecttype',
+                tokenEndpointAuthMethod: 'token', tosUri: 'tosuri', grantType: GrantType.implicit)
+        dynamicRegistrationInfoRepository.saveAndFlush(dynReg)
+    }
+
+    @WithMockUser(value = "AUser", roles = ["USER"])
+    def 'Owner group cannot approve their own dynamic registration'() {
+        expect:
+        dynamicRegistrationInfoRepository.findByResourceId("uuid-1").isApproved() == false
+        try {
+            mockMvc.perform(patch("/api/approve/DynamicRegistration/uuid-1/approve"))
+        }
+        catch (Exception e) {
+            e instanceof ForbiddenException
+        }
+        dynamicRegistrationInfoRepository.findByResourceId("uuid-1").isApproved() == false
     }
 
     @WithMockUser(value = "AUser", roles = ["USER"])
@@ -120,6 +150,19 @@ class ApproveControllerTests extends AbstractBaseDataJpaTest {
     }
 
     @WithMockUser(value = "DUser", roles = ["USER"])
+    def 'non-approver group cannot approve dynamic registration'() {
+        expect:
+        dynamicRegistrationInfoRepository.findByResourceId("uuid-1").isApproved() == false
+        try {
+            mockMvc.perform(patch("/api/approve/DynamicRegistration/uuid-1/approve"))
+        }
+        catch (Exception e) {
+            e instanceof ForbiddenException
+        }
+        dynamicRegistrationInfoRepository.findByResourceId("uuid-1").isApproved() == false
+    }
+
+    @WithMockUser(value = "DUser", roles = ["USER"])
     def 'non-approver group cannot approve entity descriptor'() {
         expect:
         entityDescriptorRepository.findByResourceId(defaultEntityDescriptorResourceId).isApproved() == false
@@ -130,6 +173,22 @@ class ApproveControllerTests extends AbstractBaseDataJpaTest {
             e instanceof ForbiddenException
         }
         entityDescriptorRepository.findByResourceId(defaultEntityDescriptorResourceId).isApproved() == false
+    }
+
+    @WithMockUser(value = "BUser", roles = ["USER"])
+    def 'Approver group can approve an dynamic registration'() {
+        expect:
+        dynamicRegistrationInfoRepository.findByResourceId("uuid-1").isApproved() == false
+
+        when:
+        def result = mockMvc.perform(patch("/api/approve/DynamicRegistration/uuid-1/approve"))
+
+        then:
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("\$.resourceId").value("uuid-1"))
+                .andExpect(jsonPath("\$.enabled").value(false))
+                .andExpect(jsonPath("\$.approved").value(true))
+        dynamicRegistrationInfoRepository.findByResourceId("uuid-1").isApproved()
     }
 
     @WithMockUser(value = "BUser", roles = ["USER"])
@@ -146,6 +205,32 @@ class ApproveControllerTests extends AbstractBaseDataJpaTest {
                 .andExpect(jsonPath("\$.serviceEnabled").value(false))
                 .andExpect(jsonPath("\$.approved").value(true))
         entityDescriptorRepository.findByResourceId(defaultEntityDescriptorResourceId).isApproved()
+    }
+
+    @WithMockUser(value = "BUser", roles = ["USER"])
+    def 'Approver can approve and un-approve an dynamic registration'() {
+        expect:
+        dynamicRegistrationInfoRepository.findByResourceId("uuid-1").isApproved() == false
+
+        when:
+        def result = mockMvc.perform(patch("/api/approve/DynamicRegistration/uuid-1/approve"))
+
+        then:
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("\$.resourceId").value("uuid-1"))
+                .andExpect(jsonPath("\$.enabled").value(false))
+                .andExpect(jsonPath("\$.approved").value(true))
+        dynamicRegistrationInfoRepository.findByResourceId("uuid-1").isApproved()
+
+        when:
+        def result2 = mockMvc.perform(patch("/api/approve/DynamicRegistration/uuid-1/unapprove"))
+
+        then:
+        result2.andExpect(status().isOk())
+                .andExpect(jsonPath("\$.resourceId").value("uuid-1"))
+                .andExpect(jsonPath("\$.enabled").value(false))
+                .andExpect(jsonPath("\$.approved").value(false))
+        dynamicRegistrationInfoRepository.findByResourceId("uuid-1").isApproved() == false
     }
 
     @WithMockUser(value = "BUser", roles = ["USER"])

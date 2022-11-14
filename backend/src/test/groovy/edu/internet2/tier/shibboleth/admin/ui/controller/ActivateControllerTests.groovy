@@ -3,6 +3,9 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.DynamicRegistrationRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.DynamicRegistrationInfo
+import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.GrantType
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
@@ -10,6 +13,8 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Approvers
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.DynamicRegistrationInfoRepository
+import edu.internet2.tier.shibboleth.admin.ui.service.DynamicRegistrationService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
@@ -33,6 +38,12 @@ class ActivateControllerTests extends AbstractBaseDataJpaTest {
     ObjectMapper mapper
 
     @Autowired
+    DynamicRegistrationInfoRepository dynamicRegistrationInfoRepository
+
+    @Autowired
+    DynamicRegistrationService dynamicRegistrationService
+
+    @Autowired
     EntityService entityService
 
     @Autowired
@@ -51,6 +62,7 @@ class ActivateControllerTests extends AbstractBaseDataJpaTest {
     def setup() {
         controller = new ActivateController()
         controller.entityDescriptorService = entDescriptorService
+        controller.dynamicRegistrationService = dynamicRegistrationService
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
 
         EntityDescriptorConversionUtils.setOpenSamlObjects(openSamlObjects)
@@ -105,6 +117,23 @@ class ActivateControllerTests extends AbstractBaseDataJpaTest {
         entityDescriptor = entityDescriptorRepository.save(entityDescriptor)
 
         defaultEntityDescriptorResourceId = entityDescriptor.getResourceId()
+
+        def dynReg = new DynamicRegistrationInfo(resourceId: 'uuid-1', enabled: false, idOfOwner: "AAA", applicationType: 'apptype',
+                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri',
+                redirectUris: 'redirecturis', responseTypes: 'responsetypes', scope: 'scope', subjectType: 'subjecttype',
+                tokenEndpointAuthMethod: 'token', tosUri: 'tosuri', grantType: GrantType.implicit)
+        dynamicRegistrationInfoRepository.saveAndFlush(dynReg)
+    }
+
+    @WithMockUser(value = "AUser", roles = ["USER"])
+    def 'Owner group cannot activate their own dynamic registration without approvals'() {
+        expect:
+        try {
+            mockMvc.perform(patch("/api/activate/DynamicRegistration/uuid-1/enable"))
+        }
+        catch (Exception e) {
+            e instanceof ForbiddenException
+        }
     }
 
     @WithMockUser(value = "AUser", roles = ["USER"])
@@ -112,6 +141,17 @@ class ActivateControllerTests extends AbstractBaseDataJpaTest {
         expect:
         try {
             mockMvc.perform(patch("/api/activate/entityDescriptor/" + defaultEntityDescriptorResourceId + "/enable"))
+        }
+        catch (Exception e) {
+            e instanceof ForbiddenException
+        }
+    }
+
+    @WithMockUser(value = "DUser", roles = ["USER"])
+    def 'non-owner group cannot activate dynamic registration'() {
+        expect:
+        try {
+            mockMvc.perform(patch("/api/activate/DynamicRegistration/uuid-1/enable"))
         }
         catch (Exception e) {
             e instanceof ForbiddenException
@@ -129,6 +169,24 @@ class ActivateControllerTests extends AbstractBaseDataJpaTest {
         }
     }
 
+//    @WithMockAdmin
+//    def 'Admin can activate an dynamic registration without approval'() {
+//        given:
+//        def dynReg = new DynamicRegistrationInfo(resourceId: 'uuid-2', enabled: false, applicationType: 'apptype',
+//                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri',
+//                redirectUris: 'redirecturis', responseTypes: 'responsetypes', scope: 'scope', subjectType: 'subjecttype',
+//                tokenEndpointAuthMethod: 'token', tosUri: 'tosuri', grantType: GrantType.implicit)
+//        dynamicRegistrationService.createNew(new DynamicRegistrationRepresentation(dynReg))
+//
+//        when:
+//        def result = mockMvc.perform(patch("/api/activate/DynamicRegistration/uuid-2/enable"))
+//
+//        then:
+//        result.andExpect(status().isOk())
+//              .andExpect(jsonPath("\$.resourceId").value("uuid-2"))
+//              .andExpect(jsonPath("\$.enabled").value(true))
+//    }
+
     @WithMockAdmin
     def 'Admin can activate an entity descriptor without approval'() {
         when:
@@ -139,6 +197,26 @@ class ActivateControllerTests extends AbstractBaseDataJpaTest {
               .andExpect(jsonPath("\$.id").value(defaultEntityDescriptorResourceId))
               .andExpect(jsonPath("\$.serviceEnabled").value(true))
     }
+
+//    @WithMockUser(value = "AUser", roles = ["USER"])
+//    def 'Owner group can enable their own dynamic registration with approvals'() {
+//        when:
+//        def dynReg = new DynamicRegistrationInfo(resourceId: 'uuid-2', enabled: false, idOfOwner: "AAA", applicationType: 'apptype',
+//                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri',
+//                redirectUris: 'redirecturis', responseTypes: 'responsetypes', scope: 'scope', subjectType: 'subjecttype',
+//                tokenEndpointAuthMethod: 'token', tosUri: 'tosuri', grantType: GrantType.implicit)
+//        dynReg = dynamicRegistrationService.createNew(dynReg)
+//        dynReg.addApproval(groupService.find("CCC"))
+//        dynamicRegistrationService.update(dynReg)
+//        entityManager.flush()
+//
+//        def result = mockMvc.perform(patch("/api/activate/DynamicRegistration/uuid-2/enable"))
+//
+//        then:
+//        result.andExpect(status().isOk())
+//              .andExpect(jsonPath("\$.resourceId").value('uuid-2'))
+//              .andExpect(jsonPath("\$.enabled").value(true))
+//    }
 
     @WithMockUser(value = "AUser", roles = ["USER"])
     def 'Owner group can enable their own entity descriptor with approvals'() {
