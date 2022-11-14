@@ -56,13 +56,14 @@ export function GroupsList({ groups, onDelete }) {
                                                     <td>{group.description || ''}</td>
                                                     <td>{group.approversList?.length > 0 ? group.approversList[0].approverGroupIds.join(', ') : '-'}</td>
                                                     <td className="text-end">
-                                                        <Link to={`../groups/${group.resourceId}/edit`} className="btn btn-link text-primary">
+                                                        <Link to={`../groups/${group.resourceId}/edit`} className="btn btn-link text-primary"
+                                                            id={`group-edit-${i}`}>
                                                             <FontAwesomeIcon icon={faEdit} size="lg" />
                                                             <span className="sr-only">
                                                                 <Translate value="action.edit">Edit</Translate>
                                                             </span>
                                                         </Link>
-                                                        <Button variant="link" className="text-danger" onClick={() => block(() => remove(group.resourceId))}>
+                                                        <Button variant="link" className="text-danger" onClick={() => block(() => remove(group.resourceId))} id={`group-delete-${i}`}>
                                                             <FontAwesomeIcon icon={faTrash} size="lg" />
                                                             <span className="sr-only">
                                                                 <Translate value="action.delete">Delete</Translate>
