@@ -93,9 +93,7 @@ export const SourceBase = {
             groups: [
                 {
                     sizes: {
-                        xs: 12,
-                        lg: 6,
-                        xl: 6
+                        xs: 12
                     },
                     fields: [
                         'protocol',
@@ -106,7 +104,7 @@ export const SourceBase = {
                 },
                 {
                     sizes: {
-                        lg: 6
+                        xs: 6
                     },
                     fields: [
                         'contacts'
@@ -131,7 +129,7 @@ export const SourceBase = {
                 {
                     sizes: {
                         xs: 12,
-                        lg: 6
+                        xxl: 8
                     },
                     fields: [
                         'logoutEndpoints'
@@ -147,8 +145,7 @@ export const SourceBase = {
                 },
                 {
                     sizes: {
-                        xs: 12,
-                        lg: 6
+                        xs: 12
                     },
                     fields: [
                         'assertionConsumerServices'
@@ -156,8 +153,7 @@ export const SourceBase = {
                 },
                 {
                     sizes: {
-                        xs: 12,
-                        lg: 8
+                        xs: 12
                     },
                     fields: [
                         'relyingPartyOverrides'
@@ -165,8 +161,7 @@ export const SourceBase = {
                 },
                 {
                     sizes: {
-                        xs: 12,
-                        lg: 6
+                        xs: 12
                     },
                     fields: [
                         'attributeRelease'
@@ -238,7 +233,7 @@ export const SourceBase = {
                     {
                         sizes: {
                             xs: 12,
-                            lg: 6
+                            xxl: 8
                         },
                         fields: [
                             'authenticationRequestsSigned',
@@ -409,7 +404,8 @@ export const SourceWizard = {
                 {
                     sizes: {
                         xs: 12,
-                        lg: 6
+                        lg: 6,
+                        xxl: 6
                     },
                     classNames: 'bg-light border rounded px-4 pt-4 pb-3',
                     fields: [
@@ -419,7 +415,8 @@ export const SourceWizard = {
                 {
                     sizes: {
                         xs: 12,
-                        lg: 6
+                        lg: 6,
+                        xxl: 6
                     },
                     fields: [
                         'contacts'
@@ -436,9 +433,6 @@ export const SourceWizard = {
                 {
                     sizes: {
                         xs: 12,
-                        lg: 12,
-                        xl: 8,
-                        xxl: 6,
                     },
                     fields: [
                         'serviceProviderSsoDescriptor'

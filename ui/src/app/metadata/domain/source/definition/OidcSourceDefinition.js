@@ -22,7 +22,7 @@ export const OidcSourceEditor = defaultsDeep({
                         classNames: 'bg-light border rounded px-4 pt-4 mb-4',
                         sizes: {
                             xs: 12,
-                            lg: 6
+                            xxl: 9
                         },
                         fields: [
                             'protocolSupportEnum',
