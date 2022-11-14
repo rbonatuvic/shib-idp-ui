@@ -3,7 +3,6 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.DynamicRegistrationRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.DynamicRegistrationInfo
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.GrantType
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
@@ -29,6 +28,7 @@ import javax.transaction.Transactional
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+
 // TODO: This is only checking activation for EntityDescriptors. Expanding for resolvers not included
 class ActivateControllerTests extends AbstractBaseDataJpaTest {
     @Subject

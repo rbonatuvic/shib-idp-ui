@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User

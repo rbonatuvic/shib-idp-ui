@@ -2,7 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.security.permission
 
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Approvers
