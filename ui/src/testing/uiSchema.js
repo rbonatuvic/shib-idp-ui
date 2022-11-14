@@ -7,7 +7,9 @@ const schema = {
     "layout": {
         "groups": [
             {
-                "size": 6,
+                "sizes": {
+                    "xs": 12,
+                },
                 "fields": [
                     "protocol",
                     "serviceProviderName",
@@ -16,49 +18,66 @@ const schema = {
                 ]
             },
             {
-                "size": 6,
+                "sizes": {
+                    "xs": 6,
+                },
                 "fields": [
                     "contacts"
                 ]
             },
             {
-                "size": 12,
+                "sizes": {
+                    "xs": 12,
+                },
                 "fields": [
                     "mdui"
                 ]
             },
             {
-                "size": 12,
+                "sizes": {
+                    "xs": 12,
+                },
                 "fields": [
                     "serviceProviderSsoDescriptor"
                 ]
             },
             {
-                "size": 6,
+                "sizes": {
+                    "xs": 12,
+                    "xxl": 8
+                },
                 "fields": [
                     "logoutEndpoints"
                 ]
             },
             {
-                "size": 12,
+                "sizes": {
+                    "xs": 12,
+                },
                 "fields": [
                     "securityInfo"
                 ]
             },
             {
-                "size": 6,
+                "sizes": {
+                    "xs": 12,
+                },
                 "fields": [
                     "assertionConsumerServices"
                 ]
             },
             {
-                "size": 6,
+                "sizes": {
+                    "xs": 12,
+                },
                 "fields": [
                     "relyingPartyOverrides"
                 ]
             },
             {
-                "size": 6,
+                "sizes": {
+                    "xs": 12,
+                },
                 "fields": [
                     "attributeRelease"
                 ]
@@ -132,7 +151,10 @@ const schema = {
         "layout": {
             "groups": [
                 {
-                    "size": 6,
+                    "sizes": {
+                        "xs": 12,
+                        "xxl": 8,
+                    },
                     "fields": [
                         "authenticationRequestsSigned",
                         "wantAssertionsSigned",
@@ -183,7 +205,10 @@ const schema = {
         "layout": {
             "groups": [
                 {
-                    "size": 6,
+                    "sizes": {
+                        "lg": 6,
+                        "xs": 12,
+                    },
                     "fields": [
                         "displayName",
                         "informationUrl",
@@ -191,7 +216,10 @@ const schema = {
                     ]
                 },
                 {
-                    "size": 6,
+                    "sizes": {
+                        "lg": 6,
+                        "xs": 12,
+                    },
                     "fields": [
                         "privacyStatementUrl",
                         "logoUrl",
