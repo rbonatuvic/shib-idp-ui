@@ -42,8 +42,7 @@ public interface EntityDescriptorRepository extends JpaRepository<EntityDescript
     @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
                     "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol, e.approved) " +
                     "  from EntityDescriptor e " +
-                    " where e.serviceEnabled = false"
-    )
+                    " where e.serviceEnabled = false")
     List<EntityDescriptorProjection> getEntityDescriptorsNeedingEnabling();
     
     /**

@@ -57,6 +57,16 @@ public class ShibUiPermissionDelegate implements IShibUiPermissionEvaluator {
             }
         case dynamicRegistrationInfo:
             switch (permissionType) {
+            case approve:
+                if (!hasPermission(ignored, null, PermissionType.approve)) {
+                    throw new ForbiddenException("User has no access rights to get a list of : " + shibUiType);
+                }
+                return getAllDynamicRegistrationInfoObjectsNeedingApprovalBasedOnUserAccess();
+            case enable:
+                if (!hasPermission(ignored, null, PermissionType.enable)) {
+                    throw new ForbiddenException("User has no access rights to get a list of : " + shibUiType);
+                }
+                return dynamicRegistrationInfoRepository.getDynamicRegistrationsNeedingEnabling();
             case fetch:
                 if (!hasPermission(ignored, null, PermissionType.fetch)) {
                     throw new ForbiddenException("User has no access rights to get a list of : " + shibUiType);
@@ -65,6 +75,11 @@ public class ShibUiPermissionDelegate implements IShibUiPermissionEvaluator {
             }
         }
         return null;
+    }
+
+    private List<DynamicRegistrationInfo> getAllDynamicRegistrationInfoObjectsNeedingApprovalBasedOnUserAccess() {
+        List<String> groupsToApprove = userService.getGroupsCurrentUserCanApprove();
+        return dynamicRegistrationInfoRepository.getAllNeedingApproval(groupsToApprove);
     }
 
     private List<DynamicRegistrationInfo> getAllDynamicRegistrationInfoObjectsBasedOnUserAccess() {

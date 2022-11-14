@@ -1,8 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.DynamicRegistrationRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.DynamicRegistrationInfo;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
@@ -26,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
@@ -103,6 +102,12 @@ public class JPADynamicRegistrationServiceImpl implements DynamicRegistrationSer
         return new DynamicRegistrationRepresentation(repository.save(dri));
     }
 
+    private List<DynamicRegistrationRepresentation> convertToRepresentations(List<DynamicRegistrationInfo> temp) {
+        List<DynamicRegistrationRepresentation> result = new ArrayList<>();
+        temp.forEach(dri -> result.add(new DynamicRegistrationRepresentation(dri)));
+        return result;
+    }
+
     @Override
     public void delete(String resourceId) throws ForbiddenException, PersistentEntityNotFound {
         if (!shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), null, PermissionType.admin)) {
@@ -137,8 +142,21 @@ public class JPADynamicRegistrationServiceImpl implements DynamicRegistrationSer
     }
 
     @Override
-    public List<DynamicRegistrationInfo> getAllDynamicRegistrationsBasedOnUserAccess() throws ForbiddenException {
-        return (List<DynamicRegistrationInfo>) shibUiAuthorizationDelegate.getPersistentEntities(userService.getCurrentUserAuthentication(), ShibUiPermissibleType.dynamicRegistrationInfo, PermissionType.fetch);
+    public List<DynamicRegistrationRepresentation> getAllDynamicRegistrationsBasedOnUserAccess() throws ForbiddenException {
+        List<DynamicRegistrationInfo> temp = (List<DynamicRegistrationInfo>) shibUiAuthorizationDelegate.getPersistentEntities(userService.getCurrentUserAuthentication(), ShibUiPermissibleType.dynamicRegistrationInfo, PermissionType.fetch);
+        return convertToRepresentations(temp);
+    }
+
+    @Override
+    public List<DynamicRegistrationRepresentation> getAllDynamicRegistrationsNeedingApprovalBasedOnUserAccess() throws ForbiddenException {
+        List<DynamicRegistrationInfo> temp =  (List<DynamicRegistrationInfo>) shibUiAuthorizationDelegate.getPersistentEntities(userService.getCurrentUserAuthentication(), ShibUiPermissibleType.dynamicRegistrationInfo, PermissionType.approve);
+        return convertToRepresentations(temp);
+    }
+
+    @Override
+    public List<DynamicRegistrationRepresentation> getDisabledDynamicRegistrations() throws ForbiddenException {
+        List<DynamicRegistrationInfo> temp =  (List<DynamicRegistrationInfo>) shibUiAuthorizationDelegate.getPersistentEntities(userService.getCurrentUserAuthentication(), ShibUiPermissibleType.dynamicRegistrationInfo, PermissionType.enable);
+        return convertToRepresentations(temp);
     }
 
     @Override

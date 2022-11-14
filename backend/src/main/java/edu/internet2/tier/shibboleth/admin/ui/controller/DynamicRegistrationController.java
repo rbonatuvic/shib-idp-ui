@@ -51,6 +51,21 @@ public class DynamicRegistrationController {
         return ResponseEntity.ok(dynamicRegistrationService.getAllDynamicRegistrationsBasedOnUserAccess());
     }
 
+    @GetMapping("/DynamicRegistrations/needsApproval")
+    @Transactional
+    public ResponseEntity<?> getAllNeedingApproval() throws ForbiddenException {
+        return ResponseEntity.ok(dynamicRegistrationService.getAllDynamicRegistrationsNeedingApprovalBasedOnUserAccess());
+    }
+
+    /**
+     * @throws ForbiddenException This call is used for the admin needs action list, therefore the user must be an admin
+     */
+    @Transactional
+    @GetMapping(value = "/EntityDescriptor/disabledSources")
+    public ResponseEntity<?> getDisabledMetadataSources() throws ForbiddenException {
+        return ResponseEntity.ok(dynamicRegistrationService.getDisabledDynamicRegistrations());
+    }
+
     @DeleteMapping(value = "/DynamicRegistration/{resourceId}")
     @Transactional
     public ResponseEntity<?> deleteOne(@PathVariable String resourceId) throws ForbiddenException, PersistentEntityNotFound {
