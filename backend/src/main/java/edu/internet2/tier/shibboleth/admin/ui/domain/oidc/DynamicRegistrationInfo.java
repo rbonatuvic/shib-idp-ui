@@ -75,4 +75,8 @@ public class DynamicRegistrationInfo extends AbstractAuditable implements Ownabl
             approvedBy.remove(approvedBy.size() - 1);
         }
     }
+
+    public int approvedCount() {
+        return approvedBy.size();
+    }
 }

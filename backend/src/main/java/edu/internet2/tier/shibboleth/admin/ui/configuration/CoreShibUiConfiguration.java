@@ -243,7 +243,7 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public DynamicRegistrationService dynamicRegistrationService(DynamicRegistrationInfoRepository driRepo, OwnershipRepository ownershipRepo, IShibUiPermissionEvaluator permissionEvaluator, UserService userService) {
-        return new JPADynamicRegistrationServiceImpl(driRepo, ownershipRepo, permissionEvaluator, userService);
+    public DynamicRegistrationService dynamicRegistrationService(DynamicRegistrationInfoRepository driRepo, OwnershipRepository ownershipRepo, IShibUiPermissionEvaluator permissionEvaluator, UserService userService, IGroupService groupService) {
+        return new JPADynamicRegistrationServiceImpl(groupService, driRepo, ownershipRepo, permissionEvaluator, userService);
     }
 }

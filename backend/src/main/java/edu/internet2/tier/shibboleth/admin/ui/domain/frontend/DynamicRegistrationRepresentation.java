@@ -87,4 +87,25 @@ public class DynamicRegistrationRepresentation {
     public String getModifiedDate() {
         return modifiedDate != null ? DATE_TIME_FORMATTER.format(modifiedDate) : null;
     }
+
+    /**
+     * Do not update approved or change the group here
+     */
+    public DynamicRegistrationInfo updateExistingWithRepValues(DynamicRegistrationInfo dri) {
+        dri.setApplicationType(applicationType);
+        dri.setContacts(contacts);
+        dri.setEnabled(enabled);
+        dri.setGrantType(grantType);
+        dri.setJwks(jwks);
+        dri.setLogoUri(logoUri);
+        dri.setPolicyUri(policyUri);
+        dri.setRedirectUris(redirectUris);
+        dri.setResourceId(resourceId);
+        dri.setResponseTypes(responseTypes);
+        dri.setScope(scope);
+        dri.setSubjectType(subjectType);
+        dri.setTokenEndpointAuthMethod(tokenEndpointAuthMethod);
+        dri.setTosUri(tosUri);
+        return dri;
+    }
 }
