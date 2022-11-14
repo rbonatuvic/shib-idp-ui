@@ -4,7 +4,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.DynamicRegistratio
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
-import edu.internet2.tier.shibboleth.admin.ui.exception.UnsupportedShibUiOperationException;
 import edu.internet2.tier.shibboleth.admin.ui.service.DynamicRegistrationService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import io.swagger.v3.oas.annotations.tags.Tag;

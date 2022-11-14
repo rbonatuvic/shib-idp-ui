@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.permission;
 
-import edu.internet2.tier.shibboleth.admin.ui.controller.DynamicRegistrationController;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IApprovable;
