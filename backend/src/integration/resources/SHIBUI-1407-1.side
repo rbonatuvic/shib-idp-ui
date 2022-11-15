@@ -2461,7 +2461,7 @@
       "id": "4dbf4b6f-7de9-49e1-a23f-ff748f5a986b",
       "comment": "",
       "command": "pause",
-      "target": "7000",
+      "target": "10000",
       "targets": [],
       "value": ""
     }, {
