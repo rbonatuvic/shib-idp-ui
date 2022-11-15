@@ -12,7 +12,7 @@ import org.springframework.core.io.ResourceLoader
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.*
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.JsonSchemaLocationBuilder
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ALGORITHM_FILTER
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.DYNAMIC_HTTP_METADATA_RESOLVER
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS

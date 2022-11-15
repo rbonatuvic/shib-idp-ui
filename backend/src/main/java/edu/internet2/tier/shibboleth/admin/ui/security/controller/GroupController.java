@@ -6,8 +6,10 @@ import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConf
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class GroupController {
     @Autowired
     private IGroupService groupService;
+
+    @Autowired
+    private EntityDescriptorService entityDescriptorService;
 
     @Secured("ROLE_ADMIN")
     @PostMapping
@@ -66,6 +71,7 @@ public class GroupController {
     @Transactional
     public ResponseEntity<?> update(@RequestBody Group group) throws PersistentEntityNotFound, InvalidGroupRegexException {
         Group result = groupService.updateGroup(group);
+        entityDescriptorService.checkApprovalStatusOfEntitiesForGroup(result);
         return ResponseEntity.ok(result);
     }
 }

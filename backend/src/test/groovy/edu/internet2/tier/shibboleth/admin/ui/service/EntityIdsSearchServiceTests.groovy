@@ -1,9 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest

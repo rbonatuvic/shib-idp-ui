@@ -147,4 +147,19 @@ public class User extends AbstractAuditable implements Owner, Ownable {
     public void registerLoader(ILazyLoaderHelper lazyLoaderHelper) {
         this.lazyLoaderHelper = lazyLoaderHelper;
     }
+
+    /**
+     * @return true if the user belongs to any group that can approve for other groups
+     */
+    public boolean getCanApprove() {
+        if (Group.ADMIN_GROUP.equals(getGroup())) {
+            return true;
+        }
+        for (Group group : getUserGroups()) {
+            if (!group.getApproveForList().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

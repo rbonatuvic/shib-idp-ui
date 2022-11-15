@@ -4,8 +4,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadata
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.SvnMetadataResource
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.IMetadataResolverValidator
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.ResourceBackedIMetadataResolverValidator
 import spock.lang.Specification
 
 class ResourceBackedMetadataValidatorTests extends Specification {

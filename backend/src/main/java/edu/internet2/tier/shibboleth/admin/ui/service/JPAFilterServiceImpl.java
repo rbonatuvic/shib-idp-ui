@@ -8,6 +8,8 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.permission.IShibUiPermissionEvaluator;
+import edu.internet2.tier.shibboleth.admin.ui.security.permission.PermissionType;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,9 @@ public class JPAFilterServiceImpl implements FilterService {
     
     @Autowired
     private MetadataResolverService metadataResolverService;
+
+    @Autowired
+    private IShibUiPermissionEvaluator shibUiService;
 
     @Autowired
     private UserService userService;
@@ -117,7 +122,7 @@ public class JPAFilterServiceImpl implements FilterService {
 
         MetadataFilter filterTobeUpdated = filterTobeUpdatedOptional.get();
 
-        if (!userService.currentUserCanEnable(filterTobeUpdated)) {
+        if (!shibUiService.hasPermission(userService.getCurrentUserAuthentication(), filterTobeUpdated, PermissionType.enable)) {
             throw new ForbiddenException("You do not have the permissions necessary to change the enable status of this filter.");
         }
 

@@ -25,25 +25,24 @@
 
 package jp.vmi.selenium.selenese.command;
 
+import com.google.common.io.Resources;
+import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.result.Error;
+import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Warning;
+import org.apache.commons.io.FilenameUtils;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.io.TemporaryFilesystem;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.commons.io.FilenameUtils;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.io.TemporaryFilesystem;
-
-import com.google.common.io.Resources;
-
-import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.result.Error;
-import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Warning;
-
-import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
+import static jp.vmi.selenium.selenese.command.ArgumentType.LOCATOR;
+import static jp.vmi.selenium.selenese.command.ArgumentType.VALUE;
+import static jp.vmi.selenium.selenese.result.Success.SUCCESS;
 
 /**
  * Re-implementation of AttachFile.

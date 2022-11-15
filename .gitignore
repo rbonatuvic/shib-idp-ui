@@ -415,3 +415,8 @@ beacon/spring/out
 /a.xml
 /application.yml
 /backend/src/test/resources/conf/deletem.xml
+/testbed/authentication/shibui/saml-signing-cert.crt
+/testbed/authentication/shibui/saml-signing-cert.key
+/testbed/authentication/shibui/saml-signing-cert.pem
+/testbed/authentication/shibui/samlKeystore.jks
+/testbed/authentication/shibui/sp-metadata.xml

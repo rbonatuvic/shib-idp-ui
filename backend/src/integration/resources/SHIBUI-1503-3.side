@@ -102,14 +102,14 @@
       "id": "659e4909-239b-4895-aa54-8bf3a6bd57cd",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "xpath=//table/tbody/tr[td[.='none2']]",
+      "target": "xpath=//table/tbody/tr[td[.='Approver']]",
       "targets": [],
       "value": "30000"
     }, {
       "id": "dc06ff49-c076-4f60-95d1-a42514cc6038",
       "comment": "",
       "command": "select",
-      "target": "xpath=//table/tbody/tr[td[.='none2']]/td[4]/select",
+      "target": "xpath=//table/tbody/tr[td[.='Approver']]/td[4]/select",
       "targets": [],
       "value": "label=ROLE_USER"
     }, {
@@ -168,7 +168,7 @@
         ["xpath=//input[@name='username']", "xpath:attributes"],
         ["xpath=//input", "xpath:position"]
       ],
-      "value": "none2"
+      "value": "Approver"
     }, {
       "id": "c8bf8ea5-1f75-4a40-aca4-9dfa6a6056dc",
       "comment": "",
@@ -180,7 +180,7 @@
         ["xpath=//input[@name='password']", "xpath:attributes"],
         ["xpath=//tr[2]/td[2]/input", "xpath:position"]
       ],
-      "value": "none2pass"
+      "value": "password"
     }, {
       "id": "ba66c45f-2436-4fe7-a5a9-31b55ffe8118",
       "comment": "",
@@ -214,21 +214,21 @@
         ["xpath=//a[contains(.,'Metadata Sources')]", "xpath:innerText"]
       ],
       "value": "Metadata Sources"
-    },{
-            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
-            "comment": "",
-            "command": "open",
-            "target": "/api/heheheheheheheWipeout",
-            "targets": [],
-            "value": ""
-          }, {
-            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
-            "comment": "",
-            "command": "assertText",
-            "target": "css=body",
-            "targets": [],
-            "value": "yes, you did it"
-          }]
+    }, {
+      "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }]
   }],
   "suites": [{
     "id": "173aaf44-c763-416e-ab3c-d5afd5ffcd29",

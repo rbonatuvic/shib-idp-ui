@@ -27,7 +27,10 @@ import javax.persistence.EntityManager
 
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes.HttpCachingType.file
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes.HttpCachingType.none
-import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.*
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfMetadataResolver
 
 /**
  * Testing metadata resolver envers versioning

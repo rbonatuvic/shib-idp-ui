@@ -9,7 +9,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
@@ -19,13 +18,9 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.RegexScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
-
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverVersionService
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
-
-import org.apache.commons.lang3.RandomStringUtils
-
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate

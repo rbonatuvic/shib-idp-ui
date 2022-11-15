@@ -4,7 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import spock.lang.Specification
 import spock.lang.Subject
 
-import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.IMetadataResolverValidator.*
+import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.IMetadataResolverValidator.ValidationResult
 
 /**
  * @author Dmitriy Kopylenko

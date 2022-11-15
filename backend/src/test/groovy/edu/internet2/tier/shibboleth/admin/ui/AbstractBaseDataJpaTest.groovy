@@ -1,9 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.ApproversRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
@@ -33,6 +36,12 @@ import javax.persistence.EntityManager
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 abstract class AbstractBaseDataJpaTest extends Specification implements ResetsDatabaseTrait {
+    @Autowired
+    ApproversRepository approversRepository
+
+    @Autowired
+    EntityDescriptorRepository entityDescriptorRepository
+
     @Autowired
     EntityManager entityManager
 
@@ -83,7 +92,7 @@ abstract class AbstractBaseDataJpaTest extends Specification implements ResetsDa
         }
 
         createAdminUser()
-        GroupUpdatedEntityListener.init(ownershipRepository)
+        GroupUpdatedEntityListener.init(ownershipRepository, groupRepository)
         UserUpdatedEntityListener.init(ownershipRepository, groupRepository)
     }
 

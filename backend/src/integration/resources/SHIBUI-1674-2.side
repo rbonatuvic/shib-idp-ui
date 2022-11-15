@@ -690,13 +690,6 @@
       "targets": [],
       "value": "The minimum duration for which metadata will be cached before it is refreshed."
     }, {
-      "id": "6afe9417-450d-4820-8ed4-300188f38196",
-      "comment": "",
-      "command": "mouseOut",
-      "target": "css=.row:nth-child(2) path",
-      "targets": [],
-      "value": ""
-    }, {
       "id": "da0ce3d8-75e6-4b84-b3a7-8b423399044e",
       "comment": "",
       "command": "click",
@@ -932,43 +925,6 @@
       "targets": [],
       "value": "The minimum duration for which metadata will be cached before it is refreshed."
     }, {
-      "id": "687d2359-86f5-45de-bbfd-6557f62fd6d1",
-      "comment": "",
-      "command": "mouseOut",
-      "target": "css=.row:nth-child(2) path",
-      "targets": [],
-      "value": ""
-    }, {
-      "id": "fba778ef-2d9a-4fe9-9e6a-291560e3d807",
-      "comment": "",
-      "command": "click",
-      "target": "css=body",
-      "targets": [],
-      "value": ""
-    }, {
-      "id": "86512870-b695-44b6-a112-ea60375586f4",
-      "comment": "",
-      "command": "pause",
-      "target": "1000",
-      "targets": [],
-      "value": ""
-    }, {
-      "id": "8f77dc16-2b54-46d7-b6bd-bf6fd046e8b6",
-      "comment": "",
-      "command": "mouseOver",
-      "target": "css=.row:nth-child(8) .svg-inline--fa",
-      "targets": [
-        ["css=.row:nth-child(8) .svg-inline--fa", "css:finder"]
-      ],
-      "value": ""
-    }, {
-      "id": "3fd29e97-1178-4bb5-9e76-22e89bca717c",
-      "comment": "",
-      "command": "assertText",
-      "target": "css=div[role=\"tooltip\"]",
-      "targets": [],
-      "value": "Flag indicating whether the system should initialize from the persistent cache in the background. Initializing from the cache in the background will improve IdP startup times."
-    }, {
       "id": "d1ee0afc-651b-4da5-bd99-eac47bbceb78",
       "comment": "",
       "command": "click",
@@ -980,22 +936,6 @@
         ["xpath=//li[2]/button", "xpath:position"]
       ],
       "value": ""
-    }, {
-      "id": "aea0e033-111e-4a5d-8038-ec222786a695",
-      "comment": "",
-      "command": "mouseOver",
-      "target": "css=.row:nth-child(4) .svg-inline--fa:nth-child(2)",
-      "targets": [
-        ["css=.row:nth-child(4) .svg-inline--fa:nth-child(2)", "css:finder"]
-      ],
-      "value": ""
-    }, {
-      "id": "80e0d456-3951-4858-8423-7e04d6debb96",
-      "comment": "",
-      "command": "assertText",
-      "target": "css=div[role=\"tooltip\"]",
-      "targets": [],
-      "value": "Controls whether to keep entities descriptors that contain no entity descriptors. Note: If this attribute is set to false, the resulting output may not be schema-valid since an <md:EntitiesDescriptor> element must include at least one child element, either an <md:EntityDescriptor> element or an <md:EntitiesDescriptor> element."
     }, {
       "id": "148a84ef-0353-425d-9a63-79ccaa01478d",
       "comment": "",
@@ -1265,22 +1205,6 @@
       ],
       "value": "label=EntityAttributes"
     }, {
-      "id": "e2b1a582-a3ce-4adb-b10c-0804f44a56ae",
-      "comment": "",
-      "command": "mouseOver",
-      "target": "css=.justify-content-start > .btn path",
-      "targets": [
-        ["css=.justify-content-start > .btn path", "css:finder"]
-      ],
-      "value": ""
-    }, {
-      "id": "c42fe40a-496c-491b-834e-694181da46d1",
-      "comment": "",
-      "command": "assertText",
-      "target": "css=div[role=\"tooltip\"]",
-      "targets": [],
-      "value": "Indicates the type of search to be performed."
-    }, {
       "id": "e4596fdd-7ffc-4636-95d3-870d6bd51f20",
       "comment": "",
       "command": "click",
@@ -1323,6 +1247,29 @@
       ],
       "value": "label=NameIDFormat"
     }, {
+      "id": "47c3d355-4218-456a-9441-2d5d2ffa4d34",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.ms-2 > path",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "a6dcb984-5ad2-4004-8129-931adfc54a87",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.ms-2 > path",
+      "targets": [
+        ["css=.ms-2 > path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "cda8d83d-d242-4def-b4cf-f696864fa806",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.ms-2 > path",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "b358a7c0-87a5-4b74-8013-c0ab379278c2",
       "comment": "",
       "command": "mouseOver",
@@ -1337,7 +1284,7 @@
       "command": "assertText",
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
-      "value": "Whether to remove any existing formats from a role if any are added by the filter (unmodified roles will be untouched regardless of this setting)"
+      "value": "Whether to use the SHA1 Signing Algorithm. In cryptography, SHA-1 (Secure Hash Algorithm 1) is cryptographically broken but still widely used. It takes an input and produces a 160-bit (20-byte) hash value."
     }, {
       "id": "59d268fc-f9ba-4c9c-b412-f17ca72b67d1",
       "comment": "",

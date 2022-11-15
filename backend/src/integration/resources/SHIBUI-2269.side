@@ -212,6 +212,39 @@
       ],
       "value": ""
     }, {
+      "id": "836b08a5-1a08-4482-aff2-455fb02f3eb6",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "id=enable-switch-0",
+      "targets": [
+        ["id=enable-switch-0", "id"],
+        ["css=#enable-switch-0", "css:finder"],
+        ["xpath=//input[@id='enable-switch-0']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/div/table/tbody/tr/td[6]/span/div/input", "xpath:idRelative"],
+        ["xpath=//span/div/input", "xpath:position"]
+      ],
+      "value": "30000"
+    }, {
+      "id": "29aa153e-4f7d-4468-bbef-db0b3f9de6eb",
+      "comment": "",
+      "command": "click",
+      "target": "id=enable-switch-0",
+      "targets": [
+        ["id=enable-switch-0", "id"],
+        ["css=#enable-switch-0", "css:finder"],
+        ["xpath=//input[@id='enable-switch-0']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/div/table/tbody/tr/td[6]/span/div/input", "xpath:idRelative"],
+        ["xpath=//span/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4753e8d9-eca2-4616-879b-64c6308c2b94",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.alert",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "ab15e915-02b9-4616-9f92-ffcb0386918c",
       "comment": "",
       "command": "click",
@@ -452,31 +485,6 @@
       "target": "css=.fa-floppy-disk > path",
       "targets": [
         ["css=.fa-floppy-disk > path", "css:finder"]
-      ],
-      "value": ""
-    }, {
-      "id": "802be014-0d04-4bda-93d1-ca7a5d7f802d",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=.text:nth-child(2)",
-      "targets": [
-        ["css=.text:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div/h2/span[2]", "xpath:idRelative"],
-        ["xpath=//h2/span[2]", "xpath:position"],
-        ["xpath=//span[contains(.,'Common Attributes')]", "xpath:innerText"]
-      ],
-      "value": "30000"
-    }, {
-      "id": "7e3e7d65-e0ff-4a2d-a0e9-5080bfefd4df",
-      "comment": "",
-      "command": "click",
-      "target": "css=.btn-outline-secondary",
-      "targets": [
-        ["css=.btn-outline-secondary", "css:finder"],
-        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/div/div/div/div/button", "xpath:idRelative"],
-        ["xpath=//div/div/div/div/button", "xpath:position"],
-        ["xpath=//button[contains(.,'Enable')]", "xpath:innerText"]
       ],
       "value": ""
     }, {

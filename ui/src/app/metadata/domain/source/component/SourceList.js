@@ -6,8 +6,10 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSquareCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSquare } from '@fortawesome/free-regular-svg-icons';
 
 import FormattedDate from '../../../../core/components/FormattedDate';
 import Translate from '../../../../i18n/components/translate';
@@ -16,7 +18,7 @@ import { useTranslator } from '../../../../i18n/hooks';
 import { useCanEnable, useIsAdmin } from '../../../../core/user/UserContext';
 import { GroupsProvider } from '../../../../admin/hoc/GroupsProvider';
 
-export default function SourceList({ entities, onDelete, onEnable, onChangeGroup, children }) {
+export default function SourceList({ entities, onDelete, onEnable, onApprove, onChangeGroup, children }) {
 
     const translator = useTranslator();
     const isAdmin = useIsAdmin();
@@ -24,7 +26,7 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
 
     return (
         <React.Fragment>
-            <Scroller entities={entities}>
+            <Scroller entities={entities || []}>
             {(limited) =>
                 <div className="table-responsive mt-3 source-list">
                     <table className="table table-striped w-100 table-hover">
@@ -35,6 +37,7 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                 <th className=""><Translate value="label.source-protocol">Protocol</Translate></th>
                                 <th className=""><Translate value="label.author">Author</Translate></th>
                                 <th className=""><Translate value="label.creation-date">Created Date</Translate></th>
+                                <th className="text-center"><Translate value="label.approval">Approval</Translate></th>
                                 <th className="text-center"><Translate value="label.enabled">Enabled</Translate></th>
                                 {isAdmin && onChangeGroup && <th className=""><Translate value="label.group">Group</Translate></th> }
                                 {onDelete && isAdmin &&
@@ -65,7 +68,26 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                             <td className="align-middle"><FormattedDate date={source.createdDate} /></td>
                                             <td className="text-center align-middle">
                                                 <span className="d-flex justify-content-center align-items-center">
-                                                {onEnable && canEnable ?
+                                                    {onApprove ?
+                                                    <Button variant={source.approved ? 'outline-success' : 'outline-primary' }
+                                                        id={`approve-switch-${idx}`}
+                                                        size="sm" className=""
+                                                            onClick={() => onApprove(source, !source.approved)}>
+                                                                <span className=" me-1">
+                                                                    <Translate value={source.approved ? 'label.disapprove' : 'label.approve'} />
+                                                                </span>
+                                                        <FontAwesomeIcon size="lg" icon={source.approved ? faSquareCheck : faSquare} />
+                                                    </Button>
+                                                    :
+                                                    <Badge bg={source.approved ? 'success' : 'danger'}>
+                                                        <Translate value={source.approved ? 'value.approved' : 'value.disapproved'}></Translate>
+                                                    </Badge>
+                                                    }
+                                                </span>
+                                            </td>
+                                            <td className="text-center align-middle">
+                                                <span className="d-flex justify-content-center align-items-center">
+                                                {onEnable && canEnable(source.approved) ?
                                                     <Form.Check
                                                         type="switch"
                                                         id={`enable-switch-${idx}`}
@@ -76,18 +98,20 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                                     >
                                                     </Form.Check>
                                                     :
-                                                    <Badge variant={source.serviceEnabled ? 'success' : 'danger'}>
+                                                    <Badge bg={source.serviceEnabled ? 'success' : 'danger'}>
                                                         <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
                                                     </Badge>
                                                 }
                                                 </span>
                                             </td>
+                                            
+                                            
                                             {isAdmin && onChangeGroup &&
                                                 <td className="align-middle">
                                                     <label htmlFor={`group-${source.serviceProviderName}`} className="sr-only"><Translate value="action.source-group">Group</Translate></label>
                                                     <Form.Select
-                                                        id={`group-${source.id}`}
-                                                        name={`group-${source.id}`}
+                                                        id={`group-${idx}`}
+                                                        name={`group-${idx}`}
                                                         className="form-control"
                                                         onChange={(event) => onChangeGroup(source, event.target.value)}
                                                         value={source.idOfOwner ? source.idOfOwner : ''}
@@ -111,6 +135,7 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                                         <span className="d-inline-block">
                                                             <Button variant="danger" size="sm"
                                                                 type="button"
+                                                                id={`delete-${idx}`}
                                                                 disabled={source.serviceEnabled}
                                                                 onClick={() => onDelete(source.id, onDelete)}>
                                                                 <span className="sr-only">Delete</span>

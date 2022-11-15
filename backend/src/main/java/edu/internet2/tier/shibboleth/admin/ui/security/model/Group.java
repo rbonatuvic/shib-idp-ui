@@ -10,9 +10,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -26,6 +30,10 @@ public class Group implements Owner {
     @Transient
     @JsonIgnore
     public static Group ADMIN_GROUP;
+
+    @Transient
+    @JsonIgnore
+    List<String> approveForList = new ArrayList<>();
 
     @Column(name = "group_description")
     String description;
@@ -48,6 +56,9 @@ public class Group implements Owner {
 
     @Column(name = "validation_regex")
     private String validationRegex;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Approvers> approversList = new ArrayList<>();
 
     /**
      * Define a Group object based on the user
@@ -77,5 +88,27 @@ public class Group implements Owner {
             lazyLoaderHelper.loadOwnedItems(this);
         }
         return ownedItems;
+    }
+
+    @Override
+    public int hashCode() {
+        return resourceId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Group && this.resourceId.equals(((Group)o).resourceId);
+    }
+
+    public List<String> getApproveForList() {
+        if (lazyLoaderHelper != null) {
+            lazyLoaderHelper.loadApproveForList(this);
+        }
+        return approveForList;
+    }
+
+    @Override
+    public String toString() {
+        return "Group resourceId=" + resourceId;
     }
 }

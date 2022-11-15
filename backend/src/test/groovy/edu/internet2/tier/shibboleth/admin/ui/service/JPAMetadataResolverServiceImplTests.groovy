@@ -7,11 +7,11 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.AlgorithmDigestMethod
 import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethod
 import edu.internet2.tier.shibboleth.admin.ui.domain.SignatureDigestMethod
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSString
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.AlgorithmFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.AlgorithmFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ExternalMetadataResolver

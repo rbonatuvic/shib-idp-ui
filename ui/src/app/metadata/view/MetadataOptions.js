@@ -52,12 +52,12 @@ export function MetadataOptions ({reload}) {
 
     const enabled = type === 'source' ? metadata.serviceEnabled : metadata.enabled;
 
-    const canEnable = useCanEnable();
+    const canEnable = useCanEnable()(metadata.approved);
     const isAdmin = useIsAdmin();
 
     return (
         <MetadataActions type={type}>
-            {(enable, remove) =>
+            {({enable, remove, approve}) =>
             <>
             <h2 className="mb-4" id="header">
                 <Translate value={`label.${type}-configuration`}>[{type}] configuration</Translate>
@@ -69,7 +69,7 @@ export function MetadataOptions ({reload}) {
                     model={metadata}
                     showGroup={type === 'source'}>
                     <div className="d-flex align-items-start btn-group">
-                        {enable && canEnable &&
+                        {enable && (canEnable && metadata.approved) &&
                         <Button variant={enabled ? 'outline-secondary' : 'outline-secondary' } size="sm" className=""
                                 onClick={() => enable(metadata, !enabled, reload)}>
                                      <span className=" me-1">

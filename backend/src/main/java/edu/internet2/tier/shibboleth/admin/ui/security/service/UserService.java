@@ -18,10 +18,12 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -54,29 +56,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean currentUserCanEnable(IActivatable activatableObject) {
-        if (currentUserIsAdmin()) { return true; }
-        switch (activatableObject.getActivatableType()) {
-        case ENTITY_DESCRIPTOR: {
-            return currentUserHasExpectedRole(Arrays.asList("ROLE_ENABLE" )) && getCurrentUserGroup().getOwnerId().equals(((EntityDescriptor) activatableObject).getIdOfOwner());
-        }
-        // Currently filters and providers dont have ownership, so we just look for the right role
-        case FILTER:
-        case METADATA_RESOLVER:
-            return currentUserHasExpectedRole(Arrays.asList("ROLE_ENABLE" ));
-        default:
-            return false;
-        }
-    }
-
     /**
-     * This basic logic assumes users only have a single role (despite users having a list of roles, we assume only 1 currently)
+     * @deprecated don't call this, call the ShibUiPermissionDelegate method hasPermission(...)
      */
-    private boolean currentUserHasExpectedRole(List<String> acceptedRoles) {
-        User user = getCurrentUser();
-        return acceptedRoles.contains(user.getRole());
-    }
-
+    @Deprecated
     public boolean currentUserIsAdmin() {
         User user = getCurrentUser();
         return user != null && user.getRole().equals("ROLE_ADMIN");
@@ -97,6 +80,10 @@ public class UserService {
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public Authentication getCurrentUserAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 
     public User getCurrentUser() {
@@ -137,6 +124,19 @@ public class UserService {
         }
     }
 
+    /**
+     * @return a list of ALL groups that the user can approve for (checks ALL the users groups)
+     */
+    public List<String> getGroupsCurrentUserCanApprove() {
+        HashSet<String> fullSet = new HashSet<>();
+        for (Group g : getCurrentUser().getUserGroups()) {
+            fullSet.addAll(g.getApproveForList());
+        }
+        ArrayList<String> result = new ArrayList<>();
+        result.addAll(fullSet);
+        return result;
+    }
+
     public Set<String> getUserRoles(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         HashSet<String> result = new HashSet<>();
@@ -145,15 +145,18 @@ public class UserService {
     }
 
      // @TODO - probably delegate this out to something plugable at some point
-    public boolean isAuthorizedFor(Ownable ownableObject) {
+    public boolean canViewOrEditTarget(Ownable ownableObject) {
         switch (getCurrentUserAccess()) {
         case ADMIN: // Pure admin is authorized to do anything
             return true;
-        case GROUP: // if the current user's group matches the object's group we are good.
+        case GROUP: // if the current user's group matches the object's group OR the user is an approver to the object
             Set<Ownership> owners = ownershipRepository.findOwnableObjectOwners(ownableObject);
             String currentUsersGroupId = getCurrentUser().getGroupId();
+            List<String> userApproveForGroups = getCurrentUser().getGroup().getApproveForList();
+            // Check user is part of the owner's group
             for (Ownership owner : owners) {
-                if (currentUsersGroupId.equals(owner.getOwnerId()) && OwnerType.valueOf(owner.getOwnerType()) == OwnerType.GROUP) {
+                boolean isGroupOwner = OwnerType.valueOf(owner.getOwnerType()) == OwnerType.GROUP;
+                if (isGroupOwner && (currentUsersGroupId.equals(owner.getOwnerId())) || userApproveForGroups.contains(owner.getOwnerId())) {
                     return true;
                 }
             }

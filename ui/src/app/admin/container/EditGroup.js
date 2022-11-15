@@ -13,7 +13,7 @@ import { createNotificationAction, NotificationTypes, useNotificationDispatcher 
 import { useTranslator } from '../../i18n/hooks';
 import { BASE_PATH } from '../../App.constant';
 
-export function EditGroup() {
+export function EditGroup({ groups }) {
 
     const { id } = useParams();
 
@@ -74,6 +74,7 @@ export function EditGroup() {
                                     <FormManager initial={group}>
                                         {(data, errors) =>
                                             <GroupForm
+                                                context={ { groups } }
                                                 group={data}
                                                 errors={errors}
                                                 schema={schema}

@@ -1,183 +1,237 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
+import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
-import net.shibboleth.ext.spring.resource.ResourceHelper
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet
-import org.opensaml.core.criterion.EntityIdCriterion
-import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
-import org.opensaml.saml.metadata.resolver.MetadataResolver
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
-import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver
-import org.spockframework.spring.SpringBean
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityService
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
+import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.core.io.ClassPathResource
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.web.reactive.server.WebTestClient
-import org.xmlunit.builder.DiffBuilder
-import org.xmlunit.builder.Input
-import org.xmlunit.diff.DefaultNodeMatcher
-import org.xmlunit.diff.ElementSelectors
-import spock.lang.Specification
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.client.RestTemplate
+import spock.lang.Subject
 
-import java.time.Instant
+import javax.persistence.EntityManager
 
-/**
- * @author Bill Smith (wsmith@unicon.net)
- */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("no-auth")
-class EntitiesControllerIntegrationTests extends Specification {
+import static org.springframework.http.MediaType.APPLICATION_XML
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+
+class EntitiesControllerIntegrationTests  extends AbstractBaseDataJpaTest {
+    @Autowired
+    EntityDescriptorRepository entityDescriptorRepository
 
     @Autowired
-    private WebTestClient webClient
+    EntityManager entityManager
 
-    def openSamlObjects = new OpenSamlObjects().with {
-        init()
-        it
+    @Autowired
+    EntityService entityService
+
+    @Autowired
+    TestObjectGenerator generator
+
+    @Autowired
+    ObjectMapper mapper
+
+    @Autowired
+    OpenSamlObjects openSamlObjects
+
+    @Autowired
+    JPAEntityDescriptorServiceImpl jpaEntityDescriptorService
+
+    RandomGenerator randomGenerator
+    def mockRestTemplate = Mock(RestTemplate)
+    def mockMvc
+
+    @Subject
+    def controller
+
+    EntityDescriptorVersionService versionService = Mock()
+
+    @Transactional
+    def setup() {
+        openSamlObjects.init()
+
+        Group gb = new Group()
+        gb.setResourceId("testingGroupBBB")
+        gb.setName("Group BBB")
+        gb.setValidationRegex("^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$")
+        gb = groupService.createGroup(gb)
+
+        randomGenerator = new RandomGenerator()
+
+        controller = new EntitiesController()
+        controller.openSamlObjects = openSamlObjects
+        controller.entityDescriptorService = jpaEntityDescriptorService
+        controller.entityDescriptorRepository = entityDescriptorRepository
+
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
+
+        Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
+        User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
+        user.setGroup(gb)
+        userService.save(user)
+
+        EntityDescriptorConversionUtils.setOpenSamlObjects(openSamlObjects)
+        EntityDescriptorConversionUtils.setEntityService(entityService)
     }
 
-    def resource = ResourceHelper.of(new ClassPathResource("/metadata/aggregate.xml"))
-
-    def metadataResolver = new ResourceBackedMetadataResolver(resource).with {
-        it.id = 'test'
-        it.parserPool = openSamlObjects.parserPool
-        initialize()
-        it
-    }
-    
-    // This stub will spit out the results from the resolver instead of actually finding them in the DB
-    @SpringBean
-    EntityDescriptorRepository edr =  Stub(EntityDescriptorRepository) {
-        findByEntityID("http://test.scaldingspoon.org/test1") >> metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion("http://test.scaldingspoon.org/test1")))
-        findByEntityID("test") >> metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion("test")))
+    @WithMockAdmin
+    def 'GET /entities/{resourceId} non-existent'() {
+        expect:
+        try {
+            mockMvc.perform(get("/api/entities/uuid-1"))
+        }
+        catch (Exception e) {
+            e instanceof PersistentEntityNotFound
+        }
     }
 
-    //todo review
-    def "GET /api/entities returns the proper json"() {
+    @WithMockAdmin
+    def 'GET /entities/{resourceId} existing'() {
         given:
-        def expectedBody = '''
-            {               
-                "entityId":"http://test.scaldingspoon.org/test1",                
-                "serviceProviderSsoDescriptor": {
-                    "protocolSupportEnum":"SAML 2",
-                    "nameIdFormats":["urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"]
-                },                
-                "assertionConsumerServices":[
-                    {"locationUrl":"https://test.scaldingspoon.org/test1/acs","binding":"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST","makeDefault":false}
-                ],
-                "serviceEnabled":false,                
-                "attributeRelease":["givenName","employeeNumber"]
-            }
-        '''
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: "admingroup")
+        entityDescriptorRepository.save(entityDescriptorOne)
+        entityManager.flush()
+        entityManager.clear()
 
         when:
-        def result = this.webClient
-                .get()
-                .uri("/api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1")
-                .exchange() // someday, I'd like to know why IntelliJ "cannot resolve symbol 'exchange'"
+        def result = mockMvc.perform(get("/api/entities/eid1"))
 
         then:
-        result.expectStatus().isOk()
-                .expectBody()
-                .json(expectedBody)
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("\$.entityId").value("eid1"))
+                .andExpect(jsonPath("\$.serviceProviderName").value("sp1"))
+                .andExpect(jsonPath("\$.serviceEnabled").value(true))
+                .andExpect(jsonPath("\$.idOfOwner").value("admingroup"))
     }
 
-    def "GET /api/entities/test is not found"() {
-        when:
-        def result = this.webClient
-                .get()
-                .uri("/api/entities/test")
-                .exchange()
-
-        then:
-        result.expectStatus().isNotFound()
-    }
-
-    def "GET /api/entities/test XML is not found"() {
-        when:
-        def result = this.webClient
-                .get()
-                .uri("/api/entities/test")
-                .header('Accept', 'application/xml')
-                .exchange()
-
-        then:
-        result.expectStatus().isNotFound()
-    }
-
-    def "GET /api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1 XML returns proper XML"() {
+    @WithMockUser(value = "someUser", roles = ["USER"])
+    def 'GET /entities/{resourceId} existing, validate group access'() {
         given:
-        def expectedBody = '''<?xml version="1.0" encoding="UTF-8"?>
-<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://test.scaldingspoon.org/test1">
-  <md:Extensions>
-    <mdattr:EntityAttributes xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute">
-      <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://scaldingspoon.org/realm" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-        <saml:AttributeValue>internal</saml:AttributeValue>
-      </saml:Attribute>
-      <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-        <saml:AttributeValue>givenName</saml:AttributeValue>
-        <saml:AttributeValue>employeeNumber</saml:AttributeValue>
-      </saml:Attribute>
-    </mdattr:EntityAttributes>
-  </md:Extensions>
-  <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
-    <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
-    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://test.scaldingspoon.org/test1/acs" index="1"/>
-  </md:SPSSODescriptor>
-</md:EntityDescriptor>
-'''
+        Group g = userService.getCurrentUserGroup()
+
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: "someUser")
+        def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false, idOfOwner: Group.ADMIN_GROUP.getOwnerId())
+
+        entityDescriptorRepository.saveAndFlush(entityDescriptorOne)
+        entityDescriptorRepository.saveAndFlush(entityDescriptorTwo)
+
+        ownershipRepository.saveAndFlush(new Ownership(g, entityDescriptorOne))
+        ownershipRepository.saveAndFlush(new Ownership(Group.ADMIN_GROUP, entityDescriptorTwo))
+
         when:
-        def result = this.webClient
-                .get()
-                .uri("/api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1")
-                .header('Accept', 'application/xml')
-                .exchange()
+        def result = mockMvc.perform(get("/api/entities/eid1"))
 
         then:
-        def resultBody = result.expectStatus().isOk()
-                //.expectHeader().contentType("application/xml;charset=ISO-8859-1") // should this really be ISO-8859-1?
-                                                                                    // expectedBody encoding is UTF-8...
-                .expectHeader().contentType("application/xml;charset=UTF-8")
-                .expectBody(String.class)
-                .returnResult()
-        def diff = DiffBuilder.compare(Input.fromString(expectedBody)).withTest(Input.fromString(resultBody.getResponseBody())).ignoreComments().checkForSimilar().ignoreWhitespace().withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byNameAndText)).build()
-        !diff.hasDifferences()
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("\$.entityId").value("eid1"))
+                .andExpect(jsonPath("\$.serviceProviderName").value("sp1"))
+                .andExpect(jsonPath("\$.serviceEnabled").value(true))
+                .andExpect(jsonPath("\$.idOfOwner").value("someUser"))
     }
 
+    @WithMockUser(value = "someUser", roles = ["USER"])
+    def 'GET /entities/{resourceId} existing, owned by some other user'() {
+        when:
+        Group g = userService.getCurrentUserGroup()
 
-    @TestConfiguration
-    static class Config {
-        @Autowired
-        OpenSamlObjects openSamlObjects
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: g.getOwnerId())
+        def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false, idOfOwner: Group.ADMIN_GROUP.getOwnerId())
 
-        @Bean
-        MetadataResolver metadataResolver() {
-            def resource = ResourceHelper.of(new ClassPathResource("/metadata/aggregate.xml"))
-            def aggregate = new ResourceBackedMetadataResolver(resource){
-                @Override
-                Instant getLastRefresh() {
-                    return null
-                }
-            }
+        entityDescriptorRepository.saveAndFlush(entityDescriptorOne)
+        entityDescriptorRepository.saveAndFlush(entityDescriptorTwo)
 
-            aggregate.with {
-                it.metadataFilter = new MetadataFilterChain()
-                it.id = 'testme'
-                it.parserPool = openSamlObjects.parserPool
-                it.initialize()
-                it
-            }
+        ownershipRepository.saveAndFlush(new Ownership(g, entityDescriptorOne))
+        ownershipRepository.saveAndFlush(new Ownership(Group.ADMIN_GROUP, entityDescriptorTwo))
 
-            return new ChainingMetadataResolver().with {
-                it.id = 'chain'
-                it.resolvers = [aggregate]
-                it.initialize()
-                it
-            }
+        then:
+        try {
+            mockMvc.perform(get("/api/entities/eid2"))
+        }
+        catch (Exception e) {
+            e instanceof ForbiddenException
+        }
+    }
+
+    @WithMockAdmin
+    def 'GET /entities/{resourceId} existing (xml)'() {
+        given:
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true)
+        entityDescriptorOne.setElementLocalName("EntityDescriptor")
+        entityDescriptorOne.setNamespacePrefix("md")
+        entityDescriptorOne.setNamespaceURI("urn:oasis:names:tc:SAML:2.0:metadata")
+        entityDescriptorRepository.save(entityDescriptorOne)
+        entityManager.flush()
+
+        def expectedXML = """<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor
+	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="eid1"/>"""
+
+        when:
+        def result = mockMvc.perform(get("/api/entities/eid1").accept(APPLICATION_XML))
+
+        then:
+        result.andExpect(status().isOk()).andExpect(content().xml(expectedXML))
+    }
+
+    @WithMockUser(value = "someUser", roles = ["USER"])
+    def 'GET /entities/{resourceId} existing (xml), user-owned'() {
+        given:
+        Group g = userService.getCurrentUserGroup()
+
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: g.getOwnerId())
+        entityDescriptorOne.setElementLocalName("EntityDescriptor")
+        entityDescriptorOne.setNamespacePrefix("md")
+        entityDescriptorOne.setNamespaceURI("urn:oasis:names:tc:SAML:2.0:metadata")
+        entityDescriptorOne = entityDescriptorRepository.saveAndFlush(entityDescriptorOne)
+        ownershipRepository.saveAndFlush(new Ownership(g,entityDescriptorOne))
+
+        def expectedXML = """<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor
+    xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="eid1"/>"""
+
+        when:
+        def result = mockMvc.perform(get("/api/entities/eid1").accept(APPLICATION_XML))
+
+        then:
+        result.andExpect(status().isOk()).andExpect(content().xml(expectedXML))
+    }
+
+    @WithMockUser(value = "someUser", roles = ["USER"])
+    def 'GET /entities/{resourceId} existing (xml), other user-owned'() {
+        when:
+        Group g = Group.ADMIN_GROUP
+
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: g.getOwnerId())
+        entityDescriptorOne.setElementLocalName("EntityDescriptor")
+        entityDescriptorOne.setNamespacePrefix("md")
+        entityDescriptorOne.setNamespaceURI("urn:oasis:names:tc:SAML:2.0:metadata")
+        entityDescriptorRepository.save(entityDescriptorOne)
+        entityManager.flush()
+
+        then:
+        try {
+            mockMvc.perform(get("/api/entities/eid1").accept(APPLICATION_XML))
+        }
+        catch (Exception e) {
+            e instanceof ForbiddenException
         }
     }
 }

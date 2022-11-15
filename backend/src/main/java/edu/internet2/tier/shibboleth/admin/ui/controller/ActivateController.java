@@ -38,8 +38,7 @@ public class ActivateController {
     
     @PatchMapping(path = "/entityDescriptor/{resourceId}/{mode}")
     @Transactional
-    public ResponseEntity<?> enableEntityDescriptor(@PathVariable String resourceId, @PathVariable String mode) throws
-                    PersistentEntityNotFound, ForbiddenException {
+    public ResponseEntity<?> enableEntityDescriptor(@PathVariable String resourceId, @PathVariable String mode) throws PersistentEntityNotFound, ForbiddenException {
         boolean status = "enable".equalsIgnoreCase(mode);
         EntityDescriptorRepresentation edr = entityDescriptorService.updateEntityDescriptorEnabledStatus(resourceId, status);
         return ResponseEntity.ok(edr);
@@ -47,8 +46,7 @@ public class ActivateController {
     
     @PatchMapping(path = "/MetadataResolvers/{metadataResolverId}/Filter/{resourceId}/{mode}")
     @Transactional
-    public ResponseEntity<?> enableFilter(@PathVariable String metadataResolverId, @PathVariable String resourceId, @PathVariable String mode) throws
-                    PersistentEntityNotFound, ForbiddenException, ScriptException {
+    public ResponseEntity<?> enableFilter(@PathVariable String metadataResolverId, @PathVariable String resourceId, @PathVariable String mode) throws PersistentEntityNotFound, ForbiddenException, ScriptException {
         boolean status = "enable".equalsIgnoreCase(mode);
         MetadataFilter persistedFilter = filterService.updateFilterEnabledStatus(metadataResolverId, resourceId, status);
         return ResponseEntity.ok(persistedFilter);
@@ -56,13 +54,9 @@ public class ActivateController {
     
     @PatchMapping("/MetadataResolvers/{resourceId}/{mode}") 
     @Transactional
-    public ResponseEntity<?> enableProvider(@PathVariable String resourceId, @PathVariable String mode) throws
-                    PersistentEntityNotFound, ForbiddenException, MetadataFileNotFoundException, InitializationException {
+    public ResponseEntity<?> enableProvider(@PathVariable String resourceId, @PathVariable String mode) throws PersistentEntityNotFound, ForbiddenException, MetadataFileNotFoundException, InitializationException {
         boolean status = "enable".equalsIgnoreCase(mode);
-        MetadataResolver existingResolver = metadataResolverService.findByResourceId(resourceId);
-        existingResolver.setEnabled(status);
-        existingResolver = metadataResolverService.updateMetadataResolverEnabledStatus(existingResolver);
-
-        return ResponseEntity.ok(existingResolver);
+        MetadataResolver metadataResolver = metadataResolverService.updateMetadataResolverEnabledStatus(resourceId, status);
+        return ResponseEntity.ok(metadataResolver);
     }
 }

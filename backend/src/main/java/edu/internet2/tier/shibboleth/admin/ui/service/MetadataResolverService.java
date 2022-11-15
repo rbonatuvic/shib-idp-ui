@@ -16,7 +16,7 @@ public interface MetadataResolverService {
 
     public void reloadFilters(String metadataResolverName);
 
-    public MetadataResolver updateMetadataResolverEnabledStatus(MetadataResolver existingResolver) throws ForbiddenException, MetadataFileNotFoundException, InitializationException;
+    public MetadataResolver updateMetadataResolverEnabledStatus(String resourceId, boolean status) throws ForbiddenException, MetadataFileNotFoundException, InitializationException;
 
     public Document generateExternalMetadataFilterConfiguration();
 }

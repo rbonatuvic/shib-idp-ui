@@ -85,6 +85,12 @@ public class EntityDescriptorController {
         return ResponseEntity.ok(entityDescriptorService.getAllEntityDescriptorProjectionsBasedOnUserAccess());
     }
 
+    @GetMapping("/EntityDescriptors/needsApproval")
+    @Transactional
+    public ResponseEntity<?> getAllNeedingApproval() throws ForbiddenException {
+        return ResponseEntity.ok(entityDescriptorService.getAllEntityDescriptorProjectionsNeedingApprovalBasedOnUserAccess());
+    }
+
     @GetMapping("/EntityDescriptor/{resourceId}/Versions")
     @Transactional
     public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) throws PersistentEntityNotFound, ForbiddenException {
@@ -93,11 +99,14 @@ public class EntityDescriptorController {
         return ResponseEntity.ok(versionService.findVersionsForEntityDescriptor(ed.getResourceId()));
     }
 
+    /**
+     * @throws ForbiddenException This call is used for the admin needs action list, therefore the user must be an admin
+     */
     @Secured("ROLE_ADMIN")
     @Transactional
-    @GetMapping(value = "/EntityDescriptor/disabledNonAdmin")
-    public Iterable<EntityDescriptorRepresentation> getDisabledAndNotOwnedByAdmin() throws ForbiddenException {
-        return entityDescriptorService.getAllDisabledAndNotOwnedByAdmin();
+    @GetMapping(value = "/EntityDescriptor/disabledSources")
+    public ResponseEntity<?> getDisabledMetadataSources() throws ForbiddenException {
+        return ResponseEntity.ok(entityDescriptorService.getDisabledMetadataSources());
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}")
@@ -115,8 +124,7 @@ public class EntityDescriptorController {
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}/Versions/{versionId}")
-    public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) throws
-                    PersistentEntityNotFound, ForbiddenException {
+    public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) throws PersistentEntityNotFound, ForbiddenException {
         // this "get by resource id" verifies that both the ED exists and the user has proper access, so needs to remain
         EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);
         EntityDescriptorRepresentation result = versionService.findSpecificVersionOfEntityDescriptor(ed.getResourceId(), versionId);

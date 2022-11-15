@@ -16,14 +16,15 @@
 
 package com.sebuilder.interpreter.webdriverfactory;
 
-import java.io.File;
-import java.util.HashMap;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.io.File;
+import java.util.HashMap;
 
 public class Firefox implements WebDriverFactory {
     /**

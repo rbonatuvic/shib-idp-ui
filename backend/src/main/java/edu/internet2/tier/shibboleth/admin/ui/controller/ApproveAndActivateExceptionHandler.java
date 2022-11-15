@@ -15,8 +15,8 @@ import javax.script.ScriptException;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
-@ControllerAdvice(assignableTypes = {ActivateController.class})
-public class ActivateExceptionHandler extends ResponseEntityExceptionHandler {
+@ControllerAdvice(assignableTypes = {ActivateController.class, ApprovalController.class})
+public class ApproveAndActivateExceptionHandler extends ResponseEntityExceptionHandler {
     
     @ExceptionHandler({ PersistentEntityNotFound.class })
     public ResponseEntity<?> handleEntityNotFoundException(PersistentEntityNotFound e, WebRequest request) {

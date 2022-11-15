@@ -3,14 +3,11 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
-
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.test.context.ActiveProfiles
-
 import spock.lang.Specification
-
 
 /**
  * @author Dmitriy Kopylenko

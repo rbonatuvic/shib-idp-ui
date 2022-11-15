@@ -8,6 +8,7 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchExcep
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -19,6 +20,8 @@ import java.util.Map;
  * @since 1.0
  */
 public interface EntityDescriptorService {
+    void checkApprovalStatusOfEntitiesForGroup(Group group);
+
     /**
      * Map from front-end data representation of entity descriptor to opensaml implementation of entity descriptor model
      *
@@ -65,7 +68,7 @@ public interface EntityDescriptorService {
      * "admin"
      * @throws ForbiddenException - If user is not an ADMIN
      */
-    Iterable<EntityDescriptorRepresentation> getAllDisabledAndNotOwnedByAdmin() throws ForbiddenException;
+    Iterable<EntityDescriptorProjection> getDisabledMetadataSources() throws ForbiddenException;
 
     /**
      * @return a list of EntityDescriptorProjections that a user has the rights to access
@@ -122,4 +125,8 @@ public interface EntityDescriptorService {
     boolean entityExists(String entityID);
 
     EntityDescriptorRepresentation updateGroupForEntityDescriptor(String resourceId, String groupId);
+
+    EntityDescriptorRepresentation changeApproveStatusOfEntityDescriptor(String resourceId, boolean status) throws PersistentEntityNotFound, ForbiddenException;
+
+    List<EntityDescriptorProjection> getAllEntityDescriptorProjectionsNeedingApprovalBasedOnUserAccess() throws ForbiddenException;
 }

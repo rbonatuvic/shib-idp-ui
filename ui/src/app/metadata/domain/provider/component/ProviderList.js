@@ -75,7 +75,7 @@ export function ProviderList({ children, entities, reorder = true, first, last, 
                                         <Form.Check
                                             size="lg"
                                             type="switch"
-                                            id={`enable-switch-${provider.resourceId}`}
+                                            id={`enable-switch-${idx}`}
                                             aria-label={translator(provider.enabled ? 'label.disable' : 'label.enable')}
                                             onChange={({ target: { checked } }) => onEnable(provider, checked)}
                                             checked={provider.enabled}

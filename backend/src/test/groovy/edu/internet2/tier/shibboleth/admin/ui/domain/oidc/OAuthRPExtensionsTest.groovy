@@ -4,16 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
-import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.json.JacksonTester
 import org.springframework.context.annotation.PropertySource
-import org.springframework.transaction.annotation.Transactional
 
 import javax.persistence.EntityManager
 

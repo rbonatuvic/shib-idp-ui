@@ -99,11 +99,11 @@
       "id": "bfae23fa-f6ab-4cb1-a056-e16e309194d2",
       "comment": "",
       "command": "assertText",
-      "target": "css=tr:nth-child(4) > td:nth-child(1)",
+      "target": "css=tr:nth-child(7) > td:nth-child(1)",
       "targets": [
-        ["css=tr:nth-child(4) > td:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div[2]/table/tbody/tr[4]/td", "xpath:idRelative"],
-        ["xpath=//tr[4]/td", "xpath:position"],
+        ["css=tr:nth-child(7) > td:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div[2]/table/tbody/tr[7]/td", "xpath:idRelative"],
+        ["xpath=//tr[7]/td", "xpath:position"],
         ["xpath=//td[contains(.,'nonadmin')]", "xpath:innerText"]
       ],
       "value": "nonadmin"
@@ -116,9 +116,9 @@
         ["css=tr:nth-child(5) > td:nth-child(1)", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div[2]/table/tbody/tr[5]/td", "xpath:idRelative"],
         ["xpath=//tr[5]/td", "xpath:position"],
-        ["xpath=//td[contains(.,'none')]", "xpath:innerText"]
+        ["xpath=//td[contains(.,'YYY')]", "xpath:innerText"]
       ],
-      "value": "none"
+      "value": "YYY"
     }, {
       "id": "346cec03-bbdd-435b-bdf4-ffaffd159b12",
       "comment": "",
@@ -130,16 +130,17 @@
         ["xpath=//tr[4]/td[2]", "xpath:position"],
         ["xpath=//td[contains(.,'default user-group')]", "xpath:innerText"]
       ],
-      "value": "default user-group"
+      "value": "XXX"
     }, {
       "id": "9fb41858-7d3d-4454-a07b-8a88ce2d726e",
       "comment": "",
       "command": "assertText",
-      "target": "css=tr:nth-child(5) > td:nth-child(2)",
+      "target": "css=tr:nth-child(7) > td:nth-child(2)",
       "targets": [
-        ["css=tr:nth-child(5) > td:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div[2]/table/tbody/tr[5]/td[2]", "xpath:idRelative"],
-        ["xpath=//tr[5]/td[2]", "xpath:position"]
+        ["css=tr:nth-child(7) > td:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div[2]/table/tbody/tr[7]/td[2]", "xpath:idRelative"],
+        ["xpath=//tr[7]/td[2]", "xpath:position"],
+        ["xpath=//td[contains(.,'default user-group')]", "xpath:innerText"]
       ],
       "value": "default user-group"
     }, {
@@ -211,43 +212,57 @@
       "id": "70bb9b86-12d0-493e-815a-9fae0ea6e2d3",
       "comment": "",
       "command": "assertValue",
-      "target": "id=role-none",
+      "target": "id=role-Approver",
       "targets": [
-        ["id=role-none", "id"],
-        ["name=role-none", "name"],
-        ["css=#role-none", "css:finder"],
-        ["xpath=//select[@id='role-none']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/table/tbody/tr[3]/td[3]/select", "xpath:idRelative"],
-        ["xpath=//tr[3]/td[3]/select", "xpath:position"]
+        ["id=role-Approver", "id"],
+        ["name=role-Approver", "name"],
+        ["css=#role-Approver", "css:finder"],
+        ["xpath=//select[@id='role-Approver']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/table/tbody/tr[3]/td[4]/select", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[4]/select", "xpath:position"]
       ],
       "value": "ROLE_NONE"
     }, {
       "id": "3cdd6916-5fad-4fb7-a422-b10cc38f1fb2",
       "comment": "",
       "command": "assertEditable",
-      "target": "id=role-none",
-      "targets": [],
+      "target": "id=role-Approver",
+      "targets": [
+        ["id=role-Approver", "id"],
+        ["name=role-Approver", "name"],
+        ["css=#role-Approver", "css:finder"],
+        ["xpath=//select[@id='role-Approver']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/table/tbody/tr[3]/td[4]/select", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[4]/select", "xpath:position"]
+      ],
       "value": ""
     }, {
       "id": "d90dd945-c2f4-428c-8bb9-8557a1a93ef9",
       "comment": "",
       "command": "assertValue",
-      "target": "id=group-none",
+      "target": "id=group-Approver",
       "targets": [
-        ["id=group-none", "id"],
-        ["name=group-none", "name"],
-        ["css=#group-none", "css:finder"],
-        ["xpath=//select[@id='group-none']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/table/tbody/tr[3]/td[4]/span/select", "xpath:idRelative"],
-        ["xpath=//tr[3]/td[4]/span/select", "xpath:position"]
+        ["id=group-Approver", "id"],
+        ["name=group-Approver", "name"],
+        ["css=#group-Approver", "css:finder"],
+        ["xpath=//select[@id='group-Approver']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/table/tbody/tr[3]/td[5]/span/select", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[5]/span/select", "xpath:position"]
       ],
-      "value": "none"
+      "value": "Approver"
     }, {
       "id": "d6d6cae9-acb7-46de-9ec7-0a76a8f6b61e",
       "comment": "",
       "command": "assertEditable",
-      "target": "id=group-none",
-      "targets": [],
+      "target": "id=group-Approver",
+      "targets": [
+        ["id=group-Approver", "id"],
+        ["name=group-Approver", "name"],
+        ["css=#group-Approver", "css:finder"],
+        ["xpath=//select[@id='group-Approver']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/table/tbody/tr[3]/td[5]/span/select", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[5]/span/select", "xpath:position"]
+      ],
       "value": ""
     }, {
       "id": "7d9099ef-bb52-4abd-b6b4-5ed70fdc56db",
@@ -298,21 +313,21 @@
         ["xpath=//tr[4]/td[4]/span/select", "xpath:position"]
       ],
       "value": ""
-    },{
-            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
-            "comment": "",
-            "command": "open",
-            "target": "/api/heheheheheheheWipeout",
-            "targets": [],
-            "value": ""
-          }, {
-            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
-            "comment": "",
-            "command": "assertText",
-            "target": "css=body",
-            "targets": [],
-            "value": "yes, you did it"
-          }]
+    }, {
+      "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }]
   }],
   "suites": [{
     "id": "16a0d393-c257-46c4-9a0f-dc2a84dfc23b",
