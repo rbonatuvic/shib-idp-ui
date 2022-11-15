@@ -11,7 +11,9 @@ export const CustomAttributeDefinition = {
         layout: {
             groups: [
                 {
-                    size: 6,
+                    sizes: {
+                        lg: 6
+                    },
                     classNames: '',
                     fields: [
                         'name',
@@ -23,7 +25,9 @@ export const CustomAttributeDefinition = {
                     ]
                 },
                 {
-                    size: 6,
+                    sizes: {
+                        lg: 6
+                    },
                     classNames: 'bg-light border rounded p-4',
                     fields: [
                         'defaultValue',

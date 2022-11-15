@@ -117,7 +117,11 @@ export const DynamicHttpMetadataProviderWizard = {
         layout: {
             groups: [
                 {
-                    size: 8,
+                    sizes: {
+                        xs: 12,
+                        lg: 8,
+                        xxl: 6
+                    },
                     classNames: 'bg-light border rounded px-4 pt-4 pb-3 mb-4',
                     fields: [
                         'name',
@@ -125,13 +129,21 @@ export const DynamicHttpMetadataProviderWizard = {
                     ]
                 },
                 {
-                    size: 8,
+                    sizes: {
+                        xs: 12,
+                        lg: 8,
+                        xxl: 6
+                    },
                     fields: [
                         'enabled'
                     ]
                 },
                 {
-                    size: 8,
+                    sizes: {
+                        xs: 12,
+                        lg: 8,
+                        xxl: 6
+                    },
                     fields: [
                         'xmlId',
                         'requireValidMetadata',
@@ -140,19 +152,31 @@ export const DynamicHttpMetadataProviderWizard = {
                     ]
                 },
                 {
-                    size: 8,
+                    sizes: {
+                        xs: 12,
+                        lg: 8,
+                        xxl: 6
+                    },
                     fields: [
                         'dynamicMetadataResolverAttributes'
                     ],
                 },
                 {
-                    size: 8,
+                    sizes: {
+                        xs: 12,
+                        lg: 8,
+                        xxl: 6
+                    },
                     fields: [
                         'metadataFilters'
                     ],
                 },
                 {
-                    size: 8,
+                    sizes: {
+                        xs: 12,
+                        lg: 8,
+                        xxl: 6
+                    },
                     fields: [
                         'httpMetadataResolverAttributes'
                     ]
