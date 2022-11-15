@@ -31,6 +31,8 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.InitializationException
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.permission.IShibUiPermissionEvaluator
+import edu.internet2.tier.shibboleth.admin.ui.security.permission.PermissionType
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.util.OpenSamlChainingMetadataResolverUtil
 import groovy.util.logging.Slf4j
@@ -78,6 +80,9 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
     @Autowired
     private ShibUIConfiguration shibUIConfiguration
+
+    @Autowired
+    private IShibUiPermissionEvaluator shibUiService;
 
     @Autowired
     private UserService userService
@@ -733,11 +738,13 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
-    public edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver updateMetadataResolverEnabledStatus(edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver updatedResolver) throws ForbiddenException, MetadataFileNotFoundException, InitializationException {
-        if (!userService.currentUserCanEnable(updatedResolver)) {
-            throw new ForbiddenException("You do not have the permissions necessary to change the enable status of this filter.")
+    public edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver updateMetadataResolverEnabledStatus(String resourceId, boolean status) throws ForbiddenException, MetadataFileNotFoundException, InitializationException {
+        edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver updatedResolver = findByResourceId(resourceId);
+        if (!shibUiService.hasPermission(userService.getCurrentUserAuthentication(), updatedResolver, PermissionType.enable)) {
+            throw new ForbiddenException("You do not have the permissions necessary to change the enable status of this resolver.")
         }
 
+        updatedResolver.setEnabled(status);
         edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver persistedResolver = metadataResolverRepository.save(updatedResolver)
 
         if (persistedResolver.getDoInitialization()) {

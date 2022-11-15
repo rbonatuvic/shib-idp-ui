@@ -8,6 +8,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.LocalizedName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.AlgorithmFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget.EntityAttributesFilterTargetType
@@ -17,7 +18,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.AlgorithmFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource

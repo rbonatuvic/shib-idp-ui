@@ -24,7 +24,13 @@ export function getMetadataPath(type) {
 }
 
 export function useNonAdminSources() {
-    return useFetch(`${API_BASE_PATH}${getMetadataPath('source')}/disabledNonAdmin`, {
+    return useFetch(`${API_BASE_PATH}${getMetadataPath('source')}/disabledSources`, {
+        cachePolicy: 'no-cache'
+    });
+}
+
+export function useUnapprovedSources() {
+    return useFetch(`${API_BASE_PATH}${getMetadataListPath('source')}/needsApproval`, {
         cachePolicy: 'no-cache'
     });
 }
@@ -145,6 +151,12 @@ export function useMetadataActivator(type, opts = {
     cachePolicy: 'no-cache'
 }) {
     return useFetch(`${API_BASE_PATH}/activate/${type === 'source' ? 'entityDescriptor' : 'MetadataResolvers'}/`, opts);
+}
+
+export function useMetadataApprover(type, opts = {
+    cachePolicy: 'no-cache'
+}) {
+    return useFetch(`${API_BASE_PATH}/approve/${type === 'source' ? 'entityDescriptor' : 'MetadataResolvers'}/`, opts);
 }
 
 export function useFilterActivator(providerId, opts = {

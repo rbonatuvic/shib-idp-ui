@@ -18,6 +18,7 @@ import Editor from 'react-simple-code-editor';
 // import 'prismjs/components/prism-javascript';
 
 import { FilterTargetPreview } from '../../../metadata/hoc/FilterTargetPreview';
+import { remove } from 'lodash';
 
 const ToggleButton = ({ isOpen, onClick, disabled }) => (
     <Button
@@ -116,10 +117,12 @@ const FilterTargetField = ({
         ]);
         setSearchTerm('');
     };
-    const removeId = (id) => {
-        setSelectedTarget([
-            ...selectedTarget.filter(t => t !== id)
-        ]);
+    const removeIdx = (idx) => {
+        const updated = [
+            ...selectedTarget
+        ];
+        remove(updated, (v, index) => index === idx);
+        setSelectedTarget(updated);
     };
 
     const onEntityIdsChange = (value) => {
@@ -289,8 +292,8 @@ const FilterTargetField = ({
                         <label className="control-label"><Translate value="label.entity-ids-added">Entity Ids Added</Translate></label>
                         <hr />
                         <ul className="list-group list-group-sm list-group-scroll">
-                        {selectedTarget.map(id => 
-                            <li key={id} className="list-group-item d-flex justify-content-between align-items-center">
+                        {selectedTarget.map((id, idx) => 
+                            <li key={idx} className="list-group-item d-flex justify-content-between align-items-center">
                                 <FilterTargetPreview entityId={id}>
                                     {(preview, loading, xml) => (
                                         <React.Fragment>
@@ -306,7 +309,7 @@ const FilterTargetField = ({
                                                 }
                                                 <Button type="button" 
                                                 variant="link"
-                                                className="text-end" onClick={() => removeId(id)}>
+                                                className="text-end" onClick={() => removeIdx(idx)}>
                                                     <FontAwesomeIcon icon={faTrash} size="lg" className="text-danger sr-hidden" />
                                                     <span className="sr-only"><Translate value="action.remove">Remove</Translate></span>
                                                 </Button>

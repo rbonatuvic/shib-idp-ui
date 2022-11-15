@@ -10,6 +10,9 @@ import edu.internet2.tier.shibboleth.admin.ui.scheduled.ExternalMetadataProvider
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.MetadataProvidersScheduledTasks;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener;
+import edu.internet2.tier.shibboleth.admin.ui.security.permission.IShibUiPermissionEvaluator;
+import edu.internet2.tier.shibboleth.admin.ui.security.permission.ShibUiPermissionDelegate;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.DynamicRegistrationInfoRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
@@ -19,12 +22,14 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DefaultMetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.DynamicRegistrationService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService;
 import edu.internet2.tier.shibboleth.admin.ui.service.FileCheckingFileWritingService;
 import edu.internet2.tier.shibboleth.admin.ui.service.FileWritingService;
 import edu.internet2.tier.shibboleth.admin.ui.service.FilterTargetService;
+import edu.internet2.tier.shibboleth.admin.ui.service.JPADynamicRegistrationServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAFilterTargetServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
@@ -218,9 +223,9 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository repo) {
+    public GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository repo, GroupsRepository groupsRepository) {
         GroupUpdatedEntityListener listener = new GroupUpdatedEntityListener();
-        listener.init(repo);
+        listener.init(repo, groupsRepository);
         return listener;
     }
 
@@ -229,5 +234,16 @@ public class CoreShibUiConfiguration {
         UserUpdatedEntityListener listener = new UserUpdatedEntityListener();
         listener.init(repo, groupRepo);
         return listener;
+    }
+
+    @Bean
+    public IShibUiPermissionEvaluator shibUiPermissionEvaluator(EntityDescriptorRepository entityDescriptorRepository, UserService userService, DynamicRegistrationInfoRepository driRepo) {
+        // TODO: @jj define type to return for Grouper integration
+        return new ShibUiPermissionDelegate(driRepo, entityDescriptorRepository, userService);
+    }
+
+    @Bean
+    public DynamicRegistrationService dynamicRegistrationService(DynamicRegistrationInfoRepository driRepo, OwnershipRepository ownershipRepo, IShibUiPermissionEvaluator permissionEvaluator, UserService userService, IGroupService groupService) {
+        return new JPADynamicRegistrationServiceImpl(groupService, driRepo, ownershipRepo, permissionEvaluator, userService);
     }
 }

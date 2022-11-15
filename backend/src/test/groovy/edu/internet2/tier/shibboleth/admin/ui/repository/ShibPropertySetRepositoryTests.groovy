@@ -2,7 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.repository
 
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibPropertySet
-import edu.internet2.tier.shibboleth.admin.ui.domain.shib.properties.ShibPropertySetting
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.persistence.EntityManager

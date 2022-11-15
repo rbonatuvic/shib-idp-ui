@@ -12,9 +12,6 @@ import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefi
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException
-
-import javax.persistence.EntityManager
-
 import org.apache.lucene.document.Document
 import org.apache.lucene.document.Field
 import org.apache.lucene.document.StringField
@@ -27,13 +24,13 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Profile
 import org.springframework.core.io.ClassPathResource
 import org.springframework.data.domain.AuditorAware
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.JavaMailSenderImpl
+
+import javax.persistence.EntityManager
 
 /**
  * NOT A TEST - this is configuration FOR tests

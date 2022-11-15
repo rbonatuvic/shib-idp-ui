@@ -3,10 +3,10 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.JsonSchemaComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import org.springframework.core.io.DefaultResourceLoader
 import org.springframework.core.io.ResourceLoader
 import org.springframework.mock.http.MockHttpInputMessage
@@ -26,12 +26,17 @@ class AuxiliaryIntegrationTests extends Specification {
     JPAEntityDescriptorServiceImpl entityDescriptorService
     ObjectMapper objectMapper
     ResourceLoader resourceLoader
+    IGroupService mockGroupService = Stub() {
+        getApproversList() >> new ArrayList<>()
+    }
 
     void setup() {
         entityDescriptorService = new JPAEntityDescriptorServiceImpl()
+        entityDescriptorService.groupService = mockGroupService
         entityDescriptorService.openSamlObjects = openSamlObjects
         objectMapper = new ObjectMapper()
         resourceLoader = new DefaultResourceLoader()
+        mockGroupService
     }
 
     def "SHIBUI-1723: after enabling saved entity descriptor, it should still have valid xml"() {

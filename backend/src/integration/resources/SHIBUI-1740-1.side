@@ -60,6 +60,27 @@
       "targets": [],
       "value": "30000"
     }, {
+      "id": "dc2bc3fa-631d-43be-b9b9-d92bcf1619ec",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e3ef0c57-5d19-4f25-b1b3-63f1520fbf07",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }, {
+      "id": "7a7878a7-4258-42b9-b3d9-6b67d582faa6",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "0bdcd2aa-3e9e-41be-96d2-abf567538990",
       "comment": "",
       "command": "click",
@@ -186,9 +207,9 @@
       "id": "62b9e743-cc16-4931-9064-06c15b057318",
       "comment": "",
       "command": "click",
-      "target": "xpath=//td[contains(.,'Test Group')]/parent::*/td[3]/a",
+      "target": "xpath=//td[contains(.,'Test Group')]/parent::*/td[4]/a",
       "targets": [
-        ["css=tr:nth-child(6) .text-primary path", "css:finder"]
+        ["css=tr:nth-child(10) .text-primary path", "css:finder"]
       ],
       "value": ""
     }, {
@@ -279,7 +300,7 @@
       "id": "3f463655-29df-4c52-bc53-b96b60b845fd",
       "comment": "",
       "command": "click",
-      "target": "xpath=//td[contains(.,'Test Group')]/parent::*/td[3]/button",
+      "target": "xpath=//td[contains(.,'Test Group')]/parent::*/td[4]/button",
       "targets": [
         ["css=tr:nth-child(6) .text-danger > .svg-inline--fa", "css:finder"]
       ],
@@ -302,21 +323,21 @@
       "target": "xpath=//li[contains(.,'Deleted group successfully.')]",
       "targets": [],
       "value": "Deleted group successfully."
-    },{
-            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
-            "comment": "",
-            "command": "open",
-            "target": "/api/heheheheheheheWipeout",
-            "targets": [],
-            "value": ""
-          }, {
-            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
-            "comment": "",
-            "command": "assertText",
-            "target": "css=body",
-            "targets": [],
-            "value": "yes, you did it"
-          }]
+    }, {
+      "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }]
   }],
   "suites": [{
     "id": "bb170239-568b-4e90-991e-1a5882465aaa",

@@ -1,6 +1,6 @@
 import React from 'react';
 import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
-import { useMetadataActivator, useMetadataEntity } from '../../metadata/hooks/api';
+import { useMetadataActivator, useMetadataApprover, useMetadataEntity } from '../../metadata/hooks/api';
 
 import { NotificationContext, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
 
@@ -46,10 +46,32 @@ export function MetadataActions ({type, children}) {
         }
     }
 
+    const approver = useMetadataApprover('source');
+
+    async function approveEntity(entity, enabled, cb = () => {}) {
+        await approver.patch(`${type === 'source' ? entity.id : entity.resourceId}/${enabled ? 'approve' : 'unapprove'}`);
+        if (approver?.response.ok) {
+            dispatch(createNotificationAction(
+                `Metadata ${type} has been ${enabled ? 'approved' : 'unapproved'}.`
+            ));
+            cb();
+        } else {
+            const { errorCode, errorMessage, cause } = approver?.response?.data;
+            dispatch(createNotificationAction(
+                `${errorCode}: ${errorMessage} ${cause ? `-${cause}` : ''}`,
+                NotificationTypes.ERROR
+            ));
+        }
+    }
+
     return (
         <DeleteConfirmation title={`message.delete-${type}-title`} body={`message.delete-${type}-body`}>
             {(block) =>
-                <>{children(enableEntity, (id, cb) => block(() => deleteEntity(id, cb)))}</>
+                <>{children({
+                    enable: enableEntity,
+                    remove: (id, cb) => block(() => deleteEntity(id, cb)),
+                    approve: approveEntity
+                })}</>
             }
         </DeleteConfirmation>
     );

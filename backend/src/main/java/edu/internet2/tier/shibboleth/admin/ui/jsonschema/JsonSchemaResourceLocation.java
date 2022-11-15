@@ -96,6 +96,7 @@ public class JsonSchemaResourceLocation {
         // common types
         METADATA_SOURCES_SAML("MetadataSourcesSAML"),
         METADATA_SOURCES_OIDC("MetadataSourcesOIDC"),
+        DYNAMIC_REGISTRATION("DynamicRegistration"),
 
         // filter types
         ENTITY_ATTRIBUTES_FILTERS("EntityAttributesFilters"),

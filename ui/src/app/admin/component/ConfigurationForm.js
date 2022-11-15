@@ -17,7 +17,7 @@ import { includes, uniqBy } from 'lodash';
 export function ConfigurationForm({ configurations, configuration = {}, loading, onSave, onCancel }) {
 
     const [names, setNames] = React.useState([]);
-
+    
     const { control, register, getValues, watch, formState: { errors, isValid }, handleSubmit } = useForm({
         defaultValues: {
             ...configuration
@@ -25,7 +25,7 @@ export function ConfigurationForm({ configurations, configuration = {}, loading,
         reValidateMode: 'onChange',
         mode: 'onChange',
     });
-
+    
     const { fields, append, remove } = useFieldArray({
         control,
         name: "properties",
@@ -35,9 +35,10 @@ export function ConfigurationForm({ configurations, configuration = {}, loading,
     });
 
     const properties = useProperties();
-    const selected = watch('properties');
 
     const addProperties = (props) => {
+
+        const selected = getValues('properties');
 
         const parsed = props.reduce((coll, prop, idx) => {
             if (prop.isCategory) {
@@ -147,7 +148,7 @@ export function ConfigurationForm({ configurations, configuration = {}, loading,
                                 </thead>
                                 <tbody>
                                     {fields.map((p, idx) => (
-                                        <tr key={p.id}>
+                                        <tr key={idx}>
                                             <td>{ p.propertyName }</td>
                                             <td>{ p.category }</td>
                                             <td>{ p.displayType === 'number' ? 'integer' : p.displayType }</td>

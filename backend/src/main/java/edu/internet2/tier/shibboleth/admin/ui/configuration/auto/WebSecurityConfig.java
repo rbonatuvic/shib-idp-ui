@@ -67,6 +67,7 @@ public class WebSecurityConfig {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
         firewall.setAllowUrlEncodedSlash(true);
         firewall.setAllowUrlEncodedDoubleSlash(true);
+        firewall.setAllowSemicolon(true);
         return firewall;
     }
 
@@ -87,7 +88,7 @@ public class WebSecurityConfig {
                         .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .and()
                         .authorizeRequests()
-                        .antMatchers("/unsecured/**/*").permitAll()
+                        .antMatchers("/unsecured/**/*","/entities/**/*").permitAll()
                         .anyRequest().hasAnyRole(acceptedAuthenticationRoles)
                         .and()
                         .exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> response.sendRedirect("/unsecured/error.html"))

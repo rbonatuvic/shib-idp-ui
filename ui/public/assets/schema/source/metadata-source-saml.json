@@ -1,7 +1,15 @@
 {
     "type": "object",
-    "required": ["serviceProviderName", "entityId"],
+    "required": [
+        "serviceProviderName",
+        "entityId"
+    ],
     "properties": {
+        "approved": {
+            "title": "label.approved",
+            "description": "tooltip.approved",
+            "type": "boolean"
+        },
         "protocol": {
             "title": "label.source-protocol",
             "description": "tooltip.source-protocol",
@@ -26,17 +34,25 @@
             "description": "tooltip.enable-this-service-upon-saving",
             "type": "boolean"
         },
-        "organization": { "$ref": "#/definitions/Organization" },
+        "organization": {
+            "$ref": "#/definitions/Organization"
+        },
         "contacts": {
             "title": "label.contact-information",
             "description": "tooltip.contact-information",
             "type": "array",
-            "items": { "$ref": "#/definitions/Contact" }
+            "items": {
+                "$ref": "#/definitions/Contact"
+            }
         },
-        "mdui": { "$ref": "#/definitions/MDUI" },
+        "mdui": {
+            "$ref": "#/definitions/MDUI"
+        },
         "securityInfo": {
             "type": "object",
-            "widget": { "id": "fieldset" },
+            "widget": {
+                "id": "fieldset"
+            },
             "dependencies": {
                 "authenticationRequestsSigned": {
                     "oneOf": [
@@ -45,7 +61,9 @@
                                 "authenticationRequestsSigned": {
                                     "enum": [true]
                                 },
-                                "x509Certificates": { "minItems": 1 }
+                                "x509Certificates": {
+                                    "minItems": 1
+                                }
                             }
                         },
                         {
@@ -53,7 +71,9 @@
                                 "authenticationRequestsSigned": {
                                     "enum": [false]
                                 },
-                                "x509Certificates": { "minItems": 0 }
+                                "x509Certificates": {
+                                    "minItems": 0
+                                }
                             }
                         }
                     ]
@@ -64,19 +84,27 @@
                     "title": "label.authentication-requests-signed",
                     "description": "tooltip.authentication-requests-signed",
                     "type": "boolean",
-                    "enumNames": ["value.true", "value.false"]
+                    "enumNames": [
+                        "value.true",
+                        "value.false"
+                    ]
                 },
                 "wantAssertionsSigned": {
                     "title": "label.want-assertions-signed",
                     "description": "tooltip.want-assertions-signed",
                     "type": "boolean",
-                    "enumNames": ["value.true", "value.false"]
+                    "enumNames": [
+                        "value.true",
+                        "value.false"
+                    ]
                 },
                 "keyDescriptors": {
                     "title": "label.key-descriptors",
                     "description": "tooltip.key-descriptors",
                     "type": "array",
-                    "items": { "$ref": "#/definitions/Certificate" }
+                    "items": {
+                        "$ref": "#/definitions/Certificate"
+                    }
                 }
             }
         },
@@ -84,7 +112,9 @@
             "title": "label.assertion-consumer-service-endpoints",
             "description": "tooltip.assertion-consumer-service-endpoints",
             "type": "array",
-            "items": { "$ref": "#/definitions/AssertionConsumerService" }
+            "items": {
+                "$ref": "#/definitions/AssertionConsumerService"
+            }
         },
         "serviceProviderSsoDescriptor": {
             "type": "object",
@@ -93,20 +123,36 @@
                     "title": "label.protocol-support-enumeration",
                     "description": "tooltip.protocol-support-enumeration",
                     "type": "string",
-                    "widget": { "id": "select" },
+                    "widget": {
+                        "id": "select"
+                    },
                     "oneOf": [
-                        { "enum": ["SAML 2"], "description": "SAML 2" },
-                        { "enum": ["SAML 1.1"], "description": "SAML 1.1" }
+                        {
+                            "enum": [
+                                "SAML 2"
+                            ],
+                            "description": "SAML 2"
+                        },
+                        {
+                            "enum": [
+                                "SAML 1.1"
+                            ],
+                            "description": "SAML 1.1"
+                        }
                     ]
                 },
-                "nameIdFormats": { "$ref": "#/definitions/nameIdFormats" }
+                "nameIdFormats": {
+                    "$ref": "#/definitions/nameIdFormats"
+                }
             }
         },
         "logoutEndpoints": {
             "title": "label.logout-endpoints",
             "description": "tooltip.logout-endpoints",
             "type": "array",
-            "items": { "$ref": "#/definitions/LogoutEndpoint" }
+            "items": {
+                "$ref": "#/definitions/LogoutEndpoint"
+            }
         },
         "relyingPartyOverrides": {
             "type": "object",
@@ -211,7 +257,11 @@
     "definitions": {
         "Contact": {
             "type": "object",
-            "required": ["name", "type", "emailAddress"],
+            "required": [
+                "name",
+                "type",
+                "emailAddress"
+            ],
             "properties": {
                 "name": {
                     "title": "label.contact-name",
@@ -233,7 +283,9 @@
                             "description": "value.technical"
                         },
                         {
-                            "enum": ["administrative"],
+                            "enum": [
+                                "administrative"
+                            ],
                             "description": "value.administrative"
                         },
                         { "enum": ["other"], "description": "value.other" }
@@ -251,7 +303,10 @@
         },
         "Certificate": {
             "type": "object",
-            "required": ["type", "value", "elementType"],
+            "required": [
+                "type",
+                "value"
+            ],
             "properties": {
                 "name": {
                     "title": "label.certificate-name-display-only",
@@ -268,7 +323,10 @@
                 "type": {
                     "title": "label.certificate-type",
                     "type": "string",
-                    "widget": { "id": "radio", "class": "form-check-inline" },
+                    "widget": {
+                        "id": "radio",
+                        "class": "form-check-inline"
+                    },
                     "oneOf": [
                         { "enum": ["signing"], "description": "value.signing" },
                         {
@@ -289,13 +347,19 @@
         },
         "AssertionConsumerService": {
             "type": "object",
-            "required": ["locationUrl", "binding"],
+            "required": [
+                "locationUrl",
+                "binding"
+            ],
             "properties": {
                 "locationUrl": {
                     "title": "label.assertion-consumer-service-location",
                     "description": "tooltip.assertion-consumer-service-location",
                     "type": "string",
-                    "widget": { "id": "string", "help": "message.valid-url" },
+                    "widget": {
+                        "id": "string",
+                        "help": "message.valid-url"
+                    },
                     "minLength": 1,
                     "maxLength": 255
                 },
@@ -405,11 +469,17 @@
         },
         "MDUI": {
             "type": "object",
-            "widget": { "id": "fieldset" },
+            "widget": {
+                "id": "fieldset"
+            },
             "fieldsets": [
                 {
                     "type": "group",
-                    "fields": ["displayName", "informationUrl", "description"]
+                    "fields": [
+                        "displayName",
+                        "informationUrl",
+                        "description"
+                    ]
                 },
                 {
                     "type": "group",
@@ -447,7 +517,9 @@
                     "title": "label.description",
                     "description": "tooltip.mdui-description",
                     "type": "string",
-                    "widget": { "id": "textarea" },
+                    "widget": {
+                        "id": "textarea"
+                    },
                     "minLength": 1,
                     "maxLength": 255
                 },

@@ -22,6 +22,14 @@
             "title": "label.url-validation-regex",
             "description": "tooltip.url-validation-regex",
             "type": "string"
+        },
+        "approversList": {
+            "title": "label.approvers-list",
+            "description": "tooltip.approvers-list",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         }
     }
 }

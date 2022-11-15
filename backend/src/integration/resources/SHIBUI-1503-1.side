@@ -510,6 +510,22 @@
       ],
       "value": ""
     }, {
+      "id": "a43898de-b92d-443e-8686-fba526f403ec",
+      "comment": "",
+      "command": "click",
+      "target": "id=enable-btn",
+      "targets": [
+        ["id=enable-btn", "id"],
+        ["linkText=Enable Metadata Sources1", "linkText"],
+        ["css=#enable-btn", "css:finder"],
+        ["xpath=//a[@id='enable-btn']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/dashboard/admin/actions/enable')]", "xpath:href"],
+        ["xpath=//div[2]/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Enable Metadata Sources1')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
       "id": "b1a8c4b1-d164-4f32-adb3-6cfb76951f28",
       "comment": "",
       "command": "waitForElementVisible",

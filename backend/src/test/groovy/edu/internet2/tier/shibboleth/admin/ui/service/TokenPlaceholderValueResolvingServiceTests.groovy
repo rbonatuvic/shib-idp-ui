@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.test.context.ContextConfiguration
-
 import spock.lang.Specification
 import spock.lang.Subject
 
