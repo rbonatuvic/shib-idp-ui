@@ -8,6 +8,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Approvers
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.DynamicRegistrationInfoRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,6 +21,9 @@ class ShibUiPermissionDelegateTests extends AbstractBaseDataJpaTest {
     ShibUiPermissionDelegate delegate
 
     @Autowired
+    DynamicRegistrationInfoRepository dynamicRegistrationInfoRepository
+
+    @Autowired
     JPAEntityDescriptorServiceImpl jpaEntityDescriptorService
 
     def entityDescriptor
@@ -28,7 +32,7 @@ class ShibUiPermissionDelegateTests extends AbstractBaseDataJpaTest {
 
     @Transactional
     def setup() {
-        delegate = new ShibUiPermissionDelegate(entityDescriptorRepository, userService)
+        delegate = new ShibUiPermissionDelegate(dynamicRegistrationInfoRepository, entityDescriptorRepository, userService)
         createDevUsersAndGroups()
     }
 

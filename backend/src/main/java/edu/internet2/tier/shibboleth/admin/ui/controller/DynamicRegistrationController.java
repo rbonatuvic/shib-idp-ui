@@ -61,7 +61,7 @@ public class DynamicRegistrationController {
      * @throws ForbiddenException This call is used for the admin needs action list, therefore the user must be an admin
      */
     @Transactional
-    @GetMapping(value = "/EntityDescriptor/disabledSources")
+    @GetMapping(value = "/DynamicRegistrations/disabledSources")
     public ResponseEntity<?> getDisabledMetadataSources() throws ForbiddenException {
         return ResponseEntity.ok(dynamicRegistrationService.getDisabledDynamicRegistrations());
     }
