@@ -55,6 +55,11 @@
       "description": "tooltip.logo-uri",
       "type": "string"
     },
+    "name": {
+      "title": "label.name",
+      "description": "tooltip.name",
+      "type": "string"
+    },
     "policyUri": {
       "title": "label.policy-uri",
       "description": "tooltip.policy-uri",
