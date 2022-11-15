@@ -3,14 +3,12 @@ import { Prompt, useHistory, useParams } from 'react-router-dom';
 
 import { useDynamicRegistrationApi, useSelectedDynamicRegistration } from '../hoc/DynamicRegistrationContext';
 import Translate from '../../i18n/components/translate';
-import { useDynamicRegistrationJsonSchema } from '../api';
-import Form from '../../form/Form';
-import { BASE_PATH } from '../../App.constant';
 import { Schema } from '../../form/Schema';
 import { FormManager } from '../../form/FormManager';
 import { DynamicRegistrationForm } from '../component/DynamicRegistrationForm';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useTranslator } from '../../i18n/hooks';
+import DynamicConfigurationDefinition from '../hoc/DynamicConfigurationDefinition';
 
 export function DynamicRegistrationEdit () {
 
@@ -67,7 +65,7 @@ export function DynamicRegistrationEdit () {
                     </div>
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
-                    <Schema path={`/${BASE_PATH}assets/schema/dynamic-registration/oidc.json`}>
+                    <Schema path={DynamicConfigurationDefinition.schema}>
                         {(schema) => 
                         <FormManager initial={{...detail}}>
                             {(data, errors) =>

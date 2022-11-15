@@ -1,4 +1,4 @@
-import { BASE_PATH } from '../../App.constant';
+import API_BASE_PATH from '../../App.constant';
 
 export const DynamicRegistrationDefinition = {
     label: 'Dynamic Registration',
@@ -10,7 +10,6 @@ export const DynamicRegistrationDefinition = {
             index: 1,
             fields: [
                 'name',
-                'resourceId',
                 'redirectUris',
                 'responseTypes',
                 'grantTypes',
@@ -27,17 +26,19 @@ export const DynamicRegistrationDefinition = {
             ]
         }
     ],
-    schema: `${BASE_PATH}assets/schema/dynamic-registration/oidc.json`,
+    schema: `${API_BASE_PATH}/ui/DynamicRegistration`,
 
     uiSchema: {
         layout: {
             groups: [
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12,
+                        lg: 12
+                    },
                     classNames: '',
                     fields: [
                         'name',
-                        'resourceId',
                         'redirectUris',
                         'responseTypes',
                         'grantTypes',
@@ -52,9 +53,14 @@ export const DynamicRegistrationDefinition = {
                         'tosUri',
                         'scope'
                     ]
-                },
+                }
             ]
         },
+        'ui:order': [
+            'name',
+            'redirectUris',
+            '*'
+        ]
     },
 
     parser: (changes) => changes,

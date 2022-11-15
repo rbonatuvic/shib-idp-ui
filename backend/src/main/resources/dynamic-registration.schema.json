@@ -1,34 +1,48 @@
 {
   "type": "object",
   "required": [
-    "redirectUris"
+    "redirectUris",
+    "name"
   ],
   "properties": {
-    "applicationType": {
-      "title": "label.application-type",
-      "description": "tooltip.application-type",
-      "type": "string"
+    "name": {
+      "title": "label.dynamic-registration-name",
+      "description": "tooltip.dynamic-registration-name",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "redirectUris": {
+      "title": "label.redirect-uris",
+      "description": "tooltip.redirect-uris",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
     },
     "approved": {
       "title": "label.approved",
       "description": "tooltip.approved",
       "type": "boolean"
     },
-    "contacts": {
-      "title": "label.contacts",
-      "description": "tooltip.contacts",
-      "type": "string"
-    },
     "enabled": {
       "title": "label.enabled",
       "description": "tooltip.enabled",
       "type": "boolean"
     },
+    "applicationType": {
+      "title": "label.application-type",
+      "description": "tooltip.application-type",
+      "type": "string"
+    },
+    "contacts": {
+      "title": "label.contacts",
+      "description": "tooltip.contacts",
+      "type": "string"
+    },
     "grantType": {
       "title": "label.grant-type",
       "description": "tooltip.grant-type",
       "type": "string",
-      "widget": "select",
       "minLength": 1,
       "oneOf": [
         {
@@ -55,23 +69,12 @@
       "description": "tooltip.logo-uri",
       "type": "string"
     },
-    "name": {
-      "title": "label.name",
-      "description": "tooltip.name",
-      "type": "string"
-    },
     "policyUri": {
       "title": "label.policy-uri",
       "description": "tooltip.policy-uri",
       "type": "string"
     },
-    "redirectUris": {
-      "title": "label.redirect-uris",
-      "description": "tooltip.redirect-uris",
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 255
-    },
+
     "responseTypes": {
       "title": "label.response-types",
       "description": "tooltip.response-types",

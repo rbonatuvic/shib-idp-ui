@@ -92,17 +92,17 @@ function DynamicRegistrationsApi({ children, initial = {} }) {
     }
 
     async function select(id) {
-        const s = await selector.get();
+        const s = await selector.get(`/${id}`);
         if (selector.response.ok) {
             dispatch(selectRegistration(s));
         }
     }
 
     async function update(id) {
-        /*const s = await selector.update();
+        const s = await selector.put(`/${id}`);
         if (selector.response.ok) {
             dispatch(selectRegistration(s));
-        }*/
+        }
         return Promise.resolve(id);
     }
 
@@ -115,10 +115,11 @@ function DynamicRegistrationsApi({ children, initial = {} }) {
     }
 
     async function create(body) {
-        /*const s = await selector.update();
+        console.log(body);
+        const s = await selector.post(``, body);
         if (selector.response.ok) {
             dispatch(selectRegistration(s));
-        }*/
+        }
         return Promise.resolve(body);
     }
 

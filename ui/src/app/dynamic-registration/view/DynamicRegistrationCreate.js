@@ -3,12 +3,12 @@ import { Prompt, useHistory, useParams } from 'react-router-dom';
 
 import { useDynamicRegistrationApi } from '../hoc/DynamicRegistrationContext';
 import Translate from '../../i18n/components/translate';
-import { BASE_PATH } from '../../App.constant';
 import { Schema } from '../../form/Schema';
 import { FormManager } from '../../form/FormManager';
 import { DynamicRegistrationForm } from '../component/DynamicRegistrationForm';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useTranslator } from '../../i18n/hooks';
+import DynamicConfigurationDefinition from '../hoc/DynamicConfigurationDefinition';
 
 export function DynamicRegistrationCreate () {
 
@@ -18,8 +18,9 @@ export function DynamicRegistrationCreate () {
     const { create } = useDynamicRegistrationApi();
 
     async function save(reg) {
+        console.log(reg);
         let toast;
-        const resp = await create(``, reg);
+        const resp = await create(reg);
         if (resp.ok) {
             gotoDetail({ refresh: true });
             toast = createNotificationAction(`Added group successfully.`, NotificationTypes.SUCCESS);
@@ -60,7 +61,7 @@ export function DynamicRegistrationCreate () {
                     </div>
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
-                    <Schema path={`/${BASE_PATH}assets/schema/dynamic-registration/oidc.json`}>
+                    <Schema path={DynamicConfigurationDefinition.schema}>
                         {(schema) => 
                         <FormManager initial={{}}>
                             {(data, errors) =>

@@ -19,6 +19,8 @@ export function DynamicRegistrationForm ({registration = {}, errors = [], loadin
     const uiSchema = useDynamicRegistrationUiSchema();
     const validator = useDynamicRegistrationValidator();
 
+    React.useEffect(() => console.log(registration), [registration]);
+
     return (<>
         <div className="container-fluid">
             <div className="d-flex justify-content-end align-items-center">
