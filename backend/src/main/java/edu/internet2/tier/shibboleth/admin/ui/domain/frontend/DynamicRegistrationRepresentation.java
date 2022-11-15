@@ -24,6 +24,7 @@ public class DynamicRegistrationRepresentation {
     private String idOfOwner;
     private String jwks;
     private String logoUri;
+    private String name;
     private LocalDateTime modifiedDate;
     private String policyUri;
     private String redirectUris;
@@ -45,6 +46,7 @@ public class DynamicRegistrationRepresentation {
         idOfOwner = dri.getIdOfOwner();
         jwks = dri.getJwks();
         logoUri = dri.getLogoUri();
+        name = dri.setName();
         modifiedDate = dri.getModifiedDate();
         policyUri = dri.getPolicyUri();
         redirectUris = dri.getRedirectUris();
@@ -69,6 +71,7 @@ public class DynamicRegistrationRepresentation {
 //        dri.setIdOfOwner(idOfOwner);
         dri.setJwks(jwks);
         dri.setLogoUri(logoUri);
+        dri.setName(name);
         dri.setPolicyUri(policyUri);
         dri.setRedirectUris(redirectUris);
         dri.setResourceId(resourceId);
@@ -98,6 +101,7 @@ public class DynamicRegistrationRepresentation {
         dri.setGrantType(grantType);
         dri.setJwks(jwks);
         dri.setLogoUri(logoUri);
+        dri.setName(name);
         dri.setPolicyUri(policyUri);
         dri.setRedirectUris(redirectUris);
         dri.setResourceId(resourceId);

@@ -30,6 +30,7 @@ public class DynamicRegistrationInfo extends AbstractAuditable implements Ownabl
     private String idOfOwner;
     private String jwks;
     private String logoUri;
+    private String name;
     private String policyUri;
     private String redirectUris;
     private String resourceId;
