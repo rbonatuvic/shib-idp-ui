@@ -46,7 +46,7 @@ public class DynamicRegistrationRepresentation {
         idOfOwner = dri.getIdOfOwner();
         jwks = dri.getJwks();
         logoUri = dri.getLogoUri();
-        name = dri.setName();
+        name = dri.getName();
         modifiedDate = dri.getModifiedDate();
         policyUri = dri.getPolicyUri();
         redirectUris = dri.getRedirectUris();
