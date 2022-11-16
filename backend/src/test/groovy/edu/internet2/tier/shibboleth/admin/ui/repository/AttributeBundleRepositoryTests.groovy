@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository
 
-import com.fasterxml.jackson.databind.MapperFeature
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBundle

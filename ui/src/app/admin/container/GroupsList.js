@@ -43,6 +43,9 @@ export function GroupsList({ groups, onDelete }) {
                                                 <th>
                                                     <Translate value="label.group-description">Group Description</Translate>
                                                 </th>
+                                                <th>
+                                                    <Translate value="label.group-approvers">Approvers</Translate>
+                                                </th>
                                                 <th><span className="sr-only"><Translate value="label.actions">Actions</Translate></span></th>
                                             </tr>
                                         </thead>
@@ -51,6 +54,7 @@ export function GroupsList({ groups, onDelete }) {
                                                 <tr key={i}>
                                                     <td>{group.name}</td>
                                                     <td>{group.description || ''}</td>
+                                                    <td>{group.approversList?.length > 0 ? group.approversList[0].approverGroupIds.join(', ') : '-'}</td>
                                                     <td className="text-end">
                                                         <Link to={`../groups/${group.resourceId}/edit`} className="btn btn-link text-primary">
                                                             <FontAwesomeIcon icon={faEdit} size="lg" />

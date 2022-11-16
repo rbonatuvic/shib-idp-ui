@@ -72,7 +72,12 @@ function useIsAdminOrInGroup() {
 function useCanEnable() {
     const isAdmin = useIsAdmin();
     const isEnabler = useIsEnabler();
-    return isAdmin || isEnabler;
+    return (approved) => isAdmin ? true : (isEnabler && approved);
+}
+
+function useIsApprover() {
+    const user = useCurrentUser();
+    return user.canApprove;
 }
 
 function useUserGroup() {
@@ -103,6 +108,7 @@ export {
     useCurrentUser,
     useIsAdmin,
     useIsAdminOrInGroup,
+    useIsApprover,
     useCanEnable,
     useCurrentUserLoading,
     useCurrentUserLoader,

@@ -28,7 +28,7 @@ class EntityDescriptorFilesScheduledTasksTests extends AbstractBaseDataJpaTest {
 
     def directory
 
-    def entityDescriptorRepository = Mock(EntityDescriptorRepository)
+    def entityDescriptorRepo = Mock(EntityDescriptorRepository)
 
     def entityDescriptorFilesScheduledTasks
 
@@ -38,7 +38,7 @@ class EntityDescriptorFilesScheduledTasksTests extends AbstractBaseDataJpaTest {
         randomGenerator = new RandomGenerator()
         tempPath = tempPath + randomGenerator.randomRangeInt(10000, 20000)
         EntityDescriptorConversionUtils.setOpenSamlObjects(openSamlObjects)
-        entityDescriptorFilesScheduledTasks = new EntityDescriptorFilesScheduledTasks(tempPath, entityDescriptorRepository, openSamlObjects, new FileCheckingFileWritingService())
+        entityDescriptorFilesScheduledTasks = new EntityDescriptorFilesScheduledTasks(tempPath, entityDescriptorRepo, openSamlObjects, new FileCheckingFileWritingService())
         directory = new File(tempPath)
         directory.mkdir()
     }
@@ -74,7 +74,7 @@ class EntityDescriptorFilesScheduledTasksTests extends AbstractBaseDataJpaTest {
             }
             it
         })
-        1 * entityDescriptorRepository.findAllStreamByServiceEnabled(true) >> [entityDescriptor].stream()
+        1 * entityDescriptorRepo.findAllStreamByServiceEnabled(true) >> [entityDescriptor].stream()
 
         when:
         if (directory.exists()) {
@@ -107,7 +107,7 @@ class EntityDescriptorFilesScheduledTasksTests extends AbstractBaseDataJpaTest {
         def file = new File(directory, randomGenerator.randomId() + ".xml")
         file.text = "Delete me!"
 
-        1 * entityDescriptorRepository.findAllStreamByServiceEnabled(true) >> [entityDescriptor].stream()
+        1 * entityDescriptorRepo.findAllStreamByServiceEnabled(true) >> [entityDescriptor].stream()
 
         when:
         entityDescriptorFilesScheduledTasks.removeDanglingEntityDescriptorFiles()

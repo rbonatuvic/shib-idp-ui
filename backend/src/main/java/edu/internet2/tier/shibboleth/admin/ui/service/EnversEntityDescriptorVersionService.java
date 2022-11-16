@@ -32,8 +32,7 @@ public class EnversEntityDescriptorVersionService implements EntityDescriptorVer
     }
 
     @Override
-    public EntityDescriptorRepresentation findSpecificVersionOfEntityDescriptor(String resourceId, String versionId) throws
-                    PersistentEntityNotFound {
+    public EntityDescriptorRepresentation findSpecificVersionOfEntityDescriptor(String resourceId, String versionId) throws PersistentEntityNotFound {
         Object edObject = enversVersionServiceSupport.findSpecificVersionOfPersistentEntity(resourceId, versionId, EntityDescriptor.class);
         if (edObject == null) { 
             throw new PersistentEntityNotFound("Unable to find specific version requested - version: " + versionId);

@@ -65,7 +65,7 @@ export function SourcesTab () {
                     <Search entities={sources} searchable={searchProps}>
                         {(searched) =>
                             <MetadataActions type="source">
-                                {(enable, remove) =>
+                                {({enable, remove}) =>
                                     <SourceList
                                         entities={searched}
                                         onDelete={(id) => remove(id, loadSources)}

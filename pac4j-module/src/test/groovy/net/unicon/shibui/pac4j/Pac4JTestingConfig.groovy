@@ -31,9 +31,9 @@ class Pac4JTestingConfig {
 
     @Bean
     @Primary
-    GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository repo) {
+    GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository repo, GroupsRepository groupsRepository) {
         GroupUpdatedEntityListener listener = new GroupUpdatedEntityListener()
-        listener.init(repo)
+        listener.init(repo, groupsRepository)
         return listener
     }
 

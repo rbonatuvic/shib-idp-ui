@@ -13,13 +13,17 @@ import java.util.stream.Stream;
  * Repository to manage {@link EntityDescriptor} instances.
  */
 public interface EntityDescriptorRepository extends JpaRepository<EntityDescriptor, Long> {
+
+    @Query(value="SELECT e.resourceId FROM EntityDescriptor e WHERE e.idOfOwner = :groupId AND e.serviceEnabled = false")
+    List<String> findAllResourceIdsByIdOfOwnerAndNotEnabled(@Param("groupId") String groupId);
+
     @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
-                   "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol) " +
-                    "from EntityDescriptor e")
+                   "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol, e.approved) " +
+                   "from EntityDescriptor e")
     List<EntityDescriptorProjection> findAllReturnProjections();
 
     @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
-                   "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol) " +
+                   "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol, e.approved) " +
                    "from EntityDescriptor e " +
                    "where e.idOfOwner = :ownerId")
     List<EntityDescriptorProjection> findAllByIdOfOwner(@Param("ownerId") String ownerId);
@@ -35,9 +39,11 @@ public interface EntityDescriptorRepository extends JpaRepository<EntityDescript
 
     Stream<EntityDescriptor> findAllStreamByIdOfOwner(String ownerId);
     
-    @Query("select e from EntityDescriptor e, User u join u.roles r " +
-            "where e.createdBy = u.username and e.serviceEnabled = false and r.name in ('ROLE_USER', 'ROLE_NONE')")
-    Stream<EntityDescriptor> findAllDisabledAndNotOwnedByAdmin();
+    @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
+                    "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol, e.approved) " +
+                    "  from EntityDescriptor e " +
+                    " where e.serviceEnabled = false")
+    List<EntityDescriptorProjection> getEntityDescriptorsNeedingEnabling();
     
     /**
      * SHIBUI-1740 This is here to aid in migration of systems using the SHIBUI prior to group functionality being added
@@ -45,4 +51,13 @@ public interface EntityDescriptorRepository extends JpaRepository<EntityDescript
      */
     @Deprecated
     List<EntityDescriptor> findAllByIdOfOwnerIsNull();
+
+    @Query(value = "select new edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection(e.entityID, e.resourceId, e.serviceProviderName, e.createdBy, " +
+                   "e.createdDate, e.serviceEnabled, e.idOfOwner, e.protocol, e.approved) " +
+                   "  from EntityDescriptor e " +
+                   " where e.idOfOwner in (:groupIds)" +
+                   "   and e.serviceEnabled = false" +
+                   "   and e.approved = false")
+    List<EntityDescriptorProjection> getEntityDescriptorsNeedingApproval(@Param("groupIds") List<String> groupIds);
+
 }

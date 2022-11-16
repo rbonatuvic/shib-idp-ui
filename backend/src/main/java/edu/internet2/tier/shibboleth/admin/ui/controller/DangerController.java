@@ -9,6 +9,7 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverReposit
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.ShibPropertySetRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.ShibPropertySettingRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.ApproversRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
@@ -28,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Profile("very-dangerous")
 @Slf4j
 public class DangerController {
+    @Autowired
+    private ApproversRepository approversRepositry;
+
     @Autowired
     private CustomEntityAttributeDefinitionRepository attributeRepository;
 
@@ -105,6 +109,7 @@ public class DangerController {
     }
 
     private void clearUsersAndGroups() {
+        approversRepositry.deleteAll();
         groupRepository.deleteAll();
         ownershipRepository.clearAllOwnedByGroup();
         userRepository.findAll().forEach(user -> {

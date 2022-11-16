@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotF
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InitializationException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
+import edu.internet2.tier.shibboleth.admin.ui.exception.UnsupportedShibUiOperationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,8 +16,8 @@ import javax.script.ScriptException;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
-@ControllerAdvice(assignableTypes = {ActivateController.class})
-public class ActivateExceptionHandler extends ResponseEntityExceptionHandler {
+@ControllerAdvice(assignableTypes = {ActivateController.class, ApprovalController.class})
+public class ApproveAndActivateExceptionHandler extends ResponseEntityExceptionHandler {
     
     @ExceptionHandler({ PersistentEntityNotFound.class })
     public ResponseEntity<?> handleEntityNotFoundException(PersistentEntityNotFound e, WebRequest request) {
@@ -42,6 +43,9 @@ public class ActivateExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleScriptException(ScriptException e, WebRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage()));
     }
-     
-    
+
+    @ExceptionHandler({ UnsupportedShibUiOperationException.class })
+    public ResponseEntity<?> handleUnsupportedShibUiOperationException(UnsupportedShibUiOperationException e, WebRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(new ErrorResponse(String.valueOf(HttpStatus.NOT_IMPLEMENTED.value()), e.getMessage()));
+    }
 }

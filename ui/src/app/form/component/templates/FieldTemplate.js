@@ -19,7 +19,7 @@ export function FieldTemplate ({
 
     return (
         <>{!props.hidden ?
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3" id={`${id}-group`}>
                 <div>
                     {children}
                 </div>

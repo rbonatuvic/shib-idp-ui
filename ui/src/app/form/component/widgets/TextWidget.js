@@ -41,8 +41,10 @@ const TextWidget = ({
     };
 
     React.useEffect(() => {
-        onChange(fieldValue);
-    }, [fieldValue, onChange]);
+        if (fieldValue || touched) {
+            onChange(fieldValue);
+        }
+    }, [fieldValue, onChange, touched]);
 
     const translator = useTranslator();
 

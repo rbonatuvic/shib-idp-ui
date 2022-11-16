@@ -7,26 +7,28 @@ import java.time.LocalDateTime;
 
 public class EntityDescriptorProjection {
     @Getter
-    String id;
-    String entityID;
-    String entityId;
-    @Getter
-    String resourceId;
-    @Getter
-    String serviceProviderName;
+    boolean approved;
     @Getter
     String createdBy;
     @Getter
     LocalDateTime createdDate;
+    String entityID;
+    String entityId;
+    @Getter
+    String id;
+    @Getter
+    String idOfOwner;
+    @Getter
+    String resourceId;
     @Getter
     boolean serviceEnabled;
     @Getter
-    String idOfOwner;
-
+    String serviceProviderName;
     EntityDescriptorProtocol protocol;
 
     public EntityDescriptorProjection(String entityID, String resourceId, String serviceProviderName, String createdBy,
-                                      LocalDateTime createdDate, boolean serviceEnabled, String idOfOwner, EntityDescriptorProtocol edp) {
+                                      LocalDateTime createdDate, boolean serviceEnabled, String idOfOwner,
+                                      EntityDescriptorProtocol edp, boolean approved) {
         this.entityID = entityID;
         this.entityId = entityID;
         this.resourceId = resourceId;
@@ -37,6 +39,7 @@ public class EntityDescriptorProjection {
         this.serviceEnabled = serviceEnabled;
         this.idOfOwner = idOfOwner;
         this.protocol = edp == null ? EntityDescriptorProtocol.SAML : edp;
+        this.approved = approved;
     }
 
     public String getEntityID() {

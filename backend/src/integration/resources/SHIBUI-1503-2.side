@@ -102,6 +102,22 @@
       "targets": [],
       "value": ""
     }, {
+      "id": "1f9a1cc1-00d5-4ecd-a0d1-3cec1683286d",
+      "comment": "",
+      "command": "click",
+      "target": "id=user-access-btn",
+      "targets": [
+        ["id=user-access-btn", "id"],
+        ["linkText=User Access Request2", "linkText"],
+        ["css=#user-access-btn", "css:finder"],
+        ["xpath=//a[@id='user-access-btn']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/dashboard/admin/actions/useraccess')]", "xpath:href"],
+        ["xpath=//div[2]/div/div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'User Access Request2')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
       "id": "a98143b5-647f-4e7e-b920-f6e6875d7372",
       "comment": "",
       "command": "click",

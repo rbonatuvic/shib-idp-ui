@@ -1,0 +1,101 @@
+{
+  "type": "object",
+  "required": [
+    "redirectUris"
+  ],
+  "properties": {
+    "applicationType": {
+      "title": "label.application-type",
+      "description": "tooltip.application-type",
+      "type": "string"
+    },
+    "approved": {
+      "title": "label.approved",
+      "description": "tooltip.approved",
+      "type": "boolean"
+    },
+    "contacts": {
+      "title": "label.contacts",
+      "description": "tooltip.contacts",
+      "type": "string"
+    },
+    "enabled": {
+      "title": "label.enabled",
+      "description": "tooltip.enabled",
+      "type": "boolean"
+    },
+    "grantType": {
+      "title": "label.grant-type",
+      "description": "tooltip.grant-type",
+      "type": "string",
+      "widget": "select",
+      "minLength": 1,
+      "oneOf": [
+        {
+          "enum": ["authorization_code"],
+          "description": "value.authorization-code"
+        },
+        {
+          "enum": ["implicit"],
+          "description": "value.implicit"
+        },
+        {
+          "enum": ["refresh_token"],
+          "description": "value.refresh-token"
+        }
+      ]
+    },
+    "jwks": {
+      "title": "label.jwks",
+      "description": "tooltip.jwks",
+      "type": "string"
+    },
+    "logoUri": {
+      "title": "label.logo-uri",
+      "description": "tooltip.logo-uri",
+      "type": "string"
+    },
+    "name": {
+      "title": "label.name",
+      "description": "tooltip.name",
+      "type": "string"
+    },
+    "policyUri": {
+      "title": "label.policy-uri",
+      "description": "tooltip.policy-uri",
+      "type": "string"
+    },
+    "redirectUris": {
+      "title": "label.redirect-uris",
+      "description": "tooltip.redirect-uris",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "responseTypes": {
+      "title": "label.response-types",
+      "description": "tooltip.response-types",
+      "type": "string"
+    },
+    "scope": {
+      "title": "label.scope",
+      "description": "tooltip.scope",
+      "type": "string"
+    },
+    "subjectType": {
+      "title": "label.subject-type",
+      "description": "tooltip.subject-type",
+      "type": "string"
+    },
+    "tokenEndpointAuthMethod": {
+      "title": "label.token-endpoint-auth-method",
+      "description": "tooltip.token-endpoint-auth-method",
+      "type": "string"
+    },
+    "tosUri": {
+      "title": "label.tos-uri",
+      "description": "tooltip.tos-uri",
+      "type": "string"
+    }
+  }
+}

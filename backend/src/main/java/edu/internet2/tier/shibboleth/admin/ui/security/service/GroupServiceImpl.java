@@ -4,7 +4,9 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Approvers;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.ApproversRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @NoArgsConstructor
@@ -26,27 +30,23 @@ public class GroupServiceImpl implements IGroupService {
     private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
 
     @Autowired
+    protected ApproversRepository approversRepository;
+
+    @Autowired
     protected GroupsRepository groupRepository;
 
     @Autowired
     protected OwnershipRepository ownershipRepository;
 
-    public GroupServiceImpl(GroupsRepository repo, OwnershipRepository ownershipRepository) {
-        this.groupRepository = repo;
-        this.ownershipRepository = ownershipRepository;
-    }
-
     @Override
     @Transactional
     public Group createGroup(Group group) throws GroupExistsConflictException, InvalidGroupRegexException {
-        Group foundGroup = find(group.getResourceId());
         // If already defined, we don't want to create a new one, nor do we want this call update the definition
-        if (foundGroup != null) {
-            throw new GroupExistsConflictException(
-                            String.format("Call update (PUT) to modify the group with resource id: [%s] and name: [%s]",
-                                            foundGroup.getResourceId(), foundGroup.getName()));
+        if (groupRepository.existsById(group.getResourceId())) {
+            throw new GroupExistsConflictException(String.format("Call update (PUT) to modify the group with resource id: [%s] and name: [%s]", group.getResourceId(), group.getName()));
         }
         validateGroupRegex(group);
+        manageApproversList(group);
         return groupRepository.save(group);
     }
 
@@ -59,6 +59,7 @@ public class GroupServiceImpl implements IGroupService {
                             "Unable to delete group with resource id: [%s] - remove all items owned by / associated with the group first",
                             resourceId));
         }
+        approversRepository.deleteAll(group.getApproversList());
         groupRepository.delete(group);
     }
 
@@ -115,15 +116,49 @@ public class GroupServiceImpl implements IGroupService {
         return groupRepository.findAll();
     }
 
+    private List<Group> getGroupListFromIds(List<String> approverGroupIds) {
+        List<Group> result = new ArrayList<>();
+        for (String id : approverGroupIds) {
+            Group g = find(id);
+            result.add(g);
+        }
+        return result;
+    }
+
+    private void manageApproversList(Group group) {
+        AtomicInteger approversCount = new AtomicInteger();
+        group.getApproversList().forEach(a -> approversCount.addAndGet(a.getApproverGroupIds().size()));
+        if (approversCount.intValue() == 0) {
+            // Need to manually manage the join tables
+            List<String> ids = approversRepository.getApproverIdsForGroup(group.getResourceId());
+            groupRepository.clearApproversByApproverIds(ids);
+            approversRepository.deleteGroupAssociationsForIds(ids);
+            approversRepository.deleteAllById(ids);
+            group.setApproversList(new ArrayList<>());
+            return;
+        }
+        List<Approvers> updatedApprovers = new ArrayList<>();
+        group.getApproversList().forEach(approvers -> {
+            Approvers savedApprovers = approversRepository.findByResourceId(approvers.getResourceId());
+            savedApprovers = savedApprovers == null ? approversRepository.save(approvers) : savedApprovers;
+            savedApprovers.setApproverGroups(getGroupListFromIds(approvers.getApproverGroupIds()));
+            Approvers updatedApp = approversRepository.save(savedApprovers);
+            updatedApprovers.add(updatedApp);
+        });
+        group.setApproversList(updatedApprovers);
+    }
+
     @Override
     public Group updateGroup(Group group) throws PersistentEntityNotFound, InvalidGroupRegexException {
+        manageApproversList(group); // have to make sure that approvers have been saved before a fetch or we can get data integrity errors on lookup...
         Group g = find(group.getResourceId());
         if (g == null) {
             throw new PersistentEntityNotFound(String.format("Unable to find group with resource id: [%s] and name: [%s]",
                             group.getResourceId(), group.getName()));
         }
         validateGroupRegex(group);
-        return groupRepository.save(group);
+        Group result = groupRepository.save(group);
+        return result;
     }
 
     /**

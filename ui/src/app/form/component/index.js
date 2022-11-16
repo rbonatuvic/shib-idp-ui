@@ -6,6 +6,7 @@ import AttributeReleaseWidget from './widgets/AttributeReleaseWidget';
 import RadioWidget from './widgets/RadioWidget';
 import OptionWidget from './widgets/OptionWidget';
 import UpDownWidget from './widgets/UpDownWidget';
+import MultiSelectWidget from './widgets/MultiSelectWidget';
 
 import FieldTemplate from './templates/FieldTemplate';
 import ArrayFieldTemplate from './templates/ArrayFieldTemplate';
@@ -40,5 +41,6 @@ export const widgets = {
     CheckboxWidget,
     RadioWidget,
     UpDownWidget,
-    AttributeReleaseWidget
+    AttributeReleaseWidget,
+    MultiSelectWidget,
 };

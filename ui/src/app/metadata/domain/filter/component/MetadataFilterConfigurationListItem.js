@@ -53,7 +53,7 @@ export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, 
             <span className="">{ filter['@type'] }</span>
             <span className="ms-auto">
                 <Form.Check type="switch"
-                    id={`customSwitch-${filter.resourceId}`}
+                    id={`customSwitch-${index}`}
                     label={<Translate value={filter.filterEnabled ? 'label.enabled' : 'label.disabled'} />}
                     checked={filter.filterEnabled}
                     disabled={loading}
