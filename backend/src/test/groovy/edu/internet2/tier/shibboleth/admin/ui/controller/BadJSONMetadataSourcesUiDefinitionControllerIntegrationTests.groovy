@@ -15,6 +15,7 @@ import spock.lang.Specification
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.JsonSchemaLocationBuilder
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ALGORITHM_FILTER
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.DYNAMIC_HTTP_METADATA_RESOLVER
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.DYNAMIC_REGISTRATION
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.FILESYSTEM_METADATA_RESOLVER
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.LOCAL_DYNAMIC_METADATA_RESOLVER
@@ -100,7 +101,12 @@ class BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests extends Speci
                     .jacksonMapper(jacksonMapper)
                     .detectMalformedJson(false)
                     .build())
-
+                .register(DYNAMIC_REGISTRATION, JsonSchemaLocationBuilder.with()
+                        .jsonSchemaLocation('classpath:dynamic-registration.schema.json')
+                        .resourceLoader(resourceLoader)
+                        .jacksonMapper(jacksonMapper)
+                        .detectMalformedJson(false)
+                        .build())
         }
     }
 }
