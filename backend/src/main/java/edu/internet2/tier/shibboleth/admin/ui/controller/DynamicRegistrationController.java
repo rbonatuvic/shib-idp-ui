@@ -66,6 +66,12 @@ public class DynamicRegistrationController {
         return ResponseEntity.ok(dynamicRegistrationService.getDisabledDynamicRegistrations());
     }
 
+    @GetMapping(value = "/DynamicRegistration/{resourceId}", produces = "application/json")
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getOne(@PathVariable String resourceId) throws ForbiddenException {
+        return ResponseEntity.ok(dynamicRegistrationService.getOne(resourceId));
+    }
+
     @DeleteMapping(value = "/DynamicRegistration/{resourceId}")
     @Transactional
     public ResponseEntity<?> deleteOne(@PathVariable String resourceId) throws ForbiddenException, PersistentEntityNotFound {

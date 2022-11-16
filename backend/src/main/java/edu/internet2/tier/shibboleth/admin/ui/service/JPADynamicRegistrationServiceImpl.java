@@ -160,6 +160,15 @@ public class JPADynamicRegistrationServiceImpl implements DynamicRegistrationSer
     }
 
     @Override
+    public DynamicRegistrationRepresentation getOne(String resourceId) throws ForbiddenException {
+        DynamicRegistrationInfo existingDri = repository.findByResourceId(resourceId);
+        if (!shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), existingDri, PermissionType.viewOrEdit)) {
+            throw new ForbiddenException();
+        }
+        return new DynamicRegistrationRepresentation(existingDri);
+    }
+
+    @Override
     public DynamicRegistrationRepresentation update(DynamicRegistrationRepresentation dynRegRepresentation)
                     throws PersistentEntityNotFound, ForbiddenException, ConcurrentModificationException {
         DynamicRegistrationInfo existingDri = repository.findByResourceId(dynRegRepresentation.getResourceId());

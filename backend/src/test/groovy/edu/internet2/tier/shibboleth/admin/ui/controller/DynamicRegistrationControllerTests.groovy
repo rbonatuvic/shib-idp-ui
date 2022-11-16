@@ -225,11 +225,11 @@ class DynamicRegistrationControllerTests extends AbstractBaseDataJpaTest {
         result1.andExpect(status().isOk()).andExpect(content().contentType(APPLICATION_JSON)).andExpect(jsonPath("\$").isEmpty())
 
         when:
-        def dynReg2 = new DynamicRegistrationInfo(resourceId: 'uuid-2', enabled: false, idOfOwner: "testingGroupBBB", applicationType: 'apptype',
+        def dynReg2 = new DynamicRegistrationInfo(resourceId: 'uuid-2', enabled: false, applicationType: 'apptype',
                 approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri',
                 redirectUris: 'redirecturis', responseTypes: 'responsetypes', scope: 'scope', subjectType: 'subjecttype',
                 tokenEndpointAuthMethod: 'token', tosUri: 'tosuri', grantType: GrantType.implicit)
-        repo.saveAndFlush(dynReg2)
+        dynamicRegistrationService.createNew(new DynamicRegistrationRepresentation(dynReg2))
         def result = mockMvc.perform(get('/api/DynamicRegistrations'))
 
         then:
@@ -251,6 +251,31 @@ class DynamicRegistrationControllerTests extends AbstractBaseDataJpaTest {
               .andExpect(jsonPath("\$.[0].tokenEndpointAuthMethod").value("token"))
               .andExpect(jsonPath("\$.[0].tosUri").value("tosuri"))
               .andExpect(jsonPath("\$.[0].grantType").value("implicit"))
+
+        try {
+            mockMvc.perform(get('/api/DynamicRegistration/uuid-1'))
+        } catch (Exception e) {
+            e instanceof ForbiddenException
+        }
+
+        def result2 = mockMvc.perform(get('/api/DynamicRegistration/uuid-2'))
+        result2.andDo(MockMvcResultHandlers.print())
+               .andExpect(status().isOk()).andExpect(content().contentType(APPLICATION_JSON))
+               .andExpect(jsonPath("\$.resourceId").value("uuid-2"))
+               .andExpect(jsonPath("\$.enabled").value(false))
+               .andExpect(jsonPath("\$.idOfOwner").value("testingGroupBBB"))
+               .andExpect(jsonPath("\$.applicationType").value("apptype"))
+               .andExpect(jsonPath("\$.contacts").value("contacts"))
+               .andExpect(jsonPath("\$.jwks").value("jwks"))
+               .andExpect(jsonPath("\$.logoUri").value("logouri"))
+               .andExpect(jsonPath("\$.policyUri").value("policyuri"))
+               .andExpect(jsonPath("\$.redirectUris").value("redirecturis"))
+               .andExpect(jsonPath("\$.responseTypes").value("responsetypes"))
+               .andExpect(jsonPath("\$.scope").value("scope"))
+               .andExpect(jsonPath("\$.subjectType").value("subjecttype"))
+               .andExpect(jsonPath("\$.tokenEndpointAuthMethod").value("token"))
+               .andExpect(jsonPath("\$.tosUri").value("tosuri"))
+               .andExpect(jsonPath("\$.grantType").value("implicit"))
     }
 
     @WithMockUser(value = "someUser", roles = ["USER"])
