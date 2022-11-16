@@ -26,6 +26,7 @@
 
     <util:list id ="shibboleth.AttributeResolverResources">
         <value>%{idp.home}/conf/attribute-resolver.xml</value>
+        <value>%{idp.home}/conf/oidc-attribute-resolver.xml</value>
     </util:list>
 
     <!--
@@ -37,10 +38,12 @@
         <value>%{idp.home}/system/conf/attribute-registry-system.xml</value>
         <value>%{idp.home}/conf/attributes/default-rules.xml</value>
         <value>%{idp.home}/conf/attribute-resolver.xml</value>
+        <value>%{idp.home}/conf/oidc-attribute-resolver.xml</value>
     </util:list>
 
     <util:list id ="shibboleth.AttributeFilterResources">
         <value>%{idp.home}/conf/attribute-filter.xml</value>
+        <value>%{idp.home}/conf/oidc-attribute-filter.xml</value>
     </util:list>
 
     <util:list id ="shibboleth.NameIdentifierGenerationResources">
