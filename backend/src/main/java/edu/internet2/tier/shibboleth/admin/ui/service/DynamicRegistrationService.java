@@ -23,6 +23,8 @@ public interface DynamicRegistrationService {
 
     List<DynamicRegistrationRepresentation> getDisabledDynamicRegistrations() throws ForbiddenException;
 
+    DynamicRegistrationRepresentation getOne(String resourceId) throws ForbiddenException;
+
     DynamicRegistrationRepresentation update(DynamicRegistrationRepresentation dynRegRepresentation) throws PersistentEntityNotFound, ForbiddenException;
 
     DynamicRegistrationRepresentation updateGroupForDynamicRegistration(String resourceId, String groupId) throws ForbiddenException, PersistentEntityNotFound;
