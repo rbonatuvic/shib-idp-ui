@@ -5,6 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.DynamicRegistrationInf
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
+import edu.internet2.tier.shibboleth.admin.ui.exception.UnsupportedShibUiOperationException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Approvers;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Owner;
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,19 +36,21 @@ import java.util.List;
 @NoArgsConstructor
 public class JPADynamicRegistrationServiceImpl implements DynamicRegistrationService {
     @Autowired
-    IGroupService groupService;
+    private IGroupService groupService;
 
     @Autowired
-    DynamicRegistrationInfoRepository repository;
+    private DynamicRegistrationInfoRepository repository;
 
     @Autowired
-    OwnershipRepository ownershipRepository;
+    private OwnershipRepository ownershipRepository;
+
+    private ShibRestTemplateDelegate shibRestTemplateDelegate;
 
     @Autowired
     private IShibUiPermissionEvaluator shibUiAuthorizationDelegate;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Override
     public DynamicRegistrationRepresentation approveDynamicRegistration(String resourceId, boolean status) throws PersistentEntityNotFound, ForbiddenException {
@@ -125,7 +129,7 @@ public class JPADynamicRegistrationServiceImpl implements DynamicRegistrationSer
     }
 
     @Override
-    public DynamicRegistrationRepresentation enableDynamicRegistration(String resourceId) throws PersistentEntityNotFound, ForbiddenException {
+    public HttpStatus enableDynamicRegistration(String resourceId) throws PersistentEntityNotFound, ForbiddenException, UnsupportedShibUiOperationException {
         DynamicRegistrationInfo existingDri = repository.findByResourceId(resourceId);
         if (existingDri == null) {
             throw new PersistentEntityNotFound(String.format("The dynamic registration with id [%s] was not found for update.", existingDri.getResourceId()));
@@ -133,8 +137,7 @@ public class JPADynamicRegistrationServiceImpl implements DynamicRegistrationSer
         if (!shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), existingDri, PermissionType.enable)) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service");
         }
-        // TODO do something...
-        return new DynamicRegistrationRepresentation(existingDri);
+        return shibRestTemplateDelegate.sendRequest(existingDri);
     }
 
     private boolean entityExists(String id) {

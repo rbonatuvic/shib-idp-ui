@@ -4,6 +4,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.DynamicRegistratio
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
+import edu.internet2.tier.shibboleth.admin.ui.exception.UnsupportedShibUiOperationException;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -15,7 +17,8 @@ public interface DynamicRegistrationService {
 
     void delete(String resourceId) throws ForbiddenException, PersistentEntityNotFound;
 
-    DynamicRegistrationRepresentation enableDynamicRegistration(String resourceId) throws PersistentEntityNotFound, ForbiddenException;
+    HttpStatus enableDynamicRegistration(String resourceId)
+                    throws PersistentEntityNotFound, ForbiddenException, UnsupportedShibUiOperationException;
 
     List<DynamicRegistrationRepresentation> getAllDynamicRegistrationsBasedOnUserAccess() throws ForbiddenException;
 
