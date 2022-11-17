@@ -1,21 +1,24 @@
 import React from 'react';
-// import { useDynamicRegistrationDispatcher } from '../../dynamic-registration/hoc/DynamicRegistrationContext';
 import Translate from '../../i18n/components/translate';
-import { Ordered } from '../component/Ordered';
 import { Search } from '../component/Search';
 
 import {DynamicRegistrationList} from '../../dynamic-registration/component/DynamicRegistrationList';
-import { useDynamicRegistrationCollection, useDynamicRegistrationApi } from '../../dynamic-registration/hoc/DynamicRegistrationContext';
+import {
+    useChangeDynamicRegistrationGroupMutation,
+    useDeleteDynamicRegistrationMutation,
+    useEnableDynamicRegistrationMutation,
+    useGetDynamicRegistrationsQuery
+} from '../../store/dynamic-registration/DynamicRegistrationSlice';
 
 const searchProps = ['name'];
 
 export function DynamicRegistrationsTab () {
 
-    const registrations = useDynamicRegistrationCollection();
-    const { load } = useDynamicRegistrationApi();
+    const {data: registrations = [], isLoading: loading} = useGetDynamicRegistrationsQuery();
 
-    /*eslint-disable react-hooks/exhaustive-deps*/
-    React.useEffect(() => { load() }, []);
+    const [remove] = useDeleteDynamicRegistrationMutation();
+    const [enable] = useEnableDynamicRegistrationMutation();
+    const [changeGroup] = useChangeDynamicRegistrationGroupMutation();
 
     return (
         <section className="section">
@@ -27,15 +30,14 @@ export function DynamicRegistrationsTab () {
                         </span>
                     </div>
                     <div className="p-3">
-                        <Ordered entities={registrations} prop="resourceIds">
-                            {(ordered, first, last, onOrderUp, onOrderDown) =>
-                            <Search entities={ordered} searchable={searchProps}>
-                                {(searched) =>
-                                <DynamicRegistrationList entities={searched} />
-                                }
-                            </Search>
+                        <Search entities={registrations} searchable={searchProps}>
+                            {(searched) =>
+                            <DynamicRegistrationList entities={searched}
+                                onDelete={(id) => remove({id})}
+                                onEnable={(id, enabled) => enable({id, enabled}) }
+                                onChangeGroup={(registration, group) => changeGroup({ registration, group })}/>
                             }
-                        </Ordered>
+                        </Search>
                     </div>
                 </>
             </div>

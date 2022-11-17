@@ -70,7 +70,7 @@ export function MetadataSourceProtocolSelector({ types = [], loading, children})
                         <li className="nav-item">
                             {isValid &&
                             <Button
-                                className="nav-link next btn d-flex justify-content-between align-items-start"
+                                className="nav-link next btn d-flex justify-content-between align-items-start text-white"
                                 onClick={() => onNext(getValues())}
                                 aria-label={() => <Translate value={`label.common-attributes`} />}
                                 type="button">

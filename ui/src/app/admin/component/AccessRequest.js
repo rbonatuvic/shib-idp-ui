@@ -10,7 +10,7 @@ export function AccessRequest({ users, roles, onDeleteUser, onChangeUserRole }) 
         {(!users || !users.length) ?
         <>
             <div className="d-flex justify-content-center">
-                <div className="w-25 alert alert-info m-3">
+                <div className="w-50 alert alert-info m-3">
                     <p className="text-center">There are no new user requests at this time.</p>
                 </div>
             </div>

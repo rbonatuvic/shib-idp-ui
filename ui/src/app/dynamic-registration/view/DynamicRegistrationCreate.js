@@ -1,34 +1,23 @@
 import React from 'react';
-import { Prompt, useHistory, useParams } from 'react-router-dom';
+import { Prompt, useHistory } from 'react-router-dom';
 
-import { useDynamicRegistrationApi } from '../hoc/DynamicRegistrationContext';
 import Translate from '../../i18n/components/translate';
 import { Schema } from '../../form/Schema';
 import { FormManager } from '../../form/FormManager';
 import { DynamicRegistrationForm } from '../component/DynamicRegistrationForm';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
-import { useTranslator } from '../../i18n/hooks';
 import DynamicConfigurationDefinition from '../hoc/DynamicConfigurationDefinition';
+import { useCreateDynamicRegistrationMutation } from '../../store/dynamic-registration/DynamicRegistrationSlice';
 
 export function DynamicRegistrationCreate () {
 
     const history = useHistory();
-    const translator = useTranslator();
-    const notifier = useNotificationDispatcher();
-    const { create } = useDynamicRegistrationApi();
+
+    const [create] = useCreateDynamicRegistrationMutation();
 
     async function save(reg) {
-        console.log(reg);
-        let toast;
         const resp = await create(reg);
         if (resp.ok) {
             gotoDetail({ refresh: true });
-            toast = createNotificationAction(`Added group successfully.`, NotificationTypes.SUCCESS);
-        } else {
-            toast = createNotificationAction(`${resp.errorCode} - ${translator(resp.errorMessage)}`, NotificationTypes.ERROR);
-        }
-        if (toast) {
-            notifier(toast);
         }
     };
 

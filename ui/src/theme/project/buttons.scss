@@ -45,6 +45,9 @@ $custom-control-spacer-x: 1rem;
         }
 
         .nav-link.btn {
+
+            font-size: 0.875rem;
+
             @include button-size($input-btn-padding-y-lg, $input-btn-padding-x-lg, $font-size-sm, $btn-border-radius-lg);
             white-space: normal;
             height: 60px;

@@ -36,7 +36,6 @@ import { BASE_PATH } from './App.constant';
 import { ProtectRoute } from './core/components/ProtectRoute';
 import { IdpConfiguration } from './admin/IdpConfiguration';
 import { DynamicRegistration } from './dynamic-registration/DynamicRegistration';
-import { DynamicRegistrationsApi } from './dynamic-registration/hoc/DynamicRegistrationContext';
 
 function App() {
 

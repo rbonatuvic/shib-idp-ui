@@ -12,19 +12,17 @@ import { ProvidersTab } from './ProvidersTab';
 import { AdminTab } from './AdminTab';
 import { ActionsTab } from './ActionsTab';
 import { useCurrentUserLoading, useIsAdmin, useIsApprover } from '../../core/user/UserContext';
-import useFetch from 'use-http';
-import API_BASE_PATH from '../../App.constant';
-import { DynamicRegistrationsApi } from '../../dynamic-registration/hoc/DynamicRegistrationContext';
 import { DynamicRegistrationsTab } from './DynamicRegistrationsTab';
-import { useNonAdminSources, useUnapprovedSources} from '../../metadata/hooks/api';
+import { useUnapprovedSources} from '../../metadata/hooks/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Badge from 'react-bootstrap/Badge';
+import { useGetNewUsersQuery } from '../../store/user/UserSlice';
+import { useGetDisabledSourcesQuery, useGetUnapprovedSourcesQuery } from '../../store/metadata/SourceSlice';
 
 export function Dashboard () {
 
     const { path, url } = useRouteMatch();
-    const location = useLocation();
 
     const isAdmin = useIsAdmin();
     const isApprover = useIsApprover();
@@ -32,50 +30,14 @@ export function Dashboard () {
     const loadingUser = useCurrentUserLoading();
 
     const [actions, setActions] = React.useState(0);
-    const [users, setUsers] = React.useState(null);
-    const [sources, setSources] = React.useState(null);
-    const [approvals, setApprovals] = React.useState([]);
 
-    const { get, response, loading } = useFetch(`${API_BASE_PATH}`, {
-        cachePolicy: 'no-cache'
-    });
-
-    const sourceLoader = useNonAdminSources();
-    const approvalLoader = useUnapprovedSources();
-
-    async function loadUsers() {
-        const users = await get('/admin/users')
-        if (response.ok) {
-            setUsers(users.filter(u => u.role === 'ROLE_NONE'));
-        }
-    }
-
-    async function loadSources() {
-        const s = await sourceLoader.get();
-        if (sourceLoader.response.ok) {
-            setSources(s);
-        }
-    }
-
-    async function loadApprovals() {
-        const a = await approvalLoader.get();
-        if (approvalLoader.response.ok) {
-            setApprovals(a);
-        }
-    }
-
-    /*eslint-disable react-hooks/exhaustive-deps*/
-    React.useEffect(() => {
-        if (isAdmin) {
-            loadSources();
-            loadUsers();
-        }
-        loadApprovals();
-    }, [location, isAdmin]);
+    const {data: users = []} = useGetNewUsersQuery();
+    const {data: disabledSources = []} = useGetDisabledSourcesQuery();
+    const {data: unApprovedSources = []} = useGetUnapprovedSourcesQuery();
 
     React.useEffect(() => {
-        setActions((users?.length || 0) + (sources?.length || 0) + approvals.length);
-    }, [users, sources, approvals]);
+        setActions((users?.length || 0) + (disabledSources?.length || 0) + unApprovedSources.length);
+    }, [users, disabledSources, unApprovedSources]);
 
     return (
         <div className="container-fluid p-3" role="navigation">
@@ -128,21 +90,13 @@ export function Dashboard () {
                     <Route path={`${path}/metadata/manager/resolvers`} component={SourcesTab} />
                     <Route path={`${path}/metadata/manager/providers`} component={ProvidersTab} />
                     <Route path={`${path}/dynamic-registration`} render={() =>
-                        <DynamicRegistrationsApi>
-                            <DynamicRegistrationsTab />
-                        </DynamicRegistrationsApi>
+                        <DynamicRegistrationsTab />
                     } />
                     <Route path={`${path}/admin/actions`} render={() =>
                         <ActionsTab
-                            sources={sources}
+                            sources={disabledSources.data}
                             users={users}
-                            approvals={approvals}
-                            reloadSources={loadSources}
-                            reloadUsers={loadUsers}
-                            reloadApprovals={loadApprovals}
-                            loadingApprovals={approvalLoader.loading}
-                            loadingSources={sourceLoader.loading}
-                            loadingUsers={loading} />
+                            approvals={unApprovedSources} />
                     } />
                     <Route path={`${path}/admin/management`} render={() =>
                         <ProtectRoute redirectTo="/dashboard">

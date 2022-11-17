@@ -11,8 +11,6 @@ export function MetadataConfiguration ({ configuration, onEdit }) {
     const columns = configuration?.dates?.length || 1;
     const width = usePropertyWidth(columns);
 
-    React.useEffect(() => console.log(configuration), [configuration]);
-
     return (
         <>
             { configuration && configuration.sections.map((section, sidx) =>

@@ -32,8 +32,8 @@ export default function SourceList({ entities, onDelete, onEnable, onApprove, on
                     <table className="table table-striped w-100 table-hover">
                         <thead>
                             <tr>
-                                <th className="w-25"><Translate value="label.title">Title</Translate></th>
-                                <th className="w-25"><Translate value="label.entity-id">Entity ID</Translate></th>
+                                <th className=""><Translate value="label.title">Title</Translate></th>
+                                <th className=""><Translate value="label.entity-id">Entity ID</Translate></th>
                                 <th className=""><Translate value="label.source-protocol">Protocol</Translate></th>
                                 <th className=""><Translate value="label.author">Author</Translate></th>
                                 <th className=""><Translate value="label.creation-date">Created Date</Translate></th>
@@ -113,7 +113,7 @@ export default function SourceList({ entities, onDelete, onEnable, onApprove, on
                                                         id={`group-${source.id}`}
                                                         name={`group-${source.id}`}
                                                         className="form-control"
-                                                        onChange={(event) => onChangeGroup(source, event.target.value)}
+                                                        onChange={(event) => onChangeGroup({source, group: event.target.value})}
                                                         value={source.idOfOwner ? source.idOfOwner : ''}
                                                         disabled={loadingGroups}
                                                         disablevalidation="true">
