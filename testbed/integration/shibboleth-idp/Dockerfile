@@ -21,6 +21,8 @@ RUN /opt/shibboleth-idp/bin/module.sh -e idp.authn.RemoteUserInternal
 RUN /opt/shibboleth-idp/bin/jwtgen.sh -t RSA -s 2048 -u sig -i defaultRSASign | tail -n +2 > /opt/shibboleth-idp/credentials/idp-signing-rs.jwk
 RUN /opt/shibboleth-idp/bin/jwtgen.sh	-t EC -c P-256 -u sig -i defaultECSign | tail -n +2 > /opt/shibboleth-idp/credentials/idp-signing-es.jwk
 RUN /opt/shibboleth-idp/bin/jwtgen.sh	-t RSA -s 2048 -u enc -i defaultRSAEnc | tail -n +2 > /opt/shibboleth-idp/credentials/idp-encryption-rsa.jwk
+ADD https://jdbc.postgresql.org/download/postgresql-42.5.0.jar /opt/shibboleth-idp/edit-webapp/WEB-INF/lib/
+ADD https://repo1.maven.org/maven2/com/zaxxer/HikariCP/5.0.1/HikariCP-5.0.1.jar /opt/shibboleth-idp/edit-webapp/WEB-INF/lib/
 
 # copy in the needed config files
 ADD ${TOMCFG} /usr/local/tomcat/conf
