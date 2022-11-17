@@ -48,9 +48,11 @@ services:
     depends_on:
       - directory
       - reverse-proxy
+      - database
     networks:
       - reverse-proxy
       - idp
+      - backend
     volumes:
       - ../directory/certs/ca.crt:/opt/shibboleth-idp/credentials/ldap-server.crt
       - dynamic_metadata:/opt/shibboleth-idp/metadata/dynamic
@@ -86,6 +88,8 @@ services:
       - backend
     volumes:
       - database_data:/var/lib/postgresql/data
+      - ./shibboleth-idp/db/oidc_dynreg.sql:/docker-entrypoint-initdb.d/oidc_dynreg.sql
+      
 networks:
   reverse-proxy:
   idp:

@@ -167,6 +167,17 @@ custom:
       helpText: tooltip.ignore-request-signatures
       attributeName: http://shibboleth.net/ns/profiles/ignoreRequestSignatures
       attributeFriendlyName: ignoreRequestSignatures
+    - name: postAuthenticationFlows
+      attributeFriendlyName: postAuthenticationFlows
+      displayName: label.postAuthenticationFlows
+      helpText: tooltip.postAuthenticationFlows
+      displayType: selection_list
+      defaultValues:
+        - attribute-release
+        - expiring-password
+        - terms-of-use
+      attributeName: http://shibboleth.net/ns/profiles/postAuthenticationFlows"
+      protocol: saml,oidc
     - name: inboundInterceptorFlows
       attributeFriendlyName: inboundInterceptorFlows
       displayName: label.inboundInterceptorFlows
@@ -189,13 +200,13 @@ custom:
       defaultValue: client_secret_basic, client_secret_post, client_secret_jwt, private_key_jwt
       attributeName: http://shibboleth.net/ns/profiles/tokenEndpointAuthMethods
       protocol: oidc
-    - name: postAuthenticationFlows
-      attributeFriendlyName: postAuthenticationFlows
-      displayName: label.postAuthenticationFlows
-      helpText: tooltip.postAuthenticationFlows
-      displayType: string
-      attributeName: http://shibboleth.net/ns/profiles/postAuthenticationFlows
-      protocol: oidc
+#    - name: postAuthenticationFlows
+#      attributeFriendlyName: postAuthenticationFlows
+#      displayName: label.postAuthenticationFlows
+#      helpText: tooltip.postAuthenticationFlows
+#      displayType: string
+#      attributeName: http://shibboleth.net/ns/profiles/postAuthenticationFlows
+#      protocol: oidc
     - name: proxyCount
       attributeFriendlyName: proxyCount
       displayName: label.proxyCount

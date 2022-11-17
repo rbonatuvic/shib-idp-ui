@@ -16,6 +16,7 @@ import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -45,8 +46,13 @@ public class ActivateController {
     @Transactional
     public ResponseEntity<?> enableDynamicRegistration(@PathVariable String resourceId, @PathVariable String mode) throws PersistentEntityNotFound, ForbiddenException, UnsupportedShibUiOperationException {
         if ("enable".equalsIgnoreCase(mode)) {
-            DynamicRegistrationRepresentation drr = dynamicRegistrationService.enableDynamicRegistration(resourceId);
-            return ResponseEntity.ok(drr);
+            HttpStatus status = dynamicRegistrationService.enableDynamicRegistration(resourceId);
+            switch (status) {
+            case OK:
+            case ACCEPTED: return ResponseEntity.ok("Service enabled");
+            case NOT_FOUND: throw new UnsupportedShibUiOperationException("Request returned NOT FOUND, please contact a system admin to check configuration");
+            case FORBIDDEN: throw new ForbiddenException("Request was denied with FORBIDDEN, please contact a system admin to check configuration");
+            }
         }
         throw new UnsupportedShibUiOperationException("Disable is not a valid operation for Dynamic Registrations at this time");
     }

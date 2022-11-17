@@ -34,6 +34,7 @@ import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAFilterTargetServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
+import edu.internet2.tier.shibboleth.admin.ui.service.ShibRestTemplateDelegate;
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils;
 import edu.internet2.tier.shibboleth.admin.util.LuceneUtility;
@@ -43,12 +44,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
@@ -57,6 +60,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.util.UrlPathHelper;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URL;
 
 @Configuration
 @Import(SearchConfiguration.class)
@@ -243,7 +247,10 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public DynamicRegistrationService dynamicRegistrationService(DynamicRegistrationInfoRepository driRepo, OwnershipRepository ownershipRepo, IShibUiPermissionEvaluator permissionEvaluator, UserService userService, IGroupService groupService) {
-        return new JPADynamicRegistrationServiceImpl(groupService, driRepo, ownershipRepo, permissionEvaluator, userService);
+    public DynamicRegistrationService dynamicRegistrationService(DynamicRegistrationInfoRepository driRepo, OwnershipRepository ownershipRepo, IShibUiPermissionEvaluator permissionEvaluator, UserService userService, IGroupService groupService, ShibUIConfiguration config, RestTemplateBuilder restTemplateBuilder) {
+        URL idpUrl = config.getShibIdpServer();
+        RestTemplate template = restTemplateBuilder.build();
+        ShibRestTemplateDelegate delegate = new ShibRestTemplateDelegate(idpUrl, template);
+        return new JPADynamicRegistrationServiceImpl(groupService, driRepo, ownershipRepo, delegate, permissionEvaluator, userService);
     }
 }

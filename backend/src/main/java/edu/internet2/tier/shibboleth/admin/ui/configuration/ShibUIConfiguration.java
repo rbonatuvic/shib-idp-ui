@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Set;
 
@@ -39,4 +40,9 @@ public class ShibUIConfiguration {
      * A list of roles to bootstrap into the system.
      */
     private Set<String> roles;
+
+    /**
+     * The URL of the shib idp server ala - https://idp.someschool.edu/idp
+     */
+    private URL shibIdpServer;
 }
