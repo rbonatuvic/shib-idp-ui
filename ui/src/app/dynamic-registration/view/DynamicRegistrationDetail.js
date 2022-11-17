@@ -3,10 +3,10 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 
 import Translate from '../../i18n/components/translate';
 import FormattedDate from '../../core/components/FormattedDate';
-import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faHistory, faToggleOff, faToggleOn, faTrash } from '@fortawesome/free-solid-svg-icons';
-import Badge from 'react-bootstrap/esm/Badge';
+import { faToggleOff, faToggleOn, faTrash } from '@fortawesome/free-solid-svg-icons';
+import Badge from 'react-bootstrap/Badge';
 import { Configuration } from '../../metadata/hoc/Configuration';
 import { MetadataConfiguration } from '../../metadata/component/MetadataConfiguration';
 
@@ -27,7 +27,7 @@ export function DynamicRegistrationDetail () {
 
     const edit = (section) => {
         history.push(`/dynamic-registration/${id}/edit`);
-    }
+    };
 
     return (
         <div className="container-fluid p-3">

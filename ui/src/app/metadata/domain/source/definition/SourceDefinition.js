@@ -72,7 +72,13 @@ export const SourceBase = {
         if (formData.assertionConsumerServices && formData.assertionConsumerServices.length) {
             const { updated, added } = detailedDiff(original.assertionConsumerServices, formData.assertionConsumerServices);
             const merged = merge(updated, added);
-            const changingDefault = Object.keys(merged).some(k => merged[k].hasOwnProperty('makeDefault'));
+            const changingDefault = Object.keys(merged).some(k => {
+                const obj = { ...merged[k] };
+                return obj.hasOwnProperty('makeDefault');
+            });
+
+
+            
             if (changingDefault) {
                 const settingToTrue = Object.keys(merged).some(k => merged[k].makeDefault === true);
                 if (settingToTrue) {

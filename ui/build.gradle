@@ -10,6 +10,7 @@ node {
 }
 
 npmInstall.setNpmCommand('ci')
+npmInstall.args = ['--legacy-peer-deps']
 
 npm_run_build {
     inputs.dir 'src'
