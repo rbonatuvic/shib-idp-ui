@@ -41,6 +41,7 @@ import edu.internet2.tier.shibboleth.admin.util.LuceneUtility;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 import org.apache.lucene.analysis.Analyzer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -247,7 +248,9 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public DynamicRegistrationService dynamicRegistrationService(DynamicRegistrationInfoRepository driRepo, OwnershipRepository ownershipRepo, IShibUiPermissionEvaluator permissionEvaluator, UserService userService, IGroupService groupService, ShibUIConfiguration config, RestTemplateBuilder restTemplateBuilder) {
+    public DynamicRegistrationService dynamicRegistrationService(DynamicRegistrationInfoRepository driRepo, OwnershipRepository ownershipRepo,
+                    IShibUiPermissionEvaluator permissionEvaluator, UserService userService, IGroupService groupService,
+                    @Qualifier("shibUIConfiguration") ShibUIConfiguration config, RestTemplateBuilder restTemplateBuilder) {
         URL idpUrl = config.getShibIdpServer();
         RestTemplate template = restTemplateBuilder.build();
         ShibRestTemplateDelegate delegate = new ShibRestTemplateDelegate(idpUrl, template);
