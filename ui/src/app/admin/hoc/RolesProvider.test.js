@@ -4,7 +4,6 @@ import React from 'react';
 import { RolesProvider } from './RolesProvider';
 
 import { useRoles } from '../hooks';
-import { useNotificationDispatcher } from "../../notifications/hoc/Notifications";
 
 jest.mock('../../App.constant', () => ({
     get API_BASE_PATH() {
@@ -14,15 +13,11 @@ jest.mock('../../App.constant', () => ({
 
 jest.mock('../hooks');
 
-jest.mock('../../notifications/hoc/Notifications');
+jest.mock('../../store/notifications/NotificationSlice');
 
 describe('RolesProvider component', () => {
 
     beforeEach(() => {
-
-        useNotificationDispatcher.mockImplementation(() => {
-            return {};
-        });
 
         useRoles.mockImplementation(() => {
             return {

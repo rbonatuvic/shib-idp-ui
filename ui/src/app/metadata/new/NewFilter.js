@@ -9,14 +9,15 @@ import { MetadataForm } from '../hoc/MetadataFormContext';
 import { MetadataSchema } from '../hoc/MetadataSchema';
 import { useMetadataFilters, useMetadataFilterTypes } from '../hooks/api';
 import { MetadataFilterTypeSelector } from '../wizard/MetadataFilterTypeSelector';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
+import { useDispatch } from 'react-redux';
 
 export function NewFilter() {
 
     const { id } = useParams();
     const history = useHistory();
     const types = useMetadataFilterTypes();
-    const dispatch = useNotificationDispatcher();
+    const dispatch = useDispatch();
 
     const { post, response, loading } = useMetadataFilters(id, {});
 

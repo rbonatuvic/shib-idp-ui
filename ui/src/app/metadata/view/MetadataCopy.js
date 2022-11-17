@@ -3,14 +3,15 @@ import { CopySource } from '../copy/CopySource';
 import { SaveCopy } from '../copy/SaveCopy';
 import { useMetadataEntity } from '../hooks/api';
 import { useHistory } from 'react-router-dom';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
+import { useDispatch } from 'react-redux';
 
 export function MetadataCopy ({ onShowNav }) {
 
     const { post, response, loading } = useMetadataEntity('source');
     const history = useHistory();
 
-    const dispatch = useNotificationDispatcher();
+    const dispatch = useDispatch();
 
     const [copy, setCopy] = React.useState({
         target: null,

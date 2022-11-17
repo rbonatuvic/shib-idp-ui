@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { faArrowDown, faArrowUp, faHistory, faPlus, faToggleOff, faToggleOn, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useHistory, useParams } from 'react-router-dom';
@@ -50,14 +50,14 @@ export function MetadataOptions ({reload}) {
 
     const canFilter = FilterableProviders.indexOf(definition.type) > -1;
 
-    const enabled = type === 'source' ? metadata.serviceEnabled : metadata.enabled;
+    const enabled = useMemo(() => type === 'source' ? metadata.serviceEnabled : metadata.enabled, [type, metadata]);
 
     const canEnable = useCanEnable()(metadata.approved);
     const isAdmin = useIsAdmin();
 
     return (
         <MetadataActions type={type}>
-            {({enable, remove, approve}) =>
+            {({enable, remove}) =>
             <>
             <h2 className="mb-4" id="header">
                 <Translate value={`label.${type}-configuration`}>[{type}] configuration</Translate>

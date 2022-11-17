@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import {getBaseQuery} from '../baseQuery';
+import { createNotificationAction } from '../notifications/NotificationSlice';
 
 export const MetadataSourceApi = createApi({
   reducerPath: 'metadataSourceApi',
@@ -10,6 +11,12 @@ export const MetadataSourceApi = createApi({
     getSources: builder.query({
       query: () => ({
         url: `/EntityDescriptors`
+      }),
+      providesTags: ['MetadataSource']
+    }),
+    selectSource: builder.query({
+      query: ({id}) => ({
+        url: `/EntityDescriptor/${id}`
       }),
       providesTags: ['MetadataSource']
     }),
@@ -34,34 +41,64 @@ export const MetadataSourceApi = createApi({
           idOfOwner: group,
         }
       }),
-      invalidatesTags: ['MetadataSource']
+      invalidatesTags: ['MetadataSource'],
+      async onQueryStarted(
+        arg,
+        { dispatch, queryFulfilled }
+      ) {
+        const {data: { idOfOwner }} = await queryFulfilled;
+        dispatch(createNotificationAction(`Metadata source group updated to: ${idOfOwner}.`))
+      },
     }),
     approveSource: builder.mutation({
       query: ({id, approved}) => ({
         url: `/approve/entityDescriptor/${id}/${approved ? 'approve' : 'unapprove'}`,
         method: 'PATCH',
       }),
-      invalidatesTags: ['MetadataSource']
+      invalidatesTags: ['MetadataSource'],
+      async onQueryStarted(
+        arg,
+        { dispatch, queryFulfilled }
+      ) {
+        const {data: { approved }} = await queryFulfilled;
+        dispatch(createNotificationAction(`Metadata source has been ${approved ? 'approved' : 'unapproved'}.`))
+      },
     }),
     enableSource: builder.mutation({
       query: ({id, enabled}) => ({
         url: `/activate/entityDescriptor/${id}/${enabled ? 'enable' : 'disable'}`,
         method: 'PATCH',
       }),
-      invalidatesTags: ['MetadataSource']
+      invalidatesTags: ['MetadataSource'],
+      async onQueryStarted(
+        arg,
+        { dispatch, queryFulfilled }
+      ) {
+        const {data: { serviceEnabled }} = await queryFulfilled;
+        dispatch(createNotificationAction(`Metadata source has been ${serviceEnabled ? 'enabled' : 'disabled'}.`))
+      },
     }),
     deleteSource: builder.mutation({
       query: ({id}) => ({
         url: `/EntityDescriptor/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['MetadataSource']
+      invalidatesTags: ['MetadataSource'],
+      async onQueryStarted(
+        arg,
+        { dispatch, queryFulfilled }
+      ) {
+        await queryFulfilled;
+        dispatch(createNotificationAction(`Metadata source has been deleted.`))
+      },
     }),
   }),
 });
 
 export const {
   useGetSourcesQuery,
+  useSelectSourceQuery,
+  useLazySelectSourceQuery,
   useGetDisabledSourcesQuery,
   useGetUnapprovedSourcesQuery,
   useChangeSourceGroupMutation,

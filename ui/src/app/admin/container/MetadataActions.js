@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
 import { useMetadataActivator, useMetadataApprover, useMetadataEntity } from '../../metadata/hooks/api';
 
-import { NotificationContext, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
 import { useApproveSourceMutation, useDeleteSourceMutation, useEnableSourceMutation } from '../../store/metadata/SourceSlice';
+import { useDispatch } from 'react-redux';
 
 export function MetadataActions ({type, children}) {
 
-    const { dispatch } = React.useContext(NotificationContext);
+    const dispatch = useDispatch();
 
     const { del, response } = useMetadataEntity(type, {
         cachePolicy: 'no-cache'
@@ -50,7 +51,7 @@ export function MetadataActions ({type, children}) {
         }
     }
 
-    const toast = (message, type) => dispatch(createNotificationAction(message, type));
+    const toast = useCallback((message, type) => dispatch(createNotificationAction(message, type)), [dispatch]);
 
     const toastApproveSuccess = (type, enabled) => toast(`Metadata ${type} has been ${enabled ? 'approved' : 'unapproved'}.`);
     const toastEnableSuccess = (type, enabled) => toast(`Metadata ${type} has been ${enabled ? 'enabled' : 'disabled'}.`);
@@ -62,7 +63,9 @@ export function MetadataActions ({type, children}) {
     const [deleteSource] = useDeleteSourceMutation();
 
     const remove = type === 'source' ? 
-        (id) => deleteSource({id}) :
+        (id, cb) => {
+            deleteSource({id}).then(() => cb());
+        } :
         deleteEntity;
     const enable = type === 'source' ?
         ({id}, enabled) => enableSource({id, enabled}) :

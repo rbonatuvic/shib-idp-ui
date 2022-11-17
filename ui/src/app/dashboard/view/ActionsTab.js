@@ -63,6 +63,7 @@ export function ActionsTab({ registrations }) {
                                     <Nav.Item>
                                         <NavLink className="nav-link" to={`${path}/approve-sources`}  id="approve-btn">
                                             <Translate value="label.approve-metadata-sources">Approve Metadata Sources</Translate>
+                                            { unApprovedSources.length ? <Badge pill bg="danger" className="ms-1">{unApprovedSources.length}</Badge> : '' }
                                         </NavLink>
                                     </Nav.Item>
                                     {disabledRegistrations && 
@@ -76,6 +77,7 @@ export function ActionsTab({ registrations }) {
                                     <Nav.Item>
                                         <NavLink className="nav-link" to={`${path}/approve-registrations`}  id="approve-dr-btn">
                                             <Translate value="label.approve-dynamic-registrations">Approve Dynamic Registrations</Translate>
+                                            { unApprovedRegistrations.length ? <Badge pill bg="danger" className="ms-1">{unApprovedRegistrations.length}</Badge> : '' }
                                         </NavLink>
                                     </Nav.Item>
                                     {users !== null &&
@@ -88,7 +90,7 @@ export function ActionsTab({ registrations }) {
                                     }
                                 </Nav>
                             </Col>
-                            <Col>
+                            <Col className="border-start">
                                 <Switch>
                                     <Route exact path={`${path}`}>
                                         <Redirect to={`${url}/approve-sources`} />

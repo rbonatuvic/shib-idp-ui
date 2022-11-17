@@ -8,14 +8,11 @@ import Button from 'react-bootstrap/Button';
 
 import Translate from '../../i18n/components/translate';
 import API_BASE_PATH from '../../App.constant';
-import { NotificationContext, createNotificationAction} from '../../notifications/hoc/Notifications';
 import { useRemoveUserMutation, useSetUserGroupRequestMutation, useSetUserRoleRequestMutation } from '../../store/user/UserSlice';
 
 export default function UserManagement({ users, children, reload}) {
 
     const [roles, setRoles] = React.useState([]);
-
-    const { dispatch } = React.useContext(NotificationContext);
 
     const { get, response, loading } = useFetch(`${API_BASE_PATH}`, {});
 

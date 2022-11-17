@@ -1,6 +1,6 @@
 import useFetch from 'use-http';
 
-import {API_BASE_PATH, BASE_PATH} from '../App.constant';
+import {API_BASE_PATH} from '../App.constant';
 import DynamicConfigurationDefinition from './hoc/DynamicConfigurationDefinition';
 
 export const DYNAMIC_REGISTRATION_JSONSCHEMA_PATH = DynamicConfigurationDefinition.schema;

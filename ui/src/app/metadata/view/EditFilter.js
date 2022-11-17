@@ -11,11 +11,12 @@ import { MetadataSchema } from '../hoc/MetadataSchema';
 import { getMetadataPath, useMetadataUpdater } from '../hooks/api';
 import { useMetadataFilterObject } from '../hoc/MetadataFilterSelector';
 import API_BASE_PATH from '../../App.constant';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
+import { useDispatch } from 'react-redux';
 
 export function EditFilter() {
 
-    const dispatch = useNotificationDispatcher();
+    const dispatch = useDispatch();
 
     const { id, filterId } = useParams();
     const filter = useMetadataFilterObject();

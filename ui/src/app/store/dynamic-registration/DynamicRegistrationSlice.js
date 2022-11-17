@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import getBaseQuery from '../baseQuery';
+import { createNotificationAction } from '../notifications/NotificationSlice';
 
 export const DynamicRegistrationApi = createApi({
   reducerPath: 'dynamicRegistrationApi',
@@ -44,7 +45,14 @@ export const DynamicRegistrationApi = createApi({
         url: `/DynamicRegistration/${id}`,
         method: 'DELETE'
       }),
-      invalidatesTags: ['DynamicRegistration']
+      invalidatesTags: ['DynamicRegistration'],
+      async onQueryStarted(
+        arg,
+        { dispatch, queryFulfilled }
+      ) {
+        await queryFulfilled;
+        dispatch(createNotificationAction(`Dynamic registration deleted.`));
+      },
     }),
     createDynamicRegistration: builder.mutation({
       query: ({registration}) => ({
@@ -63,21 +71,44 @@ export const DynamicRegistrationApi = createApi({
           idOfOwner: group,
         }
       }),
-      invalidatesTags: ['DynamicRegistration']
+      invalidatesTags: ['DynamicRegistration'],
+      async onQueryStarted(
+        arg,
+        { dispatch, queryFulfilled }
+      ) {
+        const {data: { idOfOwner }} = await queryFulfilled;
+        if (idOfOwner) {
+          dispatch(createNotificationAction(`Dynamic registration group updated to ${idOfOwner}`))
+        }
+      },
     }),
     approveDynamicRegistration: builder.mutation({
       query: ({id, approved}) => ({
         url: `/approve/DynamicRegistration/${id}/${approved ? 'approve' : 'unapprove'}`,
         method: 'PATCH',
       }),
-      invalidatesTags: ['DynamicRegistration']
+      invalidatesTags: ['DynamicRegistration'],
+      async onQueryStarted(
+        arg,
+        { dispatch, queryFulfilled }
+      ) {
+        const {data: { approved }} = await queryFulfilled;
+        dispatch(createNotificationAction(`Dynamic registration ${approved ? 'approved' : 'unapproved'}.`))
+      },
     }),
     enableDynamicRegistration: builder.mutation({
       query: ({id, enabled}) => ({
         url: `/activate/DynamicRegistration/${id}/${enabled ? 'enable' : 'disable'}`,
         method: 'PATCH',
       }),
-      invalidatesTags: ['DynamicRegistration']
+      invalidatesTags: ['DynamicRegistration'],
+      async onQueryStarted(
+        arg,
+        { dispatch, queryFulfilled }
+      ) {
+        const {data: { enabled }} = await queryFulfilled;
+        dispatch(createNotificationAction(`Dynamic registration ${enabled ? 'enabled' : 'disabled'}.`))
+      },
     }),
   }),
 });

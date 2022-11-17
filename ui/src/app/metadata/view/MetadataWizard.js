@@ -5,9 +5,10 @@ import { MetadataSourceWizard } from '../wizard/MetadataSourceWizard';
 import { MetadataProviderWizard } from '../wizard/MetadataProviderWizard';
 import { Wizard } from '../wizard/Wizard';
 import { useMetadataEntity } from '../hooks/api';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
 import { Prompt, useHistory } from 'react-router-dom';
 import { useTranslator } from '../../i18n/hooks';
+import { useDispatch } from 'react-redux';
 
 export function MetadataWizard ({type, data, onCallback, onContinue}) {
 
@@ -16,7 +17,7 @@ export function MetadataWizard ({type, data, onCallback, onContinue}) {
 
     const { post, loading, response } = useMetadataEntity(type === 'source' ? 'source' : 'provider');
 
-    const notificationDispatch = useNotificationDispatcher();
+    const notificationDispatch = useDispatch();
 
     const [blocking, setBlocking] = React.useState(false);
 

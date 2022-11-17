@@ -22,7 +22,6 @@ import Header from './core/components/Header';
 import { UserProvider } from './core/user/UserContext';
 import { Metadata } from './metadata/Metadata';
 import { Attribute } from './metadata/Attribute';
-import { Notifications } from './notifications/hoc/Notifications';
 import { NotificationList } from './notifications/component/NotificationList';
 import { UserConfirmation, ConfirmWindow } from './core/components/UserConfirmation';
 import { NewSource } from './metadata/new/NewSource';
@@ -63,75 +62,73 @@ function App() {
     return (
         <div className="app-root d-flex flex-column justify-content-between">
             <HttpProvider options={httpOptions}>
-                <Notifications>
-                    <UserProvider>
-                        <I18nProvider>
-                            <SessionModal show={showTimeout}>
-                                <Button variant="primary" onClick={() => window.location.reload()}>Log in</Button>
-                            </SessionModal>
-                            <Contention>
-                                <UserConfirmation>
-                                    {(message, confirm, confirmCallback, setConfirm, getConfirmation) =>
-                                        <Router getUserConfirmation={getConfirmation} basename={BASE_PATH}>
-                                            <ConfirmWindow message={message} confirm={confirm} confirmCallback={confirmCallback} setConfirm={setConfirm} />
-                                            <QueryParamProvider ReactRouterRoute={Route}>
-                                            <Header />
-                                            <main className="pad-content">
-                                                <Switch>
-                                                    <Route exact path="/">
-                                                        <Redirect to="/dashboard" />
-                                                    </Route>
-                                                    <Route path="/dashboard" component={Dashboard} />
-                                                    <Route path="/metadata/source/new" component={NewSource} />
-                                                    <Route path="/dynamic-registration" render={() =>
-                                                        <DynamicRegistration />
-                                                    } />
-                                                    <Route path="/metadata/provider/new" render={() =>
-                                                        <ProtectRoute redirectTo="/dashboard">
-                                                            <NewProvider />
-                                                        </ProtectRoute>
-                                                    } />
-                                                    <Route path="/metadata/attributes"  render={() =>
-                                                        <ProtectRoute redirectTo="/dashboard">
-                                                            <Attribute />
-                                                        </ProtectRoute>
-                                                    } />
-                                                    <Route path="/metadata/provider/:id/filter"  render={() =>
-                                                        <ProtectRoute redirectTo="/dashboard">
-                                                            <Filter />
-                                                        </ProtectRoute>
-                                                    } />
-                                                    <Route path="/metadata/:type/:id" component={Metadata} />
-                                                    <Route path="/roles" render={() =>
-                                                        <ProtectRoute redirectTo="/dashboard">
-                                                            <Roles />
-                                                        </ProtectRoute>
-                                                    } />
-                                                    <Route path="/groups" render={() =>
-                                                        <ProtectRoute redirectTo="/dashboard">
-                                                            <Groups />
-                                                        </ProtectRoute>
-                                                    } />
-                                                    <Route path="/configurations" render={() =>
-                                                        <ProtectRoute redirectTo="/dashboard">
-                                                            <IdpConfiguration />
-                                                        </ProtectRoute>
-                                                    } />
-                                                    <Route path="*">
-                                                        <Redirect to="/dashboard" />
-                                                    </Route>
-                                                </Switch>
-                                                <NotificationList />
-                                            </main>
-                                            <Footer />
-                                            </QueryParamProvider>
-                                        </Router>
-                                    }
-                                </UserConfirmation>
-                            </Contention>
-                        </I18nProvider>
-                    </UserProvider>
-                </Notifications>
+                <UserProvider>
+                    <I18nProvider>
+                        <SessionModal show={showTimeout}>
+                            <Button variant="primary" onClick={() => window.location.reload()}>Log in</Button>
+                        </SessionModal>
+                        <Contention>
+                            <UserConfirmation>
+                                {(message, confirm, confirmCallback, setConfirm, getConfirmation) =>
+                                    <Router getUserConfirmation={getConfirmation} basename={BASE_PATH}>
+                                        <ConfirmWindow message={message} confirm={confirm} confirmCallback={confirmCallback} setConfirm={setConfirm} />
+                                        <QueryParamProvider ReactRouterRoute={Route}>
+                                        <Header />
+                                        <main className="pad-content">
+                                            <Switch>
+                                                <Route exact path="/">
+                                                    <Redirect to="/dashboard" />
+                                                </Route>
+                                                <Route path="/dashboard" component={Dashboard} />
+                                                <Route path="/metadata/source/new" component={NewSource} />
+                                                <Route path="/dynamic-registration" render={() =>
+                                                    <DynamicRegistration />
+                                                } />
+                                                <Route path="/metadata/provider/new" render={() =>
+                                                    <ProtectRoute redirectTo="/dashboard">
+                                                        <NewProvider />
+                                                    </ProtectRoute>
+                                                } />
+                                                <Route path="/metadata/attributes"  render={() =>
+                                                    <ProtectRoute redirectTo="/dashboard">
+                                                        <Attribute />
+                                                    </ProtectRoute>
+                                                } />
+                                                <Route path="/metadata/provider/:id/filter"  render={() =>
+                                                    <ProtectRoute redirectTo="/dashboard">
+                                                        <Filter />
+                                                    </ProtectRoute>
+                                                } />
+                                                <Route path="/metadata/:type/:id" component={Metadata} />
+                                                <Route path="/roles" render={() =>
+                                                    <ProtectRoute redirectTo="/dashboard">
+                                                        <Roles />
+                                                    </ProtectRoute>
+                                                } />
+                                                <Route path="/groups" render={() =>
+                                                    <ProtectRoute redirectTo="/dashboard">
+                                                        <Groups />
+                                                    </ProtectRoute>
+                                                } />
+                                                <Route path="/configurations" render={() =>
+                                                    <ProtectRoute redirectTo="/dashboard">
+                                                        <IdpConfiguration />
+                                                    </ProtectRoute>
+                                                } />
+                                                <Route path="*">
+                                                    <Redirect to="/dashboard" />
+                                                </Route>
+                                            </Switch>
+                                            <NotificationList />
+                                        </main>
+                                        <Footer />
+                                        </QueryParamProvider>
+                                    </Router>
+                                }
+                            </UserConfirmation>
+                        </Contention>
+                    </I18nProvider>
+                </UserProvider>
             </HttpProvider>
         </div>
     );

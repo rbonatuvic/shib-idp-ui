@@ -6,14 +6,11 @@ import SourceList from '../../metadata/domain/source/component/SourceList';
 import { Search } from '../component/Search';
 import { Spinner } from '../../core/components/Spinner';
 
-import { NotificationContext, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
 import { useChangeSourceGroupMutation, useGetSourcesQuery } from '../../store/metadata/SourceSlice';
 
 const searchProps = ['serviceProviderName', 'entityId', 'createdBy', 'protocol'];
 
 export function SourcesTab () {
-
-    const { dispatch } = React.useContext(NotificationContext);
 
     const [changeSourceGroup] = useChangeSourceGroupMutation();
 

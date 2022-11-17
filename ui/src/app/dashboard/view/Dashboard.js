@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Nav from 'react-bootstrap/Nav';
-import { Switch, Route, Redirect, useRouteMatch, useLocation } from 'react-router-dom';
+import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
 import Translate from '../../i18n/components/translate';
@@ -13,12 +13,12 @@ import { AdminTab } from './AdminTab';
 import { ActionsTab } from './ActionsTab';
 import { useCurrentUserLoading, useIsAdmin, useIsApprover } from '../../core/user/UserContext';
 import { DynamicRegistrationsTab } from './DynamicRegistrationsTab';
-import { useUnapprovedSources} from '../../metadata/hooks/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Badge from 'react-bootstrap/Badge';
 import { useGetNewUsersQuery } from '../../store/user/UserSlice';
 import { useGetDisabledSourcesQuery, useGetUnapprovedSourcesQuery } from '../../store/metadata/SourceSlice';
+import { useGetDisabledRegistrationsQuery, useGetUnapprovedRegistrationsQuery } from '../../store/dynamic-registration/DynamicRegistrationSlice';
 
 export function Dashboard () {
 
@@ -34,10 +34,18 @@ export function Dashboard () {
     const {data: users = []} = useGetNewUsersQuery();
     const {data: disabledSources = []} = useGetDisabledSourcesQuery();
     const {data: unApprovedSources = []} = useGetUnapprovedSourcesQuery();
+    const {data: unApprovedRegistrations = []} = useGetUnapprovedRegistrationsQuery();
+    const {data: disabledRegistrations = []} = useGetDisabledRegistrationsQuery();
 
     React.useEffect(() => {
-        setActions((users?.length || 0) + (disabledSources?.length || 0) + unApprovedSources.length);
-    }, [users, disabledSources, unApprovedSources]);
+        const count = 
+            (users?.length || 0) +
+            (disabledSources?.length || 0) +
+            (unApprovedRegistrations?.length || 0) +
+            (disabledSources?.length || 0) +
+            (disabledRegistrations.length || 0)
+        setActions(count);
+    }, [users, disabledSources, unApprovedSources, disabledRegistrations, unApprovedRegistrations]);
 
     return (
         <div className="container-fluid p-3" role="navigation">

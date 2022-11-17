@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { getBaseQuery } from '../baseQuery';
+import { createNotificationAction } from '../notifications/NotificationSlice';
 
 export const UserAdminApi = createApi({
   reducerPath: 'userAdminApi',
@@ -21,7 +22,14 @@ export const UserAdminApi = createApi({
         url: `/admin/users/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['User']
+      invalidatesTags: ['User'],
+      async onQueryStarted(
+        arg,
+        { dispatch, queryFulfilled }
+      ) {
+        await queryFulfilled;
+        dispatch(createNotificationAction(`User deleted.`))
+      },
     }),
     setUserGroupRequest: builder.mutation({
       query: ({user, groupId}) => ({
@@ -32,7 +40,14 @@ export const UserAdminApi = createApi({
           groupId
         }
       }),
-      invalidatesTags: ['User']
+      invalidatesTags: ['User'],
+      async onQueryStarted(
+        arg,
+        { dispatch, queryFulfilled }
+      ) {
+        const { data: {username} } = await queryFulfilled;
+        dispatch(createNotificationAction(`User update successful for ${username}.`))
+      },
     }),
     setUserRoleRequest: builder.mutation({
       query: ({user, role}) => ({
@@ -43,7 +58,14 @@ export const UserAdminApi = createApi({
           role
         }
       }),
-      invalidatesTags: ['User']
+      invalidatesTags: ['User'],
+      async onQueryStarted(
+        arg,
+        { dispatch, queryFulfilled }
+      ) {
+        const { data: {username} } = await queryFulfilled;
+        dispatch(createNotificationAction(`User update successful for ${username}.`))
+      },
     })
   }),
 })
@@ -55,3 +77,5 @@ export const {
   useSetUserGroupRequestMutation,
   useSetUserRoleRequestMutation
 } = UserAdminApi;
+
+// 

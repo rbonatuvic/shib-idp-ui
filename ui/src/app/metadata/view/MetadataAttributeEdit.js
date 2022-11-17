@@ -11,7 +11,8 @@ import { useMetadataAttribute } from '../hooks/api';
 import { CustomAttributeDefinition, CustomAttributeEditor } from '../domain/attribute/CustomAttributeDefinition';
 import MetadataSchema from '../hoc/MetadataSchema';
 import { MetadataForm } from '../hoc/MetadataFormContext';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
+import { useDispatch } from 'react-redux';
 
 export function MetadataAttributeEdit() {
     const { id } = useParams();
@@ -19,7 +20,7 @@ export function MetadataAttributeEdit() {
 
     const definition = CustomAttributeDefinition;
 
-    const dispatch = useNotificationDispatcher();
+    const dispatch = useDispatch();
 
     const { get, put, response, loading } = useMetadataAttribute({
         cachePolicy: 'no-cache'
