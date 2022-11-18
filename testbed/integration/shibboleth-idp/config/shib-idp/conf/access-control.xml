@@ -38,7 +38,7 @@
 
         <entry key="AccessByIPAddress">
             <bean id="AccessByIPAddress" parent="shibboleth.IPRangeAccessControl"
-                  p:allowedRanges="#{ {'127.0.0.1/32', '::1/128', '172.16.0.0/12'} }" />
+                  p:allowedRanges="#{ {'127.0.0.1/32', '::1/128', '172.16.0.0/12', '192.168.16.0/24'} }" />
         </entry>
 
         <!--
