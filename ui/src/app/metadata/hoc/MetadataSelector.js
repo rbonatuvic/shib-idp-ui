@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useParams } from 'react-router';
 import Spinner from '../../core/components/Spinner';
+import { useLazySelectSourceQuery } from '../../store/metadata/SourceSlice';
 import { useMetadataEntity } from '../hooks/api';
 
 export const MetadataTypeContext = React.createContext();
@@ -26,6 +27,8 @@ export function MetadataSelector({ children, ...props }) {
 
     const { get, response } = useMetadataEntity(type);
 
+    const [getSource, result] = useLazySelectSourceQuery();
+
     const [metadata, setMetadata] = React.useState();
 
     async function loadMetadata(id) {
@@ -36,12 +39,28 @@ export function MetadataSelector({ children, ...props }) {
         }
     }
 
+    async function loadSource(id) {
+        const {data: source, isSuccess} = await getSource({id});
+        if (isSuccess) {
+            setMetadata(source);
+            setLoading(false);
+        }
+    }
+
     function reload() {
         setLoading(true);
-        loadMetadata(id);
+        if (type === 'source') {
+            loadSource(id);
+        } else {
+            loadMetadata(id);
+        }
     }
 
     React.useEffect(() => reload(), [id]);
+
+    React.useEffect(() => {
+        setMetadata(result.currentData);
+    }, [result.currentData]);
 
     return (
         <React.Fragment>

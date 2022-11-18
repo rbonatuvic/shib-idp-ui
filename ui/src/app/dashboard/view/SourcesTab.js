@@ -3,55 +3,21 @@ import { MetadataActions } from '../../admin/container/MetadataActions';
 import Translate from '../../i18n/components/translate';
 
 import SourceList from '../../metadata/domain/source/component/SourceList';
-import { useMetadataEntities, useMetadataEntity } from '../../metadata/hooks/api';
 import { Search } from '../component/Search';
 import { Spinner } from '../../core/components/Spinner';
 
-import { NotificationContext, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
-
+import { useChangeSourceGroupMutation, useGetSourcesQuery } from '../../store/metadata/SourceSlice';
+import { Link } from 'react-router-dom';
+import { faCube } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const searchProps = ['serviceProviderName', 'entityId', 'createdBy', 'protocol'];
 
 export function SourcesTab () {
 
-    const { dispatch } = React.useContext(NotificationContext);
+    const [changeSourceGroup] = useChangeSourceGroupMutation();
 
-    const [sources, setSources] = React.useState([]);
-
-    const { get, response, loading } = useMetadataEntities('source', {
-        cachePolicy: 'no-cache'
-    });
-
-    const updater = useMetadataEntity('source', {
-        cachePolicy: 'no-cache'
-    })
-
-    async function loadSources() {
-        const sources = await get('');
-        if (response.ok) {
-            setSources(sources);
-        }
-    }
-
-    /*eslint-disable react-hooks/exhaustive-deps*/
-    React.useEffect(() => { loadSources() }, []);
-
-    async function changeSourceGroup(source, group) {
-        await updater.put(`/${source.id}/changeGroup/${group}`, {
-            ...source,
-            idOfOwner: group
-        });
-        if (updater.response.ok) {
-            dispatch(createNotificationAction(`Updated group successfully.`));
-            loadSources();
-        } else {
-            const { errorCode, errorMessage, cause } = updater?.response?.data;
-            dispatch(createNotificationAction(
-                `${errorCode}: ${errorMessage} ${cause ? `-${cause}` : ''}`,
-                NotificationTypes.ERROR
-            ));
-        }
-    }
+    const { data: sources = [], isLoading: loading } = useGetSourcesQuery();
 
     return (
         <section className="section">
@@ -68,10 +34,21 @@ export function SourcesTab () {
                                 {({enable, remove}) =>
                                     <SourceList
                                         entities={searched}
-                                        onDelete={(id) => remove(id, loadSources)}
-                                        onEnable={(s, e) => enable(s, e, loadSources) }
+                                        onDelete={(id) => remove(id)}
+                                        onEnable={(s, e) => enable(s, e) }
                                         onChangeGroup={changeSourceGroup}>
                                             {loading && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
+                                            {(!searched || !searched.length) &&
+                                                <div className="d-flex justify-content-center">
+                                                    <div className="w-25 alert alert-info m-3 d-flex flex-column align-items-center">
+                                                        <p className="text-center">No Metadata Sources found.</p>
+                                                        <Link to="/metadata/source/new" className="btn btn-primary" id="metadata-source-create-btn">
+                                                            <FontAwesomeIcon icon={faCube} className="me-2" fixedWidth />
+                                                            <Translate value="action.add-new-source" />
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                            }
                                     </SourceList>
                                 }
                             </MetadataActions>

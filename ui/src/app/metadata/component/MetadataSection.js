@@ -5,9 +5,6 @@ import Button from 'react-bootstrap/Button';
 import Translate from '../../i18n/components/translate';
 
 export function MetadataSection ({ section, index = -1, onEdit, children }) {
-
-
-
     return (
         <>
             <section className="mb-4 config-section-list-item">
@@ -21,7 +18,7 @@ export function MetadataSection ({ section, index = -1, onEdit, children }) {
                             </span>
                             }
                             
-                            <span className="text ms-2">
+                            <span className="text ms-2 py-1 d-inline-block">
                                 <Translate value={ section.label } />
                             </span>
                         </h2>

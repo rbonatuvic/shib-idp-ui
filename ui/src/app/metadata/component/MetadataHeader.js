@@ -5,11 +5,12 @@ import { useIsAdmin } from '../../core/user/UserContext';
 import Translate from '../../i18n/components/translate';
 import { GroupsProvider } from '../../admin/hoc/GroupsProvider';
 import { useMetadataEntity } from '../hooks/api';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
 import { useTranslator } from '../../i18n/hooks';
 import { useMetadataLoader } from '../hoc/MetadataSelector';
 import Form from 'react-bootstrap/Form';
 import Badge from 'react-bootstrap/Badge';
+import { useDispatch } from 'react-redux';
 
 export function MetadataHeader ({ showGroup, model, current = true, enabled = true, children, ...props }) {
 
@@ -20,7 +21,7 @@ export function MetadataHeader ({ showGroup, model, current = true, enabled = tr
         cachePolicy: 'no-cache'
     });
 
-    const notifier = useNotificationDispatcher();
+    const notifier = useDispatch();
 
     async function changeSourceGroup(s, group) {
         let toast;

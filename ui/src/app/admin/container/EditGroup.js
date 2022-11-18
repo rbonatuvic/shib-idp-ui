@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useDispatch } from 'react-redux';
 import { Prompt, useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import Translate from '../../i18n/components/translate';
@@ -9,15 +9,16 @@ import { FormManager } from '../../form/FormManager';
 
 import { GroupForm } from '../component/GroupForm';
 import { GroupProvider } from '../hoc/GroupProvider';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
 import { useTranslator } from '../../i18n/hooks';
 import { BASE_PATH } from '../../App.constant';
+
 
 export function EditGroup({ groups }) {
 
     const { id } = useParams();
 
-    const notifier = useNotificationDispatcher();
+    const notifier = useDispatch();
     const translator = useTranslator();
 
     const history = useHistory();

@@ -1,13 +1,14 @@
 import React from 'react';
 import { useMetadataFilters, useFilterActivator } from '../../../hooks/api';
 import { DeleteConfirmation } from '../../../../core/components/DeleteConfirmation';
-import { NotificationContext, createNotificationAction } from '../../../../notifications/hoc/Notifications';
+import { createNotificationAction } from '../../../../store/notifications/NotificationSlice';
+import { useDispatch } from 'react-redux';
 
 export const MetadataFiltersContext = React.createContext();
 
 export function MetadataFilters ({ providerId, types = [], filters, children }) {
 
-    const { dispatch } = React.useContext(NotificationContext);
+    const dispatch = useDispatch();
 
     const { put, del, get, response, loading } = useMetadataFilters(providerId, {
         cachePolicy: 'no-cache'

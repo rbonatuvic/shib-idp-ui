@@ -46,8 +46,8 @@ export default function UserMaintenance({ users, roles, loading, onDeleteUser, o
                                                 id={`role-${user.username}`}
                                                 name={`role-${user.username}`}
                                                 className="form-control"
-                                                onChange={(event) => onChangeUserRole(user, event.target.value)}
-                                                value={user.role}
+                                                onChange={(event) => onChangeUserRole({user, role: event.target.value})}
+                                                defaultValue={user.role}
                                                 disabled={loading || currentUser.username === user.username}
                                                 disablevalidation="true">
                                                 {roles.map((role, ridx) => (
@@ -67,7 +67,7 @@ export default function UserMaintenance({ users, roles, loading, onDeleteUser, o
                                                         id={`group-${user.username}`}
                                                         name={`group-${user.username}`}
                                                         className="form-control"
-                                                        onChange={(event) => onChangeUserGroup(user, event.target.value)}
+                                                        onChange={(event) => onChangeUserGroup({user, groupId: event.target.value})}
                                                         value={user.groupId ? user.groupId : ''}
                                                         disabled={loading || loadingGroups || currentUser.username === user.username || user.role === 'ROLE_ADMIN'}
                                                         disablevalidation="true">

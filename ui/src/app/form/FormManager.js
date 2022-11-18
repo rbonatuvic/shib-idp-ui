@@ -49,9 +49,9 @@ function reducer(state, action) {
 /*eslint-disable react-hooks/exhaustive-deps*/
 function FormManager({ children, initial = {} }) {
 
-    const data = {
+    const data = React.useMemo(() => ({
         ...initial
-    };
+    }), [initial]);
 
     const [state, dispatch] = React.useReducer(reducer, {
         ...initialState,

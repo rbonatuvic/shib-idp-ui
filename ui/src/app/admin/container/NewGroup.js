@@ -7,13 +7,14 @@ import { Schema } from '../../form/Schema';
 import { FormManager } from '../../form/FormManager';
 import { GroupForm } from '../component/GroupForm';
 
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
 import { useTranslator } from '../../i18n/hooks';
 import { BASE_PATH } from '../../App.constant';
+import { useDispatch } from 'react-redux';
 
 export function NewGroup({ groups }) {
     const history = useHistory();
-    const notifier = useNotificationDispatcher();
+    const notifier = useDispatch();
     const translator = useTranslator();
 
     const { post, response, loading } = useGroups({});

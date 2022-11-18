@@ -6,7 +6,7 @@ export function Schema({ path, children }) {
     const [schema, setSchema] = React.useState({});
 
 
-    const { get, response } = useFetch(path, {
+    const { get, response, loading } = useFetch(path, {
         cachePolicy: 'no-cache'
     });
 
@@ -20,5 +20,5 @@ export function Schema({ path, children }) {
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => { loadSchema() }, []);
 
-    return (<>{children(schema)}</>);
+    return (<>{children(schema, loading)}</>);
 }

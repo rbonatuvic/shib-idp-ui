@@ -47,7 +47,7 @@ export function WizardNav ({ disabled = false, onSave, saving, onRestart }) {
         <nav>
             <ul className="nav nav-wizard">
                 {previous && <li className="nav-item">
-                    <Button className="nav-link previous btn d-flex justify-content-between align-items-start" onClick={() => onPrevious(previous.id)} disabled={disabled} aria-label={() => <Translate value={previous.path} />}
+                    <Button className="nav-link previous d-flex justify-content-between align-items-start text-white" onClick={() => onPrevious(previous.id)} disabled={disabled} aria-label={() => <Translate value={previous.path} />}
                         type="button">
                         <span className="direction d-flex flex-column align-items-center">
                             <FontAwesomeIcon icon={faArrowCircleLeft} size="2x" />
@@ -70,7 +70,7 @@ export function WizardNav ({ disabled = false, onSave, saving, onRestart }) {
                 </li>
                 {next &&
                 <li className="nav-item">
-                    <Button className="nav-link next btn d-flex justify-content-between align-items-start" onClick={() => onSetIndex(next.id)} disabled={disabled} aria-label={() => <Translate value={previous.path} />}
+                    <Button className="nav-link next d-flex justify-content-between align-items-start text-white" onClick={() => onSetIndex(next.id)} disabled={disabled} aria-label={() => <Translate value={previous.path} />}
                         type="button">
                         <span className="label">
                             {next.index }.&nbsp;
@@ -85,7 +85,7 @@ export function WizardNav ({ disabled = false, onSave, saving, onRestart }) {
                 }
                 {last && (last.id === current.id) && 
                 <li className="nav-item">
-                    <Button className="nav-link save btn d-flex justify-content-between align-items-start"
+                    <Button className="nav-link save d-flex justify-content-between align-items-start text-white"
                         aria-label="Save"
                         disabled={disabled}
                         onClick={() => onSave()}

@@ -1,13 +1,14 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import useFetch from 'use-http';
 import API_BASE_PATH from '../../../App.constant';
 
 import { DeleteConfirmation } from '../../../core/components/DeleteConfirmation';
-import { createNotificationAction, NotificationContext } from '../../../notifications/hoc/Notifications';
+import { createNotificationAction } from '../../../store/notifications/NotificationSlice';
 
 export function AttributeBundleApi({ id, children }) {
 
-    const { dispatch } = React.useContext(NotificationContext);
+    const dispatch = useDispatch();
 
     const { get, put, post, del, response, loading } = useFetch(`${API_BASE_PATH}/custom/entity/bundles`, {
         cachePolicy: 'no-cache'

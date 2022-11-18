@@ -130,7 +130,9 @@ export const HttpMetadataResolverAttributesSchema = {
             {
                 title: 'label.http-security-attributes',
                 classNames: 'bg-light border rounded px-4 pt-4 pb-3 mb-4',
-                size: 12,
+                sizes: {
+                    xs: 12
+                },
                 fields: [
                     'disregardTLSCertificate'
                 ]
@@ -138,7 +140,9 @@ export const HttpMetadataResolverAttributesSchema = {
             {
                 title: 'label.http-connection-attributes',
                 classNames: 'bg-light border rounded px-4 pt-4 pb-3 mb-4',
-                size: 12,
+                sizes: {
+                    xs: 12
+                },
                 fields: [
                     'connectionRequestTimeout',
                     'connectionTimeout',
@@ -148,7 +152,9 @@ export const HttpMetadataResolverAttributesSchema = {
             {
                 title: 'label.http-proxy-attributes',
                 classNames: 'bg-light border rounded px-4 pt-4 pb-3 mb-4',
-                size: 12,
+                sizes: {
+                    xs: 12
+                },
                 fields: [
                     'proxyHost',
                     'proxyPort',
@@ -159,7 +165,9 @@ export const HttpMetadataResolverAttributesSchema = {
             {
                 title: 'label.http-caching-attributes',
                 classNames: 'bg-light border rounded px-4 pt-4 pb-3 mb-4',
-                size: 12,
+                sizes: {
+                    xs: 12
+                },
                 fields: [
                     'httpCaching',
                     'httpCacheDirectory',
@@ -169,7 +177,9 @@ export const HttpMetadataResolverAttributesSchema = {
             },
             {
                 classNames: 'd-none',
-                size: 12,
+                sizes: {
+                    xs: 12
+                },
                 fields: [
                     'tlsTrustEngineRef',
                     'httpClientSecurityParametersRef',

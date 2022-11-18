@@ -1,10 +1,11 @@
 import React from 'react';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { useDispatch } from 'react-redux';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
 import { useMetadataAttribute, useMetadataAttributes } from '../hooks/api';
 
 export function MetadataAttributes ({children}) {
 
-     const dispatch = useNotificationDispatcher();
+     const dispatch = useDispatch();
 
     const { get, response } = useMetadataAttributes({
         cachePolicy: 'no-cache'

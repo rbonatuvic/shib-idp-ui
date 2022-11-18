@@ -18,8 +18,9 @@ import API_BASE_PATH from '../../App.constant';
 import { MetadataObjectContext } from '../hoc/MetadataSelector';
 import { FilterableProviders } from '../domain/provider';
 import { checkChanges } from '../hooks/utility';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
 import { useUserGroup } from '../../core/user/UserContext';
+import { useDispatch } from 'react-redux';
 
 export function MetadataEditor ({ restore, current, reload }) {
 
@@ -30,7 +31,7 @@ export function MetadataEditor ({ restore, current, reload }) {
 
     const { update, loading } = useMetadataUpdater(`${ API_BASE_PATH }${getMetadataPath(type)}`, current, reload);
 
-    const notificationDispatch = useNotificationDispatcher();
+    const notificationDispatch = useDispatch();
 
     const { data } = useMetadataEntities(type, {}, []);
     const history = useHistory();

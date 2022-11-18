@@ -72,7 +72,11 @@ export const SourceBase = {
         if (formData.assertionConsumerServices && formData.assertionConsumerServices.length) {
             const { updated, added } = detailedDiff(original.assertionConsumerServices, formData.assertionConsumerServices);
             const merged = merge(updated, added);
-            const changingDefault = Object.keys(merged).some(k => merged[k].hasOwnProperty('makeDefault'));
+            const changingDefault = Object.keys(merged).some(k => {
+                const obj = { ...merged[k] };
+                return obj.hasOwnProperty('makeDefault');
+            });
+            
             if (changingDefault) {
                 const settingToTrue = Object.keys(merged).some(k => merged[k].makeDefault === true);
                 if (settingToTrue) {
@@ -92,7 +96,9 @@ export const SourceBase = {
         layout: {
             groups: [
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12
+                    },
                     fields: [
                         'protocol',
                         'serviceProviderName',
@@ -101,49 +107,66 @@ export const SourceBase = {
                     ]
                 },
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 6
+                    },
                     fields: [
                         'contacts'
                     ],
                 },
                 {
-                    size: 12,
+                    sizes: {
+                        xs: 12
+                    },
                     fields: [
                         'mdui'
                     ],
                 },
                 {
-                    size: 12,
+                    sizes: {
+                        xs: 12
+                    },
                     fields: [
                         'serviceProviderSsoDescriptor'
                     ],
                 },
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12,
+                        xxl: 8
+                    },
                     fields: [
                         'logoutEndpoints'
                     ],
                 },
                 {
-                    size: 12,
+                    sizes: {
+                        xs: 12
+                    },
                     fields: [
                         'securityInfo'
                     ],
                 },
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12
+                    },
                     fields: [
                         'assertionConsumerServices'
                     ],
                 },
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12
+                    },
                     fields: [
                         'relyingPartyOverrides'
                     ],
                 },
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12
+                    },
                     fields: [
                         'attributeRelease'
                     ],
@@ -212,7 +235,10 @@ export const SourceBase = {
             layout: {
                 groups: [
                     {
-                        size: 6,
+                        sizes: {
+                            xs: 12,
+                            xxl: 8
+                        },
                         fields: [
                             'authenticationRequestsSigned',
                             'wantAssertionsSigned',
@@ -257,7 +283,10 @@ export const SourceBase = {
             layout: {
                 groups: [
                     {
-                        size: 6,
+                        sizes: {
+                            xs: 12,
+                            lg: 6
+                        },
                         fields: [
                             "displayName",
                             "informationUrl",
@@ -265,7 +294,10 @@ export const SourceBase = {
                         ],
                     },
                     {
-                        size: 6,
+                        sizes: {
+                            xs: 12,
+                            lg: 6
+                        },
                         fields: [
                             "privacyStatementUrl",
                             "logoUrl",
@@ -374,62 +406,93 @@ export const SourceWizard = {
         layout: {
             groups: [
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12,
+                        lg: 6,
+                        xxl: 6
+                    },
                     classNames: 'bg-light border rounded px-4 pt-4 pb-3',
                     fields: [
                         'organization',
                     ],
                 },
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12,
+                        lg: 6,
+                        xxl: 6
+                    },
                     fields: [
                         'contacts'
                     ],
                 },
                 {
-                    size: 12,
+                    sizes: {
+                        xs: 12
+                    },
                     fields: [
                         'mdui'
                     ],
                 },
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12,
+                    },
                     fields: [
                         'serviceProviderSsoDescriptor'
                     ],
                 },
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12,
+                        lg: 6
+                    },
                     fields: [
                         'logoutEndpoints'
                     ],
                 },
                 {
-                    size: 12,
+                    sizes: {
+                        xs: 12
+                    },
                     fields: [
                         'securityInfo'
                     ],
                 },
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12,
+                        lg: 6
+                    },
                     fields: [
                         'assertionConsumerServices'
                     ],
                 },
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12,
+                        lg: 12,
+                        xl: 8,
+                        xxl: 6,
+                    },
                     fields: [
                         'relyingPartyOverrides'
                     ],
                 },
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12,
+                        lg: 6
+                    },
                     fields: [
                         'attributeRelease'
                     ],
                 },
                 {
-                    size: 6,
+                    sizes: {
+                        xs: 12,
+                        lg: 6
+                    },
                     fields: []
                 }
             ]
