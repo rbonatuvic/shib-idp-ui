@@ -14,7 +14,7 @@ Together with semantic versioning numbers, the following labels are used to give
 
 * RC[number]: A release candidate (RC1, RC2, RC3...) is the last feature complete release before building a final generally available release. The purpose of release candidates is to give end users of the software a chance to do a test drive, to find and fix bugs before releasing a final version. To minimize code changes, only bug fixes should occur at this stage. Release candidate releases are not considered to be stable and are discouraged to be used in production.
 
-At the very end of release process, the ShibUI development team with publish so called generally available releases which would be considered stable and targeted to be used in production.
+At the very end of release process, the ShibUI development team will publish so called generally available releases which would be considered stable and targeted to be used in production.
 
 In ShibUI software, some of the examples of release cycles are:
 
