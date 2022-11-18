@@ -26,9 +26,9 @@ export function ActionsTab() {
 
     const { path, url } = useRouteMatch();
 
-    const {data: users = [], isLoading: loadingUsers} = useGetNewUsersQuery();
-    const {data: disabledSources = [], isLoading: loadingSources} = useGetDisabledSourcesQuery();
-    const {data: unApprovedSources = [], isLoading: loadingApprovals} = useGetUnapprovedSourcesQuery();
+    const {data: users = [], isFetching: loadingUsers} = useGetNewUsersQuery();
+    const {data: disabledSources = [], isFetching: loadingSources} = useGetDisabledSourcesQuery();
+    const {data: unApprovedSources = [], isFetching: loadingApprovals} = useGetUnapprovedSourcesQuery();
     const {data: unApprovedRegistrations = []} = useGetUnapprovedRegistrationsQuery();
     const {data: disabledRegistrations = []} = useGetDisabledRegistrationsQuery();
 

@@ -79,7 +79,7 @@ export function CopySource({ copy, onNext }) {
                             </h3>
                         </li>
                         <li className="nav-item">
-                            <Button className="nav-link next btn d-flex justify-content-between align-items-start"
+                            <Button className="nav-link next btn d-flex justify-content-between align-items-start text-white"
                                 onClick={() => onNext(getValues())}
                                 disabled={!isValid}
                                 aria-label="Next: Step 2, Organization information"

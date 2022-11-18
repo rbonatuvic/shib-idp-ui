@@ -16,7 +16,7 @@ const searchProps = ['name'];
 
 export function DynamicRegistrationsTab () {
 
-    const {data: registrations = [], isLoading: loading} = useGetDynamicRegistrationsQuery();
+    const {data: registrations = [], isFetching: loading} = useGetDynamicRegistrationsQuery();
 
     return (
         <section className="section">

@@ -6,7 +6,7 @@ export const MetadataSourceApi = createApi({
   reducerPath: 'metadataSourceApi',
   tagTypes: ['MetadataSource'],
   baseQuery: getBaseQuery(),
-  refetchOnMountOrArgChange: 5,
+  refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
     getSources: builder.query({
       query: () => ({

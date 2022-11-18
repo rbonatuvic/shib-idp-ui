@@ -92,7 +92,7 @@ export function MetadataUpload() {
                             </h3>
                         </li>
                         <li className="nav-item">
-                            <Button className="nav-link next btn d-flex justify-content-between align-items-start"
+                            <Button className="nav-link next btn d-flex justify-content-between align-items-start text-white"
                                 disabled={!isValid || saving}
                                 aria-label="Save metadata resolver"
                                 type="submit">

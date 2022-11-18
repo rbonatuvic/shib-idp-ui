@@ -65,7 +65,7 @@ export function SaveCopy ({ copy, saving, onSave, onBack }) {
             <div className="col col-xs-12">
                 <ul className="nav nav-wizard m-3">
                     <li className="nav-item">
-                        <Button type="button" className="nav-link previous btn d-flex justify-content-between align-items-start" onClick={onBack}>
+                        <Button type="button" className="nav-link previous btn d-flex justify-content-between align-items-start text-white" onClick={onBack}>
                             <span className="direction d-flex flex-column align-items-center">
                                 <FontAwesomeIcon icon={faArrowCircleLeft} size="2x" />
                                 <Translate value="action.back">Back</Translate>
@@ -86,7 +86,7 @@ export function SaveCopy ({ copy, saving, onSave, onBack }) {
                         </h3>
                     </li>
                     <li className="nav-item">
-                        <Button className="nav-link save btn d-flex justify-content-between align-items-start" aria-label="Save" onClick={() => handleSubmit(onFinish)()} type="button">
+                        <Button className="nav-link save btn d-flex justify-content-between align-items-start text-white" aria-label="Save" onClick={() => handleSubmit(onFinish)()} type="button">
                             <span className="label"><Translate value="action.save">Save</Translate></span>
                             <span className="direction d-flex flex-column align-items-center">
                                 <FontAwesomeIcon icon={saving ? faSpinner : faSave} pulse={saving} size="2x" />

@@ -15,7 +15,7 @@ export function DynamicRegistrationEdit () {
     const history = useHistory();
     const [update, {isSuccess}] = useUpdateDynamicRegistrationMutation();
 
-    const {data: detail, isLoading: loading} = useSelectDynamicRegistrationQuery({id});
+    const {data: detail, isFetching: loading} = useSelectDynamicRegistrationQuery({id});
 
     const cancel = () => {
         gotoDetail();

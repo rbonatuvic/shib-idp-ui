@@ -8,7 +8,7 @@ import { useGetUsersQuery } from '../../store/user/UserSlice';
 
 export function AdminTab () {
 
-    const { data: users = [], isLoading } = useGetUsersQuery();
+    const { data: users = [], isFetching: loading } = useGetUsersQuery();
 
     return (
         <section className="section">
@@ -31,7 +31,7 @@ export function AdminTab () {
                                 onChangeUserGroup={onChangeUserGroup} />}
                         
                     </UserManagement>
-                    {isLoading && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
+                    {loading && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
                 </div>
             </div>
         </section>

@@ -13,7 +13,7 @@ export function DynamicRegistrationCreate () {
 
     const history = useHistory();
 
-    const [create, {isSuccess, isLoading: loading}] = useCreateDynamicRegistrationMutation();
+    const [create, {isSuccess, isFetching: loading}] = useCreateDynamicRegistrationMutation();
 
     const save = React.useCallback(async (registration) => await create({registration}), [create]);
     

@@ -17,7 +17,7 @@ export function SourcesTab () {
 
     const [changeSourceGroup] = useChangeSourceGroupMutation();
 
-    const { data: sources = [], isLoading: loading } = useGetSourcesQuery();
+    const { data: sources = [], isFetching: loading } = useGetSourcesQuery();
 
     return (
         <section className="section">
