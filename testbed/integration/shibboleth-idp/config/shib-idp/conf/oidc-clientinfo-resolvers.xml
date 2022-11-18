@@ -20,17 +20,14 @@
     -->
 
     <util:list id="shibboleth.oidc.ClientInformationResolvers">
-        <!-- <ref bean="ExampleFileResolver" /> -->
-        <ref bean="dynreg" />
+      <bean id="dynreg" parent="shibboleth.oidc.StorageClientInformationResolver"
+		    p:storageService-ref="shibboleth.JPAStorageService" />
     </util:list>
 
     <!--
     <bean id="ExampleFileResolver" parent="shibboleth.oidc.FilesystemClientInformationResolver"
         c:metadata="%{idp.home}/metadata/oidc-client.json" />
     -->
-
-    <bean id="dynreg" parent="shibboleth.oidc.StorageClientInformationResolver"
-		    p:storageService-ref="shibboleth.JPAStorageService" />
 
   <!--
     <bean id="ExampleStorageClientInformationResolver" parent="shibboleth.oidc.StorageClientInformationResolver"
