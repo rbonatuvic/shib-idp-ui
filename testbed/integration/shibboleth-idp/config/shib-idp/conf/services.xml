@@ -70,4 +70,8 @@
         <value>%{idp.home}/system/messages/messages</value>
     </util:list>
 
+    <util:list id ="shibboleth.ClientInformationResolverService">
+        <value>%{idp.home}/conf/oidc-clientinfo-resolvers.xml</value>
+    </util:list>
+
 </beans>
