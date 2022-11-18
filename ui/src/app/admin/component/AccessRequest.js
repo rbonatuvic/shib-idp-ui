@@ -4,14 +4,13 @@ import Form from 'react-bootstrap/Form';
 import Translate from '../../i18n/components/translate';
 
 export function AccessRequest({ users, roles, onDeleteUser, onChangeUserRole }) {
-
     return (
         <>
         {(!users || !users.length) ?
         <>
             <div className="d-flex justify-content-center">
-                <div className="w-50 alert alert-info m-3">
-                    <p className="text-center">There are no new user requests at this time.</p>
+                <div className="w-50 alert alert-info m-3" id="zero-state-alert">
+                    <p className="text-center mb-0">There are no new user requests at this time.</p>
                 </div>
             </div>
         </>

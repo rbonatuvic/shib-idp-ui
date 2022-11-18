@@ -7,6 +7,9 @@ import { Search } from '../component/Search';
 import { Spinner } from '../../core/components/Spinner';
 
 import { useChangeSourceGroupMutation, useGetSourcesQuery } from '../../store/metadata/SourceSlice';
+import { Link } from 'react-router-dom';
+import { faCube } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const searchProps = ['serviceProviderName', 'entityId', 'createdBy', 'protocol'];
 
@@ -35,6 +38,17 @@ export function SourcesTab () {
                                         onEnable={(s, e) => enable(s, e) }
                                         onChangeGroup={changeSourceGroup}>
                                             {loading && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
+                                            {(!searched || !searched.length) &&
+                                                <div className="d-flex justify-content-center">
+                                                    <div className="w-25 alert alert-info m-3 d-flex flex-column align-items-center">
+                                                        <p className="text-center">No Metadata Sources found.</p>
+                                                        <Link to="/metadata/source/new" className="btn btn-primary" id="metadata-source-create-btn">
+                                                            <FontAwesomeIcon icon={faCube} className="me-2" fixedWidth />
+                                                            <Translate value="action.add-new-source" />
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                            }
                                     </SourceList>
                                 }
                             </MetadataActions>

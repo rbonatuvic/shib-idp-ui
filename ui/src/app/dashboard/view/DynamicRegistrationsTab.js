@@ -7,6 +7,10 @@ import {
     useGetDynamicRegistrationsQuery
 } from '../../store/dynamic-registration/DynamicRegistrationSlice';
 import { DynamicRegistrationActions } from '../../dynamic-registration/hoc/DynamicRegistrationActions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
+import Spinner from '../../core/components/Spinner';
+import { faOpenid } from '@fortawesome/free-brands-svg-icons';
 
 const searchProps = ['name'];
 
@@ -33,7 +37,20 @@ export function DynamicRegistrationsTab () {
                                         loading={loading}
                                         onDelete={(id) => remove({id})}
                                         onEnable={(id, enabled) => enable({id, enabled}) }
-                                        onChangeGroup={(registration, group) => changeGroup({ registration, group })}/>
+                                        onChangeGroup={(registration, group) => changeGroup({ registration, group })}>
+                                            {loading && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
+                                            {(!searched || !searched.length) &&
+                                                <div className="d-flex justify-content-center">
+                                                    <div className="w-25 alert alert-info m-3 d-flex flex-column align-items-center">
+                                                        <p className="text-center">No Dynamic Registrations found.</p>
+                                                        <Link to="/dynamic-registration/new" className="btn btn-primary" id="dynamic-reg-create-btn">
+                                                            <FontAwesomeIcon icon={faOpenid} className="me-2" fixedWidth />
+                                                            <Translate value="action.add-new-dynamic-registration" />
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                            }
+                                    </DynamicRegistrationList>
                                     }
                                 </Search>
                             </div>

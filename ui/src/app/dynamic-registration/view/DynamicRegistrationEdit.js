@@ -7,6 +7,7 @@ import { FormManager } from '../../form/FormManager';
 import { DynamicRegistrationForm } from '../component/DynamicRegistrationForm';
 import DynamicConfigurationDefinition from '../hoc/DynamicConfigurationDefinition';
 import { useSelectDynamicRegistrationQuery, useUpdateDynamicRegistrationMutation } from '../../store/dynamic-registration/DynamicRegistrationSlice';
+import Spinner from '../../core/components/Spinner';
 
 export function DynamicRegistrationEdit () {
 
@@ -53,7 +54,7 @@ export function DynamicRegistrationEdit () {
                         </div>
                         <div className="section-body p-4 border border-top-0 border-info">
                             <Schema path={DynamicConfigurationDefinition.schema}>
-                                {(schema) => 
+                                {(schema, loadingSchema) => 
                                 <FormManager initial={{...detail}}>
                                     {(data, errors) =>
                                     <>
@@ -64,6 +65,7 @@ export function DynamicRegistrationEdit () {
                                             loading={loading}
                                             onSave={(registration) => update({ id: registration.resourceId, registration })}
                                             onCancel={() => cancel()} />
+                                        <Fragment>{ loadingSchema && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }</Fragment>
                                     </>}
                                 </FormManager> }
                             </Schema>

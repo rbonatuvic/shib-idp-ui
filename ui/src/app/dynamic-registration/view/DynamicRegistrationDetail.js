@@ -22,8 +22,6 @@ export function DynamicRegistrationDetail () {
     const history = useHistory();
 
     const { data: detail } = useSelectDynamicRegistrationQuery({id});
-    
-    const redirectOnDelete = () => history.push('/dashboard/dynamic-registration');
 
     const edit = (section) => {
         history.push(`/dynamic-registration/${id}/edit`);

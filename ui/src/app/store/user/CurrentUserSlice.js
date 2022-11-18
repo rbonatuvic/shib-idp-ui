@@ -15,7 +15,6 @@ export const CurrentUserAdminApi = createApi({
 
 export const {
   useGetUsersQuery,
-  useGetNewUsersQuery,
   useRemoveUserMutation,
   useSetUserGroupRequestMutation,
   useSetUserRoleRequestMutation

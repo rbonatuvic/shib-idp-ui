@@ -151,6 +151,13 @@ export default function SourceList({ entities, onDelete, onEnable, onApprove, on
                             </GroupsProvider>
                         </tbody>
                     </table>
+                    { !limited?.length && !children && 
+                        <div className="d-flex justify-content-center">
+                            <div className="w-25 alert alert-info m-3 d-flex flex-column align-items-center" id="zero-state-alert">
+                                <p className="text-center mb-0">No Metadata Sources found.</p>
+                            </div>
+                        </div>
+                    }
                 </div>
             }
             </Scroller>

@@ -7,6 +7,9 @@ import Translate from '../../i18n/components/translate';
 
 import { FormContext, setFormDataAction, setFormErrorAction } from '../../form/FormManager';
 import { useDynamicRegistrationUiSchema, useDynamicRegistrationValidator } from '../api';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 
 export function DynamicRegistrationForm ({registration = {}, errors = [], loading = false, schema, onSave, onCancel}) {
 
@@ -39,8 +42,8 @@ export function DynamicRegistrationForm ({registration = {}, errors = [], loadin
                 </React.Fragment>
             </div>
             <hr />
-            <div className="row">
-                <div className="col-12 col-lg-6 order-2">
+            <Row>
+                <Col>
                     <Form formData={registration}
                         noHtml5Validate={true}
                         onChange={(form) => onChange(form)}
@@ -50,8 +53,8 @@ export function DynamicRegistrationForm ({registration = {}, errors = [], loadin
                         liveValidate={true}>
                         <></>
                     </Form>
-                </div>
-            </div>
+                </Col>
+            </Row>
         </div>
     </>)
 }

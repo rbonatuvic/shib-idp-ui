@@ -76,8 +76,6 @@ export const SourceBase = {
                 const obj = { ...merged[k] };
                 return obj.hasOwnProperty('makeDefault');
             });
-
-
             
             if (changingDefault) {
                 const settingToTrue = Object.keys(merged).some(k => merged[k].makeDefault === true);

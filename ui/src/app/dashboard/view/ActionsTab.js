@@ -13,8 +13,6 @@ import Spinner from '../../core/components/Spinner';
 import Translate from '../../i18n/components/translate';
 import SourceList from '../../metadata/domain/source/component/SourceList';
 import { ProtectRoute } from '../../core/components/ProtectRoute';
-
-
 import { DynamicRegistrationList } from '../../dynamic-registration/component/DynamicRegistrationList';
 import { useGetNewUsersQuery } from '../../store/user/UserSlice';
 import { useGetDisabledSourcesQuery, useGetUnapprovedSourcesQuery } from '../../store/metadata/SourceSlice';
@@ -24,7 +22,7 @@ import {
     useGetUnapprovedRegistrationsQuery
 } from '../../store/dynamic-registration/DynamicRegistrationSlice';
 
-export function ActionsTab({ registrations }) {
+export function ActionsTab() {
 
     const { path, url } = useRouteMatch();
 

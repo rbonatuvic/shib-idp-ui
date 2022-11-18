@@ -1,4 +1,5 @@
 import React, { Fragment, useMemo } from 'react';
+import { useHistory } from 'react-router';
 import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
 
 import {
@@ -10,9 +11,9 @@ import {
 
 export function DynamicRegistrationActions ({ children }) {
 
-    // const toast = useCallback((message, type) => dispatch(createNotificationAction(message, type)), [dispatch]);
+    const history = useHistory();
 
-    const [remove] = useDeleteDynamicRegistrationMutation();
+    const [remove, {isSuccess: isDeleteSuccess}] = useDeleteDynamicRegistrationMutation();
     const [approve] = useApproveDynamicRegistrationMutation();
     const [enable] = useEnableDynamicRegistrationMutation();
     const [changeGroup] = useChangeDynamicRegistrationGroupMutation();
@@ -24,6 +25,12 @@ export function DynamicRegistrationActions ({ children }) {
         enable,
         changeGroup
     }), [remove, approve, enable, changeGroup]);
+
+    React.useEffect(() => {
+        if (isDeleteSuccess) {
+            history.push('/dashboard/dynamic-registration');
+        }
+    }, [isDeleteSuccess, history]);
 
     return (
         <DeleteConfirmation title={`message.delete-dynamic-registration-title`} body={`message.delete-dynamic-registration-body`}>

@@ -27,13 +27,6 @@ export function DynamicRegistrationList ({entities, children, onChangeGroup, onD
             <Scroller entities={entities}>
             {(limited) =>
                 <div className="table-responsive mt-3 source-list">
-                    {!limited || !limited.length ?
-                        <div className="d-flex justify-content-center">
-                            <div className="w-25 alert alert-info m-3">
-                                <p className="text-center">No Dynamic Registrations found.</p>
-                            </div>
-                        </div>
-                    :
                     <table className="table table-striped w-100 table-hover">
                         <thead>
                             <tr>
@@ -146,6 +139,12 @@ export function DynamicRegistrationList ({entities, children, onChangeGroup, onD
                             </GroupsProvider>
                         </tbody>
                     </table>
+                    { !limited?.length && !children && 
+                    <div className="d-flex justify-content-center">
+                        <div className="w-25 alert alert-info m-3 d-flex flex-column align-items-center" id="zero-state-alert">
+                            <p className="text-center mb-0">No Dynamic Registrations found.</p>
+                        </div>
+                    </div>
                     }
                 </div>
             }

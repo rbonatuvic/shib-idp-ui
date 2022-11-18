@@ -12,7 +12,7 @@ export const DynamicRegistrationDefinition = {
                 'name',
                 'redirectUris',
                 'responseTypes',
-                'grantTypes',
+                'grantType',
                 'applicationType',
                 'contacts',
                 'subjectType',
@@ -34,22 +34,31 @@ export const DynamicRegistrationDefinition = {
                 {
                     sizes: {
                         xs: 12,
-                        lg: 12
+                        lg: 6
                     },
                     classNames: '',
                     fields: [
                         'name',
                         'redirectUris',
                         'responseTypes',
-                        'grantTypes',
                         'applicationType',
                         'contacts',
+                        'logoUri',
+                        'policyUri',
+                    ]
+                },
+                {
+                    sizes: {
+                        xs: 12,
+                        lg: 6
+                    },
+                    classNames: '',
+                    fields: [
+                        'grantType',
                         'subjectType',
                         'jwks',
                         'jwksUri',
                         'tokenEndpointAuthMethod',
-                        'logoUri',
-                        'policyUri',
                         'tosUri',
                         'scope'
                     ]

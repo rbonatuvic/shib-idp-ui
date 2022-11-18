@@ -13,8 +13,8 @@
       "maxLength": 255
     },
     "redirectUris": {
-      "title": "label.redirect-uris",
-      "description": "tooltip.redirect-uris",
+      "title": "label.dynamic-registration-redirectUris",
+      "description": "tooltip.dynamic-registration-redirectUris",
       "type": "string",
       "minLength": 1,
       "maxLength": 255
@@ -30,74 +30,70 @@
       "type": "boolean"
     },
     "applicationType": {
-      "title": "label.application-type",
-      "description": "tooltip.application-type",
+      "title": "label.dynamic-registration-applicationType",
+      "description": "tooltip.dynamic-registration-applicationType",
       "type": "string"
     },
     "contacts": {
-      "title": "label.contacts",
-      "description": "tooltip.contacts",
+      "title": "label.dynamic-registration-contacts",
+      "description": "tooltip.dynamic-registration-contacts",
       "type": "string"
     },
     "grantType": {
-      "title": "label.grant-type",
-      "description": "tooltip.grant-type",
+      "title": "label.dynamic-registration-grantTypes",
+      "description": "tooltip.dynamic-registration-grantTypes",
       "type": "string",
       "minLength": 1,
-      "oneOf": [
-        {
-          "enum": ["authorization_code"],
-          "description": "value.authorization-code"
-        },
-        {
-          "enum": ["implicit"],
-          "description": "value.implicit"
-        },
-        {
-          "enum": ["refresh_token"],
-          "description": "value.refresh-token"
-        }
+      "enum": [
+        "authorization_code",
+        "implicit",
+        "refresh_token"
+      ],
+      "enumNames": [
+        "value.authorization-code",
+        "value.implicit",
+        "value.refresh-token"
       ]
     },
     "jwks": {
-      "title": "label.jwks",
-      "description": "tooltip.jwks",
+      "title": "label.dynamic-registration-jwks",
+      "description": "label.dynamic-registration-jwks",
       "type": "string"
     },
     "logoUri": {
-      "title": "label.logo-uri",
-      "description": "tooltip.logo-uri",
+      "title": "label.dynamic-registration-logo-uri",
+      "description": "tooltip.dynamic-registration-logo-uri",
       "type": "string"
     },
     "policyUri": {
-      "title": "label.policy-uri",
-      "description": "tooltip.policy-uri",
+      "title": "label.dynamic-registration-policy-uri",
+      "description": "tooltip.dynamic-registration-policy-uri",
       "type": "string"
     },
 
     "responseTypes": {
-      "title": "label.response-types",
-      "description": "tooltip.response-types",
+      "title": "label.dynamic-registration-responseTypes",
+      "description": "tooltip.dynamic-registration-responseTypes",
       "type": "string"
     },
     "scope": {
-      "title": "label.scope",
-      "description": "tooltip.scope",
+      "title": "label.dynamic-registration-scope",
+      "description": "tooltip.dynamic-registration-scope",
       "type": "string"
     },
     "subjectType": {
-      "title": "label.subject-type",
-      "description": "tooltip.subject-type",
+      "title": "label.dynamic-registration-subjectType",
+      "description": "tooltip.dynamic-registration-subjectType",
       "type": "string"
     },
     "tokenEndpointAuthMethod": {
-      "title": "label.token-endpoint-auth-method",
-      "description": "tooltip.token-endpoint-auth-method",
+      "title": "label.dynamic-registration-tokenEndpointAuthMethod",
+      "description": "tooltip.dynamic-registration-tokenEndpointAuthMethod",
       "type": "string"
     },
     "tosUri": {
-      "title": "label.tos-uri",
-      "description": "tooltip.tos-uri",
+      "title": "label.dynamic-registration-tosuri",
+      "description": "tooltip.dynamic-registration-tosuri",
       "type": "string"
     }
   }

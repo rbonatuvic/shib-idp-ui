@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { Prompt, useHistory } from 'react-router-dom';
 
 import Translate from '../../i18n/components/translate';
@@ -7,31 +7,28 @@ import { FormManager } from '../../form/FormManager';
 import { DynamicRegistrationForm } from '../component/DynamicRegistrationForm';
 import DynamicConfigurationDefinition from '../hoc/DynamicConfigurationDefinition';
 import { useCreateDynamicRegistrationMutation } from '../../store/dynamic-registration/DynamicRegistrationSlice';
+import Spinner from '../../core/components/Spinner';
 
 export function DynamicRegistrationCreate () {
 
     const history = useHistory();
 
-    const [create] = useCreateDynamicRegistrationMutation();
+    const [create, {isSuccess, isLoading: loading}] = useCreateDynamicRegistrationMutation();
 
-    async function save(reg) {
-        const resp = await create(reg);
-        if (resp.ok) {
-            gotoDetail({ refresh: true });
-        }
-    };
-
-    const cancel = () => {
-        gotoDetail();
-    };
-
-    const gotoDetail = (state = null) => {
+    const save = React.useCallback(async (registration) => await create({registration}), [create]);
+    
+    const gotoDetail = React.useCallback((state = null) => {
         setBlocking(false);
         history.push(`/dashboard/dynamic-registration`, state);
-    };
+    }, [history]);
+
+    React.useEffect(() => {
+        if (isSuccess) {
+            gotoDetail({ refresh: true });
+        }
+    }, [isSuccess, gotoDetail])
 
     const [blocking, setBlocking] = React.useState(false);
-    const [loading, setLoading] = React.useState(false);
 
     return (
         <div className="container-fluid p-3">
@@ -51,7 +48,7 @@ export function DynamicRegistrationCreate () {
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
                     <Schema path={DynamicConfigurationDefinition.schema}>
-                        {(schema) => 
+                        {(schema, loadingSchema) => 
                         <FormManager initial={{}}>
                             {(data, errors) =>
                             <>
@@ -61,7 +58,8 @@ export function DynamicRegistrationCreate () {
                                     schema={schema}
                                     loading={loading}
                                     onSave={(data) => save(data)}
-                                    onCancel={() => cancel()} />
+                                    onCancel={() => gotoDetail()} />
+                                <Fragment>{ loadingSchema && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }</Fragment>
                             </>}
                         </FormManager> }
                     </Schema>
