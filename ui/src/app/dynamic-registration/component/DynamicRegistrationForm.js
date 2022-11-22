@@ -12,11 +12,13 @@ import Col from 'react-bootstrap/Col';
 
 
 export function DynamicRegistrationForm ({registration = {}, errors = [], loading = false, schema, onSave, onCancel}) {
+    const [touched, setTouched] = React.useState(false);
 
     const { dispatch } = React.useContext(FormContext);
-    const onChange = ({formData, errors}) => {
+    const onChange = ({formData, errors, ...props}) => {
         dispatch(setFormDataAction(formData));
         dispatch(setFormErrorAction(errors));
+        setTouched(true);
     };
 
     const uiSchema = useDynamicRegistrationUiSchema();
@@ -29,7 +31,7 @@ export function DynamicRegistrationForm ({registration = {}, errors = [], loadin
                     <Button variant="info" className="me-2"
                         type="button"
                         onClick={() => onSave(registration)}
-                        disabled={errors.length > 0 || loading}
+                        disabled={!touched || errors.length > 0 || loading}
                         aria-label="Save changes to the dynamic registration. You will return to the dashboard">
                         <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading} />&nbsp;
                         <Translate value="action.save">Save</Translate>
@@ -47,6 +49,7 @@ export function DynamicRegistrationForm ({registration = {}, errors = [], loadin
                     <Form formData={registration}
                         noHtml5Validate={true}
                         onChange={(form) => onChange(form)}
+                        onError={(errors) => console.log(errors)}
                         validate={validator}
                         schema={schema}
                         uiSchema={uiSchema}
@@ -55,6 +58,8 @@ export function DynamicRegistrationForm ({registration = {}, errors = [], loadin
                     </Form>
                 </Col>
             </Row>
+
+            <pre>{JSON.stringify(errors, null, 4)}</pre>
         </div>
     </>)
 }

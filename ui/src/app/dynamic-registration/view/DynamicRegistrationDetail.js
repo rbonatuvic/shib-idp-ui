@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
-
+import Form from 'react-bootstrap/Form';
 import Translate from '../../i18n/components/translate';
 import FormattedDate from '../../core/components/FormattedDate';
 import Button from 'react-bootstrap/Button';
@@ -15,6 +15,8 @@ import { Schema } from '../../form/Schema';
 import definition from '../hoc/DynamicConfigurationDefinition';
 import { useSelectDynamicRegistrationQuery } from '../../store/dynamic-registration/DynamicRegistrationSlice';
 import { DynamicRegistrationActions } from '../hoc/DynamicRegistrationActions';
+import { useIsAdmin } from '../../core/user/UserContext';
+import { GroupsProvider } from '../../admin/hoc/GroupsProvider';
 
 export function DynamicRegistrationDetail () {
 
@@ -27,13 +29,15 @@ export function DynamicRegistrationDetail () {
         history.push(`/dynamic-registration/${id}/edit`);
     };
 
+    const isAdmin = useIsAdmin();
+
     return (
         <div className="container-fluid p-3">
             <section className="section" tabIndex="0">
                 <div className="section-body px-4 pb-4 border border-info">
                     {detail &&
                     <DynamicRegistrationActions>
-                        {({enable, remove}) => (
+                        {({enable, remove, changeGroup}) => (
                             <React.Fragment>
                             <nav aria-label="breadcrumb">
                                 <ol className="breadcrumb breadcrumb-bar">
@@ -68,6 +72,30 @@ export function DynamicRegistrationDetail () {
                                                     <Translate value="label.by">By</Translate>:&nbsp;
                                                     <span className="author">{detail.idOfOwner }</span>
                                                 </p>
+                                                {isAdmin &&
+                                                    <GroupsProvider>
+                                                        {(groups, removeGroup, loadingGroups) =>
+                                                            <div className="form-inline" style={{maxWidth: '50%'}}>
+                                                                <label className="me-2 mb-2" htmlFor={`group-${detail.name}`}>
+                                                                    <Translate value="action.source-group">Group</Translate>:
+                                                                </label>
+                                                                <Form.Select
+                                                                    id={`group-select-dr`}
+                                                                    name={`group-${detail.id}`}
+                                                                    className="form-control form-control-sm"
+                                                                    onChange={({target: {value}}) => changeGroup({ registration: detail, group: value })}
+                                                                    value={detail.idOfOwner}
+                                                                    disabled={loadingGroups}
+                                                                    disablevalidation="true">
+                                                                    <option>Select Group</option>
+                                                                    {groups.map((g, ridx) => (
+                                                                        <option key={ridx} value={g.resourceId}>{g.name}</option>
+                                                                    ))}
+                                                                </Form.Select>
+                                                            </div>
+                                                        }
+                                                    </GroupsProvider>
+                                                }
                                             </h5>
                                             <div className="d-flex align-items-start btn-group">
                                                 <Button variant={detail.enabled ? 'outline-secondary' : 'outline-secondary' } size="sm" className=""

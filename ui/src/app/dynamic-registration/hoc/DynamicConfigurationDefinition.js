@@ -29,6 +29,12 @@ export const DynamicRegistrationDefinition = {
     schema: `${API_BASE_PATH}/ui/DynamicRegistration`,
 
     uiSchema: {
+        name: {
+            'ui:emptyValue': '',
+        },
+        redirectUris: {
+            'ui:emptyValue': '',
+        },
         layout: {
             groups: [
                 {
