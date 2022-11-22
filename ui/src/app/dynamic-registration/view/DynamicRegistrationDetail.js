@@ -15,7 +15,7 @@ import { Schema } from '../../form/Schema';
 import definition from '../hoc/DynamicConfigurationDefinition';
 import { useSelectDynamicRegistrationQuery } from '../../store/dynamic-registration/DynamicRegistrationSlice';
 import { DynamicRegistrationActions } from '../hoc/DynamicRegistrationActions';
-import { useIsAdmin } from '../../core/user/UserContext';
+import { useCanEnable, useIsAdmin } from '../../core/user/UserContext';
 import { GroupsProvider } from '../../admin/hoc/GroupsProvider';
 
 export function DynamicRegistrationDetail () {
@@ -30,6 +30,7 @@ export function DynamicRegistrationDetail () {
     };
 
     const isAdmin = useIsAdmin();
+    const canEnable = useCanEnable()(detail?.approved);
 
     return (
         <div className="container-fluid p-3">
@@ -98,21 +99,25 @@ export function DynamicRegistrationDetail () {
                                                 }
                                             </h5>
                                             <div className="d-flex align-items-start btn-group">
-                                                <Button variant={detail.enabled ? 'outline-secondary' : 'outline-secondary' } size="sm" className=""
-                                                        onClick={() => enable(detail, !detail.enabled)}>
-                                                            <span className=" me-1">
-                                                                <Translate value={detail.enabled ? 'label.disable' : 'label.enable'} />
-                                                            </span>
-                                                    <FontAwesomeIcon size="lg" icon={detail.enabled ? faToggleOn : faToggleOff} />
-                                                </Button>
-                                                <Button
-                                                    size="sm"
-                                                    variant={ 'danger' }
-                                                    disabled={detail.enabled}
-                                                    onClick={() => remove({id: detail.resourceId})}>
-                                                    <Translate value="action.delete" />
-                                                    <FontAwesomeIcon icon={faTrash} className="ms-2" />
-                                                </Button>
+                                                {enable && (canEnable && detail?.approved) &&
+                                                    <Button variant={detail.enabled ? 'outline-secondary' : 'outline-secondary' } size="sm" className=""
+                                                            onClick={() => enable(detail, !detail.enabled)}>
+                                                                <span className=" me-1">
+                                                                    <Translate value={detail.enabled ? 'label.disable' : 'label.enable'} />
+                                                                </span>
+                                                        <FontAwesomeIcon size="lg" icon={detail.enabled ? faToggleOn : faToggleOff} />
+                                                    </Button>
+                                                }
+                                                {isAdmin &&
+                                                    <Button
+                                                        size="sm"
+                                                        variant={ 'danger' }
+                                                        disabled={detail.enabled}
+                                                        onClick={() => remove({id: detail.resourceId})}>
+                                                        <Translate value="action.delete" />
+                                                        <FontAwesomeIcon icon={faTrash} className="ms-2" />
+                                                    </Button>
+                                                }
                                             </div>
                                         </div>
 

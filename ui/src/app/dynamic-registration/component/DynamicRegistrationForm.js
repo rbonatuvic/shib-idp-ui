@@ -58,8 +58,6 @@ export function DynamicRegistrationForm ({registration = {}, errors = [], loadin
                     </Form>
                 </Col>
             </Row>
-
-            <pre>{JSON.stringify(errors, null, 4)}</pre>
         </div>
     </>)
 }
