@@ -70,7 +70,7 @@ export function Dashboard () {
                     }
                     <Nav.Item>
                         <NavLink className="nav-link" to={`${path}/dynamic-registration`}>
-                            <Translate value="label.dynamic-registration">Dynamic Registration</Translate>
+                            <Translate value="label.dynamic-registrations">Dynamic Registration</Translate>
                         </NavLink>
                     </Nav.Item>
                     {isAdmin &&
