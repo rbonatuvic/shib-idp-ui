@@ -21,16 +21,34 @@ import {
     useGetDisabledRegistrationsQuery,
     useGetUnapprovedRegistrationsQuery
 } from '../../store/dynamic-registration/DynamicRegistrationSlice';
+import { useIsAdmin, useIsApprover } from '../../core/user/UserContext';
 
 export function ActionsTab() {
 
     const { path, url } = useRouteMatch();
 
-    const {data: users = [], isFetching: loadingUsers} = useGetNewUsersQuery();
-    const {data: disabledSources = [], isFetching: loadingSources} = useGetDisabledSourcesQuery();
-    const {data: unApprovedSources = [], isFetching: loadingApprovals} = useGetUnapprovedSourcesQuery();
-    const {data: unApprovedRegistrations = []} = useGetUnapprovedRegistrationsQuery();
-    const {data: disabledRegistrations = []} = useGetDisabledRegistrationsQuery();
+    const {data: users, isFetching: loadingUsers, isError: usersError} = useGetNewUsersQuery();
+    const {data: disabledSources, isFetching: loadingSources, isError: enableSourcesError} = useGetDisabledSourcesQuery();
+    const {data: unApprovedSources, isFetching: loadingApprovals, isError: approveSourcesError} = useGetUnapprovedSourcesQuery();
+    const {data: unApprovedRegistrations, isError: approveRegistrationsError } = useGetUnapprovedRegistrationsQuery();
+    const {data: disabledRegistrations, isError: enableRegistrationsError } = useGetDisabledRegistrationsQuery();
+
+    const isAdmin = useIsAdmin();
+    const isApprover = useIsApprover();
+
+    React.useEffect(() => setState((s) => ({ ...s, users: users && !usersError })), [users, usersError]);
+    React.useEffect(() => setState((s) => ({ ...s, enableSources: disabledSources && !enableSourcesError })), [disabledSources, enableSourcesError]);
+    React.useEffect(() => setState((s) => ({ ...s, enableRegistrations: disabledRegistrations && !enableRegistrationsError })), [disabledRegistrations, enableRegistrationsError]);
+    React.useEffect(() => setState((s) => ({ ...s, approveSources: unApprovedSources && !approveSourcesError })), [unApprovedSources, approveSourcesError]);
+    React.useEffect(() => setState((s) => ({ ...s, approveRegistrations: unApprovedRegistrations && !approveRegistrationsError })), [unApprovedRegistrations, approveRegistrationsError]);
+
+    const [state, setState] = React.useState({
+        users: false,
+        enableSources: false,
+        enableRegistrations: false,
+        approveSources: false,
+        approveRegistrations: false
+    });
 
     return (
         <>
@@ -50,39 +68,43 @@ export function ActionsTab() {
                                     activeKey="/home"
                                     className="flex-column"
                                     >
-                                    {disabledSources !== null && 
+                                    {state.enableSources && 
                                     <Nav.Item>
                                         <NavLink className="nav-link" to={`${path}/enable-sources`} id="enable-btn">
                                             <Translate value="label.enable-metadata-sources">Enable Metadata Sources</Translate>
-                                            { disabledSources.length ? <Badge pill bg="danger" className="ms-1">{disabledSources.length}</Badge> : '' }
+                                            { disabledSources?.length ? <Badge pill bg="danger" className="ms-1">{disabledSources?.length}</Badge> : '' }
                                         </NavLink>
                                     </Nav.Item>
                                     }
+                                    {isApprover && state.approveSources &&
                                     <Nav.Item>
                                         <NavLink className="nav-link" to={`${path}/approve-sources`}  id="approve-btn">
                                             <Translate value="label.approve-metadata-sources">Approve Metadata Sources</Translate>
-                                            { unApprovedSources.length ? <Badge pill bg="danger" className="ms-1">{unApprovedSources.length}</Badge> : '' }
-                                        </NavLink>
-                                    </Nav.Item>
-                                    {disabledRegistrations && 
-                                    <Nav.Item>
-                                        <NavLink className="nav-link" to={`${path}/enable-registrations`} id="enable-dr-btn">
-                                            <Translate value="label.enable-dynamic-registrations">Enable Dynamic Registrations</Translate>
-                                            { disabledRegistrations.length ? <Badge pill bg="danger" className="ms-1">{disabledRegistrations.length}</Badge> : '' }
+                                            { unApprovedSources?.length ? <Badge pill bg="danger" className="ms-1">{unApprovedSources?.length}</Badge> : '' }
                                         </NavLink>
                                     </Nav.Item>
                                     }
+                                    {state.enableRegistrations && 
+                                    <Nav.Item>
+                                        <NavLink className="nav-link" to={`${path}/enable-registrations`} id="enable-dr-btn">
+                                            <Translate value="label.enable-dynamic-registrations">Enable Dynamic Registrations</Translate>
+                                            { disabledRegistrations?.length ? <Badge pill bg="danger" className="ms-1">{disabledRegistrations?.length}</Badge> : '' }
+                                        </NavLink>
+                                    </Nav.Item>
+                                    }
+                                    {isApprover && state.approveRegistrations &&
                                     <Nav.Item>
                                         <NavLink className="nav-link" to={`${path}/approve-registrations`}  id="approve-dr-btn">
                                             <Translate value="label.approve-dynamic-registrations">Approve Dynamic Registrations</Translate>
-                                            { unApprovedRegistrations.length ? <Badge pill bg="danger" className="ms-1">{unApprovedRegistrations.length}</Badge> : '' }
+                                            { unApprovedRegistrations?.length ? <Badge pill bg="danger" className="ms-1">{unApprovedRegistrations?.length}</Badge> : '' }
                                         </NavLink>
                                     </Nav.Item>
-                                    {users !== null &&
+                                    }
+                                    {isAdmin && state.users &&
                                     <Nav.Item>
                                         <NavLink className="nav-link" to={`${path}/useraccess`} id="user-access-btn">
                                             <Translate value="label.user-access-request">User Access Request</Translate>
-                                            { users?.length ? <Badge pill bg="danger" className="ms-1">{users.length}</Badge> : '' }
+                                            { users?.length ? <Badge pill bg="danger" className="ms-1">{users?.length}</Badge> : '' }
                                         </NavLink>
                                     </Nav.Item>
                                     }
@@ -105,17 +127,15 @@ export function ActionsTab() {
                                         </MetadataActions>
                                     } />
                                     <Route path={`${path}/approve-registrations`} render={() =>
-                                        <ProtectRoute redirectTo="/dashboard">
-                                            <DynamicRegistrationActions>
-                                                {({approve}) =>
-                                                    <DynamicRegistrationList
-                                                        entities={unApprovedRegistrations}
-                                                        onApprove={(id, approved) => approve({id, approved})}>
-                                                        {loadingSources && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
-                                                    </DynamicRegistrationList>
-                                                }
-                                            </DynamicRegistrationActions>
-                                        </ProtectRoute>
+                                        <DynamicRegistrationActions>
+                                            {({approve}) =>
+                                                <DynamicRegistrationList
+                                                    entities={unApprovedRegistrations}
+                                                    onApprove={(id, approved) => approve({id, approved})}>
+                                                    {loadingSources && <div className="d-flex justify-content-center text-primary"><Spinner size="4x" /></div> }
+                                                </DynamicRegistrationList>
+                                            }
+                                        </DynamicRegistrationActions>
                                     } />
                                     <Route path={`${path}/enable-sources`}>
                                         <ProtectRoute redirectTo="/dashboard">
