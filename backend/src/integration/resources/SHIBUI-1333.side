@@ -1686,6 +1686,13 @@
       ],
       "value": ""
     }, {
+      "id": "61f50a61-e457-4e65-a957-4f9fd4ab44ce",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "c8bb3bee-3d61-4324-a3aa-38b78232b969",
       "comment": "",
       "command": "click",
@@ -1703,11 +1710,73 @@
       "id": "667d1702-7451-4200-ae40-3024717c4506",
       "comment": "",
       "command": "pause",
-      "target": "500",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "25069827-2fd4-42ca-8c4b-7dd6f466b52c",
+      "comment": "",
+      "command": "click",
+      "target": "id=array-field-deletebtn-root_relyingPartyOverrides_authenticationMethods-0",
+      "targets": [
+        ["id=array-field-deletebtn-root_relyingPartyOverrides_authenticationMethods-0", "id"],
+        ["css=#array-field-deletebtn-root_relyingPartyOverrides_authenticationMethods-0", "css:finder"],
+        ["xpath=//button[@id='array-field-deletebtn-root_relyingPartyOverrides_authenticationMethods-0']", "xpath:attributes"],
+        ["xpath=//div[@id='root_relyingPartyOverrides_authenticationMethods-group']/div/div/div/div[2]/div/div/div[2]/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Delete')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7b71c071-795e-4238-925f-ed03f82dbc51",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2d26cc3d-6295-4f68-bdf4-e7e31ea2494f",
+      "comment": "",
+      "command": "click",
+      "target": "id=array-field-addbtn-root_relyingPartyOverrides_authenticationMethods",
+      "targets": [
+        ["id=array-field-addbtn-root_relyingPartyOverrides_authenticationMethods", "id"],
+        ["css=#array-field-addbtn-root_relyingPartyOverrides_authenticationMethods", "css:finder"],
+        ["xpath=//button[@id='array-field-addbtn-root_relyingPartyOverrides_authenticationMethods']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[8]/div/div/div/div[3]/div/div/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add ')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f4e05cb9-9516-4b9b-9038-ffab09d20c0c",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
       "targets": [],
       "value": ""
     }, {
       "id": "cbf15c4c-35d9-4f80-ba3d-bfe960048cd1",
+      "comment": "",
+      "command": "click",
+      "target": "id=option-selector-root_relyingPartyOverrides_authenticationMethods_0",
+      "targets": [
+        ["id=option-selector-root_relyingPartyOverrides_authenticationMethods_0", "id"],
+        ["css=#option-selector-root_relyingPartyOverrides_authenticationMethods_0", "css:finder"],
+        ["xpath=//input[@id='option-selector-root_relyingPartyOverrides_authenticationMethods_0']", "xpath:attributes"],
+        ["xpath=//div[@id='root_relyingPartyOverrides_authenticationMethods_0-group']/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/div/div/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7857a429-6945-4e31-94b0-f11d78733a43",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "984faf64-66af-44c1-9490-4c7dc48b9a07",
       "comment": "",
       "command": "click",
       "target": "id=option-selector-root_relyingPartyOverrides_authenticationMethods_0",
@@ -1769,11 +1838,11 @@
       "command": "click",
       "target": "id=option-selector-root_relyingPartyOverrides_authenticationMethods_1",
       "targets": [
-        ["id=option-selector-root_relyingPartyOverrides_authenticationMethods_1", "id"],
-        ["css=#option-selector-root_relyingPartyOverrides_authenticationMethods_1", "css:finder"],
-        ["xpath=//input[@id='option-selector-root_relyingPartyOverrides_authenticationMethods_1']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[8]/div/div/div/div[4]/div/div/div/div/div/div[2]/div[2]/div/div/div/div/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//div[4]/div/div/div/div/div/div[2]/div[2]/div/div/div/div/div/div/div/input", "xpath:position"]
+        ["id=option-selector-root_relyingPartyOverrides_authenticationMethods_0", "id"],
+        ["css=#option-selector-root_relyingPartyOverrides_authenticationMethods_0", "css:finder"],
+        ["xpath=//input[@id='option-selector-root_relyingPartyOverrides_authenticationMethods_0']", "xpath:attributes"],
+        ["xpath=//div[@id='root_relyingPartyOverrides_authenticationMethods_0-group']/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/div/div/div/div/input", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -1936,12 +2005,34 @@
       ],
       "value": ""
     }, {
+      "id": "ab5d26bb-1372-4088-b7cc-bd061448e0d2",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.fa-check",
+      "targets": [
+        ["css=.fa-check > path", "css:finder"]
+      ],
+      "value": "30000"
+    }, {
       "id": "553dd570-b1bb-43bb-a469-63ee08a09794",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-check",
+      "target": "css=#attributeRelease\\.checkAll",
       "targets": [
         ["css=.fa-check", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "efb04977-a7d3-4373-969a-828f1be0514b",
+      "comment": "",
+      "command": "assertChecked",
+      "target": "id=root_attributeRelease_8",
+      "targets": [
+        ["id=root_attributeRelease_8", "id"],
+        ["css=#root_attributeRelease_8", "css:finder"],
+        ["xpath=//input[@id='root_attributeRelease_8']", "xpath:attributes"],
+        ["xpath=//div[@id='root_attributeRelease-group']/div/fieldset/table/tbody/tr[9]/td[2]/fieldset/div/div/input", "xpath:idRelative"],
+        ["xpath=//tr[9]/td[2]/fieldset/div/div/input", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -2290,11 +2381,11 @@
       "id": "951a21c9-4cd3-4989-8dc0-77760ca0dc95",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(2)",
+      "target": "css=div:nth-child(8) .text-truncate",
       "targets": [
-        ["css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[7]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(8) .text-truncate", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[8]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[8]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'responder-id-123')]", "xpath:innerText"]
       ],
       "value": "responder-id-123"
