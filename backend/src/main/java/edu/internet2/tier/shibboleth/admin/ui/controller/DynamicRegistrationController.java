@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.DynamicRegistrationRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.MissingRequiredFieldsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.service.DynamicRegistrationService;
@@ -40,7 +41,7 @@ public class DynamicRegistrationController {
 
     @PostMapping("/DynamicRegistration")
     @Transactional
-    public ResponseEntity<?> create(@RequestBody DynamicRegistrationRepresentation dynRegRepresentation) throws ObjectIdExistsException {
+    public ResponseEntity<?> create(@RequestBody DynamicRegistrationRepresentation dynRegRepresentation) throws ObjectIdExistsException, MissingRequiredFieldsException {
         DynamicRegistrationRepresentation persisted = dynamicRegistrationService.createNew(dynRegRepresentation);
         return ResponseEntity.created(getResourceUriFor(persisted.getResourceId())).body(persisted);
     }
