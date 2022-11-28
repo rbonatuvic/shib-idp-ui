@@ -53,7 +53,7 @@ export function DynamicRegistrationList ({entities, children, onChangeGroup, onD
                                             <Link to={`/dynamic-registration/${reg.resourceId}`}>{reg.name}</Link>
                                         </td>
                                         <td className="align-middle">
-                                            {reg.idOfOwner}
+                                            {reg.createdBy}
                                         </td>
                                         <td className="align-middle"><FormattedDate date={reg.createdDate} /></td>
                                         <td className="text-center align-middle">

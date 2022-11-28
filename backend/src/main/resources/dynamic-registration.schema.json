@@ -57,8 +57,9 @@
     },
     "jwks": {
       "title": "label.dynamic-registration-jwks",
-      "description": "label.dynamic-registration-jwks",
-      "type": "string"
+      "description": "tooltip.dynamic-registration-jwks",
+      "type": "string",
+      "maxLength": 4000
     },
     "logoUri": {
       "title": "label.dynamic-registration-logo-uri",
@@ -70,7 +71,6 @@
       "description": "tooltip.dynamic-registration-policy-uri",
       "type": "string"
     },
-
     "responseTypes": {
       "title": "label.dynamic-registration-responseTypes",
       "description": "tooltip.dynamic-registration-responseTypes",

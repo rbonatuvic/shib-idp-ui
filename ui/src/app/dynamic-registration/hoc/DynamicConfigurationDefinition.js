@@ -35,6 +35,9 @@ export const DynamicRegistrationDefinition = {
         redirectUris: {
             'ui:emptyValue': '',
         },
+        jwks: {
+            'ui:widget': 'textarea'
+        },
         layout: {
             groups: [
                 {
