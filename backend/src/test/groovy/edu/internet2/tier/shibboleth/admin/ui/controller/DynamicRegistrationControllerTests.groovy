@@ -226,7 +226,7 @@ class DynamicRegistrationControllerTests extends AbstractBaseDataJpaTest {
 
         when:
         def dynReg2 = new DynamicRegistrationInfo(resourceId: 'uuid-2', enabled: false, applicationType: 'apptype',
-                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri',
+                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri', name: 'foo',
                 redirectUris: 'redirecturis', responseTypes: 'responsetypes', scope: 'scope', subjectType: 'subjecttype',
                 tokenEndpointAuthMethod: 'token', tosUri: 'tosuri', grantType: GrantType.implicit)
         dynamicRegistrationService.createNew(new DynamicRegistrationRepresentation(dynReg2))
@@ -281,7 +281,7 @@ class DynamicRegistrationControllerTests extends AbstractBaseDataJpaTest {
     @WithMockUser(value = "someUser", roles = ["USER"])
     def 'POST create new '() {
         given:
-        def dynReg = new DynamicRegistrationInfo(resourceId: 'uuid-2', enabled: false, applicationType: 'apptype',
+        def dynReg = new DynamicRegistrationInfo(resourceId: 'uuid-2', enabled: false, applicationType: 'apptype', name: 'foo',
                 approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri',
                 redirectUris: 'redirecturis', responseTypes: 'responsetypes', scope: 'scope', subjectType: 'subjecttype',
                 tokenEndpointAuthMethod: 'token', tosUri: 'tosuri', grantType: GrantType.implicit)
@@ -315,7 +315,7 @@ class DynamicRegistrationControllerTests extends AbstractBaseDataJpaTest {
     def "PUT /DynamicRegistration updates properly as admin"() {
         given:
         def dynReg = new DynamicRegistrationInfo(resourceId: 'uuid-1', enabled: false, idOfOwner: "admingroup", applicationType: 'apptype',
-                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri',
+                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri', name: 'foo',
                 redirectUris: 'redirecturis', responseTypes: 'responsetypes', scope: 'scope', subjectType: 'subjecttype',
                 tokenEndpointAuthMethod: 'token', tosUri: 'tosuri', grantType: GrantType.implicit)
         repo.saveAndFlush(dynReg)
@@ -374,7 +374,7 @@ class DynamicRegistrationControllerTests extends AbstractBaseDataJpaTest {
     def "PUT /DynamicRegistration disallows non-admin user from enabling"() {
         given:
         def dynReg = new DynamicRegistrationInfo(resourceId: 'uuid-1', enabled: false, idOfOwner: "testingGroupBBB", applicationType: 'apptype',
-                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri',
+                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri', name: 'foo',
                 redirectUris: 'redirecturis', responseTypes: 'responsetypes', scope: 'scope', subjectType: 'subjecttype',
                 tokenEndpointAuthMethod: 'token', tosUri: 'tosuri', grantType: GrantType.implicit)
         repo.saveAndFlush(dynReg)
@@ -420,7 +420,7 @@ class DynamicRegistrationControllerTests extends AbstractBaseDataJpaTest {
     def "PUT /DynamicRegistration denies the request if the PUTing user is not an ADMIN and not in the owner group"() {
         when:
         def dynReg = new DynamicRegistrationInfo(resourceId: 'uuid-1', enabled: false, idOfOwner: "testingGroupAAA", applicationType: 'apptype',
-                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri',
+                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri', name: 'foo',
                 redirectUris: 'redirecturis', responseTypes: 'responsetypes', scope: 'scope', subjectType: 'subjecttype',
                 tokenEndpointAuthMethod: 'token', tosUri: 'tosuri', grantType: GrantType.implicit)
         def dri = repo.saveAndFlush(dynReg)
@@ -441,7 +441,7 @@ class DynamicRegistrationControllerTests extends AbstractBaseDataJpaTest {
     def "PUT /DynamicRegistration update group as admin"() {
         given:
         def dynReg = new DynamicRegistrationInfo(resourceId: 'uuid-1', enabled: false, idOfOwner: "AAA", applicationType: 'apptype',
-                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri',
+                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri', name: 'foo',
                 redirectUris: 'redirecturis', responseTypes: 'responsetypes', scope: 'scope', subjectType: 'subjecttype',
                 tokenEndpointAuthMethod: 'token', tosUri: 'tosuri', grantType: GrantType.implicit)
         repo.saveAndFlush(dynReg)
@@ -493,7 +493,7 @@ class DynamicRegistrationControllerTests extends AbstractBaseDataJpaTest {
     def "PUT /DynamicRegistration update group as user shouldn't work "() {
         given:
         def dynReg = new DynamicRegistrationInfo(resourceId: 'uuid-1', enabled: false, idOfOwner: "testingGroupBBB", applicationType: 'apptype',
-                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri',
+                approved: true, contacts: 'contacts', jwks: 'jwks', logoUri: 'logouri', policyUri: 'policyuri', name: 'foo',
                 redirectUris: 'redirecturis', responseTypes: 'responsetypes', scope: 'scope', subjectType: 'subjecttype',
                 tokenEndpointAuthMethod: 'token', tosUri: 'tosuri', grantType: GrantType.implicit)
         repo.saveAndFlush(dynReg)
