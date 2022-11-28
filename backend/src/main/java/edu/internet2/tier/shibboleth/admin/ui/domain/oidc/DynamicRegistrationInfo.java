@@ -9,11 +9,13 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnableType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +30,8 @@ public class DynamicRegistrationInfo extends AbstractAuditable implements Ownabl
     private boolean enabled;
     private GrantType grantType;
     private String idOfOwner;
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     private String jwks;
     private String logoUri;
     private String name;

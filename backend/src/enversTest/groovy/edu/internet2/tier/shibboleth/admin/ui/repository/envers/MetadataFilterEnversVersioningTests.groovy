@@ -8,6 +8,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConf
 import edu.internet2.tier.shibboleth.admin.ui.configuration.EntitiesVersioningConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
@@ -38,7 +39,7 @@ import spock.lang.Specification
  * Testing metadata resolver envers versioning with metadata filters
  */
 @DataJpaTest
-@ContextConfiguration(classes = [CoreShibUiConfiguration, InternationalizationConfiguration, SearchConfiguration, TestConfiguration, EntitiesVersioningConfiguration])
+@ContextConfiguration(classes = [CoreShibUiConfiguration, InternationalizationConfiguration, SearchConfiguration, TestConfiguration, EntitiesVersioningConfiguration, ShibUIConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 class MetadataFilterEnversVersioningTests extends Specification {

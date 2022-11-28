@@ -23,6 +23,7 @@ import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
@@ -54,6 +55,13 @@ class TestConfiguration {
         this.openSamlObjects =openSamlObjects
         this.metadataResolverRepository = metadataResolverRepository
     }
+
+    @Bean
+    RestTemplateBuilder restTemplateBuilder() {
+        RestTemplateBuilder result = new RestTemplateBuilder()
+        return result;
+    }
+
 
     @Bean
     CustomEntityAttributesDefinitionServiceImpl customEntityAttributesDefinitionServiceImpl() {

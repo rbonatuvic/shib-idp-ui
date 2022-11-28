@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.repository.envers
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.AssertionConsumerService
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute
@@ -63,7 +64,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTes
  * Testing entity descriptor envers versioning
  */
 @DataJpaTest
-@ContextConfiguration(classes = [CoreShibUiConfiguration, InternationalizationConfiguration, SearchConfiguration, TestConfiguration])
+@ContextConfiguration(classes = [CoreShibUiConfiguration, InternationalizationConfiguration, SearchConfiguration, TestConfiguration, ShibUIConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 class EntityDescriptorEnversVersioningTests extends Specification {
