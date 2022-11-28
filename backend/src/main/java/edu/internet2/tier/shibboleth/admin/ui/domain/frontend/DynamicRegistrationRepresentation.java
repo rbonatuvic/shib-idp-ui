@@ -19,6 +19,7 @@ public class DynamicRegistrationRepresentation {
     private boolean approved;
     private String contacts;
     private LocalDateTime createdDate;
+    private String createdBy;
     private boolean enabled;
     private GrantType grantType;
     private String idOfOwner;
@@ -40,6 +41,7 @@ public class DynamicRegistrationRepresentation {
         applicationType = dri.getApplicationType();
         approved = dri.isApproved();
         contacts = dri.getContacts();
+        createdBy = dri.getCreatedBy();
         createdDate = dri.getCreatedDate();
         enabled = dri.isEnabled();
         grantType = dri.getGrantType();
@@ -60,7 +62,7 @@ public class DynamicRegistrationRepresentation {
     }
 
     public DynamicRegistrationInfo buildDynamicRegistrationInfo() {
-        // Approved and enabled shouldn't be handled from here, and owner shouldn't come from the UI, so we ignore all those
+        // Approved and enabled shouldn't be handled from here, and owner and created by shouldn't come from the UI, so we ignore all those
 
         DynamicRegistrationInfo dri = new DynamicRegistrationInfo();
         dri.setApplicationType(applicationType);
