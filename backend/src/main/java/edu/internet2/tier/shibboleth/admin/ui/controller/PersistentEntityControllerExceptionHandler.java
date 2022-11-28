@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.MissingRequiredFieldsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import org.springframework.http.HttpHeaders;
@@ -45,5 +46,10 @@ public class PersistentEntityControllerExceptionHandler extends ResponseEntityEx
                         String.valueOf(HttpStatus.CONFLICT.value()),
                         String.format("The persistent entity with id [%s] already exists.", e.getMessage())));
 
+    }
+
+    @ExceptionHandler({ MissingRequiredFieldsException.class })
+    public ResponseEntity<?> handleMissingRequiredFieldsException(MissingRequiredFieldsException e, WebRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage()));
     }
 }

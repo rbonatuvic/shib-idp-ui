@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.DynamicRegistrationRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.DynamicRegistrationInfo;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.MissingRequiredFieldsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.UnsupportedShibUiOperationException;
@@ -83,9 +84,13 @@ public class JPADynamicRegistrationServiceImpl implements DynamicRegistrationSer
     }
 
     @Override
-    public DynamicRegistrationRepresentation createNew(DynamicRegistrationRepresentation dynRegRepresentation) throws ObjectIdExistsException {
+    public DynamicRegistrationRepresentation createNew(DynamicRegistrationRepresentation dynRegRepresentation) throws ObjectIdExistsException, MissingRequiredFieldsException {
         if (entityExists(dynRegRepresentation.getResourceId())) {
             throw new ObjectIdExistsException(dynRegRepresentation.getResourceId());
+        }
+
+        if (StringUtils.isEmpty(dynRegRepresentation.getName()) || StringUtils.isEmpty(dynRegRepresentation.getRedirectUris())) {
+            throw new MissingRequiredFieldsException("Name and Redirect URIs are both required to create new Dynamic Registration");
         }
 
         DynamicRegistrationInfo dri = dynRegRepresentation.buildDynamicRegistrationInfo();
