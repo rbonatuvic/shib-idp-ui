@@ -23,8 +23,13 @@ export function useDynamicRegistrationJsonSchema(opts = {}) {
 export function useDynamicRegistrationUiSchema() {
     return DynamicConfigurationDefinition.uiSchema;
 }
-export function useDynamicRegistrationValidator() {
+export function useDynamicRegistrationValidator(registrations) {
+    const names = registrations.map(s => s.name);
+
     return (formData, errors) => {
+        if (names.indexOf(formData.name) > -1) {
+            errors.name.addError('message.name-unique');
+        }
         return errors;
     }
 }

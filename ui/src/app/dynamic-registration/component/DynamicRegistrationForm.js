@@ -9,9 +9,13 @@ import { FormContext, setFormDataAction, setFormErrorAction } from '../../form/F
 import { useDynamicRegistrationUiSchema, useDynamicRegistrationValidator } from '../api';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { useGetDynamicRegistrationsQuery } from '../../store/dynamic-registration/DynamicRegistrationSlice';
 
 
 export function DynamicRegistrationForm ({registration = {}, errors = [], loading = false, schema, onSave, onCancel}) {
+
+    const {data: registrations = []} = useGetDynamicRegistrationsQuery();
+
     const [touched, setTouched] = React.useState(false);
 
     const { dispatch } = React.useContext(FormContext);
@@ -22,7 +26,7 @@ export function DynamicRegistrationForm ({registration = {}, errors = [], loadin
     };
 
     const uiSchema = useDynamicRegistrationUiSchema();
-    const validator = useDynamicRegistrationValidator();
+    const validator = useDynamicRegistrationValidator(registrations);
 
     return (<>
         <div className="container-fluid">
