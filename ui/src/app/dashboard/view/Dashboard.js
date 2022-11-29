@@ -42,8 +42,8 @@ export function Dashboard () {
             (users?.length || 0) +
             (disabledSources?.length || 0) +
             (unApprovedRegistrations?.length || 0) +
-            (disabledSources?.length || 0) +
-            (disabledRegistrations.length || 0)
+            (unApprovedSources?.length || 0) +
+            (disabledRegistrations?.length || 0);
         setActions(count);
     }, [users, disabledSources, unApprovedSources, disabledRegistrations, unApprovedRegistrations]);
 
