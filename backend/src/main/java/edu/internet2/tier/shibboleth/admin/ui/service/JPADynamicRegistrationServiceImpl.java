@@ -7,6 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.MissingRequiredFieldsExc
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.UnsupportedShibUiOperationException;
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorProjection;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Approvers;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Owner;
