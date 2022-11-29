@@ -57,9 +57,6 @@ public class ShibUiPermissionDelegate implements IShibUiPermissionEvaluator {
         case dynamicRegistrationInfo:
             switch (permissionType) {
             case approve:
-                if (!hasPermission(ignored, null, PermissionType.approve)) {
-                    throw new ForbiddenException("User has no access rights to get a list of : " + shibUiType);
-                }
                 return getAllDynamicRegistrationInfoObjectsNeedingApprovalBasedOnUserAccess();
             case enable:
                 if (!hasPermission(ignored, null, PermissionType.enable)) {
