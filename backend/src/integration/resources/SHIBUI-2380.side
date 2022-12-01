@@ -1381,14 +1381,14 @@
       "id": "eb9c18d9-d0fc-4723-840b-7be59434bebf",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=.alert",
+      "target": "css=.show",
       "targets": [],
       "value": "30000"
     }, {
       "id": "f27630e9-561e-49f6-b557-b2c7ff0647fc",
       "comment": "",
       "command": "assertText",
-      "target": "css=.alert",
+      "target": "css=.show",
       "targets": [],
       "value": "Metadata source has been deleted."
     }, {

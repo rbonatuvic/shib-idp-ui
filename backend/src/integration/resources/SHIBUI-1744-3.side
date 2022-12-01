@@ -260,6 +260,13 @@
       ],
       "value": ""
     }, {
+      "id": "1a12b13b-c746-4dec-ae20-de15e29de90b",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "id=root_xmlId",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "7cfab6d3-3982-423f-a99c-488e1d41e40b",
       "comment": "",
       "command": "type",
@@ -470,12 +477,15 @@
       ],
       "value": "Bundle - Test Bundle"
     }, {
-      "id": "caabc3c1-7ac7-4251-9885-fe2e3b7c4c10",
+      "id": "f4b2e9ae-cb20-4c41-8ad6-50004e75a865",
       "comment": "",
       "command": "click",
       "target": "css=fieldset > div > button",
       "targets": [
-        ["css=.fa-check:nth-child(2) > path", "css:finder"]
+        ["css=.badge", "css:finder"],
+        ["xpath=//div[@id='root_attributeRelease-group']/div/fieldset/div/button/span", "xpath:idRelative"],
+        ["xpath=//div/button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Select Bundle')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -677,21 +687,21 @@
         ["xpath=//section[3]/div/div[2]/div[2]/div[5]/div/span", "xpath:position"]
       ],
       "value": "true"
-    },{
-            "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
-            "comment": "",
-            "command": "open",
-            "target": "/api/heheheheheheheWipeout",
-            "targets": [],
-            "value": ""
-          }, {
-            "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
-            "comment": "",
-            "command": "assertText",
-            "target": "css=body",
-            "targets": [],
-            "value": "yes, you did it"
-          }]
+    }, {
+      "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e074980a-8f21-4c22-8412-c4b6fcdcd1a4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }]
   }],
   "suites": [{
     "id": "56040c8b-b45c-454e-b2ba-2a06056b397f",

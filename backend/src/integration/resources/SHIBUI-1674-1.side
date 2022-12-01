@@ -493,9 +493,9 @@
       "id": "c974e795-454e-4271-86ef-609e3538b28f",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(1) > .col-12 .svg-inline--fa",
+      "target": "css=#root_organization_name-group path",
       "targets": [
-        ["css=.row:nth-child(1) > .col-12 .svg-inline--fa", "css:finder"]
+        ["css=#root_organization_name-group path", "css:finder"]
       ],
       "value": ""
     }, {
@@ -593,8 +593,10 @@
       "id": "825b4bb3-e40e-4b02-a053-5f8e15b9b672",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(1) > .col-12 .btn > .svg-inline--fa",
-      "targets": [],
+      "target": "css=#root_logoutEndpoints_0_url-group .info-icon path",
+      "targets": [
+        ["css=#root_logoutEndpoints_0_url-group .info-icon path", "css:finder"]
+      ],
       "value": ""
     }, {
       "id": "8b309a28-ff0d-4e6b-8c49-26a9e13822d8",
