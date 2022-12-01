@@ -91,6 +91,20 @@ processResources.dependsOn(':ui:npm_run_buildProd')
 
 jar {
     enabled = true
+    dependsOn 'copyApplicationYAML'
+}
+
+task copyApplicationYAML(type: Copy) {
+    if ( "${project.'use.release.app.yml'}".toBoolean() ) {
+        from 'src/main/app-resources/release.yml'
+        into 'src/main/resources'
+        rename { 'application.yml' }
+    }
+    else {
+        from 'src/main/app-resources/default.yml'
+        into 'src/main/resources'
+        rename { 'application.yml' }
+    }
 }
 
 //Integration of the frontend and backend into the build to have all of the UI resources available in the app's executable war
