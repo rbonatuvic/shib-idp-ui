@@ -11,7 +11,7 @@ export function InfoIcon ({ value = '', placement='auto', ...props }) {
     const translate = useTranslator();
 
     return(
-        <OverlayTrigger trigger={['click']} placement={placement} overlay={(
+        <OverlayTrigger trigger={['hover', 'focus', 'click']} placement={placement} overlay={(
             <Popover variant="info" id={value}>
                 <Popover.Body><Translate value={value} /></Popover.Body>
             </Popover>
