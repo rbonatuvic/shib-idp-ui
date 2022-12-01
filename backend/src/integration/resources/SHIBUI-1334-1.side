@@ -1313,6 +1313,19 @@
       ],
       "value": ""
     }, {
+      "id": "7c85fe59-dc95-4328-a010-33d1a06a5ce5",
+      "comment": "",
+      "command": "click",
+      "target": "id=root_relyingPartyOverrides_forceAuthn",
+      "targets": [
+        ["id=root_relyingPartyOverrides_forceAuthn", "id"],
+        ["css=#root_relyingPartyOverrides_forceAuthn", "css:finder"],
+        ["xpath=//input[@id='root_relyingPartyOverrides_forceAuthn']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[9]/div/div/div/div[10]/div/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[10]/div/div/div/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
       "id": "134bf1f3-1e86-49e7-91de-185e513b02be",
       "comment": "",
       "command": "click",
@@ -1959,19 +1972,6 @@
       ],
       "value": ""
     }, {
-      "id": "7c85fe59-dc95-4328-a010-33d1a06a5ce5",
-      "comment": "",
-      "command": "click",
-      "target": "id=root_relyingPartyOverrides_forceAuthn",
-      "targets": [
-        ["id=root_relyingPartyOverrides_forceAuthn", "id"],
-        ["css=#root_relyingPartyOverrides_forceAuthn", "css:finder"],
-        ["xpath=//input[@id='root_relyingPartyOverrides_forceAuthn']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[9]/div/div/div/div[10]/div/div/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//div[10]/div/div/div/div/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "204ea80c-4aac-497f-8956-6370967ba73e",
       "comment": "",
       "command": "click",
@@ -2038,13 +2038,6 @@
         ["xpath=//span[contains(.,'somethingElse')]", "xpath:innerText"]
       ],
       "value": "somethingElse"
-    }, {
-      "id": "2bd3734a-771f-4cf4-a045-5124256bb06a",
-      "comment": "",
-      "command": "pause",
-      "target": "300000",
-      "targets": [],
-      "value": ""
     }, {
       "id": "18636780-2feb-458f-97be-cf4a625b22e1",
       "comment": "",
