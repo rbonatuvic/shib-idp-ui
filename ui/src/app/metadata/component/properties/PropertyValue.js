@@ -20,7 +20,8 @@ export function PropertyValue ({ name, value, columns, className }) {
                 <span
                     className={`d-block text-truncate ${className}`}
                     role="definition"
-                    style={columns ? { width } : {}}>
+                    style={columns ? { width } : {}}
+                    id={`info-${value.toString()}`}>
                     <Translate value={value !== undefined ? value.toString() : (value === false) ? value.toString() : '-'}>
                         {value !== undefined ? value.toString() : (value === false) ? value.toString() : '-'}
                     </Translate>

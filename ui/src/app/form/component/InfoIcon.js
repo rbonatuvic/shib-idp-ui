@@ -17,7 +17,7 @@ export function InfoIcon ({ value = '', placement='auto', ...props }) {
             </Popover>
         )}
         aria-label={translate('tooltip.instruction')}>
-            <Button variant="text" className="info-icon">
+            <Button variant="text" className="info-icon" id={`info-${value}`}>
                 <span className="sr-only">Description</span>
                 <FontAwesomeIcon className="text-primary" icon={faInfoCircle} size="lg" {...props} />
             </Button>
