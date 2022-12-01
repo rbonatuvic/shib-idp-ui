@@ -77,7 +77,7 @@ export function DynamicRegistrationList ({entities, children, onChangeGroup, onD
                                         </td>
                                         <td className="text-center align-middle">
                                             <span className="d-flex justify-content-center align-items-center">
-                                            {onEnable && canEnable(reg.approved) ?
+                                            {!reg.enabled &&onEnable && canEnable(reg.approved) ?
                                                 <Form.Check
                                                     type="switch"
                                                     id={`enable-switch-${idx}`}
@@ -117,7 +117,7 @@ export function DynamicRegistrationList ({entities, children, onChangeGroup, onD
                                             <OverlayTrigger trigger={reg.enabled ? ['hover', 'focus'] : []} placement="left"
                                                 overlay={
                                                     <Popover id={`delete-source-btn-${idx}`}>
-                                                        <Popover.Body>A metadata source must be disabled before it can be deleted.</Popover.Body>
+                                                        <Popover.Body>An enabled registration cannot be deleted.</Popover.Body>
                                                     </Popover>
                                                 }>
                                                 <span className="d-inline-block">

@@ -12,13 +12,13 @@ export const DynamicRegistrationApi = createApi({
       query: () => ({
         url: `/DynamicRegistrations`
       }),
-      providesTags: ['DynamicRegistration']
+      providesTags: ['DynamicRegistration'],
     }),
     selectDynamicRegistration: builder.query({
       query: ({id}) => ({
         url: `/DynamicRegistration/${id}`
       }),
-      providesTags: ['DynamicRegistration']
+      providesTags: ['DynamicRegistration'],
     }),
     getDisabledRegistrations: builder.query({
       query: () => ({

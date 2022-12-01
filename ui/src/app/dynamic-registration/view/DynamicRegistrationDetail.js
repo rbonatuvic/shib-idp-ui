@@ -98,6 +98,7 @@ export function DynamicRegistrationDetail () {
                                                     </GroupsProvider>
                                                 }
                                             </h5>
+                                            {!detail.enabled &&
                                             <div className="d-flex align-items-start btn-group">
                                                 {enable && (canEnable && detail?.approved) &&
                                                     <Button variant={detail.enabled ? 'outline-secondary' : 'outline-secondary' } size="sm" className=""
@@ -119,6 +120,7 @@ export function DynamicRegistrationDetail () {
                                                     </Button>
                                                 }
                                             </div>
+                                            }
                                         </div>
 
                                         <p className="card-text">
@@ -134,7 +136,7 @@ export function DynamicRegistrationDetail () {
                                         {(schema) => 
                                         <Configuration entities={[detail]} schema={schema} definition={definition}>
                                             {(config) =>
-                                                <MetadataConfiguration configuration={config} onEdit={() => edit()} />
+                                                <MetadataConfiguration configuration={config} onEdit={!detail.enabled ? () => edit() : null} />
                                             }
                                         </Configuration>
                                     }
