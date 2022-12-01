@@ -90,7 +90,7 @@ export function ConfigurationList({ configurations, onDelete, loading }) {
                                                         <div className="d-flex justify-content-center">
 
                                                             <OverlayTrigger trigger={['hover', 'focus']} overlay={(
-                                                                <Popover variant="info">
+                                                                <Popover variant="info" id="tooltip.download-single-config">
                                                                     <Popover.Body><Translate value={'tooltip.download-single-config'} /></Popover.Body>
                                                                 </Popover>
                                                             )}
@@ -102,7 +102,7 @@ export function ConfigurationList({ configurations, onDelete, loading }) {
                                                             </OverlayTrigger>
                                                             <div className="vr"></div>
                                                             <OverlayTrigger trigger={['hover', 'focus']} overlay={(
-                                                                <Popover variant="info">
+                                                                <Popover variant="info" id="tooltip.download-multi-config">
                                                                     <Popover.Body><Translate value={'tooltip.download-multi-config'} /></Popover.Body>
                                                                 </Popover>
                                                             )}
