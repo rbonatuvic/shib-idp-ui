@@ -461,17 +461,23 @@
       "id": "e8a2f501-0efa-43a3-bbf2-b86e5ec8f6d1",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=fieldset > div > button > strong",
-      "targets": [],
+      "target": "id=user-attr-bundle-btn-0",
+      "targets": [
+        ["id=user-attr-bundle-btn-0", "id"],
+        ["css=#user-attr-bundle-btn-0", "css:finder"],
+        ["xpath=//button[@id='user-attr-bundle-btn-0']", "xpath:attributes"],
+        ["xpath=//div[@id='root_attributeRelease-group']/div/fieldset/div/button", "xpath:idRelative"],
+        ["xpath=//fieldset/div/button", "xpath:position"]
+      ],
       "value": "30000"
     }, {
       "id": "cc36c580-3d53-483a-a813-2a6c8fb95792",
       "comment": "",
       "command": "assertText",
-      "target": "css=fieldset > div > button > strong",
+      "target": "css=strong",
       "targets": [
         ["css=strong", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[8]/div/div/div/fieldset/ul/li/strong", "xpath:idRelative"],
+        ["xpath=//button[@id='user-attr-bundle-btn-0']/strong", "xpath:idRelative"],
         ["xpath=//strong", "xpath:position"],
         ["xpath=//strong[contains(.,'Bundle - Test Bundle')]", "xpath:innerText"]
       ],
@@ -480,13 +486,21 @@
       "id": "f4b2e9ae-cb20-4c41-8ad6-50004e75a865",
       "comment": "",
       "command": "click",
-      "target": "css=fieldset > div > button",
+      "target": "id=user-attr-bundle-btn-0",
       "targets": [
-        ["css=.badge", "css:finder"],
-        ["xpath=//div[@id='root_attributeRelease-group']/div/fieldset/div/button/span", "xpath:idRelative"],
-        ["xpath=//div/button/span", "xpath:position"],
-        ["xpath=//span[contains(.,'Select Bundle')]", "xpath:innerText"]
+        ["id=user-attr-bundle-btn-0", "id"],
+        ["css=#user-attr-bundle-btn-0", "css:finder"],
+        ["xpath=//button[@id='user-attr-bundle-btn-0']", "xpath:attributes"],
+        ["xpath=//div[@id='root_attributeRelease-group']/div/fieldset/div/button", "xpath:idRelative"],
+        ["xpath=//fieldset/div/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "33dc6ff7-9b71-4fe4-b74d-29d8b663d8f8",
+      "comment": "",
+      "command": "pause",
+      "target": "300000",
+      "targets": [],
       "value": ""
     }, {
       "id": "5cd2df54-e975-4657-9d4b-390c87901f88",
