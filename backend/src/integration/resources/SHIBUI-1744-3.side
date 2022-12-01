@@ -383,6 +383,13 @@
       "targets": [],
       "value": "label=EntityAttributes"
     }, {
+      "id": "81b2902f-da13-4e60-ba15-be83fb1f24a0",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "id=root_name",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "208a221d-db9c-4fa7-8116-24b5f425fc11",
       "comment": "",
       "command": "type",
