@@ -1,7 +1,7 @@
 import { createAction, createSelector, createSlice } from '@reduxjs/toolkit'
 import { reverse } from 'lodash';
 import { useSelector } from 'react-redux';
-import { uuid } from '../../core/utility/uuid';
+import uniqueId from 'lodash/uniqueId';
 
 const initialState = {
   notifications: []
@@ -19,7 +19,7 @@ export const createNotificationAction = createAction('notifications/create', fun
   return {
     payload: {
         body,
-        id: uuid(),
+        id: uniqueId('notification_'),
         createdAt: new Date().toISOString(),
         type,
         timeout

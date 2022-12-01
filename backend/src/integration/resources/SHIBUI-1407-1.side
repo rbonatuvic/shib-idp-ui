@@ -1328,6 +1328,19 @@
       ],
       "value": ""
     }, {
+      "id": "7c85fe59-dc95-4328-a010-33d1a06a5ce5",
+      "comment": "",
+      "command": "click",
+      "target": "id=root_relyingPartyOverrides_forceAuthn",
+      "targets": [
+        ["id=root_relyingPartyOverrides_forceAuthn", "id"],
+        ["css=#root_relyingPartyOverrides_forceAuthn", "css:finder"],
+        ["xpath=//input[@id='root_relyingPartyOverrides_forceAuthn']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[9]/div/div/div/div[10]/div/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[10]/div/div/div/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
       "id": "134bf1f3-1e86-49e7-91de-185e513b02be",
       "comment": "",
       "command": "click",
@@ -1743,6 +1756,47 @@
       "targets": [],
       "value": ""
     }, {
+      "id": "47ce7b12-97c8-4393-9f28-2fbc0537627f",
+      "comment": "",
+      "command": "click",
+      "target": "id=array-field-deletebtn-root_relyingPartyOverrides_authenticationMethods-0",
+      "targets": [
+        ["id=array-field-deletebtn-root_relyingPartyOverrides_authenticationMethods-0", "id"],
+        ["css=#array-field-deletebtn-root_relyingPartyOverrides_authenticationMethods-0", "css:finder"],
+        ["xpath=//button[@id='array-field-deletebtn-root_relyingPartyOverrides_authenticationMethods-0']", "xpath:attributes"],
+        ["xpath=//div[@id='root_relyingPartyOverrides_authenticationMethods-group']/div/div/div/div[2]/div/div/div[2]/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Delete')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3c94a090-d35c-4412-80cb-bbe7bf6ea6d9",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3d6a17e4-d895-45aa-9dd5-22cc130ebbfe",
+      "comment": "",
+      "command": "click",
+      "target": "id=array-field-addbtn-root_relyingPartyOverrides_authenticationMethods",
+      "targets": [
+        ["id=array-field-addbtn-root_relyingPartyOverrides_authenticationMethods", "id"],
+        ["css=#array-field-addbtn-root_relyingPartyOverrides_authenticationMethods", "css:finder"],
+        ["xpath=//button[@id='array-field-addbtn-root_relyingPartyOverrides_authenticationMethods']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[8]/div/div/div/div[6]/div/div/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[6]/div/div/div/div/div/div/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cb08a311-29b6-41a6-bfd1-38c12e9aca93",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "cbf15c4c-35d9-4f80-ba3d-bfe960048cd1",
       "comment": "",
       "command": "click",
@@ -1943,19 +1997,6 @@
         ["xpath=(//a[contains(@href, '#')])[4]", "xpath:href"],
         ["xpath=//a[4]", "xpath:position"],
         ["xpath=//a[contains(.,'otherThings')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
-      "id": "7c85fe59-dc95-4328-a010-33d1a06a5ce5",
-      "comment": "",
-      "command": "click",
-      "target": "id=root_relyingPartyOverrides_forceAuthn",
-      "targets": [
-        ["id=root_relyingPartyOverrides_forceAuthn", "id"],
-        ["css=#root_relyingPartyOverrides_forceAuthn", "css:finder"],
-        ["xpath=//input[@id='root_relyingPartyOverrides_forceAuthn']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[9]/div/div/div/div[10]/div/div/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//div[10]/div/div/div/div/div/input", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -2325,11 +2366,11 @@
       "id": "e8b794fc-20e2-4317-8bdd-73eee8e94951",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(9) .text-truncate",
+      "target": "css=div:nth-child(10) .text-truncate",
       "targets": [
-        ["css=div:nth-child(9) .text-truncate", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[9]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[9]/div/span[2]", "xpath:position"]
+        ["css=div:nth-child(10) .text-truncate", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[10]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[10]/div/span[2]", "xpath:position"]
       ],
       "value": "true"
     }, {

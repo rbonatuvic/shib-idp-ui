@@ -109,6 +109,7 @@ const AttributeReleaseWidget = ({
             <ListGroup variant="flush" className="mb-1">
                 {(bundlelist).map((option, i) => (
                     <ListGroup.Item key={i}
+                        id={`user-attr-bundle-btn-${i}`}
                         action
                         onClick={() => option.selected ? onUncheckBundle(option) : onCheckBundle(option) }
                         onMouseOver={() => onMouseOver(option.value)}
@@ -118,7 +119,7 @@ const AttributeReleaseWidget = ({
                         >
                         <strong><Translate value="label.bundle-disp" params={{name: option.label}}></Translate></strong>
                         <p id={`bundle-descr-${i}`} className="sr-only">Bundled attributes: {option.value.join(', ')}</p>
-                        <Badge bg={ option.selected ? 'primary' : 'light' } className={`border p-2`}>
+                        <Badge bg={ option.selected ? 'primary' : 'light' } className={`border p-2 ${ option.selected ? '' : 'text-dark' }`}>
                             <Translate value="action.select-bundle">Select Bundle</Translate>
                             <FontAwesomeIcon icon={faCheck} className="ms-1" />
                         </Badge>
