@@ -420,3 +420,4 @@ beacon/spring/out
 /testbed/authentication/shibui/saml-signing-cert.pem
 /testbed/authentication/shibui/samlKeystore.jks
 /testbed/authentication/shibui/sp-metadata.xml
+/backend/src/main/resources/application.yml
