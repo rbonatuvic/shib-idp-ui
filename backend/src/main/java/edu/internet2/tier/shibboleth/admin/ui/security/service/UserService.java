@@ -232,4 +232,8 @@ public class UserService {
             throw new RuntimeException(String.format("User with username [%s] has no role defined and therefore cannot be updated!", user.getUsername()));
         }
     }
+
+    public boolean currentUserCanEnable() {
+        return getCurrentUser().getRole().equals("ROLE_ENABLE");
+    }
 }
