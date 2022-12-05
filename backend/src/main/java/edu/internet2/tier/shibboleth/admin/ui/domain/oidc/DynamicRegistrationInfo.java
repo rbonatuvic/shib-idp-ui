@@ -43,6 +43,7 @@ public class DynamicRegistrationInfo extends AbstractAuditable implements Ownabl
     private String subjectType;
     private String tokenEndpointAuthMethod;
     private String tosUri;
+    private String clientId;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude

@@ -143,7 +143,12 @@ public class JPADynamicRegistrationServiceImpl implements DynamicRegistrationSer
         if (!shibUiAuthorizationDelegate.hasPermission(userService.getCurrentUserAuthentication(), existingDri, PermissionType.enable)) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service");
         }
-        return shibRestTemplateDelegate.sendRequest(existingDri);
+        HttpStatus status = shibRestTemplateDelegate.sendRequest(existingDri);
+        if (status == HttpStatus.CREATED || status == HttpStatus.OK) {
+            existingDri.setEnabled(true);
+            repository.save(existingDri);
+        }
+        return status;
     }
 
     private boolean entityExists(String id) {

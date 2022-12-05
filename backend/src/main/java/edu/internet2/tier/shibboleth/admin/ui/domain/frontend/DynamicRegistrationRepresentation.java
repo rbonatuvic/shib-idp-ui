@@ -36,6 +36,7 @@ public class DynamicRegistrationRepresentation {
     private String tokenEndpointAuthMethod;
     private String tosUri;
     private int version;
+    private String clientId;
 
     public DynamicRegistrationRepresentation(DynamicRegistrationInfo dri) {
         applicationType = dri.getApplicationType();
@@ -59,6 +60,7 @@ public class DynamicRegistrationRepresentation {
         tokenEndpointAuthMethod = dri.getTokenEndpointAuthMethod();
         tosUri = dri.getTosUri();
         version = dri.hashCode();
+        clientId = dri.getClientId();
     }
 
     public DynamicRegistrationInfo buildDynamicRegistrationInfo() {

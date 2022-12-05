@@ -251,9 +251,7 @@ public class CoreShibUiConfiguration {
     public DynamicRegistrationService dynamicRegistrationService(DynamicRegistrationInfoRepository driRepo, OwnershipRepository ownershipRepo,
                     IShibUiPermissionEvaluator permissionEvaluator, UserService userService, IGroupService groupService,
                     @Qualifier("shibUIConfiguration") ShibUIConfiguration config, RestTemplateBuilder restTemplateBuilder) {
-        URL idpUrl = config.getShibIdpServer();
-        RestTemplate template = restTemplateBuilder.build();
-        ShibRestTemplateDelegate delegate = new ShibRestTemplateDelegate(idpUrl, template);
+        ShibRestTemplateDelegate delegate = new ShibRestTemplateDelegate(config);
         return new JPADynamicRegistrationServiceImpl(groupService, driRepo, ownershipRepo, delegate, permissionEvaluator, userService);
     }
 }

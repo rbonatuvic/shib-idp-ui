@@ -49,7 +49,7 @@ public class ActivateController {
             HttpStatus status = dynamicRegistrationService.enableDynamicRegistration(resourceId);
             switch (status) {
             case OK:
-            case ACCEPTED: return ResponseEntity.ok("Service enabled");
+            case CREATED: return ResponseEntity.ok("Service enabled");
             case NOT_FOUND: throw new UnsupportedShibUiOperationException("Request returned NOT FOUND, please contact a system admin to check configuration");
             case FORBIDDEN: throw new ForbiddenException("Request was denied with FORBIDDEN, please contact a system admin to check configuration");
             }
