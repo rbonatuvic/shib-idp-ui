@@ -41,7 +41,7 @@ export function AccessRequest({ users, roles, onDeleteUser, onChangeUserRole }) 
                             </label>
                             <div className="col">
                                 <Form.Select id={`role-${i}`} name={user.username} value={user.role} className="form-control form-control-sm"
-                                    disablevalidation="true" onChange={(event) => onChangeUserRole(user, event.target.value)}>
+                                    disablevalidation="true" onChange={(event) => onChangeUserRole({user, role: event.target.value})}>
                                     {roles.map((role, ridx) =>
                                         <option value={role} key={ridx}>{ role }</option>
                                     )}
