@@ -59,18 +59,22 @@ public class ShibUiPermissionDelegate implements IShibUiPermissionEvaluator {
             case approve:
                 return getAllDynamicRegistrationInfoObjectsNeedingApprovalBasedOnUserAccess();
             case enable:
-                if (!hasPermission(ignored, null, PermissionType.enable)) {
-                    throw new ForbiddenException("User has no access rights to get a list of : " + shibUiType);
-                }
-                return dynamicRegistrationInfoRepository.getDynamicRegistrationsNeedingEnabling();
+                return getAllDynamicRegistrationNeedingEnabledByUserAccess();
             case fetch:
-                if (!hasPermission(ignored, null, PermissionType.fetch)) {
-                    throw new ForbiddenException("User has no access rights to get a list of : " + shibUiType);
-                }
                 return getAllDynamicRegistrationInfoObjectsBasedOnUserAccess();
             }
         }
         return null;
+    }
+
+    private Collection getAllDynamicRegistrationNeedingEnabledByUserAccess() throws ForbiddenException {
+        if (userService.currentUserIsAdmin()) {
+            return dynamicRegistrationInfoRepository.getDynamicRegistrationsNeedingEnabling();
+        } else if (userService.currentUserCanEnable()) {
+            return dynamicRegistrationInfoRepository.getDynamicRegistrationsNeedingEnabling(userService.getCurrentUser().getGroupId());
+        }
+        throw new ForbiddenException("User has no access rights to enable");
+
     }
 
     private List<DynamicRegistrationInfo> getAllDynamicRegistrationInfoObjectsNeedingApprovalBasedOnUserAccess() {
@@ -110,7 +114,7 @@ public class ShibUiPermissionDelegate implements IShibUiPermissionEvaluator {
             return targetDomainObject instanceof IApprovable ? userService.getGroupsCurrentUserCanApprove().contains(((IApprovable)targetDomainObject).getIdOfOwner()) : false;
         case enable:
             return targetDomainObject instanceof IActivatable ? currentUserCanEnable((IActivatable) targetDomainObject) : false;
-        case fetch:
+        case fetch: // we don't care about one object, just the user's ability to fetch data
             return userService.currentUserIsAdmin() || userService.getCurrentUserAccess().equals(UserAccess.GROUP);
         case viewOrEdit:
             return userService.canViewOrEditTarget((Ownable) targetDomainObject);
