@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.DynamicRegistrationRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.oidc.DynamicRegistrationInfo;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
@@ -146,6 +147,7 @@ public class JPADynamicRegistrationServiceImpl implements DynamicRegistrationSer
         HttpStatus status = shibRestTemplateDelegate.sendRequest(existingDri);
         if (status == HttpStatus.CREATED || status == HttpStatus.OK) {
             existingDri.setEnabled(true);
+            existingDri.setApproved(true);
             repository.save(existingDri);
         }
         return status;
@@ -235,5 +237,19 @@ public class JPADynamicRegistrationServiceImpl implements DynamicRegistrationSer
 
         DynamicRegistrationInfo savedEntity = repository.save(existingDri);
         return new DynamicRegistrationRepresentation(savedEntity);
+    }
+
+    /**
+     * Update the approval status of entities that were in some approval state but the group approvers were added/removed.
+     */
+    @Override
+    public void checkApprovalStatusOfEntitiesForGroup(Group group) {
+        repository.findAllResourceIdsByIdOfOwnerAndNotEnabled(group.getResourceId()).forEach(id -> {
+            DynamicRegistrationInfo dri = repository.findByResourceId(id);
+            int approvedCount = dri.approvedCount(); // total number of approvals so far
+            List<Approvers> theApprovers = groupService.find(dri.getIdOfOwner()).getApproversList();
+            dri.setApproved(approvedCount >= theApprovers.size());
+            dri = repository.save(dri);
+        });
     }
 }

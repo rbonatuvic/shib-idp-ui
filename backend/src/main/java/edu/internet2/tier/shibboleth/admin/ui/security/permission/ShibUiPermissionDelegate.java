@@ -59,22 +59,16 @@ public class ShibUiPermissionDelegate implements IShibUiPermissionEvaluator {
             case approve:
                 return getAllDynamicRegistrationInfoObjectsNeedingApprovalBasedOnUserAccess();
             case enable:
-                return getAllDynamicRegistrationNeedingEnabledByUserAccess();
+                // This particular list is used for an admin function, so the user must be an ADMIN
+                if (!hasPermission(ignored, null, PermissionType.admin)) {
+                    throw new ForbiddenException();
+                }
+                dynamicRegistrationInfoRepository.getDynamicRegistrationsNeedingEnabling();
             case fetch:
                 return getAllDynamicRegistrationInfoObjectsBasedOnUserAccess();
             }
         }
         return null;
-    }
-
-    private Collection getAllDynamicRegistrationNeedingEnabledByUserAccess() throws ForbiddenException {
-        if (userService.currentUserIsAdmin()) {
-            return dynamicRegistrationInfoRepository.getDynamicRegistrationsNeedingEnabling();
-        } else if (userService.currentUserCanEnable()) {
-            return dynamicRegistrationInfoRepository.getDynamicRegistrationsNeedingEnabling(userService.getCurrentUser().getGroupId());
-        }
-        throw new ForbiddenException("User has no access rights to enable");
-
     }
 
     private List<DynamicRegistrationInfo> getAllDynamicRegistrationInfoObjectsNeedingApprovalBasedOnUserAccess() {
