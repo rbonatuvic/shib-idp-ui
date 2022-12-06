@@ -86,7 +86,7 @@ export function DynamicRegistrationDetail () {
                                                                     className="form-control form-control-sm"
                                                                     onChange={({target: {value}}) => changeGroup({ registration: detail, group: value })}
                                                                     value={detail.idOfOwner}
-                                                                    disabled={loadingGroups}
+                                                                    disabled={loadingGroups || detail.enabled}
                                                                     disablevalidation="true">
                                                                     <option>Select Group</option>
                                                                     {groups.map((g, ridx) => (

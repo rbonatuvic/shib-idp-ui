@@ -103,7 +103,7 @@ export function DynamicRegistrationList ({entities, children, onChangeGroup, onD
                                                 className="form-control"
                                                 onChange={(event) => onChangeGroup(reg, event.target.value)}
                                                 value={reg.idOfOwner ? reg.idOfOwner : ''}
-                                                disabled={loadingGroups}
+                                                disabled={loadingGroups || reg.enabled}
                                                 disablevalidation="true">
                                                 <option>Select Group</option>
                                                 {groups.map((g, ridx) => (
