@@ -101,11 +101,13 @@ export function DynamicRegistrationDetail () {
                                             {!detail.enabled &&
                                             <div className="d-flex align-items-start btn-group">
                                                 {enable && (canEnable && detail?.approved) &&
-                                                    <Button variant={detail.enabled ? 'outline-secondary' : 'outline-secondary' } size="sm" className=""
-                                                            onClick={() => enable(detail, !detail.enabled)}>
-                                                                <span className=" me-1">
-                                                                    <Translate value={detail.enabled ? 'label.disable' : 'label.enable'} />
-                                                                </span>
+                                                    <Button variant={detail.enabled ? 'outline-secondary' : 'outline-secondary' }
+                                                        size="sm"
+                                                        className=""
+                                                        onClick={() => enable({id: detail.resourceId, enabled: !detail.enabled})}>
+                                                            <span className=" me-1">
+                                                                <Translate value={detail.enabled ? 'label.disable' : 'label.enable'} />
+                                                            </span>
                                                         <FontAwesomeIcon size="lg" icon={detail.enabled ? faToggleOn : faToggleOff} />
                                                     </Button>
                                                 }
