@@ -84,6 +84,17 @@ export const DynamicRegistrationDefinition = {
     parser: (changes) => changes,
     formatter: (changes) => changes,
     display: (changes) => changes,
+    validator: (data = [], current = '') => {
+
+        const names = data.map(s => s.name).filter(n => n !== current);
+
+        return (formData, errors) => {
+            if (names.indexOf(formData.name) > -1) {
+                errors.name.addError('message.name-unique');
+            }
+            return errors;
+        }
+    }
 }
 
 export default DynamicRegistrationDefinition;

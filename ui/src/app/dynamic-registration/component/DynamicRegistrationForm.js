@@ -6,27 +6,25 @@ import { faSpinner, faSave } from '@fortawesome/free-solid-svg-icons';
 import Translate from '../../i18n/components/translate';
 
 import { FormContext, setFormDataAction, setFormErrorAction } from '../../form/FormManager';
-import { useDynamicRegistrationUiSchema, useDynamicRegistrationValidator } from '../api';
+import { useDynamicRegistrationUiSchema } from '../api';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useGetDynamicRegistrationsQuery } from '../../store/dynamic-registration/DynamicRegistrationSlice';
+import DynamicRegistrationDefinition from '../hoc/DynamicConfigurationDefinition';
 
 
-export function DynamicRegistrationForm ({registration = {}, errors = [], loading = false, schema, onSave, onCancel}) {
+export function DynamicRegistrationForm ({registration = {}, errors = [], current = {}, loading = false, schema, onSave, onCancel}) {
 
     const {data: registrations = []} = useGetDynamicRegistrationsQuery();
-
-    const [touched, setTouched] = React.useState(false);
 
     const { dispatch } = React.useContext(FormContext);
     const onChange = ({formData, errors, ...props}) => {
         dispatch(setFormDataAction(formData));
         dispatch(setFormErrorAction(errors));
-        setTouched(true);
     };
 
     const uiSchema = useDynamicRegistrationUiSchema();
-    const validator = useDynamicRegistrationValidator(registrations);
+    const validator = DynamicRegistrationDefinition.validator(registrations, current?.name);
 
     return (<>
         <div className="container-fluid">
@@ -35,7 +33,7 @@ export function DynamicRegistrationForm ({registration = {}, errors = [], loadin
                     <Button variant="info" className="me-2"
                         type="button"
                         onClick={() => onSave(registration)}
-                        disabled={!touched || errors.length > 0 || loading}
+                        disabled={errors.length > 0 || loading}
                         aria-label="Save changes to the dynamic registration. You will return to the dashboard">
                         <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading} />&nbsp;
                         <Translate value="action.save">Save</Translate>

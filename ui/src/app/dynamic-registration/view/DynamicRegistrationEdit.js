@@ -60,6 +60,7 @@ export function DynamicRegistrationEdit () {
                                     <>
                                         <DynamicRegistrationForm
                                             registration={data}
+                                            current={detail}
                                             errors={errors}
                                             schema={schema}
                                             loading={loading}
