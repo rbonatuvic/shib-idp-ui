@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.MissingRequiredFieldsExc
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
 import edu.internet2.tier.shibboleth.admin.ui.exception.UnsupportedShibUiOperationException;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.List;
 public interface DynamicRegistrationService {
     DynamicRegistrationRepresentation approveDynamicRegistration(String resourceId, boolean status)
                     throws PersistentEntityNotFound, ForbiddenException;
+
+    void checkApprovalStatusOfEntitiesForGroup(Group result);
 
     DynamicRegistrationRepresentation createNew(DynamicRegistrationRepresentation dynRegRepresentation) throws ObjectIdExistsException,
                     MissingRequiredFieldsException;

@@ -11,6 +11,9 @@ import java.util.List;
 public interface DynamicRegistrationInfoRepository extends JpaRepository<DynamicRegistrationInfo, String> {
     List<DynamicRegistrationInfo> findAllByIdOfOwner(String idOfOwner);
 
+    @Query(value="SELECT dri.resourceId FROM DynamicRegistrationInfo dri WHERE dri.idOfOwner = :groupId AND dri.enabled = false")
+    List<String> findAllResourceIdsByIdOfOwnerAndNotEnabled(@Param("groupId") String groupId);
+
     DynamicRegistrationInfo findByResourceId(String id);
 
     @Query(value = "SELECT dri FROM DynamicRegistrationInfo dri " +
