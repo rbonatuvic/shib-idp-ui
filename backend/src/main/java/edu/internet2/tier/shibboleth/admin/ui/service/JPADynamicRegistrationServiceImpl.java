@@ -146,6 +146,7 @@ public class JPADynamicRegistrationServiceImpl implements DynamicRegistrationSer
         HttpStatus status = shibRestTemplateDelegate.sendRequest(existingDri);
         if (status == HttpStatus.CREATED || status == HttpStatus.OK) {
             existingDri.setEnabled(true);
+            existingDri.setApproved(true);
             repository.save(existingDri);
         }
         return status;
