@@ -117,13 +117,13 @@ class SeleniumSIDETest extends Specification {
 //        'SHIBUI-1352: Create LocalDynamic provider'                         | '/SHIBUI-1352-1.side'
 //        'SHIBUI-1352: Create FileSystem provider'                           | '/SHIBUI-1352-2.side'
 //        'SHIBUI-1333: Verify metadata source configuration'                 | '/SHIBUI-1333.side'
-//        'SHIBUI-1334: Verify metadata source versioning'                    | '/SHIBUI-1334-1.side'
+        'SHIBUI-1334: Verify metadata source versioning'                    | '/SHIBUI-1334-1.side'
 //        'SHIBUI-1334: Verify metadata provider versioning'                  | '/SHIBUI-1334-2.side'
 //        'SHIBUI-1335: Verify File Backed HTTP Metadata Provider Filters'    | '/SHIBUI-1335-1.side'
 //        'SHIBUI-1335: Verify Filesystem Metadata Provider'                  | '/SHIBUI-1335-2.side'
 //        'SHIBUI-1335: Verify Local Dynamic Metadata Provider'               | '/SHIBUI-1335-3.side'
 //        'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
-//        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side' // Note that this script WILL NOT PASS in the Selenium IDE due to it thinking there is a syntax error where there is none.
+////        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side' // Note that this script WILL NOT PASS in the Selenium IDE due to it thinking there is a syntax error where there is none.
 //        'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
 //        'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
 //        'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
@@ -150,7 +150,7 @@ class SeleniumSIDETest extends Specification {
 //        'SHIBUI-1743: Verify nonadmin group regex validation'               | '/SHIBUI-1743-2.side'
 //        'SHIBUI-1744: Verify attribute bundle CRUD operations'              | '/SHIBUI-1744-1.side'
 //        'SHIBUI-1744: Verify attribute bundles in metadata sources'         | '/SHIBUI-1744-2.side'
-        'SHIBUI-1744: Verify attribute bundles in entity attribute filters' | '/SHIBUI-1744-3.side'
+//        'SHIBUI-1744: Verify attribute bundles in entity attribute filters' | '/SHIBUI-1744-3.side'
 //        'SHIBUI-2052: Logged in user & role appear on dashboard'            | '/SHIBUI-2052.side'
 //        'SHIBUI-2116: Verify entity attribute bundle highlights'            | '/SHIBUI-2116.side' // Note that this script WILL NOT PASS in the Selenium IDE due to ${driver} not being set (it is provided by this groovy script).
 //        'SHIBUI-2267: Verify new RPO CRUD'                                  | '/SHIBUI-2267.side'

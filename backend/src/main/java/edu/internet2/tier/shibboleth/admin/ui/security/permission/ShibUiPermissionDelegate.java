@@ -130,8 +130,9 @@ public class ShibUiPermissionDelegate implements IShibUiPermissionEvaluator {
     private boolean currentUserCanEnable(IActivatable activatableObject) {
         if (userService.currentUserIsAdmin()) { return true; }
         switch (activatableObject.getActivatableType()) {
+        case DYNAMIC_REGISTRATION:
         case ENTITY_DESCRIPTOR: {
-            return currentUserHasExpectedRole(Arrays.asList("ROLE_ENABLE" )) && userService.getCurrentUserGroup().getOwnerId().equals(((EntityDescriptor) activatableObject).getIdOfOwner());
+            return currentUserHasExpectedRole(Arrays.asList("ROLE_ENABLE" )) && userService.getCurrentUserGroup().getOwnerId().equals(activatableObject.getIdOfOwner());
         }
         // Currently filters and providers dont have ownership, so we just look for the right role
         case FILTER:
