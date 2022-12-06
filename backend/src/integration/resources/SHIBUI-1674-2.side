@@ -146,9 +146,13 @@
       "id": "2f6171c0-f11f-4d3a-99fe-4ba3ef743f3f",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(2) .info-icon > .svg-inline--fa",
+      "target": "id=info-tooltip.metadata-provider-type",
       "targets": [
-        ["css=.mb-3:nth-child(2) .info-icon > .svg-inline--fa", "css:finder"]
+        ["id=info-tooltip.metadata-provider-type", "id"],
+        ["css=#info-tooltip\\.metadata-provider-type", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.metadata-provider-type']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/div/form/div[2]/label/button", "xpath:idRelative"],
+        ["xpath=//div[2]/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -240,9 +244,13 @@
       "id": "c3323c50-da68-42be-8ecf-1754be5f402e",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(7) path",
+      "target": "id=info-tooltip.fail-fast-init",
       "targets": [
-        ["css=.mb-3:nth-child(7) path", "css:finder"]
+        ["id=info-tooltip.fail-fast-init", "id"],
+        ["css=#info-tooltip\\.fail-fast-init", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.fail-fast-init']", "xpath:attributes"],
+        ["xpath=//div[@id='root_failFastInitialization-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[7]/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -250,7 +258,13 @@
       "comment": "",
       "command": "assertText",
       "target": "css=div[role=\"tooltip\"]",
-      "targets": [],
+      "targets": [
+        ["id=info-tooltip.fail-fast-init", "id"],
+        ["css=#info-tooltip\\.fail-fast-init", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.fail-fast-init']", "xpath:attributes"],
+        ["xpath=//div[@id='root_failFastInitialization-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[7]/div/div/label/button", "xpath:position"]
+      ],
       "value": "Whether to fail initialization of the underlying MetadataResolverService (and possibly the IdP as a whole) if the initialization of a metadata provider fails. When false, the IdP may start, and will continue to attempt to reload valid metadata if configured to do so, but operations that require valid metadata will fail until it does."
     }, {
       "id": "3a2ee060-bea9-4ee6-86ac-0bfec851a0f4",
@@ -268,9 +282,13 @@
       "id": "f9c24b89-5e95-439f-9f94-13e5482ba269",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(2) .form-label > .btn > .svg-inline--fa",
+      "target": "id=info-tooltip.max-refresh-delay",
       "targets": [
-        ["css=.row:nth-child(2) .form-label > .btn > .svg-inline--fa", "css:finder"]
+        ["id=info-tooltip.max-refresh-delay", "id"],
+        ["css=#info-tooltip\\.max-refresh-delay", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.max-refresh-delay']", "xpath:attributes"],
+        ["xpath=//div[@id='root_reloadableMetadataResolverAttributes_maxRefreshDelay-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -296,9 +314,13 @@
       "id": "8b9ab8e9-4856-4382-824b-37332e504342",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(3) > .col-12 > .mb-3 .form-label path",
+      "target": "id=info-tooltip.certificate-file",
       "targets": [
-        ["css=.row:nth-child(3) > .col-12 > .mb-3 .form-label path", "css:finder"]
+        ["id=info-tooltip.certificate-file", "id"],
+        ["css=#info-tooltip\\.certificate-file", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.certificate-file']", "xpath:attributes"],
+        ["xpath=//div[@id='root_metadataFilters_1_certificateFile-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -409,9 +431,14 @@
       "id": "3e9efc71-b8e5-4d0e-99f1-5605f0984768",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(1) .info-icon path",
+      "target": "id=info-tooltip.metadata-provider-name",
       "targets": [
-        ["css=.mb-3:nth-child(1) .info-icon path", "css:finder"]
+        ["id=info-tooltip.metadata-provider-name", "id"],
+        ["css=#info-tooltip\\.metadata-provider-name", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.metadata-provider-name']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/div/form/div/label/button", "xpath:idRelative"],
+        ["xpath=//label/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Description')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -470,9 +497,13 @@
       "id": "1086624e-fc87-470b-85bf-246fd3a42f64",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.d-block path",
+      "target": "id=info-tooltip.do-resolver-initialization",
       "targets": [
-        ["css=.d-block path", "css:finder"]
+        ["id=info-tooltip.do-resolver-initialization", "id"],
+        ["css=#info-tooltip\\.do-resolver-initialization", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.do-resolver-initialization']", "xpath:attributes"],
+        ["xpath=//div[@id='root_doInitialization-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -498,9 +529,13 @@
       "id": "d910ef5c-1e0f-48b8-bfbb-3dc0f2e65864",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.ms-2:nth-child(2) > path",
+      "target": "id=info-tooltip.refresh-delay-factor",
       "targets": [
-        ["css=.ms-2:nth-child(2) > path", "css:finder"]
+        ["id=info-tooltip.refresh-delay-factor", "id"],
+        ["css=#info-tooltip\\.refresh-delay-factor", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.refresh-delay-factor']", "xpath:attributes"],
+        ["xpath=//div[@id='root_reloadableMetadataResolverAttributes_refreshDelayFactor-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -649,9 +684,13 @@
       "id": "cc967bcc-786d-4fa3-a94e-d4571597a3dd",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(2) .btn path",
+      "target": "id=info-tooltip.source-directory",
       "targets": [
-        ["css=.mb-3:nth-child(2) .btn path", "css:finder"]
+        ["id=info-tooltip.source-directory", "id"],
+        ["css=#info-tooltip\\.source-directory", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.source-directory']", "xpath:attributes"],
+        ["xpath=//div[@id='root_sourceDirectory-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -677,9 +716,13 @@
       "id": "718a6f12-5933-4a38-a84f-c9061d238656",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(2) path",
+      "target": "id=info-tooltip.min-cache-duration",
       "targets": [
-        ["css=.row:nth-child(2) path", "css:finder"]
+        ["id=info-tooltip.min-cache-duration", "id"],
+        ["css=#info-tooltip\\.min-cache-duration", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.min-cache-duration']", "xpath:attributes"],
+        ["xpath=//div[@id='root_dynamicMetadataResolverAttributes_minCacheDuration-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -714,9 +757,13 @@
       "id": "5f3a17b8-9ab0-43b9-a6e9-47dfc036760a",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.d-block path",
+      "target": "id=info-tooltip.remove-idle-entity-data",
       "targets": [
-        ["css=.d-block path", "css:finder"]
+        ["id=info-tooltip.remove-idle-entity-data", "id"],
+        ["css=#info-tooltip\\.remove-idle-entity-data", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.remove-idle-entity-data']", "xpath:attributes"],
+        ["xpath=//div[@id='root_dynamicMetadataResolverAttributes_removeIdleEntityData-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -891,9 +938,13 @@
       "id": "b0bbc709-2c6a-4600-8eac-d3b4182b3bb8",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(3) > .col-12 > .mb-3 .btn > .svg-inline--fa",
+      "target": "id=info-tooltip.match",
       "targets": [
-        ["css=.row:nth-child(3) > .col-12 > .mb-3 .btn > .svg-inline--fa", "css:finder"]
+        ["id=info-tooltip.match", "id"],
+        ["css=#info-tooltip\\.match", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.match']", "xpath:attributes"],
+        ["xpath=//div[@id='root_metadataRequestURLConstructionScheme_match-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -919,9 +970,13 @@
       "id": "bdfb17e5-a4c9-408b-858b-7e2fddd7c350",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(2) path",
+      "target": "id=info-tooltip.min-cache-duration",
       "targets": [
-        ["css=.row:nth-child(2) path", "css:finder"]
+        ["id=info-tooltip.min-cache-duration", "id"],
+        ["css=#info-tooltip\\.min-cache-duration", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.min-cache-duration']", "xpath:attributes"],
+        ["xpath=//div[@id='root_dynamicMetadataResolverAttributes_minCacheDuration-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -956,9 +1011,13 @@
       "id": "8f77dc16-2b54-46d7-b6bd-bf6fd046e8b6",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(8) .svg-inline--fa",
+      "target": "id=info-tooltip.initialize-from-persistent-cache-in-background",
       "targets": [
-        ["css=.row:nth-child(8) .svg-inline--fa", "css:finder"]
+        ["id=info-tooltip.initialize-from-persistent-cache-in-background", "id"],
+        ["css=#info-tooltip\\.initialize-from-persistent-cache-in-background", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.initialize-from-persistent-cache-in-background']", "xpath:attributes"],
+        ["xpath=//div[@id='root_dynamicMetadataResolverAttributes_initializeFromPersistentCacheInBackground-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[8]/div/div/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -981,13 +1040,23 @@
       ],
       "value": ""
     }, {
+      "id": "03bb682c-544f-44f4-9b05-a4d80ac6d022",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=#root_metadataFilters_2_removeEmptyEntitiesDescriptors-group path",
+      "targets": [
+        ["css=#root_metadataFilters_2_removeEmptyEntitiesDescriptors-group path", "css:finder"]
+      ],
+      "value": "30000"
+    }, {
       "id": "aea0e033-111e-4a5d-8038-ec222786a695",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=#root_metadataFilters_2_removeEmptyEntitiesDescriptors-group .info-icon",
+      "target": "id=info-tooltip.remove-empty-entities-descriptors",
       "targets": [
-        ["css=#root_metadataFilters_2_removeEmptyEntitiesDescriptors-group .info-icon", "css:finder"],
-        ["xpath=(//button[@type='button'])[13]", "xpath:attributes"],
+        ["id=info-tooltip.remove-empty-entities-descriptors", "id"],
+        ["css=#info-tooltip\\.remove-empty-entities-descriptors", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.remove-empty-entities-descriptors']", "xpath:attributes"],
         ["xpath=//div[@id='root_metadataFilters_2_removeEmptyEntitiesDescriptors-group']/div/div/div/label/span/button", "xpath:idRelative"],
         ["xpath=//div[4]/div/div/div/div/div/label/span/button", "xpath:position"]
       ],
@@ -1140,9 +1209,13 @@
       "id": "52604851-991e-4055-b926-21a8eae2d293",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3 > div > .form-label > .btn path",
+      "target": "id=info-tooltip.external-description",
       "targets": [
-        ["css=.mb-3 > div > .form-label > .btn path", "css:finder"]
+        ["id=info-tooltip.external-description", "id"],
+        ["css=#info-tooltip\\.external-description", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.external-description']", "xpath:attributes"],
+        ["xpath=//div[@id='root_description-group']/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -1237,9 +1310,14 @@
       "id": "7fa035f2-c14b-4452-8437-f15901428d76",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.fa-circle-info > path",
+      "target": "id=info-tooltip.metadata-filter-type",
       "targets": [
-        ["css=.fa-circle-info > path", "css:finder"]
+        ["id=info-tooltip.metadata-filter-type", "id"],
+        ["css=#info-tooltip\\.metadata-filter-type", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.metadata-filter-type']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/div/div/div/form/div/label/button", "xpath:idRelative"],
+        ["xpath=//label/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Description')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -1270,12 +1348,29 @@
       ],
       "value": "label=EntityAttributes"
     }, {
+      "id": "405609c5-3894-4204-a6e6-182e619d2c04",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=info-Indicates the type of search to be performed.",
+      "targets": [
+        ["id=info-Indicates the type of search to be performed.", "id"],
+        ["css=#info-Indicates\\ the\\ type\\ of\\ search\\ to\\ be\\ performed\\.", "css:finder"],
+        ["xpath=//button[@id='info-Indicates the type of search to be performed.']", "xpath:attributes"],
+        ["xpath=//div[@id='root_entityAttributesFilterTarget-group']/div/fieldset/div/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//fieldset/div/div/div/label/button", "xpath:position"]
+      ],
+      "value": "30000"
+    }, {
       "id": "e2b1a582-a3ce-4adb-b10c-0804f44a56ae",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.justify-content-start > .btn path",
+      "target": "id=info-Indicates the type of search to be performed.",
       "targets": [
-        ["css=.justify-content-start > .btn path", "css:finder"]
+        ["id=info-Indicates the type of search to be performed.", "id"],
+        ["css=#info-Indicates\\ the\\ type\\ of\\ search\\ to\\ be\\ performed\\.", "css:finder"],
+        ["xpath=//button[@id='info-Indicates the type of search to be performed.']", "xpath:attributes"],
+        ["xpath=//div[@id='root_entityAttributesFilterTarget-group']/div/fieldset/div/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//fieldset/div/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -1302,9 +1397,13 @@
       "id": "583b61c9-b021-452b-b488-1faf2be311b6",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(9) path:nth-child(1)",
+      "target": "id=info-tooltip.turn-off-encryption",
       "targets": [
-        ["css=.row:nth-child(9) path:nth-child(1)", "css:finder"]
+        ["id=info-tooltip.turn-off-encryption", "id"],
+        ["css=#info-tooltip\\.turn-off-encryption", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.turn-off-encryption']", "xpath:attributes"],
+        ["xpath=//div[@id='root_relyingPartyOverrides_turnOffEncryption-group']/div/div/div/label/span/button", "xpath:idRelative"],
+        ["xpath=//div[9]/div/div/div/div/div/label/span/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -1314,6 +1413,13 @@
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
       "value": "Whether to turn off encryption of the response."
+    }, {
+      "id": "8c62c21b-b432-44ff-8823-76eb796373ab",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [],
+      "value": ""
     }, {
       "id": "62691575-441e-4251-afd8-658fe8763578",
       "comment": "",
@@ -1328,12 +1434,36 @@
       ],
       "value": "label=NameIDFormat"
     }, {
+      "id": "a137db34-14ad-46dd-991e-2dcebd97805c",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1502c7aa-ec57-42ed-99b8-2071f5a653d2",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=info-tooltip.usa-sha-algorithm",
+      "targets": [
+        ["id=info-tooltip.usa-sha-algorithm", "id"],
+        ["css=#info-tooltip\\.usa-sha-algorithm", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.usa-sha-algorithm']", "xpath:attributes"],
+        ["xpath=//div[@id='root_relyingPartyOverrides_useSha-group']/div/div/div/label/span/button", "xpath:idRelative"],
+        ["xpath=//span/button", "xpath:position"]
+      ],
+      "value": "30000"
+    }, {
       "id": "b358a7c0-87a5-4b74-8013-c0ab379278c2",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.ms-2 > path",
+      "target": "id=info-tooltip.usa-sha-algorithm",
       "targets": [
-        ["css=.ms-2 > path", "css:finder"]
+        ["id=info-tooltip.usa-sha-algorithm", "id"],
+        ["css=#info-tooltip\\.usa-sha-algorithm", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.usa-sha-algorithm']", "xpath:attributes"],
+        ["xpath=//div[@id='root_relyingPartyOverrides_useSha-group']/div/div/div/label/span/button", "xpath:idRelative"],
+        ["xpath=//span/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -1360,9 +1490,13 @@
       "id": "8657a3bf-3547-456a-8802-a23eaf657e7c",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.btn-text:nth-child(1) > .svg-inline--fa",
+      "target": "id=info-The value used to search against, such as a regex pattern or entityID to match against.",
       "targets": [
-        ["css=.btn-text:nth-child(1) > .svg-inline--fa", "css:finder"]
+        ["id=info-The value used to search against, such as a regex pattern or entityID to match against.", "id"],
+        ["css=#info-The\\ value\\ used\\ to\\ search\\ against\\,\\ such\\ as\\ a\\ regex\\ pattern\\ or\\ entityID\\ to\\ match\\ against\\.", "css:finder"],
+        ["xpath=//button[@id='info-The value used to search against, such as a regex pattern or entityID to match against.']", "xpath:attributes"],
+        ["xpath=//div[@id='root_entityAttributesFilterTarget-group']/div/fieldset/div/div/div[2]/label/span[2]/button", "xpath:idRelative"],
+        ["xpath=//span[2]/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -1396,9 +1530,13 @@
       "id": "f65720ad-5b7b-4193-a8d6-3ca976d2c976",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.btn-text:nth-child(1) path",
+      "target": "id=info-The value used to search against, such as a regex pattern or entityID to match against.",
       "targets": [
-        ["css=.btn-text:nth-child(1) path", "css:finder"]
+        ["id=info-The value used to search against, such as a regex pattern or entityID to match against.", "id"],
+        ["css=#info-The\\ value\\ used\\ to\\ search\\ against\\,\\ such\\ as\\ a\\ regex\\ pattern\\ or\\ entityID\\ to\\ match\\ against\\.", "css:finder"],
+        ["xpath=//button[@id='info-The value used to search against, such as a regex pattern or entityID to match against.']", "xpath:attributes"],
+        ["xpath=//div[@id='root_entityAttributesFilterTarget-group']/div/fieldset/div/div/div[2]/label/span[2]/button", "xpath:idRelative"],
+        ["xpath=//span[2]/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -1432,9 +1570,13 @@
       "id": "295c441f-78c8-4949-9c0c-c9c6202c8943",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.btn-text:nth-child(1) path",
+      "target": "id=info-The value used to search against, such as a regex pattern or entityID to match against.",
       "targets": [
-        ["css=.btn-text:nth-child(1) path", "css:finder"]
+        ["id=info-The value used to search against, such as a regex pattern or entityID to match against.", "id"],
+        ["css=#info-The\\ value\\ used\\ to\\ search\\ against\\,\\ such\\ as\\ a\\ regex\\ pattern\\ or\\ entityID\\ to\\ match\\ against\\.", "css:finder"],
+        ["xpath=//button[@id='info-The value used to search against, such as a regex pattern or entityID to match against.']", "xpath:attributes"],
+        ["xpath=//div[@id='root_entityAttributesFilterTarget-group']/div/fieldset/div/div/div[2]/label/span[2]/button", "xpath:idRelative"],
+        ["xpath=//span[2]/button", "xpath:position"]
       ],
       "value": ""
     }, {

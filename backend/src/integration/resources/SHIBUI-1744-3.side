@@ -503,13 +503,6 @@
       ],
       "value": ""
     }, {
-      "id": "33dc6ff7-9b71-4fe4-b74d-29d8b663d8f8",
-      "comment": "",
-      "command": "pause",
-      "target": "300000",
-      "targets": [],
-      "value": ""
-    }, {
       "id": "5cd2df54-e975-4657-9d4b-390c87901f88",
       "comment": "",
       "command": "assertChecked",

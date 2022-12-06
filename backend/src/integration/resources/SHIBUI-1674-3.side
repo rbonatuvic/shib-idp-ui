@@ -133,9 +133,14 @@
       "id": "6a47d0aa-0afe-4e61-afbf-44a56507a2e8",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(1) > div > div > .form-label > .btn path",
+      "target": "id=info-tooltip.entity-attribute-name",
       "targets": [
-        ["css=.mb-3:nth-child(1) > div > div > .form-label > .btn path", "css:finder"]
+        ["id=info-tooltip.entity-attribute-name", "id"],
+        ["css=#info-tooltip\\.entity-attribute-name", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.entity-attribute-name']", "xpath:attributes"],
+        ["xpath=//div[@id='root_name-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//label/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Description')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -145,15 +150,6 @@
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
       "value": "Name of the attribute that the service provider uses and requires from the identity provider. It corresponds to the <saml:Attribute Name=\"\"> element in the SAML assertion."
-    }, {
-      "id": "462beca1-71e3-4519-a478-f4e66824c3cc",
-      "comment": "",
-      "command": "mouseOut",
-      "target": "css=.mb-3:nth-child(1) > div > div > .form-label > .btn path",
-      "targets": [
-        ["css=.mb-3:nth-child(1) > div > div > .form-label > .btn path", "css:finder"]
-      ],
-      "value": ""
     }, {
       "id": "1d0954f7-b5f4-4c6d-9e4f-90d1557ff57f",
       "comment": "",
@@ -172,9 +168,13 @@
       "id": "d316301e-1e75-4c95-bc8a-efa5575b3cfb",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3 > .form-label > .btn > .svg-inline--fa",
+      "target": "id=info-tooltip.entity-attribute-type",
       "targets": [
-        ["css=.mb-3 > .form-label > .btn > .svg-inline--fa", "css:finder"]
+        ["id=info-tooltip.entity-attribute-type", "id"],
+        ["css=#info-tooltip\\.entity-attribute-type", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.entity-attribute-type']", "xpath:attributes"],
+        ["xpath=//div[@id='root_attributeType-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -184,13 +184,6 @@
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
       "value": "Data type of the attribute such as boolean or string."
-    }, {
-      "id": "f2335699-a48b-4da0-906a-6b41fac18795",
-      "comment": "",
-      "command": "mouseOut",
-      "target": "css=.mb-3 > .form-label > .btn > .svg-inline--fa",
-      "targets": [],
-      "value": ""
     }, {
       "id": "15ab5915-5ee7-4942-9417-382d7171872f",
       "comment": "",
@@ -209,9 +202,13 @@
       "id": "9d4d25d7-3f22-4ca9-976b-fde51c951f44",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(3) .btn > .svg-inline--fa",
+      "target": "id=info-tooltip.entity-attribute-friendly-name",
       "targets": [
-        ["css=.mb-3:nth-child(3) .btn > .svg-inline--fa", "css:finder"]
+        ["id=info-tooltip.entity-attribute-friendly-name", "id"],
+        ["css=#info-tooltip\\.entity-attribute-friendly-name", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.entity-attribute-friendly-name']", "xpath:attributes"],
+        ["xpath=//div[@id='root_attributeFriendlyName-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -246,9 +243,13 @@
       "id": "6b365142-29d2-4d6f-a3ff-bcc06f8102ac",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(4) .btn path",
+      "target": "id=info-tooltip.entity-attribute-attr-name",
       "targets": [
-        ["css=.mb-3:nth-child(4) .btn path", "css:finder"]
+        ["id=info-tooltip.entity-attribute-attr-name", "id"],
+        ["css=#info-tooltip\\.entity-attribute-attr-name", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.entity-attribute-attr-name']", "xpath:attributes"],
+        ["xpath=//div[@id='root_attributeName-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -258,13 +259,6 @@
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
       "value": "Indicates how to interpret the attribute name. It corresponds to the <saml:Attribute NameFormat=\"\"> element in the SAML assertion. This is normally a uri or urn."
-    }, {
-      "id": "bb6a3d64-d0a9-43ab-b60c-20dab1f04e15",
-      "comment": "",
-      "command": "mouseOut",
-      "target": "css=.mb-3:nth-child(4) .btn path",
-      "targets": [],
-      "value": ""
     }, {
       "id": "5ed8705f-fc06-43c4-8fb0-2200f2b17417",
       "comment": "",
@@ -283,9 +277,13 @@
       "id": "4d5c9b81-fa8b-4202-9617-9e66b11c6453",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(5) .btn path",
+      "target": "id=info-tooltip.entity-attribute-display-name",
       "targets": [
-        ["css=.mb-3:nth-child(5) .btn path", "css:finder"]
+        ["id=info-tooltip.entity-attribute-display-name", "id"],
+        ["css=#info-tooltip\\.entity-attribute-display-name", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.entity-attribute-display-name']", "xpath:attributes"],
+        ["xpath=//div[@id='root_displayName-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -295,13 +293,6 @@
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
       "value": "Provides a human readable value that identifies the subject. This value is not guaranteed to be unique and is designed to be used only for display purposes."
-    }, {
-      "id": "535899ed-dfc1-4e6d-98bf-1d798eba2653",
-      "comment": "",
-      "command": "mouseOut",
-      "target": "css=.mb-3:nth-child(5) .btn path",
-      "targets": [],
-      "value": ""
     }, {
       "id": "dd9c55ae-367a-4dc6-acd3-9a4fc70af3c8",
       "comment": "",
@@ -320,9 +311,13 @@
       "id": "5e69982a-5611-4276-9145-b2ae74cafc5e",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(6) path",
+      "target": "id=info-tooltip.entity-attribute-help",
       "targets": [
-        ["css=.mb-3:nth-child(6) path", "css:finder"]
+        ["id=info-tooltip.entity-attribute-help", "id"],
+        ["css=#info-tooltip\\.entity-attribute-help", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.entity-attribute-help']", "xpath:attributes"],
+        ["xpath=//div[@id='root_helpText-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[6]/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -332,13 +327,6 @@
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
       "value": "Defines help text used in the Shibboleth IDP UI when adding the attribute."
-    }, {
-      "id": "1903d80f-cd05-4b27-a8ee-7450f6ddfb1f",
-      "comment": "",
-      "command": "mouseOut",
-      "target": "css=.mb-3:nth-child(6) path",
-      "targets": [],
-      "value": ""
     }, {
       "id": "8d9f307d-d310-4fec-91d8-2d228bf07328",
       "comment": "",
@@ -402,9 +390,14 @@
       "id": "ca5dd037-f651-49bc-ae8e-2c4892a8dd8a",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.fa-circle-info",
+      "target": "id=info-tooltip.bundle-name",
       "targets": [
-        ["css=.fa-circle-info", "css:finder"]
+        ["id=info-tooltip.bundle-name", "id"],
+        ["css=#info-tooltip\\.bundle-name", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.bundle-name']", "xpath:attributes"],
+        ["xpath=//div[@id='root_name-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//label/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Description')]", "xpath:innerText"]
       ],
       "value": ""
     }, {

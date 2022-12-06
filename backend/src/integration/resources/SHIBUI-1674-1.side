@@ -119,16 +119,26 @@
       "id": "93d20204-7dfa-44c0-8e61-6741e73594f5",
       "comment": "",
       "command": "waitForElementPresent",
-      "target": "css=.mb-3:nth-child(3) .info-icon path",
-      "targets": [],
+      "target": "id=info-tooltip.entity-id",
+      "targets": [
+        ["id=info-tooltip.entity-id", "id"],
+        ["css=#info-tooltip\\.entity-id", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.entity-id']", "xpath:attributes"],
+        ["xpath=//div[@id='root_entityId-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/label/button", "xpath:position"]
+      ],
       "value": "30000"
     }, {
       "id": "a7b2b925-2274-4dcc-a4e3-3b727c9a047a",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(3) .info-icon path",
+      "target": "css=#info-tooltip\\.entity-id > svg > path",
       "targets": [
-        ["css=.mb-3:nth-child(3) .info-icon path", "css:finder"]
+        ["id=info-tooltip.entity-id", "id"],
+        ["css=#info-tooltip\\.entity-id", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.entity-id']", "xpath:attributes"],
+        ["xpath=//div[@id='root_entityId-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -177,12 +187,24 @@
       ],
       "value": ""
     }, {
+      "id": "551a89f9-021a-42b9-b890-5fafb024a63e",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "id=info-tooltip.organization-name",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "ca21608c-baaa-400d-b8bd-8ad0eb4b7a53",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(1) > .col-12 > .mb-3 path",
+      "target": "css=#info-tooltip\\.organization-name > svg > path",
       "targets": [
-        ["css=.row:nth-child(1) > .col-12 > .mb-3 path", "css:finder"]
+        ["id=info-tooltip.organization-name", "id"],
+        ["css=#info-tooltip\\.organization-name", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.organization-name']", "xpath:attributes"],
+        ["xpath=//div[@id='root_organization_name-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//label/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Description')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -208,9 +230,13 @@
       "id": "b56c1325-5438-4b5a-b626-79b030d04313",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.d-empty-none:nth-child(2) > .mb-3:nth-child(1) path",
+      "target": "id=info-tooltip.mdui-privacy-statement-url",
       "targets": [
-        ["css=.d-empty-none:nth-child(2) > .mb-3:nth-child(1) path", "css:finder"]
+        ["id=info-tooltip.mdui-privacy-statement-url", "id"],
+        ["css=#info-tooltip\\.mdui-privacy-statement-url", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.mdui-privacy-statement-url']", "xpath:attributes"],
+        ["xpath=//div[@id='root_mdui_privacyStatementUrl-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -236,9 +262,14 @@
       "id": "f041b735-85f2-4005-ad80-16a82c683f60",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.ms-2 > path",
+      "target": "id=info-tooltip.protocol-support-enumeration",
       "targets": [
-        ["css=.ms-2 > path", "css:finder"]
+        ["id=info-tooltip.protocol-support-enumeration", "id"],
+        ["css=#info-tooltip\\.protocol-support-enumeration", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.protocol-support-enumeration']", "xpath:attributes"],
+        ["xpath=//div[@id='root_serviceProviderSsoDescriptor_protocolSupportEnum-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//label/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Description')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -264,9 +295,14 @@
       "id": "be222605-95ec-4a48-b02c-9b29f47e1ef5",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.fa-circle-info > path",
+      "target": "id=info-tooltip.logout-endpoints",
       "targets": [
-        ["css=.fa-circle-info > path", "css:finder"]
+        ["id=info-tooltip.logout-endpoints", "id"],
+        ["css=#info-tooltip\\.logout-endpoints", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.logout-endpoints']", "xpath:attributes"],
+        ["xpath=//div[@id='root_logoutEndpoints-group']/div/div/div/div/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Description')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -292,9 +328,14 @@
       "id": "397a8204-b6b1-442f-a491-4c89b1d320ff",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(1) > div > .mb-3 path",
+      "target": "id=info-tooltip.authentication-requests-signed",
       "targets": [
-        ["css=.mb-3:nth-child(1) > div > .mb-3 path", "css:finder"]
+        ["id=info-tooltip.authentication-requests-signed", "id"],
+        ["css=#info-tooltip\\.authentication-requests-signed", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.authentication-requests-signed']", "xpath:attributes"],
+        ["xpath=//div[@id='root_securityInfo_authenticationRequestsSigned-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//label/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Description')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -320,9 +361,14 @@
       "id": "6cfdcca2-1deb-4055-9b75-afbfbf728783",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.fa-circle-info > path",
+      "target": "id=info-tooltip.assertion-consumer-service-endpoints",
       "targets": [
-        ["css=.fa-circle-info > path", "css:finder"]
+        ["id=info-tooltip.assertion-consumer-service-endpoints", "id"],
+        ["css=#info-tooltip\\.assertion-consumer-service-endpoints", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.assertion-consumer-service-endpoints']", "xpath:attributes"],
+        ["xpath=//div[@id='root_assertionConsumerServices-group']/div/div/div/div/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Description')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -348,9 +394,13 @@
       "id": "56f49fe8-340c-46fa-bda9-0b3c0de98bdb",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(2) path:nth-child(1)",
+      "target": "id=info-tooltip.sign-assertion",
       "targets": [
-        ["css=.row:nth-child(2) path:nth-child(1)", "css:finder"]
+        ["id=info-tooltip.sign-assertion", "id"],
+        ["css=#info-tooltip\\.sign-assertion", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.sign-assertion']", "xpath:attributes"],
+        ["xpath=//div[@id='root_relyingPartyOverrides_signAssertion-group']/div/div/div/label/span/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/div/label/span/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -360,13 +410,6 @@
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
       "value": "Sign Assertion declares that the service provider wants the <saml:Assertion> element to be digitally signed."
-    }, {
-      "id": "5c718136-9eba-46f9-b93b-da820abe2719",
-      "comment": "",
-      "command": "mouseOut",
-      "target": "css=.row:nth-child(1) > .col-12:nth-child(1) > .mb-3:nth-child(1) path:nth-child(1)",
-      "targets": [],
-      "value": ""
     }, {
       "id": "268b3df4-a184-4a39-bec3-70dfc598b073",
       "comment": "",
@@ -385,9 +428,13 @@
       "id": "54a74399-69aa-4412-85c2-a5bbb543d8be",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(11) path:nth-child(1)",
+      "target": "id=info-tooltip.dont-sign-response",
       "targets": [
-        ["css=.row:nth-child(9) path:nth-child(1)", "css:finder"]
+        ["id=info-tooltip.dont-sign-response", "id"],
+        ["css=#info-tooltip\\.dont-sign-response", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.dont-sign-response']", "xpath:attributes"],
+        ["xpath=//div[@id='root_relyingPartyOverrides_dontSignResponse-group']/div/div/div/label/span/button", "xpath:idRelative"],
+        ["xpath=//div[11]/div/div/div/div/div/label/span/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -397,13 +444,6 @@
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
       "value": "Do not sign the full authentication response to the service provider. Enabling this property will reduce the size of the response to service providers who may have limitations to the size of the response."
-    }, {
-      "id": "87036a6f-aebd-4ef1-8cb8-03d082676c03",
-      "comment": "",
-      "command": "mouseOut",
-      "target": "css=.row:nth-child(8) path:nth-child(1)",
-      "targets": [],
-      "value": ""
     }, {
       "id": "31fdddde-2472-4921-950c-ca56555c2d5b",
       "comment": "",
@@ -493,9 +533,13 @@
       "id": "c974e795-454e-4271-86ef-609e3538b28f",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=#root_organization_name-group path",
+      "target": "id=info-tooltip.organization-name",
       "targets": [
-        ["css=#root_organization_name-group path", "css:finder"]
+        ["id=info-tooltip.organization-name", "id"],
+        ["css=#info-tooltip\\.organization-name", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.organization-name']", "xpath:attributes"],
+        ["xpath=//div[@id='root_organization_name-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div/div/div/div/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -522,9 +566,13 @@
       "id": "5b8ce0c5-f2d1-4bca-acb1-c22a3ed02fd7",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.d-empty-none:nth-child(1) > .mb-3:nth-child(2) path",
+      "target": "id=info-tooltip.mdui-information-url",
       "targets": [
-        ["css=.d-empty-none:nth-child(1) > .mb-3:nth-child(2) path", "css:finder"]
+        ["id=info-tooltip.mdui-information-url", "id"],
+        ["css=#info-tooltip\\.mdui-information-url", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.mdui-information-url']", "xpath:attributes"],
+        ["xpath=//div[@id='root_mdui_informationUrl-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -551,9 +599,14 @@
       "id": "013648f1-be7a-4fbf-a5c4-07482ca9fc96",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.ms-2 > path",
+      "target": "id=info-tooltip.protocol-support-enumeration",
       "targets": [
-        ["css=.ms-2 > path", "css:finder"]
+        ["id=info-tooltip.protocol-support-enumeration", "id"],
+        ["css=#info-tooltip\\.protocol-support-enumeration", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.protocol-support-enumeration']", "xpath:attributes"],
+        ["xpath=//div[@id='root_serviceProviderSsoDescriptor_protocolSupportEnum-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//label/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Description')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -593,9 +646,13 @@
       "id": "825b4bb3-e40e-4b02-a053-5f8e15b9b672",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=#root_logoutEndpoints_0_url-group .info-icon path",
+      "target": "id=info-tooltip.url",
       "targets": [
-        ["css=#root_logoutEndpoints_0_url-group .info-icon path", "css:finder"]
+        ["id=info-tooltip.url", "id"],
+        ["css=#info-tooltip\\.url", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.url']", "xpath:attributes"],
+        ["xpath=//div[@id='root_logoutEndpoints_0_url-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -637,9 +694,13 @@
       "id": "84415564-f9d8-4b75-a6cf-5c269cb8eb9f",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3:nth-child(2) path",
+      "target": "id=info-tooltip.want-assertions-signed",
       "targets": [
-        ["css=.mb-3:nth-child(2) path", "css:finder"]
+        ["id=info-tooltip.want-assertions-signed", "id"],
+        ["css=#info-tooltip\\.want-assertions-signed", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.want-assertions-signed']", "xpath:attributes"],
+        ["xpath=//div[@id='root_securityInfo_wantAssertionsSigned-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -681,9 +742,13 @@
       "id": "ff8f4f9f-0832-4a08-910d-778156869d6a",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.mb-3 > .form-label > .btn path",
+      "target": "id=info-tooltip.assertion-consumer-service-location-binding",
       "targets": [
-        ["css=.mb-3 > .form-label > .btn path", "css:finder"]
+        ["id=info-tooltip.assertion-consumer-service-location-binding", "id"],
+        ["css=#info-tooltip\\.assertion-consumer-service-location-binding", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.assertion-consumer-service-location-binding']", "xpath:attributes"],
+        ["xpath=//div[@id='root_assertionConsumerServices_0_binding-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -721,9 +786,13 @@
       "id": "2928ba27-b934-499e-8dda-8441dbbb463d",
       "comment": "",
       "command": "mouseOver",
-      "target": "css=.row:nth-child(10) path:nth-child(1)",
+      "target": "id=info-tooltip.force-authn",
       "targets": [
-        ["css=.row:nth-child(8) path:nth-child(1)", "css:finder"]
+        ["id=info-tooltip.force-authn", "id"],
+        ["css=#info-tooltip\\.force-authn", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.force-authn']", "xpath:attributes"],
+        ["xpath=//div[@id='root_relyingPartyOverrides_forceAuthn-group']/div/div/div/label/span/button", "xpath:idRelative"],
+        ["xpath=//div[10]/div/div/div/div/div/label/span/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -732,7 +801,11 @@
       "command": "assertText",
       "target": "css=div[role=\"tooltip\"]",
       "targets": [
-        ["css=.row:nth-child(1) > .col-12 .btn > .svg-inline--fa", "css:finder"]
+        ["id=info-tooltip.force-authn", "id"],
+        ["css=#info-tooltip\\.force-authn", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.force-authn']", "xpath:attributes"],
+        ["xpath=//div[@id='root_relyingPartyOverrides_forceAuthn-group']/div/div/div/label/span/button", "xpath:idRelative"],
+        ["xpath=//div[10]/div/div/div/div/div/label/span/button", "xpath:position"]
       ],
       "value": "Disallows use (or reuse) of authentication results and login flows that don't provide a real-time proof of user presence in the login process"
     }, {
