@@ -70,7 +70,7 @@ export default function SourceList({ entities, onDelete, onEnable, onApprove, on
                                                 <span className="d-flex justify-content-center align-items-center">
                                                     {onApprove ?
                                                     <Button variant={source.approved ? 'outline-success' : 'outline-primary' }
-                                                        id={`approve-switch-${source.id}`}
+                                                        id={`approve-switch-${idx}`}
                                                         size="sm" className=""
                                                             onClick={() => onApprove(source, !source.approved)}>
                                                                 <span className=" me-1">
@@ -110,8 +110,8 @@ export default function SourceList({ entities, onDelete, onEnable, onApprove, on
                                                 <td className="align-middle">
                                                     <label htmlFor={`group-${source.serviceProviderName}`} className="sr-only"><Translate value="action.source-group">Group</Translate></label>
                                                     <Form.Select
-                                                        id={`group-${source.id}`}
-                                                        name={`group-${source.id}`}
+                                                        id={`group-${idx}`}
+                                                        name={`group-${idx}`}
                                                         className="form-control"
                                                         onChange={(event) => onChangeGroup({source, group: event.target.value})}
                                                         value={source.idOfOwner ? source.idOfOwner : ''}
@@ -135,6 +135,7 @@ export default function SourceList({ entities, onDelete, onEnable, onApprove, on
                                                         <span className="d-inline-block">
                                                             <Button variant="danger" size="sm"
                                                                 type="button"
+                                                                id={`delete-${idx}`}
                                                                 disabled={source.serviceEnabled}
                                                                 onClick={() => onDelete(source.id, onDelete)}>
                                                                 <span className="sr-only">Delete</span>

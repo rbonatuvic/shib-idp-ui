@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -50,6 +51,7 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
 
     @Getter
     @Setter
+    @Column(columnDefinition = "boolean default true") // this is true for migration reasons, but the java will default false
     private boolean approved;
 
     @OneToOne(cascade = CascadeType.ALL)

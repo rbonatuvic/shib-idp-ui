@@ -39,7 +39,7 @@ public class EntityDescriptorProjection {
         this.serviceEnabled = serviceEnabled;
         this.idOfOwner = idOfOwner;
         this.protocol = edp == null ? EntityDescriptorProtocol.SAML : edp;
-        this.approved = approved;
+        this.approved = approved || serviceEnabled;
     }
 
     public String getEntityID() {
