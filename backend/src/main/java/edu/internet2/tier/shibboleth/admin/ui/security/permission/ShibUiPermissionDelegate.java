@@ -63,7 +63,7 @@ public class ShibUiPermissionDelegate implements IShibUiPermissionEvaluator {
                 if (!hasPermission(ignored, null, PermissionType.admin)) {
                     throw new ForbiddenException();
                 }
-                dynamicRegistrationInfoRepository.getDynamicRegistrationsNeedingEnabling();
+                return dynamicRegistrationInfoRepository.getDynamicRegistrationsNeedingEnabling();
             case fetch:
                 return getAllDynamicRegistrationInfoObjectsBasedOnUserAccess();
             }
