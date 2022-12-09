@@ -1,7 +1,7 @@
 package jp.vmi.selenium.selenese;
 
+import com.assertthat.selenium_shutterbug.core.Capture;
 import com.assertthat.selenium_shutterbug.core.Shutterbug;
-import com.assertthat.selenium_shutterbug.utils.web.ScrollStrategy;
 import jp.vmi.html.result.HtmlResult;
 import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.JUnitResult;
@@ -223,7 +223,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
                 Map<?, ?> initialCoord = (Map<?, ?>) je.executeScript(getScrollCoord);
 
-                Shutterbug.shootPage((WebDriver) tss, ScrollStrategy.BOTH_DIRECTIONS, screenshotScrollTimeout)
+                Shutterbug.shootPage((WebDriver) tss, Capture.FULL_SCROLL, screenshotScrollTimeout)
                         .withName(FilenameUtils.removeExtension(tmp.getName()))
                         .save(dir.getPath());
 
@@ -455,7 +455,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     @Override
     public boolean isW3cAction() {
-        return isW3cAction != null ? isW3cAction : MouseUtils.isW3cAction(getBrowserName());
+        return isW3cAction != null ? isW3cAction : MouseUtils.isW3cAction(driver);
     }
 
     /**
@@ -846,7 +846,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      * Setup MaxTimeActiveTimer.
      * @param maxTime the maxTime in milliseconds.
      */
-    void setupMaxTimeTimer(long maxTime) {
+    public void setupMaxTimeTimer(long maxTime) {
         this.maxTimeTimer = new MaxTimeActiveTimer(maxTime);
     }
 }
