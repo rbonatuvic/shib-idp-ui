@@ -1,33 +1,15 @@
 import React from 'react';
-import useFetch from 'use-http';
 import UserManagement from '../../admin/container/UserManagement';
 import UserMaintenance from '../../admin/component/UserMaintenance';
-import API_BASE_PATH from '../../App.constant';
 
 import Translate from '../../i18n/components/translate';
 import Spinner from '../../core/components/Spinner';
+import { useGetUsersQuery } from '../../store/user/UserSlice';
 
 export function AdminTab () {
 
-    const [users, setUsers] = React.useState([]);
+    const { data: users = [], isFetching: loading } = useGetUsersQuery();
 
-    const { get, response, loading } = useFetch(`${API_BASE_PATH}/admin/users`, {
-        cachePolicy: 'no-cache'
-    }, []);
-
-    async function loadUsers() {
-        const users = await get('')
-        if (response.ok) {
-            setUsers(users);
-        }
-    }
-
-    /*eslint-disable react-hooks/exhaustive-deps*/
-    React.useEffect(() => {
-        loadUsers();
-    }, []);
-
-    
     return (
         <section className="section">
             <div className="section-body border border-top-0 border-primary">
@@ -39,7 +21,7 @@ export function AdminTab () {
                     </div>
                 </div>
                 <div className="p-3">
-                    <UserManagement users={users} reload={loadUsers}>
+                    <UserManagement users={users}>
                         {(u, roles, onChangeUserRole, onChangeUserGroup, onDeleteUser, loading) =>
                             <UserMaintenance users={ u }
                                 roles={roles}

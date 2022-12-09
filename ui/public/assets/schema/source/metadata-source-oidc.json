@@ -5,7 +5,8 @@
         "protocol": {
             "title": "label.source-protocol",
             "description": "tooltip.source-protocol",
-            "type": "string"
+            "type": "string",
+            "default": "oidc"
         },
         "serviceProviderName": {
             "title": "label.service-provider-name",
@@ -36,6 +37,7 @@
         "mdui": { "$ref": "#/definitions/MDUI" },
         "securityInfo": {
             "type": "object",
+            "widget": { "id": "fieldset" },
             "dependencies": {
                 "authenticationRequestsSigned": {
                     "oneOf": [
@@ -44,7 +46,7 @@
                                 "authenticationRequestsSigned": {
                                     "enum": [true]
                                 },
-                                "keyDescriptors": { "minItems": 1 }
+                                "x509Certificates": { "minItems": 1 }
                             }
                         },
                         {
@@ -52,13 +54,14 @@
                                 "authenticationRequestsSigned": {
                                     "enum": [false]
                                 },
-                                "keyDescriptors": { "minItems": 0 }
+                                "x509Certificates": { "minItems": 0 }
                             }
                         }
                     ]
                 }
             },
             "properties": {
+                "x509CertificateAvailable": { "type": "boolean" },
                 "authenticationRequestsSigned": {
                     "title": "label.authentication-requests-signed",
                     "description": "tooltip.authentication-requests-signed",
@@ -93,16 +96,7 @@
                     "description": "tooltip.protocol-support-enumeration",
                     "type": "string",
                     "widget": { "id": "select" },
-                    "oneOf": [
-                        { "enum": ["SAML 2"], "description": "SAML 2" },
-                        { "enum": ["SAML 1.1"], "description": "SAML 1.1" },
-                        {
-                            "enum": [
-                                "http://openid.net/specs/openid-connect-core-1_0.html"
-                            ],
-                            "description": "OIDC"
-                        }
-                    ]
+                    "default": "http://openid.net/specs/openid-connect-core-1_0.html"
                 },
                 "nameIdFormats": { "$ref": "#/definitions/nameIdFormats" },
                 "extensions": {
@@ -116,33 +110,25 @@
                                     "title": "label.post-logout-redirect-uris",
                                     "description": "tooltip.post-logout-redirect-uris",
                                     "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
+                                    "items": { "type": "string" }
                                 },
                                 "defaultAcrValues": {
                                     "title": "label.default-acr-values",
                                     "description": "tooltip.default-acr-values",
                                     "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
+                                    "items": { "type": "string" }
                                 },
                                 "requestUris": {
                                     "title": "label.request-uris",
                                     "description": "tooltip.request-uris",
                                     "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
+                                    "items": { "type": "string" }
                                 },
                                 "audiences": {
                                     "title": "label.audience",
                                     "description": "tooltip.audience",
                                     "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
+                                    "items": { "type": "string" }
                                 },
                                 "attributes": {
                                     "type": "object",
@@ -274,20 +260,223 @@
         "relyingPartyOverrides": {
             "type": "object",
             "properties": {
+                "authorizationCodeFlowEnabled": {
+                    "title": "label.authorizationCodeFlowEnabled",
+                    "description": "tooltip.authorizationCodeFlowEnabled",
+                    "type": "boolean",
+                    "default": true
+                },
+                "alwaysIncludedAttributesToken": {
+                    "title": "label.alwaysIncludedAttributes.token",
+                    "description": "tooltip.alwaysIncludedAttributes.token",
+                    "type": "string"
+                },
+                "encryptionOptional": {
+                    "title": "label.encryptionOptional",
+                    "description": "tooltip.encryptionOptional",
+                    "type": "boolean",
+                    "default": true
+                },
+                "proxyCount": {
+                    "title": "label.proxyCount",
+                    "description": "tooltip.proxyCount",
+                    "type": "integer"
+                },
+                "refreshTokenLifetimeOidc": {
+                    "title": "label.refreshTokenLifetime.oidc",
+                    "description": "tooltip.refreshTokenLifetime.oidc",
+                    "type": "string",
+                    "default": "PT2H"
+                },
+                "acrRequestAlwaysEssential": {
+                    "title": "label.acrRequestAlwaysEssential",
+                    "description": "tooltip.acrRequestAlwaysEssential",
+                    "type": "boolean",
+                    "default": false
+                },
+                "authorizeCodeLifetime": {
+                    "title": "label.authorizeCodeLifetime",
+                    "description": "tooltip.authorizeCodeLifetime",
+                    "type": "string",
+                    "default": "PT5M"
+                },
+                "useSha": {
+                    "title": "label.use-sha1-signing-algorithm",
+                    "description": "tooltip.usa-sha-algorithm",
+                    "type": "boolean",
+                    "default": false
+                },
+                "deniedUserInfoAttributes": {
+                    "title": "label.deniedUserInfoAttributes",
+                    "description": "tooltip.deniedUserInfoAttributes",
+                    "type": "string"
+                },
                 "signAssertion": {
                     "title": "label.sign-the-assertion",
                     "description": "tooltip.sign-assertion",
                     "type": "boolean",
                     "default": false
                 },
+                "accessTokenTypeOauth": {
+                    "title": "label.accessTokenType.oauth",
+                    "description": "tooltip.accessTokenType.oauth",
+                    "type": "string"
+                },
+                "forcePKCEOidc": {
+                    "title": "label.forcePKCE.oidc",
+                    "description": "tooltip.forcePKCE.oidc",
+                    "type": "boolean",
+                    "default": false
+                },
+                "inboundInterceptorFlows": {
+                    "title": "label.inboundInterceptorFlows",
+                    "description": "tooltip.inboundInterceptorFlows",
+                    "type": "string"
+                },
+                "enforceRefreshTokenRotation": {
+                    "title": "label.enforceRefreshTokenRotation",
+                    "description": "tooltip.enforceRefreshTokenRotation",
+                    "type": "boolean",
+                    "default": false
+                },
+                "IDTokenLifetime": {
+                    "title": "label.IDTokenLifetime",
+                    "description": "tooltip.IDTokenLifetime",
+                    "type": "string",
+                    "default": "PT1H"
+                },
+                "authenticationMethods": {
+                    "$ref": "#/definitions/authenticationMethods"
+                },
+                "resolveAttributesOauth": {
+                    "title": "label.resolveAttributes.oauth",
+                    "description": "tooltip.resolveAttributes.oauth",
+                    "type": "boolean",
+                    "default": true
+                },
+                "encodedAttributes": {
+                    "title": "label.encodedAttributes",
+                    "description": "tooltip.encodedAttributes",
+                    "type": "string"
+                },
+                "accessTokenLifetimeOauth": {
+                    "title": "label.accessTokenLifetime.oauth",
+                    "description": "tooltip.accessTokenLifetime.oauth",
+                    "type": "string",
+                    "default": "PT10M"
+                },
+                "allowPKCEPlainOauth": {
+                    "title": "label.allowPKCEPlain.oauth",
+                    "description": "tooltip.allowPKCEPlain.oauth",
+                    "type": "boolean",
+                    "default": false
+                },
+                "encodeConsentInTokens": {
+                    "title": "label.encodeConsentInTokens",
+                    "description": "tooltip.encodeConsentInTokens",
+                    "type": "boolean",
+                    "default": false
+                },
+                "postAuthenticationFlows": {
+                    "title": "label.postAuthenticationFlows",
+                    "description": "tooltip.postAuthenticationFlows",
+                    "type": "string"
+                },
+                "accessTokenLifetimeOidc": {
+                    "title": "label.accessTokenLifetime.oidc",
+                    "description": "tooltip.accessTokenLifetime.oidc",
+                    "type": "string",
+                    "default": "PT10M"
+                },
+                "ignoreAuthenticationMethod": {
+                    "title": "label.ignore-any-sp-requested-authentication-method",
+                    "description": "tooltip.ignore-auth-method",
+                    "type": "boolean",
+                    "default": false
+                },
+                "refreshTokensEnabled": {
+                    "title": "label.refreshTokensEnabled",
+                    "description": "tooltip.refreshTokensEnabled",
+                    "type": "boolean",
+                    "default": true
+                },
+                "omitNotBefore": {
+                    "title": "label.omit-not-before-condition",
+                    "description": "tooltip.omit-not-before-condition",
+                    "type": "boolean",
+                    "default": false
+                },
+                "IDTokenLifetimeBrowser": {
+                    "title": "label.IDTokenLifetime.browser",
+                    "description": "tooltip.IDTokenLifetime.browser",
+                    "type": "string",
+                    "default": "PT1H"
+                },
+                "revocationMethod": {
+                    "$ref": "#/definitions/revocationMethod"
+                },
+                "resolveAttributesOIDC": {
+                    "title": "label.resolveAttributes.oidc",
+                    "description": "tooltip.resolveAttributes.oidc",
+                    "type": "boolean",
+                    "default": false
+                },
+                "allowPKCEPlainOidc": {
+                    "title": "label.allowPKCEPlain.oidc",
+                    "description": "tooltip.allowPKCEPlain.oidc",
+                    "type": "boolean",
+                    "default": false
+                },
+                "accessTokenTypeOidc": {
+                    "title": "label.accessTokenType.oidc",
+                    "description": "tooltip.accessTokenType.oidc",
+                    "type": "string"
+                },
+                "deniedUserInfoAttributesBrowser": {
+                    "title": "label.deniedUserInfoAttributes.browser",
+                    "description": "tooltip.deniedUserInfoAttributes.browser",
+                    "type": "string"
+                },
+                "hybridFlowEnabled": {
+                    "title": "label.hybridFlowEnabled",
+                    "description": "tooltip.hybridFlowEnabled",
+                    "type": "boolean",
+                    "default": true
+                },
+                "tokenEndpointAuthMethods": {
+                    "title": "label.tokenEndpointAuthMethods",
+                    "description": "tooltip.tokenEndpointAuthMethods",
+                    "type": "string",
+                    "default": "client_secret_basic, client_secret_post, client_secret_jwt, private_key_jwt"
+                },
+                "revocationLifetime": {
+                    "title": "label.revocationLifetime",
+                    "description": "tooltip.revocationLifetime",
+                    "type": "string",
+                    "default": "PT6H"
+                },
+                "alwaysIncludedAttributesBrowser": {
+                    "title": "label.alwaysIncludedAttributes.browser",
+                    "description": "tooltip.alwaysIncludedAttributes.browser",
+                    "type": "string"
+                },
                 "nameIdFormats": { "$ref": "#/definitions/nameIdFormats" },
+                "implicitFlowEnabled": {
+                    "title": "label.implicitFlowEnabled",
+                    "description": "tooltip.implicitFlowEnabled",
+                    "type": "boolean",
+                    "default": true
+                },
                 "responderId": {
                     "title": "label.responder-id",
                     "description": "tooltip.responder-id",
                     "type": "string"
                 },
-                "authenticationMethods": {
-                    "$ref": "#/definitions/authenticationMethods"
+                "grantTypes": {
+                    "title": "label.grantTypes",
+                    "description": "tooltip.grantTypes",
+                    "type": "string",
+                    "default": "authorization_code, refresh_token"
                 },
                 "ignoreRequestSignatures": {
                     "title": "label.ignore-request-signatures",
@@ -301,9 +490,21 @@
                     "type": "boolean",
                     "default": false
                 },
+                "includeIssuerInResponse": {
+                    "title": "label.includeIssuerInResponse",
+                    "description": "tooltip.includeIssuerInResponse",
+                    "type": "boolean",
+                    "default": false
+                },
                 "forceAuthn": {
                     "title": "label.force-authn",
                     "description": "tooltip.force-authn",
+                    "type": "boolean",
+                    "default": false
+                },
+                "forcePKCEOauth": {
+                    "title": "label.forcePKCE.oauth",
+                    "description": "tooltip.forcePKCE.oauth",
                     "type": "boolean",
                     "default": false
                 },
@@ -313,23 +514,16 @@
                     "type": "boolean",
                     "default": false
                 },
-                "ignoreAuthenticationMethod": {
-                    "title": "label.ignore-any-sp-requested-authentication-method",
-                    "description": "tooltip.ignore-auth-method",
-                    "type": "boolean",
-                    "default": false
+                "outboundInterceptorFlows": {
+                    "title": "label.outboundInterceptorFlows",
+                    "description": "tooltip.outboundInterceptorFlows",
+                    "type": "string"
                 },
-                "useSha": {
-                    "title": "label.use-sha1-signing-algorithm",
-                    "description": "tooltip.usa-sha-algorithm",
-                    "type": "boolean",
-                    "default": false
-                },
-                "omitNotBefore": {
-                    "title": "label.omit-not-before-condition",
-                    "description": "tooltip.omit-not-before-condition",
-                    "type": "boolean",
-                    "default": false
+                "refreshTokenLifetimeOauth": {
+                    "title": "label.refreshTokenLifetime.oauth",
+                    "description": "tooltip.refreshTokenLifetime.oauth",
+                    "type": "string",
+                    "default": "PT2H"
                 }
             }
         },
@@ -426,13 +620,7 @@
                     "title": "label.element-type",
                     "description": "tooltip.element-type",
                     "type": "string",
-                    "enum": [
-                        "X509Data",
-                        "jwksUri",
-                        "jwksData",
-                        "clientSecret",
-                        "clientSecretRef"
-                    ]
+                    "enum": ["X509Data", "jwksUri", "jwksData"]
                 },
                 "type": {
                     "title": "label.certificate-type",
@@ -514,7 +702,7 @@
                             "enum": [
                                 "https://tools.ietf.org/html/rfc6749#section-3.1.2"
                             ],
-                            "description": "https://tools.ietf.org/html/rfc6749#section-3.1.2"
+                            "description": "OIDC / OAUTH Binding"
                         }
                     ]
                 },
@@ -672,6 +860,35 @@
                 "url": { "required": ["name", "displayName"] }
             }
         },
+        "authenticationMethods": {
+            "title": "label.authentication-methods-to-use",
+            "description": "tooltip.authentication-methods-to-use",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "examples": [
+                    "https://refeds.org/profile/mfa",
+                    "urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken",
+                    "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
+                ]
+            }
+        },
+        "revocationMethod": {
+            "title": "label.revocationMethod",
+            "description": "tooltip.revocationMethod",
+            "type": "array",
+            "uniqueItems": false,
+            "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "enum": ["CHAIN", "TOKEN"],
+                "default": "CHAIN"
+            }
+        },
         "nameIdFormats": {
             "title": "label.nameid-format-to-send",
             "description": "tooltip.nameid-format",
@@ -686,22 +903,6 @@
                     "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
                     "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
                     "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
-                ]
-            }
-        },
-        "authenticationMethods": {
-            "title": "label.authentication-methods-to-use",
-            "description": "tooltip.authentication-methods-to-use",
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 255,
-                "examples": [
-                    "https://refeds.org/profile/mfa",
-                    "urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken",
-                    "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
                 ]
             }
         }

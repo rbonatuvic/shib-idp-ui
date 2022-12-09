@@ -12,7 +12,7 @@ export function NotificationItem ({ type, body, timeout, id, onRemove }) {
     }, [timeout, id, onRemove]);
 
     return (
-        <Alert variant={type} onClose={() => onRemove(id)}>
+        <Alert variant={type} onClose={() => onRemove(id)} className="notification-item">
             {body}
         </Alert>
     )

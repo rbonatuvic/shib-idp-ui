@@ -15,8 +15,17 @@ export function MetadataDetail ({ children }) {
                     <nav aria-label="breadcrumb">
                         <ol className="breadcrumb breadcrumb-bar">
                             <li className="breadcrumb-item">
-                                <Link to="/dashboard"><Translate value="action.dashboard">Dashboard</Translate></Link>
+                                <Link to="/dashboard" id="dashboard-breadcrumb"><Translate value="action.dashboard">Dashboard</Translate></Link>
                             </li>
+                            {metadata.serviceProviderName ? 
+                            <li className="breadcrumb-item">
+                                <Link to="/dashboard/metadata/manager/resolvers" id="source-breadcrumb"><Translate value="action.metadata-sources">Metadata Sources</Translate></Link>
+                            </li>
+                            :
+                            <li className="breadcrumb-item">
+                                <Link to="/dashboard/metadata/manager/providers" id="provider-breadcrumb"><Translate value="action.metadata-providers">Metadata Providers</Translate></Link>
+                            </li>
+                            }
                             <li className="breadcrumb-item active" aria-current="page">
                                 <span className="">
                                     { metadata.serviceProviderName || metadata.name }

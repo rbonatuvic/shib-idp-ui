@@ -1,13 +1,14 @@
 import React from 'react';
 import { useConfigurations } from '../hooks';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
 import { useTranslator } from '../../i18n/hooks';
+import { useDispatch } from 'react-redux';
 
 export function ConfigurationsProvider({ children, cache = 'no-cache' }) {
 
     const [configurations, setConfigurations] = React.useState([]);
 
-    const notifier = useNotificationDispatcher();
+    const notifier = useDispatch();
     const translator = useTranslator();
 
     const { get, del, response, loading } = useConfigurations({

@@ -1,11 +1,11 @@
 import React from 'react';
-
+import { useDispatch } from 'react-redux';
 import { Prompt, useHistory, useParams } from 'react-router-dom';
 import Translate from '../../i18n/components/translate';
 import { useConfiguration } from '../hooks';
 import { ConfigurationForm } from '../component/ConfigurationForm';
 
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
 import { useTranslator } from '../../i18n/hooks';
 import { PropertiesProvider } from '../hoc/PropertiesProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +13,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 export function EditConfiguration({ configurations }) {
     const history = useHistory();
-    const notifier = useNotificationDispatcher();
+    const notifier = useDispatch();
     const translator = useTranslator();
     const { id } = useParams();
 

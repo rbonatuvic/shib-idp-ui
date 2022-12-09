@@ -9,14 +9,15 @@ import { useTranslator } from '../../i18n/hooks';
 
 export function InfoIcon ({ value = '', placement='auto', ...props }) {
     const translate = useTranslator();
+
     return(
         <OverlayTrigger trigger={['hover', 'focus', 'click']} placement={placement} overlay={(
-            <Popover variant="info">
+            <Popover variant="info" id={value}>
                 <Popover.Body><Translate value={value} /></Popover.Body>
             </Popover>
         )}
         aria-label={translate('tooltip.instruction')}>
-            <Button variant="text" className="info-icon">
+            <Button variant="text" className="info-icon" id={`info-${value}`}>
                 <span className="sr-only">Description</span>
                 <FontAwesomeIcon className="text-primary" icon={faInfoCircle} size="lg" {...props} />
             </Button>

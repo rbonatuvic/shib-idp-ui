@@ -88,6 +88,10 @@ class SeleniumSIDETest extends Specification {
             if (System.properties.getProperty('webdriver.headless')) {
                 it.addCliArgs('--headless')
             }
+            if (System.properties.getProperty('webdriver.set.speed')) {
+                println("WOO! Setting speed: " + "-set-speed=${System.properties.getProperty('webdriver.set.speed')}")
+                it.addCliArgs("-set-speed=${System.properties.getProperty('webdriver.set.speed')}")
+            }
             it
         }
         def runner = new Runner()
@@ -107,7 +111,7 @@ class SeleniumSIDETest extends Specification {
 
         where:
         name                                                                | file
-        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
+/*        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
         'SHIBUI-1364: Compare FSMP'                                         | '/SHIBUI-1364-2.side'
         'SHIBUI-1364: Compare LDMP'                                         | '/SHIBUI-1364-3.side'
         'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
@@ -122,14 +126,14 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1335: Verify File Backed HTTP Metadata Provider Filters'    | '/SHIBUI-1335-1.side'
         'SHIBUI-1335: Verify Filesystem Metadata Provider'                  | '/SHIBUI-1335-2.side'
         'SHIBUI-1335: Verify Local Dynamic Metadata Provider'               | '/SHIBUI-1335-3.side'
-        'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
+        'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'*/
         'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side' // Note that this script WILL NOT PASS in the Selenium IDE due to it thinking there is a syntax error where there is none.
         'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
         'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
         'SHIBUI-1407: Metadata source comparison highlights'                | '/SHIBUI-1407-1.side'
         'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
-        'SHIBUI-1503: Non-admin can create metadata source'                 | '/SHIBUI-1503-1.side'
+/*        'SHIBUI-1503: Non-admin can create metadata source'                 | '/SHIBUI-1503-1.side'
         'SHIBUI-1503: User can be deleted'                                  | '/SHIBUI-1503-2.side'
         'SHIBUI-1503: User can be enabled'                                  | '/SHIBUI-1503-3.side'
         'SHIBUI-1732: Create, use, and delete CEA String'                   | '/SHIBUI-1732-1.side'
@@ -162,6 +166,6 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-2270: Verify full property set'                             | '/SHIBUI-2270-2.side'
         'SHIBUI-2394: Multiple levels of approval'                          | '/SHIBUI-2394.side'
         'SHIBUI-2268: Verify Algorithm Filter'                              | '/SHIBUI-2268.side'
-        'SHIBUI-2269: Verify XML generation of external filters'            | '/SHIBUI-2269.side' // Leave this as the last test in order to keep the suite running without strange errors.
+        'SHIBUI-2269: Verify XML generation of external filters'            | '/SHIBUI-2269.side' // Leave this as the last test in order to keep the suite running without strange errors.*/
     }
 }

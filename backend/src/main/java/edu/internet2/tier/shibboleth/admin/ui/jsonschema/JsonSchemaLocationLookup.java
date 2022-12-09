@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.jsonschema;
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ALGORITHM_FILTER;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.DYNAMIC_HTTP_METADATA_RESOLVER;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.DYNAMIC_REGISTRATION;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.EXTERNAL_METADATA_RESOLVER;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.FILESYSTEM_METADATA_RESOLVER;
@@ -131,5 +132,16 @@ public abstract class JsonSchemaLocationLookup {
     public static JsonSchemaResourceLocation algorithmFilterSchema(JsonSchemaResourceLocationRegistry resourceLocationRegistry) {
         return resourceLocationRegistry.lookup(ALGORITHM_FILTER)
                         .orElseThrow(() -> new IllegalStateException("JSON schema resource location for algorithm filter is not registered."));
+    }
+
+    /**
+     * Searches algorithm filter JSON schema resource location object in the given location registry.
+     *
+     * @param resourceLocationRegistry
+     * @return algorithm filter JSON schema resource location object
+     * @throws IllegalStateException if schema is not found in the given registry
+     */
+    public static JsonSchemaResourceLocation dynamicRegistrationSchema(JsonSchemaResourceLocationRegistry resourceLocationRegistry) {
+        return resourceLocationRegistry.lookup(DYNAMIC_REGISTRATION).orElseThrow(() -> new IllegalStateException("JSON schema resource location for dynamic registration is not registered."));
     }
 }

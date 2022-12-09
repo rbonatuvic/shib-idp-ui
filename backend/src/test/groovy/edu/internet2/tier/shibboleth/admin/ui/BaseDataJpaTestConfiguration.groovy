@@ -14,6 +14,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdat
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener
 import edu.internet2.tier.shibboleth.admin.ui.security.permission.IShibUiPermissionEvaluator
 import edu.internet2.tier.shibboleth.admin.ui.security.permission.ShibUiPermissionDelegate
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.DynamicRegistrationInfoRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
@@ -110,7 +111,7 @@ class BaseDataJpaTestConfiguration {
     }
 
     @Bean
-    public IShibUiPermissionEvaluator shibUiPermissionEvaluator(EntityDescriptorRepository entityDescriptorRepository, UserService userService) {
-        return new ShibUiPermissionDelegate(entityDescriptorRepository, userService);
+    public IShibUiPermissionEvaluator shibUiPermissionEvaluator(DynamicRegistrationInfoRepository driRepo, EntityDescriptorRepository entityDescriptorRepository, UserService userService) {
+        return new ShibUiPermissionDelegate(driRepo, entityDescriptorRepository, userService);
     }
 }

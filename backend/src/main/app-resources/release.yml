@@ -35,7 +35,7 @@
 
 custom:
   attributes:
-  # Default attributes
+    # Default attributes
     - name: eduPersonPrincipalName
       displayName: label.attribute-eduPersonPrincipalName
     - name: uid
@@ -62,26 +62,26 @@ custom:
       displayName: label.attribute-employeeNumber
   # Custom attributes
 
-# The following contains a map of "relying party overrides".
-# The structure of an entry is as follows:
-# - name: The name of the entry. used to uniquely identify this entry.
-#   displayName: This will normally be the label used when displaying this override in the UI
-#   displayType: The type to use when displaying this option
-#   helpText: This is the help-icon hover-over text
-#   defaultValues: One or more values to be displayed as default options in the UI
-#   persistType: Optional. If it is necessary to persist something different than the override's display type,
-#                set that type here. For example, display a boolean, but persist a string.
-#   persistValue: Required only when persistType is used. Defines the value to be persisted.
-#   attributeName: This is the name of the attribute to be used in the xml. This is assumed to be a URI.
-#   attributeFriendlyName: This is the friendly name associated with the above attributeName.
-#
-# It is imperative when defining these that the "displayType" and "persistType" are known types.
-# Typos or unsupported values here will result in that override being skipped!
-# Supported types are as follows: boolean, integer, string, set, list
-# Note that "persistType" doesn't have to match "displayType". However, the only unmatching combination currently
-# supported is a "displayType" of "boolean" and "persistType" of "string".
+  # The following contains a map of "relying party overrides".
+  # The structure of an entry is as follows:
+  # - name: The name of the entry. used to uniquely identify this entry.
+  #   displayName: This will normally be the label used when displaying this override in the UI
+  #   displayType: The type to use when displaying this option
+  #   helpText: This is the help-icon hover-over text
+  #   defaultValues: One or more values to be displayed as default options in the UI
+  #   persistType: Optional. If it is necessary to persist something different than the override's display type,
+  #                set that type here. For example, display a boolean, but persist a string.
+  #   persistValue: Required only when persistType is used. Defines the value to be persisted.
+  #   attributeName: This is the name of the attribute to be used in the xml. This is assumed to be a URI.
+  #   attributeFriendlyName: This is the friendly name associated with the above attributeName.
+  #
+  # It is imperative when defining these that the "displayType" and "persistType" are known types.
+  # Typos or unsupported values here will result in that override being skipped!
+  # Supported types are as follows: boolean, integer, string, set, list
+  # Note that "persistType" doesn't have to match "displayType". However, the only unmatching combination currently
+  # supported is a "displayType" of "boolean" and "persistType" of "string".
   overrides:
-  # Default overrides
+    # Default overrides
     - name: signAssertion
       displayName: label.sign-the-assertion
       displayType: boolean
@@ -167,6 +167,17 @@ custom:
       helpText: tooltip.ignore-request-signatures
       attributeName: http://shibboleth.net/ns/profiles/ignoreRequestSignatures
       attributeFriendlyName: ignoreRequestSignatures
+    - name: postAuthenticationFlows
+      attributeFriendlyName: postAuthenticationFlows
+      displayName: label.postAuthenticationFlows
+      helpText: tooltip.postAuthenticationFlows
+      displayType: selection_list
+      defaultValues:
+        - attribute-release
+        - expiring-password
+        - terms-of-use
+      attributeName: http://shibboleth.net/ns/profiles/postAuthenticationFlows"
+      protocol: saml,oidc
     - name: inboundInterceptorFlows
       attributeFriendlyName: inboundInterceptorFlows
       displayName: label.inboundInterceptorFlows
@@ -188,13 +199,6 @@ custom:
       displayType: string
       defaultValue: client_secret_basic, client_secret_post, client_secret_jwt, private_key_jwt
       attributeName: http://shibboleth.net/ns/profiles/tokenEndpointAuthMethods
-      protocol: oidc
-    - name: postAuthenticationFlows
-      attributeFriendlyName: postAuthenticationFlows
-      displayName: label.postAuthenticationFlows
-      helpText: tooltip.postAuthenticationFlows
-      displayType: string
-      attributeName: http://shibboleth.net/ns/profiles/postAuthenticationFlows
       protocol: oidc
     - name: proxyCount
       attributeFriendlyName: proxyCount

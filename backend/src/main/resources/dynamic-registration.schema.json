@@ -1,0 +1,100 @@
+{
+  "type": "object",
+  "required": [
+    "redirectUris",
+    "name"
+  ],
+  "properties": {
+    "name": {
+      "title": "label.dynamic-registration-name",
+      "description": "tooltip.dynamic-registration-name",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "redirectUris": {
+      "title": "label.dynamic-registration-redirectUris",
+      "description": "tooltip.dynamic-registration-redirectUris",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "approved": {
+      "title": "label.approved",
+      "description": "tooltip.approved",
+      "type": "boolean"
+    },
+    "enabled": {
+      "title": "label.enabled",
+      "description": "tooltip.enabled",
+      "type": "boolean"
+    },
+    "applicationType": {
+      "title": "label.dynamic-registration-applicationType",
+      "description": "tooltip.dynamic-registration-applicationType",
+      "type": "string"
+    },
+    "contacts": {
+      "title": "label.dynamic-registration-contacts",
+      "description": "tooltip.dynamic-registration-contacts",
+      "type": "string"
+    },
+    "grantType": {
+      "title": "label.dynamic-registration-grantTypes",
+      "description": "tooltip.dynamic-registration-grantTypes",
+      "type": "string",
+      "minLength": 1,
+      "enum": [
+        "authorization_code",
+        "implicit",
+        "refresh_token"
+      ],
+      "enumNames": [
+        "value.authorization-code",
+        "value.implicit",
+        "value.refresh-token"
+      ]
+    },
+    "jwks": {
+      "title": "label.dynamic-registration-jwks",
+      "description": "tooltip.dynamic-registration-jwks",
+      "type": "string",
+      "maxLength": 4000
+    },
+    "logoUri": {
+      "title": "label.dynamic-registration-logo-uri",
+      "description": "tooltip.dynamic-registration-logo-uri",
+      "type": "string"
+    },
+    "policyUri": {
+      "title": "label.dynamic-registration-policy-uri",
+      "description": "tooltip.dynamic-registration-policy-uri",
+      "type": "string"
+    },
+    "responseTypes": {
+      "title": "label.dynamic-registration-responseTypes",
+      "description": "tooltip.dynamic-registration-responseTypes",
+      "type": "string"
+    },
+    "scope": {
+      "title": "label.dynamic-registration-scope",
+      "description": "tooltip.dynamic-registration-scope",
+      "type": "string"
+    },
+    "subjectType": {
+      "title": "label.dynamic-registration-subjectType",
+      "description": "tooltip.dynamic-registration-subjectType",
+      "type": "string"
+    },
+    "tokenEndpointAuthMethod": {
+      "title": "label.dynamic-registration-tokenEndpointAuthMethod",
+      "description": "tooltip.dynamic-registration-tokenEndpointAuthMethod",
+      "type": "string"
+    },
+    "tosUri": {
+      "title": "label.dynamic-registration-tosuri",
+      "description": "tooltip.dynamic-registration-tosuri",
+      "type": "string"
+    }
+  }
+}

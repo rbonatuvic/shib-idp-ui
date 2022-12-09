@@ -7,7 +7,22 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes, faUsersCog, faSpinner, faUserCircle, faCog, faBoxOpen, faTags, faIdBadge, faFileLines } from '@fortawesome/free-solid-svg-icons';
+import {
+    faTh,
+    faSignOutAlt,
+    faPlusCircle,
+    faCube,
+    faCubes,
+    faUsersCog,
+    faSpinner,
+    faUserCircle,
+    faCog,
+    faBoxOpen,
+    faTags,
+    faIdBadge,
+    faFileLines
+} from '@fortawesome/free-solid-svg-icons';
+import { faOpenid } from '@fortawesome/free-brands-svg-icons';
 
 import Translate from '../../i18n/components/translate';
 import { useTranslator } from '../../i18n/hooks';
@@ -63,6 +78,10 @@ export function Header () {
                                 <FontAwesomeIcon icon={faCubes} className="me-2" fixedWidth />
                                 <Translate value="action.add-new-provider" />
                             </Dropdown.Item> }
+                            <Dropdown.Item as={Link} to="/dynamic-registration/new" className="text-primary py-2" id="metadata-nav-dropdown-dynreg">
+                                <FontAwesomeIcon icon={faOpenid} className="me-2" fixedWidth />
+                                <Translate value="action.add-new-dynamic-registration" />
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     {isAdmin &&

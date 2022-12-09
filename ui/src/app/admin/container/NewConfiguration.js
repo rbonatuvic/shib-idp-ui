@@ -6,14 +6,15 @@ import { useConfiguration } from '../hooks';
 import { Schema } from '../../form/Schema';
 import { ConfigurationForm } from '../component/ConfigurationForm';
 
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
 import { useTranslator } from '../../i18n/hooks';
 import { BASE_PATH } from '../../App.constant';
 import { PropertiesProvider } from '../hoc/PropertiesProvider';
+import { useDispatch } from 'react-redux';
 
 export function NewConfiguration({ configurations }) {
     const history = useHistory();
-    const notifier = useNotificationDispatcher();
+    const notifier = useDispatch();
     const translator = useTranslator();
 
     const { post, response, loading } = useConfiguration({});

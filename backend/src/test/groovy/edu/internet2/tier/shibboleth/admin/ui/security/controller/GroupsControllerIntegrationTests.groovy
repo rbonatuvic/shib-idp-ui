@@ -9,8 +9,8 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.service.DynamicRegistrationService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,6 +34,9 @@ class GroupsControllerIntegrationTests extends AbstractBaseDataJpaTest {
     GroupsRepository groupsRepository
 
     @Autowired
+    private DynamicRegistrationService dynamicRegistrationService
+
+    @Autowired
     JPAEntityDescriptorServiceImpl service
 
     static RESOURCE_URI = '/api/admin/groups'
@@ -45,6 +48,7 @@ class GroupsControllerIntegrationTests extends AbstractBaseDataJpaTest {
         GroupController groupController = new GroupController().with ({
             it.groupService = this.groupService
             it.entityDescriptorService = this.service
+            it.dynamicRegistrationService = this.dynamicRegistrationService
             it
         })
         mockMvc = MockMvcBuilders.standaloneSetup(groupController).build()

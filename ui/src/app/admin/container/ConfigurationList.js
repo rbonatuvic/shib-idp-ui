@@ -90,24 +90,24 @@ export function ConfigurationList({ configurations, onDelete, loading }) {
                                                         <div className="d-flex justify-content-center">
 
                                                             <OverlayTrigger trigger={['hover', 'focus']} overlay={(
-                                                                <Popover variant="info">
+                                                                <Popover variant="info" id="tooltip.download-single-config">
                                                                     <Popover.Body><Translate value={'tooltip.download-single-config'} /></Popover.Body>
                                                                 </Popover>
                                                             )}
                                                             aria-label={translate('')}>
-                                                                <Button onClick={() => download(c.resourceId, 'single')} variant="link" disabled={downloader.loading}>
+                                                                <Button onClick={() => download(c.resourceId, 'single')} variant="link" disabled={downloader.loading} id="info-tooltip.download-single-config">
                                                                     <FontAwesomeIcon icon={faDownload} />
                                                                     &nbsp; <Translate value="action.download-single-config">Single file</Translate>
                                                                 </Button>
                                                             </OverlayTrigger>
                                                             <div className="vr"></div>
                                                             <OverlayTrigger trigger={['hover', 'focus']} overlay={(
-                                                                <Popover variant="info">
+                                                                <Popover variant="info" id="tooltip.download-multi-config">
                                                                     <Popover.Body><Translate value={'tooltip.download-multi-config'} /></Popover.Body>
                                                                 </Popover>
                                                             )}
                                                             aria-label={translate('')}>
-                                                                <Button onClick={() => download(c.resourceId, 'multi')} variant="link" disabled={downloader.loading}>
+                                                                <Button onClick={() => download(c.resourceId, 'multi')} variant="link" disabled={downloader.loading} id={`info-tooltip.download-multi-config`}>
                                                                     <FontAwesomeIcon icon={faDownload} />
                                                                     &nbsp; <Translate value="action.download-multi-config">Multi file</Translate>
                                                                 </Button>

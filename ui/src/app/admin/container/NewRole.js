@@ -7,13 +7,14 @@ import { Schema } from '../../form/Schema';
 import { FormManager } from '../../form/FormManager';
 import { RoleForm } from '../component/RoleForm';
 
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
 import { useTranslator } from '../../i18n/hooks';
 import { BASE_PATH } from '../../App.constant';
+import { useDispatch } from 'react-redux';
 
 export function NewRole() {
     const history = useHistory();
-    const notifier = useNotificationDispatcher();
+    const notifier = useDispatch();
     const translator = useTranslator();
 
     const { post, response, loading } = useRoles({});

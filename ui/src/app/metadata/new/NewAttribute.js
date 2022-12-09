@@ -11,12 +11,13 @@ import { useMetadataAttribute } from '../hooks/api';
 import {CustomAttributeDefinition} from '../domain/attribute/CustomAttributeDefinition';
 import MetadataSchema from '../hoc/MetadataSchema';
 import { MetadataForm } from '../hoc/MetadataFormContext';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
+import { useDispatch } from 'react-redux';
 
 export function NewAttribute() {
     const history = useHistory();
 
-    const dispatch = useNotificationDispatcher();
+    const dispatch = useDispatch();
 
     const definition = CustomAttributeDefinition;
 

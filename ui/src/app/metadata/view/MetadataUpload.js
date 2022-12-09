@@ -10,13 +10,14 @@ import Translate from '../../i18n/components/translate';
 import { readFileContents } from '../../core/utility/read_file_contents';
 import { get_cookie } from '../../core/utility/get_cookie';
 import { getMetadataPath } from '../hooks/api';
-import { useNotificationDispatcher, createNotificationAction } from '../../notifications/hoc/Notifications';
+import { createNotificationAction } from '../../store/notifications/NotificationSlice';
 import API_BASE_PATH from '../../App.constant';
+import { useDispatch } from 'react-redux';
 
 export function MetadataUpload() {
 
     const history = useHistory();
-    const dispatch = useNotificationDispatcher();
+    const dispatch = useDispatch();
 
     const [saving, setSaving] = React.useState(false);
 
@@ -91,7 +92,7 @@ export function MetadataUpload() {
                             </h3>
                         </li>
                         <li className="nav-item">
-                            <Button className="nav-link next btn d-flex justify-content-between align-items-start"
+                            <Button className="nav-link next btn d-flex justify-content-between align-items-start text-white"
                                 disabled={!isValid || saving}
                                 aria-label="Save metadata resolver"
                                 type="submit">

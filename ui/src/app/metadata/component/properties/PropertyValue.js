@@ -13,14 +13,15 @@ export function PropertyValue ({ name, value, columns, className }) {
         <>
         { name && value !== null && value !== undefined  ? 
                 <OverlayTrigger trigger={['hover', 'focus']} placement="left" overlay={(
-                    <Popover variant="info">
+                    <Popover variant="info" id={value.toString()}>
                         <Popover.Body><Translate value={value.toString()}>{value.toString()}</Translate></Popover.Body>
                     </Popover>
                 )}>
                 <span
                     className={`d-block text-truncate ${className}`}
                     role="definition"
-                    style={columns ? { width } : {}}>
+                    style={columns ? { width } : {}}
+                    id={`info-${value.toString()}`}>
                     <Translate value={value !== undefined ? value.toString() : (value === false) ? value.toString() : '-'}>
                         {value !== undefined ? value.toString() : (value === false) ? value.toString() : '-'}
                     </Translate>

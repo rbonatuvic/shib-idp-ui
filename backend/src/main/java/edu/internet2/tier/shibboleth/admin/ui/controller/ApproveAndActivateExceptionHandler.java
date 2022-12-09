@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotF
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.InitializationException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.PersistentEntityNotFound;
+import edu.internet2.tier.shibboleth.admin.ui.exception.UnsupportedShibUiOperationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,6 +43,9 @@ public class ApproveAndActivateExceptionHandler extends ResponseEntityExceptionH
     public ResponseEntity<?> handleScriptException(ScriptException e, WebRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage()));
     }
-     
-    
+
+    @ExceptionHandler({ UnsupportedShibUiOperationException.class })
+    public ResponseEntity<?> handleUnsupportedShibUiOperationException(UnsupportedShibUiOperationException e, WebRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(new ErrorResponse(String.valueOf(HttpStatus.NOT_IMPLEMENTED.value()), e.getMessage()));
+    }
 }

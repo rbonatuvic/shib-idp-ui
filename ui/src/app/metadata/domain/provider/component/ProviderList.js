@@ -92,6 +92,13 @@ export function ProviderList({ children, entities, reorder = true, first, last, 
                         )}
                     </tbody>
                 </table>
+                { !limited?.length && !children && 
+                <div className="d-flex justify-content-center">
+                    <div className="w-25 alert alert-info m-3 d-flex flex-column align-items-center" id="zero-state-alert">
+                        <p className="text-center mb-0">No Metadata Providers found.</p>
+                    </div>
+                </div>
+                }
             </div>
             }
             </Scroller>

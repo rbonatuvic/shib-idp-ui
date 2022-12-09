@@ -159,8 +159,7 @@ public class EntityDescriptorController {
 
     @PutMapping("/EntityDescriptor/{resourceId}/changeGroup/{groupId}")
     @Transactional
-    public ResponseEntity<?> updateGroupForEntityDescriptor(@PathVariable String resourceId, @PathVariable String groupId)
-                    throws ForbiddenException, ConcurrentModificationException, PersistentEntityNotFound, InvalidPatternMatchException {
+    public ResponseEntity<?> updateGroupForEntityDescriptor(@PathVariable String resourceId, @PathVariable String groupId) throws ConcurrentModificationException {
         EntityDescriptorRepresentation result = entityDescriptorService.updateGroupForEntityDescriptor(resourceId, groupId);
         return ResponseEntity.ok().body(result);
     }

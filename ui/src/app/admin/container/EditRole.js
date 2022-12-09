@@ -9,15 +9,16 @@ import { FormManager } from '../../form/FormManager';
 
 import { RoleForm } from '../component/RoleForm';
 import { RoleProvider } from '../hoc/RoleProvider';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
 import { useTranslator } from '../../i18n/hooks';
 import { BASE_PATH } from '../../App.constant';
+import { useDispatch } from 'react-redux';
 
 export function EditRole() {
 
     const { id } = useParams();
 
-    const notifier = useNotificationDispatcher();
+    const notifier = useDispatch();
     const translator = useTranslator();
 
     const history = useHistory();

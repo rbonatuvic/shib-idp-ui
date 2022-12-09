@@ -1,0 +1,96 @@
+{
+    "type": "object",
+    "required": ["name"],
+    "properties": {
+        "name": {
+            "title": "label.dynamic-registration-name",
+            "description": "tooltip.dynamic-registration-name",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+        },
+        "resourceId": {
+            "title": "label.dynamic-registration-resourceId",
+            "description": "tooltip.dynamic-registration-resourceId",
+            "type": "string"
+        },
+        "redirectUris": {
+            "title": "label.dynamic-registration-redirectUris",
+            "description": "tooltip.dynamic-registration-redirectUris",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "responseTypes": {
+            "title": "label.dynamic-registration-responseTypes",
+            "description": "tooltip.dynamic-registration-responseTypes",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "grantTypes": {
+            "title": "label.dynamic-registration-grantTypes",
+            "description": "tooltip.dynamic-registration-grantTypes",
+            "type": "string"
+        },
+        "applicationType": {
+            "title": "label.dynamic-registration-applicationType",
+            "description": "tooltip.dynamic-registration-applicationType",
+            "type": "string"
+        },
+        "contacts": {
+            "title": "label.dynamic-registration-contacts",
+            "description": "tooltip.dynamic-registration-contacts",
+            "type": "string"
+        },
+        "subjectType": {
+            "title": "label.dynamic-registration-subjectType",
+            "description": "tooltip.dynamic-registration-subjectType",
+            "type": "string"
+        },
+        "jwks": {
+            "title": "label.dynamic-registration-jwks",
+            "description": "tooltip.dynamic-registration-jwks",
+            "type": "string"
+        },
+        "jwksUri": {
+            "title": "label.dynamic-registration-jwksUri",
+            "description": "tooltip.dynamic-registration-jwksUri",
+            "type": "string"
+        },
+        "tokenEndpointAuthMethod": {
+            "title": "label.dynamic-registration-tokenEndpointAuthMethod",
+            "description": "tooltip.dynamic-registration-tokenEndpointAuthMethod",
+            "type": "string"
+        },
+        "logoUri": {
+            "title": "label.dynamic-registration-logo-uri",
+            "description": "tooltip.dynamic-registration-logo-uri",
+            "type": "string"
+        },
+        "policyUri": {
+            "title": "label.dynamic-registration-policy-uri",
+            "description": "tooltip.dynamic-registration-policy-uri",
+            "type": "string"
+        },
+        "tosUri": {
+            "title": "label.dynamic-registration-tosuri",
+            "description": "tooltip.dynamic-registration-tosuri",
+            "type": "string"
+        },
+        "scope": {
+            "title": "label.dynamic-registration-scope",
+            "description": "tooltip.dynamic-registration-scope",
+            "type": "string"
+        },
+        "enabled": {
+            "title": "label.dynamic-registration-enabled",
+            "description": "tooltip.dynamic-registration-enabled",
+            "type": "boolean"
+        },
+        "modifiedDate": "2022-10-21T11:57:24.391649",
+        "createdData": "2022-10-21T11:57:24.391649"
+    }
+}

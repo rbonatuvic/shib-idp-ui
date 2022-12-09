@@ -45,6 +45,9 @@ services:
       POSTGRES_PASSWORD: shibui
       POSTGRES_USER: shibui
       POSTGRES_DB: shibui
+    volumes:
+      - database_data:/var/lib/postgresql/data
+      - ../integration/shibboleth-idp/db/oidc_dynreg.sql:/docker-entrypoint-initdb.d/oidc_dynreg.sql
   idp:
     build: ../integration/shibboleth-idp
     labels:
@@ -56,9 +59,11 @@ services:
     depends_on:
       - directory
       - reverse-proxy
+      - database
     networks:
       - reverse-proxy
       - idp
+      - backend
     volumes:
       - dynamic_metadata:/opt/shibboleth-idp/metadata/dynamic
       - dynamic_config:/opt/shibboleth-idp/conf/dynamic

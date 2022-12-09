@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 import Translate from "../../../i18n/components/translate";
 import { InfoIcon } from "../InfoIcon";
 import { useTranslator } from "../../../i18n/hooks";
+import { isNil } from "lodash";
 
 const TextWidget = ({
     id,
@@ -33,7 +34,7 @@ const TextWidget = ({
     const inputType = (type || schema.type) === 'string' ? 'text' : `${type || schema.type}`;
 
     const [touched, setTouched] = React.useState(false);
-    const [fieldValue, setFieldValue] = React.useState(value || value === 0 ? value : "");
+    const [fieldValue, setFieldValue] = React.useState(isNil(value) ? '' : value);
 
     const onCustomBlur = (evt) => {
         setTouched(true);

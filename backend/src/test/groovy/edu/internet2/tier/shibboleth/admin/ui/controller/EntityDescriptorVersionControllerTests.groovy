@@ -9,7 +9,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL
 import edu.internet2.tier.shibboleth.admin.ui.envers.EnversVersionServiceSupport
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
-import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User

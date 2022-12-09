@@ -37,7 +37,7 @@ configurations.all {
 
         eachDependency { details ->
             if (details.requested.group == 'org.seleniumhq.selenium' && details.requested.name != 'htmlunit-driver') {
-                details.useVersion '3.141.59'
+                details.useVersion '4.7.0'
             }
         }
     }
@@ -91,6 +91,20 @@ processResources.dependsOn(':ui:npm_run_buildProd')
 
 jar {
     enabled = true
+    dependsOn 'copyApplicationYAML'
+}
+
+task copyApplicationYAML(type: Copy) {
+    if ( "${project.'use.release.app.yml'}".toBoolean() ) {
+        from 'src/main/app-resources/release.yml'
+        into 'src/main/resources'
+        rename { 'application.yml' }
+    }
+    else {
+        from 'src/main/app-resources/default.yml'
+        into 'src/main/resources'
+        rename { 'application.yml' }
+    }
 }
 
 //Integration of the frontend and backend into the build to have all of the UI resources available in the app's executable war
@@ -206,7 +220,7 @@ dependencies {
     integrationTestCompile sourceSets.main.output
     integrationTestCompile configurations.compile
     integrationTestCompile 'com.saucelabs:sebuilder-interpreter:1.0.6'
-    integrationTestCompile 'jp.vmi:selenese-runner-java:3.20.0'
+    integrationTestCompile 'jp.vmi:selenese-runner-java:4.2.0'
     integrationTestCompile "org.springframework.boot:spring-boot-starter-test:${project.'springbootVersion'}"
     integrationTestCompile "org.springframework.security:spring-security-test:${project.'springSecurityVersion'}"
     integrationTestCompile platform("org.spockframework:spock-bom:2.1-groovy-3.0")

@@ -12,6 +12,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdat
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener;
 import edu.internet2.tier.shibboleth.admin.ui.security.permission.IShibUiPermissionEvaluator;
 import edu.internet2.tier.shibboleth.admin.ui.security.permission.ShibUiPermissionDelegate;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.DynamicRegistrationInfoRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
@@ -21,31 +22,37 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DefaultMetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.DynamicRegistrationService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService;
 import edu.internet2.tier.shibboleth.admin.ui.service.FileCheckingFileWritingService;
 import edu.internet2.tier.shibboleth.admin.ui.service.FileWritingService;
 import edu.internet2.tier.shibboleth.admin.ui.service.FilterTargetService;
+import edu.internet2.tier.shibboleth.admin.ui.service.JPADynamicRegistrationServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAFilterTargetServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
+import edu.internet2.tier.shibboleth.admin.ui.service.ShibRestTemplateDelegate;
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils;
 import edu.internet2.tier.shibboleth.admin.util.LuceneUtility;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 import org.apache.lucene.analysis.Analyzer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
@@ -54,6 +61,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.util.UrlPathHelper;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URL;
 
 @Configuration
 @Import(SearchConfiguration.class)
@@ -234,8 +242,16 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public IShibUiPermissionEvaluator shibUiPermissionEvaluator(EntityDescriptorRepository entityDescriptorRepository, UserService userService) {
+    public IShibUiPermissionEvaluator shibUiPermissionEvaluator(EntityDescriptorRepository entityDescriptorRepository, UserService userService, DynamicRegistrationInfoRepository driRepo) {
         // TODO: @jj define type to return for Grouper integration
-        return new ShibUiPermissionDelegate(entityDescriptorRepository, userService);
+        return new ShibUiPermissionDelegate(driRepo, entityDescriptorRepository, userService);
+    }
+
+    @Bean
+    public DynamicRegistrationService dynamicRegistrationService(DynamicRegistrationInfoRepository driRepo, OwnershipRepository ownershipRepo,
+                    IShibUiPermissionEvaluator permissionEvaluator, UserService userService, IGroupService groupService,
+                    @Qualifier("shibUIConfiguration") ShibUIConfiguration config, RestTemplateBuilder restTemplateBuilder) {
+        ShibRestTemplateDelegate delegate = new ShibRestTemplateDelegate(config);
+        return new JPADynamicRegistrationServiceImpl(groupService, driRepo, ownershipRepo, delegate, permissionEvaluator, userService);
     }
 }

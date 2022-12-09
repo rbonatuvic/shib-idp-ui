@@ -1,13 +1,14 @@
 import React from 'react';
 import { useRoles } from '../hooks';
-import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { createNotificationAction, NotificationTypes } from '../../store/notifications/NotificationSlice';
 import { useTranslator } from '../../i18n/hooks';
+import { useDispatch } from 'react-redux';
 
 export function RolesProvider({ children, cache = 'no-cache' }) {
 
     const [roles, setRoles] = React.useState([]);
 
-    const notifier = useNotificationDispatcher();
+    const notifier = useDispatch();
     const translator = useTranslator();
 
     const { get, del, response, loading } = useRoles({
