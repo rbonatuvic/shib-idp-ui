@@ -684,13 +684,14 @@
       "id": "cc967bcc-786d-4fa3-a94e-d4571597a3dd",
       "comment": "",
       "command": "mouseOver",
-      "target": "id=info-tooltip.source-directory",
+      "target": "id=info-tooltip.xml-id",
       "targets": [
-        ["id=info-tooltip.source-directory", "id"],
-        ["css=#info-tooltip\\.source-directory", "css:finder"],
-        ["xpath=//button[@id='info-tooltip.source-directory']", "xpath:attributes"],
-        ["xpath=//div[@id='root_sourceDirectory-group']/div/div/label/button", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div/label/button", "xpath:position"]
+        ["id=info-tooltip.xml-id", "id"],
+        ["css=#info-tooltip\\.xml-id", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.xml-id']", "xpath:attributes"],
+        ["xpath=//div[@id='root_xmlId-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//label/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Description')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -699,7 +700,7 @@
       "command": "assertText",
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
-      "value": "Convenience mechanism for wiring a FilesystemLoadSaveManager, loading from the specified source directory in the local filesystem. This attribute will be ignored if sourceManagerRef is also specified. Either this attribute or sourceManagerRef is required."
+      "value": "Identifier for logging, identification for command line reload, etc."
     }, {
       "id": "f5837e71-6c43-449e-8580-ee1ace17da5e",
       "comment": "",

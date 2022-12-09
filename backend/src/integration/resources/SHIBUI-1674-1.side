@@ -533,13 +533,13 @@
       "id": "c974e795-454e-4271-86ef-609e3538b28f",
       "comment": "",
       "command": "mouseOver",
-      "target": "id=info-tooltip.organization-name",
+      "target": "id=info-tooltip.organization-url",
       "targets": [
-        ["id=info-tooltip.organization-name", "id"],
-        ["css=#info-tooltip\\.organization-name", "css:finder"],
-        ["xpath=//button[@id='info-tooltip.organization-name']", "xpath:attributes"],
-        ["xpath=//div[@id='root_organization_name-group']/div/div/label/button", "xpath:idRelative"],
-        ["xpath=//div[4]/div/div/div/div/div/div/div/label/button", "xpath:position"]
+        ["id=info-tooltip.organization-url", "id"],
+        ["css=#info-tooltip\\.organization-url", "css:finder"],
+        ["xpath=//button[@id='info-tooltip.organization-url']", "xpath:attributes"],
+        ["xpath=//div[@id='root_organization_url-group']/div/div/label/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div/div/label/button", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -548,7 +548,7 @@
       "command": "assertText",
       "target": "css=div[role=\"tooltip\"]",
       "targets": [],
-      "value": "Name of the organization standing up the entity."
+      "value": "URL of the organization standing up the entity."
     }, {
       "id": "2177712e-3ffa-4d70-a546-4425fa6b6565",
       "comment": "",
