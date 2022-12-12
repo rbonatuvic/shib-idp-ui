@@ -123,6 +123,7 @@ bootWar {
         //This way, it works with both embedded and external Tomcat
         into 'WEB-INF/classes/resources'
     }
+    dependsOn 'copyApplicationYAML'
     archiveName = "${baseName}-${version}.war"
 }
 
