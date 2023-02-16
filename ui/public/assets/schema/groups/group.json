@@ -15,7 +15,6 @@
             "title": "label.group-description",
             "description": "tooltip.group-description",
             "type": "string",
-            "minLength": 1,
             "maxLength": 255
         },
         "validationRegex": {
