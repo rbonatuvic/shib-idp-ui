@@ -72,7 +72,6 @@ export function MetadataFilters ({ providerId, types = [], filters, children }) 
         }
     }, [providerId]);
 
-
     return (
         <DeleteConfirmation title={`message.delete-filter-title`} body={`message.delete-filter-body`}>
             {(block) =>
