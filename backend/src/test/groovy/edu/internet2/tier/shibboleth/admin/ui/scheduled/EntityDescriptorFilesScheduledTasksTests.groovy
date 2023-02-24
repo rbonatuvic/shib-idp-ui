@@ -113,7 +113,7 @@ class EntityDescriptorFilesScheduledTasksTests extends AbstractBaseDataJpaTest {
         entityDescriptorFilesScheduledTasks.removeDanglingEntityDescriptorFiles()
 
         then:
-        def files = new File(tempPath, file)
-        files.size() == 0
+        def file2 = new File(tempPath, file)
+        !file2.exists()
     }
 }

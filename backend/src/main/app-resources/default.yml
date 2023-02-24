@@ -12,6 +12,13 @@
 #  default-rootuser:root
 ## need to include the encoding for the password - be sure to quote the entire value as shown
 #  default-password: "{noop}foopassword"
+## Maximum amount of time to lock the scheduled task - the default is 30m, but should be increased if there are a large (1500+) entities
+## YMMV depending on the speed of connection to the DB, server processing capabilities etc.
+#  maxTask:
+#    lockTime: 30m
+## The first time the scheduler executes on this node, write out the entity descriptors to file [true|false] (default is true)
+#  entityDescriptor:
+#    writeOnStartup: true
 #  pac4j-enabled: true
 #  pac4j:
 #    keystorePath: "/etc/shibui/samlKeystore.jks"

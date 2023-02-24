@@ -2,6 +2,8 @@ package edu.internet2.tier.shibboleth.admin.ui.scheduled;
 
 import edu.internet2.tier.shibboleth.admin.ui.service.FileWritingService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
+import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -22,6 +24,7 @@ import java.io.StringWriter;
 
 @Configuration
 @ConditionalOnProperty("shibui.external.metadataProviders.target")
+@EnableSchedulerLock(defaultLockAtMostFor = "30m")
 public class ExternalMetadataProvidersScheduledTasks {
     private static final Logger logger = LoggerFactory.getLogger(ExternalMetadataProvidersScheduledTasks.class);
 
@@ -36,6 +39,7 @@ public class ExternalMetadataProvidersScheduledTasks {
     }
 
     @Scheduled(fixedRateString = "${shibui.external.metadataProviders.taskRunRate:30000}")
+    @SchedulerLock(name = "generateExternalMetadataProvidersFile")
     @Transactional(readOnly = true)
     public void generateMetadataProvidersFile() {
         try (StringWriter os = new StringWriter()) {

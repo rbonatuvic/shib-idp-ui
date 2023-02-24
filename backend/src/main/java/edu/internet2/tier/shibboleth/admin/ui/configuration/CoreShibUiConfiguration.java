@@ -39,6 +39,8 @@ import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils;
 import edu.internet2.tier.shibboleth.admin.util.LuceneUtility;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
+import net.javacrumbs.shedlock.core.LockProvider;
+import net.javacrumbs.shedlock.provider.jdbctemplate.JdbcTemplateLockProvider;
 import org.apache.lucene.analysis.Analyzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -52,7 +54,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
@@ -61,7 +63,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.util.UrlPathHelper;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URL;
+import javax.sql.DataSource;
 
 @Configuration
 @Import(SearchConfiguration.class)
@@ -96,26 +98,19 @@ public class CoreShibUiConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = "shibui.metadata-dir")
-    public EntityDescriptorFilesScheduledTasks entityDescriptorFilesScheduledTasks(
-                    EntityDescriptorRepository entityDescriptorRepository,
-                    @Value("${shibui.metadata-dir}") final String metadataDir) {
-        return new EntityDescriptorFilesScheduledTasks(metadataDir, entityDescriptorRepository, openSamlObjects(),
-                        fileWritingService());
+    public EntityDescriptorFilesScheduledTasks entityDescriptorFilesScheduledTasks(EntityDescriptorRepository entityDescriptorRepository, @Value("${shibui.metadata-dir}") final String metadataDir) {
+        return new EntityDescriptorFilesScheduledTasks(metadataDir, entityDescriptorRepository, openSamlObjects(), fileWritingService());
     }
 
     @Bean
     @ConditionalOnProperty(name = "shibui.metadataProviders.target")
-    public MetadataProvidersScheduledTasks metadataProvidersScheduledTasks(
-                    @Value("${shibui.metadataProviders.target}") final Resource resource,
-                    final MetadataResolverService metadataResolverService) {
+    public MetadataProvidersScheduledTasks metadataProvidersScheduledTasks(@Value("${shibui.metadataProviders.target}") final Resource resource, final MetadataResolverService metadataResolverService) {
         return new MetadataProvidersScheduledTasks(resource, metadataResolverService, fileWritingService());
     }
 
     @Bean
     @ConditionalOnProperty(name = "shibui.external.metadataProviders.target")
-    public ExternalMetadataProvidersScheduledTasks externalMetadataProvidersScheduledTasks(
-                    @Value("${shibui.external.metadataProviders.target}") final Resource resource,
-                    final MetadataResolverService metadataResolverService) {
+    public ExternalMetadataProvidersScheduledTasks externalMetadataProvidersScheduledTasks(@Value("${shibui.external.metadataProviders.target}") final Resource resource, final MetadataResolverService metadataResolverService) {
         return new ExternalMetadataProvidersScheduledTasks(resource, metadataResolverService, fileWritingService());
     }
 
@@ -253,5 +248,10 @@ public class CoreShibUiConfiguration {
                     @Qualifier("shibUIConfiguration") ShibUIConfiguration config, RestTemplateBuilder restTemplateBuilder) {
         ShibRestTemplateDelegate delegate = new ShibRestTemplateDelegate(config);
         return new JPADynamicRegistrationServiceImpl(groupService, driRepo, ownershipRepo, delegate, permissionEvaluator, userService);
+    }
+
+    @Bean
+    public LockProvider lockProvider(DataSource dataSource) {
+        return new JdbcTemplateLockProvider(JdbcTemplateLockProvider.Configuration.builder().withJdbcTemplate(new JdbcTemplate(dataSource)).usingDbTime().build());
     }
 }
