@@ -166,7 +166,7 @@ dependencies {
     implementation "org.apache.logging.log4j:log4j-api:${project.'log4JVersion'}"
 
     implementation "net.javacrumbs.shedlock:shedlock-spring:${project.'shedlockVersion'}"
-    implementation "net.javacrumbs.shedlock:shedlock-provider-jdbc-template:${project.'shedlockVersion'}"
+    compile "net.javacrumbs.shedlock:shedlock-provider-jdbc-template:${project.'shedlockVersion'}"
 
     // TODO: figure out what this should really be
     runtimeOnly "org.springframework.boot:spring-boot-starter-tomcat:${project.'springbootVersion'}"
