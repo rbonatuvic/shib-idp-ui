@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ExternalMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
@@ -55,6 +56,10 @@ public class MetadataResolverConfiguration {
         Iterable<edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver> persistedResolvers = metadataResolverRepository.findAll();
         for (edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver resolver : persistedResolvers) {
             try {
+                // ExternalMetadataResolver does not have an OpenSAML matching kind, its a SHIB specific kind of deal, so skip it
+                if (resolver instanceof ExternalMetadataResolver) {
+                    continue;
+                }
                 MetadataResolver openSamlResolver = metadataResolverConverterService.convertToOpenSamlRepresentation(resolver);
                 resolvers.add(openSamlResolver);
             } catch (IOException e) {
