@@ -10,7 +10,7 @@
       "id": "7e3c1218-65cd-4730-b715-ca9c922d75d3",
       "comment": "",
       "command": "open",
-      "target": "/login",
+      "target": "login",
       "targets": [],
       "value": ""
     }, {
@@ -60,7 +60,7 @@
       "id": "650dbd56-1f7b-4ec9-9400-b32691018e65",
       "comment": "",
       "command": "open",
-      "target": "/api/heheheheheheheWipeout",
+      "target": "api/heheheheheheheWipeout",
       "targets": [],
       "value": ""
     }, {
@@ -74,7 +74,7 @@
       "id": "e3927a3c-d0b9-47ae-bb81-1d1a80204f4f",
       "comment": "",
       "command": "open",
-      "target": "/",
+      "target": "",
       "targets": [],
       "value": ""
     }, {
@@ -1085,7 +1085,7 @@
       "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
       "comment": "",
       "command": "open",
-      "target": "/api/heheheheheheheWipeout",
+      "target": "api/heheheheheheheWipeout",
       "targets": [],
       "value": ""
     }, {

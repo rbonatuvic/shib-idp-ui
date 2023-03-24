@@ -10,7 +10,7 @@
       "id": "252698e5-62bc-4087-b465-6cce517e4f42",
       "comment": "",
       "command": "open",
-      "target": "/login",
+      "target": "login",
       "targets": [],
       "value": ""
     }, {
@@ -411,7 +411,7 @@
             "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
             "comment": "",
             "command": "open",
-            "target": "/api/heheheheheheheWipeout",
+            "target": "api/heheheheheheheWipeout",
             "targets": [],
             "value": ""
           }, {

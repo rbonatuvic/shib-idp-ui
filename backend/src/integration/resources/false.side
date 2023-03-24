@@ -10,7 +10,7 @@
       "id": "2f6aa07a-6a16-439f-8c16-9822163c7b61",
       "comment": "",
       "command": "open",
-      "target": "/login",
+      "target": "login",
       "targets": [],
       "value": ""
     }, {

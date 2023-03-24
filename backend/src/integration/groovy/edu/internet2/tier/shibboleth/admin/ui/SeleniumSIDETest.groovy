@@ -13,13 +13,14 @@ import spock.lang.Unroll
 
 import java.nio.file.Paths
 
-//TODO: make config configurable
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [ShibbolethUiApplication])
+@SpringBootTest(properties = [ 'server.servlet.context-path=${selenium.context-path:}' ], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [ShibbolethUiApplication])
 @ActiveProfiles(['dev', 'very-dangerous'])
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD, methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 class SeleniumSIDETest extends Specification {
     @Value('${local.server.port}')
     int randomPort
+    @Value('${selenium.context-path:}')
+    String contextPath
 
     @Ignore
     def "Selenium: just run one"() {
@@ -41,9 +42,9 @@ class SeleniumSIDETest extends Specification {
                 this.setRandomPort("${System.properties.getProperty('selenium.port')}" as int)
             }
             if (System.properties.getProperty('selenium.host')) {
-                it.baseurl = "http://${System.properties.getProperty('selenium.host')}:${this.randomPort}"
+                it.baseurl = "http://${System.properties.getProperty('selenium.host')}:${this.randomPort}${this.contextPath}"
             } else {
-                it.baseurl = "http://localhost:${this.randomPort}"
+                it.baseurl = "http://localhost:${this.randomPort}${this.contextPath}"
             }
             if (System.properties.getProperty('webdriver.headless')) {
                 it.addCliArgs('--headless')
@@ -81,9 +82,9 @@ class SeleniumSIDETest extends Specification {
                 this.setRandomPort("${System.properties.getProperty('selenium.port')}" as int)
             }
             if (System.properties.getProperty('selenium.host')) {
-                it.baseurl = "http://${System.properties.getProperty('selenium.host')}:${this.randomPort}"
+                it.baseurl = "http://${System.properties.getProperty('selenium.host')}:${this.randomPort}${this.contextPath}"
             } else {
-                it.baseurl = "http://localhost:${this.randomPort}"
+                it.baseurl = "http://localhost:${this.randomPort}${this.contextPath}"
             }
             if (System.properties.getProperty('webdriver.headless')) {
                 it.addCliArgs('--headless')
