@@ -224,7 +224,7 @@ dependencies {
     integrationTestCompile sourceSets.main.output
     integrationTestCompile configurations.compile
     integrationTestCompile 'com.saucelabs:sebuilder-interpreter:1.0.6'
-    integrationTestCompile 'jp.vmi:selenese-runner-java:4.2.0'
+    integrationTestCompile 'jp.vmi:selenese-runner-java:4.3.0'
     integrationTestCompile "org.springframework.boot:spring-boot-starter-test:${project.'springbootVersion'}"
     integrationTestCompile "org.springframework.security:spring-security-test:${project.'springSecurityVersion'}"
     integrationTestCompile platform("org.spockframework:spock-bom:2.1-groovy-3.0")
