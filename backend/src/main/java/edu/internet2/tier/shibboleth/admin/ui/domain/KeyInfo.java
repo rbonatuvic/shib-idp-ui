@@ -133,7 +133,13 @@ public class KeyInfo extends AbstractXMLObject implements org.opensaml.xmlsec.si
     @Nonnull
     @Override
     public List<EncryptedKey> getEncryptedKeys() {
-        return Collections.emptyList();
+        ArrayList<EncryptedKey> result = new ArrayList<>();
+        for (XMLObject obj : getXMLObjects()) {
+            if (obj instanceof EncryptedKey) {
+                result.add((EncryptedKey) obj);
+            }
+        }
+        return result;
     }
 
     @Nullable
