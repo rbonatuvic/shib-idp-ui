@@ -199,7 +199,7 @@ export const FileBackedHttpMetadataProviderWizard = {
 
 export const FileBackedHttpMetadataProviderEditor = {
     ...FileBackedHttpMetadataProviderWizard,
-    schema: 'assets/schema/provider/filebacked-http.schema.json',
+    schema: `${BASE_PATH}assets/schema/provider/filebacked-http.schema.json`,
     steps: [
         {
             id: 'common',

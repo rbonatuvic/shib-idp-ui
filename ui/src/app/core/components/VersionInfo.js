@@ -16,7 +16,7 @@ export function VersionInfo () {
             'mode':'no-cors'
         }
     }
-    const { data = {} } = useFetch(`${ACTUATOR_PATH}/info`, opts, []);
+    const { data = {} } = useFetch(`${ACTUATOR_PATH}info`, opts, []);
 
     const [ versionData, setVersionData ] = React.useState('');
 

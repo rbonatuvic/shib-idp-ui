@@ -70,7 +70,7 @@ function App() {
                         <Contention>
                             <UserConfirmation>
                                 {(message, confirm, confirmCallback, setConfirm, getConfirmation) =>
-                                    <Router getUserConfirmation={getConfirmation} basename={BASE_PATH}>
+                                    <Router getUserConfirmation={getConfirmation} basename={`/${BASE_PATH}`}>
                                         <ConfirmWindow message={message} confirm={confirm} confirmCallback={confirmCallback} setConfirm={setConfirm} />
                                         <QueryParamProvider ReactRouterRoute={Route}>
                                         <Header />

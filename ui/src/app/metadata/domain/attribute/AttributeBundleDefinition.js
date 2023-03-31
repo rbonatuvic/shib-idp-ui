@@ -1,10 +1,11 @@
 import { defaultsDeep } from "lodash";
+import { BASE_PATH } from '../../../App.constant';
 
 export const AttributeBundleDefinition = {
     label: 'Metadata Attribute Bundle',
     type: '@MetadataAttributeBundle',
     steps: [],
-    schema: `/assets/schema/attribute/bundle.schema.json`,
+    schema: `${BASE_PATH}assets/schema/attribute/bundle.schema.json`,
 
     uiSchema: {
         attributes: {

@@ -5,10 +5,15 @@ module.exports = function (app) {
 
     const port = 8080;
 
+    const context = process.env.PUBLIC_URL;
+    const rewriteFn = function (path, req) {
+        return path.replace(context, '');
+    };
+
     app.use(
-        '/api',
+        `${context}/api`,
         createProxyMiddleware({
-            target: `http://localhost:${port}`,
+            target: `http://localhost:${port}${context}/`,
             changeOrigin: true,
             onProxyRes: function (proxyRes, req, res) {
                 proxyRes.headers['Access-Control-Allow-Origin'] = '*';
@@ -17,25 +22,25 @@ module.exports = function (app) {
     );
 
     app.use(
-        '/actuator',
+        `${context}/actuator`,
         createProxyMiddleware({
-            target: `http://localhost:${port}`,
+            target: `http://localhost:${port}${context}/`,
             changeOrigin: true
         })
     );
 
     app.use(
-        '/login',
+        `${context}/login`,
         createProxyMiddleware({
-            target: `http://localhost:${port}`,
+            target: `http://localhost:${port}${context}/`,
             changeOrigin: true
         })
     );
 
     app.use(
-        '/logout',
+        `${context}/logout`,
         createProxyMiddleware({
-            target: `http://localhost:${port}`,
+            target: `http://localhost:${port}${context}/`,
             changeOrigin: true
         })
     );

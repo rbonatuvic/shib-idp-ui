@@ -18,7 +18,7 @@ export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, 
 
     const definition = React.useMemo(() => getDefinition(filter['@type'], ), [filter]);
 
-    const { get, response } = useFetch(`${BASE_PATH}`);
+    const { get, response } = useFetch(``);
 
     const [schema, setSchema] = React.useState();
 
