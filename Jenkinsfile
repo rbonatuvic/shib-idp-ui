@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  tools{
+    jdk 'JDK11'
+  }
   options {
     disableConcurrentBuilds()
     buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
