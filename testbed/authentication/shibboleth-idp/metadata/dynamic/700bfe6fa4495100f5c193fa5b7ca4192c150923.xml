@@ -15,6 +15,52 @@
         <md:Extensions>
             <init:RequestInitiator xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Binding="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Location="https://shibui.unicon.local/callback?client_name=shibUIAuthClient"/>
         </md:Extensions>
+        <md:KeyDescriptor use="signing">
+          <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+            <ds:X509Data>
+              <ds:X509Certificate>
+                  MIICpzCCAY+gAwIBAgIBATANBgkqhkiG9w0BAQUFADAXMRUwEwYDVQQDDAwzODM1
+                  YTU5NjdjMjEwHhcNMjMwNDEwMTg0MTM5WhcNNDMwNDEwMTg0MTM5WjAXMRUwEwYD
+                  VQQDDAwzODM1YTU5NjdjMjEwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
+                  AQCQWxxf38Fa4VLYUPRn9Lb+Fvyy7wlrOtYdj7yG+PN0qKE3B+ye+vj9iiLLJBfe
+                  CqJMzjivJcWjz6PYp9XDHJl3m3BchiGakwCnQahWps2qo9wdbN+QNj0VxE8E2JuB
+                  CMRIL+qUpwbn81QLTwZDk/9W8tAJzZ9n1m9uo/uuFjObGUMJ8r4KjX8IeX2xNhUz
+                  HtIjmHKR5gUKflKkkpwNa/AvPX7O1a4ML92bBGmtOe3DoOgzILUIP4klWDJFoA1e
+                  Ok6tz3GqQ62JXHKHWJh5+r6olvZyfQ2TynfODoCHYVi99TDV7QZMY9HBLATVI2TE
+                  IMz8qeCgBinEhr6fj1rIaOmHAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAHL4bMge
+                  gJgyooagqTL7UUp3ZVSrYEEpTCR1l7JgmdvunGk8qxNVqu0Ir5HGJhy6/MiSkVkM
+                  hgpBKC+yeV7hFbVEdMEABMs7Ge+uMtsDQs1wa9uT+FjMJ00ibtDMYqQfQ2F9bddI
+                  58VbYmxpxKsflaZGo6gKWwllreFXzfxAdOCAMwbLyZS/plX+pXEAXTNQO6wXcioZ
+                  VMsjAf1gmmTeSccTNWscaloYcRyND3slGaKShWOwm7AupA+7KwHj9PqSnj4kXR1f
+                  9pwd6uZ9jhCb/fh2Xna2Blq+1H1juKKxYCESgA+6xb70EwCqAx71pnHChkTIDNOp
+                  ZhiDnL3iAjiYgPQ=
+              </ds:X509Certificate>
+            </ds:X509Data>
+          </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:KeyDescriptor use="encryption">
+          <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+            <ds:X509Data>
+              <ds:X509Certificate>
+                  MIICpzCCAY+gAwIBAgIBATANBgkqhkiG9w0BAQUFADAXMRUwEwYDVQQDDAwzODM1
+                  YTU5NjdjMjEwHhcNMjMwNDEwMTg0MTM5WhcNNDMwNDEwMTg0MTM5WjAXMRUwEwYD
+                  VQQDDAwzODM1YTU5NjdjMjEwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
+                  AQCQWxxf38Fa4VLYUPRn9Lb+Fvyy7wlrOtYdj7yG+PN0qKE3B+ye+vj9iiLLJBfe
+                  CqJMzjivJcWjz6PYp9XDHJl3m3BchiGakwCnQahWps2qo9wdbN+QNj0VxE8E2JuB
+                  CMRIL+qUpwbn81QLTwZDk/9W8tAJzZ9n1m9uo/uuFjObGUMJ8r4KjX8IeX2xNhUz
+                  HtIjmHKR5gUKflKkkpwNa/AvPX7O1a4ML92bBGmtOe3DoOgzILUIP4klWDJFoA1e
+                  Ok6tz3GqQ62JXHKHWJh5+r6olvZyfQ2TynfODoCHYVi99TDV7QZMY9HBLATVI2TE
+                  IMz8qeCgBinEhr6fj1rIaOmHAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAHL4bMge
+                  gJgyooagqTL7UUp3ZVSrYEEpTCR1l7JgmdvunGk8qxNVqu0Ir5HGJhy6/MiSkVkM
+                  hgpBKC+yeV7hFbVEdMEABMs7Ge+uMtsDQs1wa9uT+FjMJ00ibtDMYqQfQ2F9bddI
+                  58VbYmxpxKsflaZGo6gKWwllreFXzfxAdOCAMwbLyZS/plX+pXEAXTNQO6wXcioZ
+                  VMsjAf1gmmTeSccTNWscaloYcRyND3slGaKShWOwm7AupA+7KwHj9PqSnj4kXR1f
+                  9pwd6uZ9jhCb/fh2Xna2Blq+1H1juKKxYCESgA+6xb70EwCqAx71pnHChkTIDNOp
+                  ZhiDnL3iAjiYgPQ=
+              </ds:X509Certificate>
+            </ds:X509Data>
+          </ds:KeyInfo>
+        </md:KeyDescriptor>
         <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://shibui.unicon.local/callback?client_name=shibUIAuthClient&amp;idplogoutrequest=true"/>
         <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
         <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>

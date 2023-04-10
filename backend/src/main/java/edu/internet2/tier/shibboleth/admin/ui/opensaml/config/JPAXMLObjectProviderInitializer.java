@@ -8,7 +8,7 @@ public class JPAXMLObjectProviderInitializer extends AbstractXMLObjectProviderIn
     protected String[] getConfigResources() {
         return new String[]{
                 "/jpa-default-config.xml",
-                "/encryption-config.xml",
+                "/jpa-encryption-config.xml",
                 "/jpa-saml2-assertion-config.xml",
                 "/jpa-saml2-metadata-algorithm-config.xml",
                 "/jpa-saml2-metadata-attr-config.xml",
