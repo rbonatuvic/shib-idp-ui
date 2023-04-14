@@ -99,7 +99,7 @@ public class KeyInfo extends AbstractXMLObject implements org.opensaml.xmlsec.si
     @Nonnull
     @Override
     public List<X509Data> getX509Datas() {
-        return Arrays.asList(this.xmlObjects.stream().filter(i -> i instanceof X509Data).toArray(X509Data[]::new));
+        return new X509ArrayList(this, Arrays.asList(this.xmlObjects.stream().filter(i -> i instanceof X509Data).toArray(X509Data[]::new)));
     }
 
     public void addX509Data(edu.internet2.tier.shibboleth.admin.ui.domain.X509Data x509Data) {
@@ -154,5 +154,20 @@ public class KeyInfo extends AbstractXMLObject implements org.opensaml.xmlsec.si
         }
 
         return children;
+    }
+}
+
+class X509ArrayList extends ArrayList<X509Data> {
+    private KeyInfo parentRef;
+
+    public X509ArrayList(KeyInfo ref, List<X509Data> addlist) {
+        super(addlist);
+        this.parentRef = ref;
+    }
+
+    @Override
+    public boolean add(X509Data data) {
+        parentRef.addX509Data((edu.internet2.tier.shibboleth.admin.ui.domain.X509Data) data);
+        return super.add(data);
     }
 }

@@ -68,7 +68,7 @@ public class X509Data extends AbstractXMLObject implements org.opensaml.xmlsec.s
     @Nonnull
     @Override
     public List<X509Certificate> getX509Certificates() {
-        return new ArrayList<>(Arrays.asList(this.xmlObjects.stream().filter(i -> i instanceof org.opensaml.xmlsec.signature.X509Certificate).toArray(org.opensaml.xmlsec.signature.X509Certificate[]::new)));
+        return new X509CertificateArrayList(xmlObjects, Arrays.asList(this.xmlObjects.stream().filter(i -> i instanceof org.opensaml.xmlsec.signature.X509Certificate).toArray(org.opensaml.xmlsec.signature.X509Certificate[]::new)));
     }
 
     public void addX509Certificate(edu.internet2.tier.shibboleth.admin.ui.domain.X509Certificate x509Certificate) {
@@ -96,5 +96,19 @@ public class X509Data extends AbstractXMLObject implements org.opensaml.xmlsec.s
         children.addAll(this.getX509Certificates());
 
         return children;
+    }
+}
+
+class X509CertificateArrayList extends ArrayList<X509Certificate> {
+    private final List<AbstractXMLObject> xmlObjects;
+
+    public X509CertificateArrayList(List<AbstractXMLObject> xmlObjects, List<X509Certificate> addList) {
+        super(addList);
+        this.xmlObjects = xmlObjects;
+    }
+
+    @Override
+    public boolean add(X509Certificate x509Certificate) {
+        return super.add(x509Certificate) && xmlObjects.add((AbstractXMLObject) x509Certificate);
     }
 }
