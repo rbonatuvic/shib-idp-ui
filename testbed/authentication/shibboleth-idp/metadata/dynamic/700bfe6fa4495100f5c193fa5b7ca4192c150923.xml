@@ -1,67 +1,66 @@
-<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" ID="_ovnpetykvemkdiggdzbbopckyuitcjk7wy9vz4v" entityID="https://unicon.net/test/shibui" validUntil="2041-09-09T18:02:00.352Z">
+<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" ID="_a3af3b1bf2ee4590940b7778ec93b2a466f2e06" entityID="https://unicon.net/test/shibui" validUntil="2043-04-14T21:05:13.846Z">
     <md:Extensions>
-        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
-        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384"/>
+        <alg:SigningMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+        <alg:SigningMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"/>
+        <alg:SigningMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
+        <alg:SigningMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+        <alg:SigningMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/>
+        <alg:SigningMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384"/>
+        <alg:SigningMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512"/>
+        <alg:SigningMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1"/>
+        <alg:SigningMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
+        <alg:SigningMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha256"/>
+        <alg:SigningMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha384"/>
+        <alg:SigningMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha512"/>
+        <alg:SigningMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2000/09/xmldsig#hmac-sha1"/>
         <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha224"/>
+        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384"/>
         <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
-        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"/>
-        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
-        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
-        <alg:DigestMethod xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
     </md:Extensions>
-    <md:SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:1.0:protocol urn:oasis:names:tc:SAML:1.1:protocol">
         <md:Extensions>
             <init:RequestInitiator xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Binding="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Location="https://shibui.unicon.local/callback?client_name=shibUIAuthClient"/>
         </md:Extensions>
         <md:KeyDescriptor use="signing">
-          <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-            <ds:X509Data>
-              <ds:X509Certificate>
-                  MIICpzCCAY+gAwIBAgIBATANBgkqhkiG9w0BAQUFADAXMRUwEwYDVQQDDAwzODM1
-                  YTU5NjdjMjEwHhcNMjMwNDEwMTg0MTM5WhcNNDMwNDEwMTg0MTM5WjAXMRUwEwYD
-                  VQQDDAwzODM1YTU5NjdjMjEwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
-                  AQCQWxxf38Fa4VLYUPRn9Lb+Fvyy7wlrOtYdj7yG+PN0qKE3B+ye+vj9iiLLJBfe
-                  CqJMzjivJcWjz6PYp9XDHJl3m3BchiGakwCnQahWps2qo9wdbN+QNj0VxE8E2JuB
-                  CMRIL+qUpwbn81QLTwZDk/9W8tAJzZ9n1m9uo/uuFjObGUMJ8r4KjX8IeX2xNhUz
-                  HtIjmHKR5gUKflKkkpwNa/AvPX7O1a4ML92bBGmtOe3DoOgzILUIP4klWDJFoA1e
-                  Ok6tz3GqQ62JXHKHWJh5+r6olvZyfQ2TynfODoCHYVi99TDV7QZMY9HBLATVI2TE
-                  IMz8qeCgBinEhr6fj1rIaOmHAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAHL4bMge
-                  gJgyooagqTL7UUp3ZVSrYEEpTCR1l7JgmdvunGk8qxNVqu0Ir5HGJhy6/MiSkVkM
-                  hgpBKC+yeV7hFbVEdMEABMs7Ge+uMtsDQs1wa9uT+FjMJ00ibtDMYqQfQ2F9bddI
-                  58VbYmxpxKsflaZGo6gKWwllreFXzfxAdOCAMwbLyZS/plX+pXEAXTNQO6wXcioZ
-                  VMsjAf1gmmTeSccTNWscaloYcRyND3slGaKShWOwm7AupA+7KwHj9PqSnj4kXR1f
-                  9pwd6uZ9jhCb/fh2Xna2Blq+1H1juKKxYCESgA+6xb70EwCqAx71pnHChkTIDNOp
-                  ZhiDnL3iAjiYgPQ=
-              </ds:X509Certificate>
-            </ds:X509Data>
-          </ds:KeyInfo>
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>MIICpzCCAY+gAwIBAgIBATANBgkqhkiG9w0BAQUFADAXMRUwEwYDVQQDDAwzODM1YTU5NjdjMjEw
+HhcNMjMwNDEwMTg0MTM5WhcNNDMwNDEwMTg0MTM5WjAXMRUwEwYDVQQDDAwzODM1YTU5NjdjMjEw
+ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCQWxxf38Fa4VLYUPRn9Lb+Fvyy7wlrOtYd
+j7yG+PN0qKE3B+ye+vj9iiLLJBfeCqJMzjivJcWjz6PYp9XDHJl3m3BchiGakwCnQahWps2qo9wd
+bN+QNj0VxE8E2JuBCMRIL+qUpwbn81QLTwZDk/9W8tAJzZ9n1m9uo/uuFjObGUMJ8r4KjX8IeX2x
+NhUzHtIjmHKR5gUKflKkkpwNa/AvPX7O1a4ML92bBGmtOe3DoOgzILUIP4klWDJFoA1eOk6tz3Gq
+Q62JXHKHWJh5+r6olvZyfQ2TynfODoCHYVi99TDV7QZMY9HBLATVI2TEIMz8qeCgBinEhr6fj1rI
+aOmHAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAHL4bMgegJgyooagqTL7UUp3ZVSrYEEpTCR1l7Jg
+mdvunGk8qxNVqu0Ir5HGJhy6/MiSkVkMhgpBKC+yeV7hFbVEdMEABMs7Ge+uMtsDQs1wa9uT+FjM
+J00ibtDMYqQfQ2F9bddI58VbYmxpxKsflaZGo6gKWwllreFXzfxAdOCAMwbLyZS/plX+pXEAXTNQ
+O6wXcioZVMsjAf1gmmTeSccTNWscaloYcRyND3slGaKShWOwm7AupA+7KwHj9PqSnj4kXR1f9pwd
+6uZ9jhCb/fh2Xna2Blq+1H1juKKxYCESgA+6xb70EwCqAx71pnHChkTIDNOpZhiDnL3iAjiYgPQ=</ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
         </md:KeyDescriptor>
         <md:KeyDescriptor use="encryption">
-          <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-            <ds:X509Data>
-              <ds:X509Certificate>
-                  MIICpzCCAY+gAwIBAgIBATANBgkqhkiG9w0BAQUFADAXMRUwEwYDVQQDDAwzODM1
-                  YTU5NjdjMjEwHhcNMjMwNDEwMTg0MTM5WhcNNDMwNDEwMTg0MTM5WjAXMRUwEwYD
-                  VQQDDAwzODM1YTU5NjdjMjEwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
-                  AQCQWxxf38Fa4VLYUPRn9Lb+Fvyy7wlrOtYdj7yG+PN0qKE3B+ye+vj9iiLLJBfe
-                  CqJMzjivJcWjz6PYp9XDHJl3m3BchiGakwCnQahWps2qo9wdbN+QNj0VxE8E2JuB
-                  CMRIL+qUpwbn81QLTwZDk/9W8tAJzZ9n1m9uo/uuFjObGUMJ8r4KjX8IeX2xNhUz
-                  HtIjmHKR5gUKflKkkpwNa/AvPX7O1a4ML92bBGmtOe3DoOgzILUIP4klWDJFoA1e
-                  Ok6tz3GqQ62JXHKHWJh5+r6olvZyfQ2TynfODoCHYVi99TDV7QZMY9HBLATVI2TE
-                  IMz8qeCgBinEhr6fj1rIaOmHAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAHL4bMge
-                  gJgyooagqTL7UUp3ZVSrYEEpTCR1l7JgmdvunGk8qxNVqu0Ir5HGJhy6/MiSkVkM
-                  hgpBKC+yeV7hFbVEdMEABMs7Ge+uMtsDQs1wa9uT+FjMJ00ibtDMYqQfQ2F9bddI
-                  58VbYmxpxKsflaZGo6gKWwllreFXzfxAdOCAMwbLyZS/plX+pXEAXTNQO6wXcioZ
-                  VMsjAf1gmmTeSccTNWscaloYcRyND3slGaKShWOwm7AupA+7KwHj9PqSnj4kXR1f
-                  9pwd6uZ9jhCb/fh2Xna2Blq+1H1juKKxYCESgA+6xb70EwCqAx71pnHChkTIDNOp
-                  ZhiDnL3iAjiYgPQ=
-              </ds:X509Certificate>
-            </ds:X509Data>
-          </ds:KeyInfo>
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>MIICpzCCAY+gAwIBAgIBATANBgkqhkiG9w0BAQUFADAXMRUwEwYDVQQDDAwzODM1YTU5NjdjMjEw
+HhcNMjMwNDEwMTg0MTM5WhcNNDMwNDEwMTg0MTM5WjAXMRUwEwYDVQQDDAwzODM1YTU5NjdjMjEw
+ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCQWxxf38Fa4VLYUPRn9Lb+Fvyy7wlrOtYd
+j7yG+PN0qKE3B+ye+vj9iiLLJBfeCqJMzjivJcWjz6PYp9XDHJl3m3BchiGakwCnQahWps2qo9wd
+bN+QNj0VxE8E2JuBCMRIL+qUpwbn81QLTwZDk/9W8tAJzZ9n1m9uo/uuFjObGUMJ8r4KjX8IeX2x
+NhUzHtIjmHKR5gUKflKkkpwNa/AvPX7O1a4ML92bBGmtOe3DoOgzILUIP4klWDJFoA1eOk6tz3Gq
+Q62JXHKHWJh5+r6olvZyfQ2TynfODoCHYVi99TDV7QZMY9HBLATVI2TEIMz8qeCgBinEhr6fj1rI
+aOmHAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAHL4bMgegJgyooagqTL7UUp3ZVSrYEEpTCR1l7Jg
+mdvunGk8qxNVqu0Ir5HGJhy6/MiSkVkMhgpBKC+yeV7hFbVEdMEABMs7Ge+uMtsDQs1wa9uT+FjM
+J00ibtDMYqQfQ2F9bddI58VbYmxpxKsflaZGo6gKWwllreFXzfxAdOCAMwbLyZS/plX+pXEAXTNQ
+O6wXcioZVMsjAf1gmmTeSccTNWscaloYcRyND3slGaKShWOwm7AupA+7KwHj9PqSnj4kXR1f9pwd
+6uZ9jhCb/fh2Xna2Blq+1H1juKKxYCESgA+6xb70EwCqAx71pnHChkTIDNOpZhiDnL3iAjiYgPQ=</ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
         </md:KeyDescriptor>
-        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://shibui.unicon.local/callback?client_name=shibUIAuthClient&amp;idplogoutrequest=true"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://shibui.unicon.local/callback?client_name=shibUIAuthClient&amp;logoutendpoint=true"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://shibui.unicon.local/callback?client_name=shibUIAuthClient&amp;logoutendpoint=true"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://shibui.unicon.local/callback?client_name=shibUIAuthClient&amp;logoutendpoint=true"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://shibui.unicon.local/callback?client_name=shibUIAuthClient&amp;logoutendpoint=true"/>
         <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
         <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
         <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
